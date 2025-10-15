@@ -12,7 +12,6 @@ public class LoginController
 {
     AutenticazioneBean autentica;
     Credentials cred;
-
     public LoginController(AutenticazioneBean b)
     {
         this.autentica = b;
