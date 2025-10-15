@@ -1,0 +1,102 @@
+"id","nome","disabile","linea"
+0,Morby Centrum,no,R
+1,Danderyds Sjukhus,no,R
+2,Bergshamra,no,R
+3,Universitetet,no,R
+4,Tekniska Hogskolan,no,R
+5,Stadion,no,R
+6,Ostermalmstorg,no,R
+7,Ropsten,no,R
+8,Gardet,no,R
+9,Karlaplan,no,R
+10,T-Centralen,si,R-Bi-V
+11,Gamla Stan,si,R-V
+12,Kungstradgarden,no,Bi
+13,Slussen,si,R-V
+14,Medborgarplatsen,no,V
+15,Skanstull,no,V
+16,Gullmarsplan,si,V
+17,Skarmarbrink,no,V
+18,Globen,no,V
+19,Blasut,no,V
+20,Hammarbyhojden,no,V
+21,Bjorkhagen,no,V
+22,Karrtorp,no,V
+23,Bagarmossen,no,V
+24,Skarpnack,no,V
+25,Sandsborg,no,V
+26,Skogskyrko Garden,no,V
+27,Tallkgrogen,no,V
+28,Gubbangen,no,V
+29,Hokarangen,no,V
+30,Farsta,no,V
+31,Farsta Strand,no,V
+32,Enskede Gard,no,V
+33,Sockenplan,no,V
+34,Svedmyra,no,V
+35,Stureby,no,V
+36,Bandhagen,no,V
+37,Hogdalen,no,V
+38,Ragsved,no,V
+39,Hagsatra,no,V
+40,Mariatorget,no,R
+41,Zinkensdamm,no,R
+42,Hornstull,no,R
+43,Liljeholmen,no,R
+44,Aspudden,no,R
+45,Midsommar Kransen,no,R
+46,Telefonplan,no,R
+47,Hagerstensasen,no,R
+48,Vastertorp,no,R
+49,Fruangen,no,R
+50,Ornsberg,no,R
+51,Axels Berg,no,R
+52,Malar Hojden,no,R
+53,Bredang,no,R
+54,Satra,no,R
+55,Skarholmen,no,R
+56,Varberg,no,R
+57,Varby Gard,no,R
+58,Masmo,no,R
+59,Fittja,no,R
+60,Alby,no,R
+61,Hallunda,no,R
+62,Norsborg,no,R
+63,Hotorget,no,V
+64,Radmansgatan,no,V
+65,Odenplan,si,V
+66,Sankt Eriksplan,no,V
+67,Fridhemsplan,si,V-Bi
+68,Thorildsplan,no,V
+69,Rad Huset,no,Bi
+70,Kristine Berg,no,V
+71,Alvik,no,V
+72,Storamossen,no,V
+73,Abrahamsberg,no,V
+74,Brommaplan,no,V
+75,Akeshov,no,V
+76,Angbyplan,no,V
+77,Islandstorget,no,V
+78,Blackeberg,no,V
+79,Racksta,no,V
+80,Vallingby,si,V
+81,Johannelund,no,V
+82,Hasselby Gard,no,V
+83,Hasselby Strand,no,V
+84,Stadshagen,no,Bi
+85,Vastra Skogen,no,Bi
+86,Solna Centrum,si,Bi
+87,Huvudsta,no,Bi
+88,Solna Strand,no,Bi
+89,Sundbybergs Centrum,si,Bi
+90,Duvbo,no,Bi
+91,Rissne,no,Bi
+92,Rinkeby,no,Bi
+93,Tensta,no,Bi
+94,Hjulsta,no,Bi
+95,Nackrosen,no,Bi
+96,Hallonbergen,no,Bi
+97,Kymlinge,no,Bi
+98,Kista,no,Bi
+99,Husby,no,Bi
+100,Akalla,si,Bi

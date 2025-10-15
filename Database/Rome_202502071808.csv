@@ -1,0 +1,77 @@
+"id","nome","disabile","linea"
+0,Rebibbia,no,MB
+1,Ponte Mammolo,si,MB
+2,Santa Maria del Soccorso,si,MB
+3,Pietralata,si,MB
+4,Monti Tiburtini,si,MB
+5,Quintiliani,si,MB
+6,Tiburtina FS,si,MB
+7,Bologna,si,MB-MB1
+8,Annibaliano,si,MB1
+9,Libia,si,MB1
+10,Conca D'oro,si,MB1
+11,Jonio,si,MB1
+12,Policlinico,si,MB
+13,Castro Pretorio,si,MB
+14,Termini,si,MA-MB
+15,Cavour,no,MB
+16,Colosseo,si,MB
+17,Circo Massimo,si,MB
+18,Piramide,no,MB
+19,Garbatella,no,MB
+20,Basilica S. Paolo,si,MB
+21,Marconi,si,MB
+22,EUR Magliana,no,MB
+23,EUR Palasport,si,MB
+24,EUR Fermi,no,MB
+25,Laurentina,si,MB
+26,Anagnina,si,MA
+27,Cinecitta,si,MA
+28,Subaugusta,si,MA
+29,Giulio Agricola,si,MA
+30,Lucio Sestio,si,MA
+31,Numidio Quadrato,si,MA
+32,Porta Furba,no,MA
+33,Arco di Travertino,no,MA
+34,Colli Albani,si,MA
+35,Furio Camillo,si,MA
+36,Ponte Lungo,si,MA
+37,Re di Roma,si,MA
+38,San Giovanni,si,MA-MC
+39,Lodi,si,MC
+40,Pigneto,si,MC
+41,Malatesta,si,MC
+42,Teano,si,MC
+43,Gardenie,si,MC
+44,Mirti,si,MC
+45,Parco di Centocelle,si,MC
+46,Togliatti,si,MC
+47,Grano,si,MC
+48,Alessandrino,si,MC
+49,Torre Spaccata,si,MC
+50,Torre Maura,si,MC
+51,Tobagi,si,MC
+52,Giardinetti,si,MC
+53,Torrenova,si,MC
+54,Torre Angela,si,MC
+55,Torre Gaia,si,MC
+56,Grotte Celoni,si,MC
+57,Due Leoni - Fontana Candida,no,MC
+58,Borghesiana,no,MC
+59,Bolognetta,si,MC
+60,Finocchio,si,MC
+61,Graniti,si,MC
+62,Pantano,si,MC
+63,Manzoni,si,MA
+64,Vittorio Emanuele,no,MA
+65,Repubblica,si,MA
+66,Barberini,si,MA
+67,Spagna,si,MA
+68,Flaminio,si,MA
+69,Lepanto,si,MA
+70,Ottaviano,si,MA
+71,Cipro,si,MA
+72,Valle Aurelia,si,MA
+73,Baldo degli Ubaldi,si,MA
+74,Cornelia,si,MA
+75,Battistini,si,MA

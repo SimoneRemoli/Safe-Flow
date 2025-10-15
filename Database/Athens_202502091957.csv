@@ -1,0 +1,67 @@
+"id","nome","disabile","linea"
+0,Airport,si,L3
+1,Koropi,no,L3
+2,Paiania-Kantza,no,L3
+3,Pallini,no,L3
+4,Doukissis Plakentias,si,L3
+5,Halandri,no,L3
+6,Aghia Paraskevi,no,L3
+7,Nomismatokopio,no,L3
+8,Holargos,no,L3
+9,Ethniki Amyna,no,L3
+10,Katehaki,no,L3
+11,Panormou,no,L3
+12,Ampelokipi,no,L3
+13,Megaro Moussikis,no,L3
+14,Evangelismos,no,L3
+15,Syntagma,si,L3-L2
+16,Panipistimo,no,L2
+17,Omonia,si,L2-L1
+18,Victoria,si,L1
+19,Attiki,si,L1-L2
+20,Aghios Nikolaos,no,L1
+21,Kato Patissia,no,L1
+22,Aghios Eleftherios,no,L1
+23,Ano Patissia,no,L1
+24,Perissos,no,L1
+25,Pefkakia,no,L1
+26,Nea Ionia,no,L1
+27,Iraklio,no,L1
+28,Irini,no,L1
+29,Neratziotissa,no,L1
+30,Maroussi,no,L1
+31,KAT,no,L1
+32,Kifissia,si,L1
+33,Akropoli,si,L2
+34,Syngrou Fix,no,L2
+35,Aghios Ioannis,no,L2
+36,Dafni,no,L2
+37,Aghios Dimitrios,no,L2
+38,Illioupoli,no,L2
+39,Alimos,no,L2
+40,Argyroupoli,no,L2
+41,Elliniko,no,L2
+42,Monastiraki,si,L3-L1
+43,Thissio,no,L1
+44,Petralona,no,L1
+45,Tavros,no,L1
+46,Kallithea,no,L1
+47,Moschato,no,L1
+48,Faliro,no,L1
+49,Piraeus,si,L1-L3
+50,Dimotiko Theatro,no,L3
+51,Maniatika,no,L3
+52,Nikaia,no,L3
+53,Korydallos,no,L3
+54,Aghia Varvara,no,L3
+55,Aghia Marina,no,L3
+56,Egaleo,si,L3
+57,Eleonas,no,L3
+58,Kerameikos,no,L3
+59,Metaxourghio,no,L2
+60,Larissa Station,no,L2
+61,Sepolia,no,L2
+62,Aghios Antonios,no,L2
+63,Peristeri,si,L2
+64,Anthoupoli,si,L2
+65,Neos Kosmos,si,L2
