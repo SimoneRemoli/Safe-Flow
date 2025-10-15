@@ -12,13 +12,6 @@ public class LoginController
 {
     AutenticazioneBean autentica;
     Credentials cred;
-    private static LoginController instance = null;
-
-    public synchronized static LoginController getSingletonInstance(AutenticazioneBean b) {
-        if (LoginController.instance == null)
-            LoginController.instance = new LoginController(b);
-        return instance;
-    }
 
     public LoginController(AutenticazioneBean b)
     {
