@@ -16,6 +16,7 @@ public class LoginController
     {
         this.autentica = b;
     }
+
     public Credentials autenticaUtente() throws DAOException, SQLException {
         this.cred = new Credentials("", "", "", autentica.getPassword(), autentica.getEmail(), null, false, null);
         LoginProcedureDAO utente = new LoginProcedureDAO();
