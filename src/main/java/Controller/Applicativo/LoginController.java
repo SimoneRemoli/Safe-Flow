@@ -5,7 +5,6 @@ import Model.DAO.LoginProcedureDAO;
 import Model.Domain.Credentials;
 import Exception.DAOException;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 public class LoginController
