@@ -25,11 +25,7 @@ public class LoginController
     }
     public Boolean qualeTabellA()
     {
-        if(this.cred.getQuale_tabella()==1)
-            return true;
-        if(this.cred.getQuale_tabella()==2)
-            return false;
-        return true;
+        return this.cred.getQuale_tabella() != 2;
     }
 
 }
