@@ -15,16 +15,6 @@ public abstract class RegistrazionePagamentoController
 
 
     public abstract int registra_pagamento() throws DAOException, SQLException;
-    public abstract void salva_pagamento() throws DAOException, SQLException;
-
-    /*public void gestisciPagamento(double totale) throws SQLException {
-        if (utente != null) {
-            utente.gestisciPagamento(this, totale);
-        } else {
-            System.err.println("⚠️ Nessun utente associato al pagamento.");
-        }
-    }*/
-
     public abstract void gestisciPagamento(double totale) throws Exception;
 
 }

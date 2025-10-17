@@ -33,11 +33,7 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
         return mastercard.GetPaymentMastercard();
 
     }
-    @Override
-    public void salva_pagamento()
-    {
-        SalvaPagamentoDAO sp = new SalvaPagamentoDAO();
-    }
+
     public void gestisciPagamento(double totale) throws Exception {
         if (utente == null) {
             System.err.println("⚠️ Nessun utente associato al pagamento.");
@@ -47,7 +43,7 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
         SalvaPagamentoDAO dao = new SalvaPagamentoDAO();
 
         // --- Caso Traveler ---
-        if (utente instanceof TravelerBean traveler) {
+        if (utente instanceof TravelerBean traveler) { //è per forza un traveler
             System.out.println("Traveler " + traveler.getNome() + " "+ traveler.getCodiceFiscale() + " "+traveler.getDisabile()+ " "+ traveler.getCognome()+ " ha effettuato un pagamento di " + totale + "€");
             //dao.salvaPagamento("Traveler", traveler.getCodiceFiscale(), totale);
         }

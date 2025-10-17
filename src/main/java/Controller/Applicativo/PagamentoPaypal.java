@@ -12,12 +12,6 @@ public class PagamentoPaypal extends RegistrazionePagamentoController
     }
 
     @Override
-    public void salva_pagamento()
-    {
-        System.out.println("Il pagamento lo devo salvare");
-
-    }
-    @Override
     public void gestisciPagamento(double totale) throws Exception
     {
         System.out.println("Da implementare");
