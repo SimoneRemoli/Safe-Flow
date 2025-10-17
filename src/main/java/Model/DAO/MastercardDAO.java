@@ -15,9 +15,8 @@ import Model.Domain.Ruolo;
 
 public class MastercardDAO
 {
-    private List<Mastercard> informazioni = new ArrayList<>();
 
-    private String nC, sc, cvv;
+    private final String nC, sc, cvv;
 
     public MastercardDAO(Mastercard m)
     {

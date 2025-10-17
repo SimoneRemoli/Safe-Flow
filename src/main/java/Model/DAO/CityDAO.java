@@ -14,7 +14,7 @@ import java.util.List;
 public class CityDAO
 {
     private final List<City> informazioni = new ArrayList<>();
-    public List<City> ListCities() throws DAOException, SQLException
+    public List<City> ListCities() throws DAOException
     {
         try {
 
