@@ -7,6 +7,7 @@ import java.io.IOException;
 
 public class TravelerBean extends UtenteBeanGenerico {
 
+
     private String codiceFiscale;
     private boolean isDisable;
 
