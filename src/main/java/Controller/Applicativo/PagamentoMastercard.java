@@ -30,8 +30,7 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
     @Override
     public int registra_pagamento() throws DAOException, SQLException {
         MastercardDAO mastercard = new MastercardDAO(this.m);
-        int check = mastercard.GetPaymentMastercard();
-        return check;
+        return mastercard.GetPaymentMastercard();
 
     }
     @Override
