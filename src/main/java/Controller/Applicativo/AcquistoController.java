@@ -1,10 +1,8 @@
 package Controller.Applicativo;
 
-import Bean.AutenticazioneBean;
+
 import Bean.PrezzoTotaleBean;
 import Model.Domain.City;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class AcquistoController

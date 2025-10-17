@@ -1,6 +1,6 @@
 package Controller.Applicativo;
 
-import java.sql.SQLException;
+
 
 public class PagamentoPaypal extends RegistrazionePagamentoController
 {

@@ -1,7 +1,6 @@
 package Model.DAO;
 import Factory.ConnectionFactory;
 import Model.Domain.City;
-import Model.Domain.Credentials;
 import Exception.DAOException;
 
 
@@ -14,7 +13,7 @@ import java.util.List;
 
 public class CityDAO
 {
-    private List<City> informazioni = new ArrayList<>();
+    private final List<City> informazioni = new ArrayList<>();
     public List<City> ListCities() throws DAOException, SQLException
     {
         try {

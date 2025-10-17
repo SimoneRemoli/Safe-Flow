@@ -2,7 +2,7 @@ package Bean;
 
 public class PrezzoTotaleBean
 {
-    private double prezzo_totale;
+    private final double prezzo_totale;
 
     public PrezzoTotaleBean(double calculate)
     {
