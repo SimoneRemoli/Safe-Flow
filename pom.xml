@@ -39,6 +39,6 @@
     </dependency>
   </dependencies>
   <build>
-    <finalName>RouteX_MVC_Project</finalName>
+    <finalName>RouteX_MVC_Project</finalName><plugins><plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><configuration><source>16</source><target>16</target></configuration></plugin></plugins>
   </build>
 </project>

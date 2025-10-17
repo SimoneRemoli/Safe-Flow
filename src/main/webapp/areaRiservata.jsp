@@ -143,8 +143,6 @@
                     } else {
                 %>
                     <a href="index.jsp">Home</a>
-                    <!-- 🔹 NUOVO PULSANTE "BUY TICKET" -->
-                    <a href="buyTicket.jsp">Buy Ticket</a>
                     <a href="logout">Logout</a>
                 <%
                     }

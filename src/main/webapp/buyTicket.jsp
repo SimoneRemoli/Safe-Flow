@@ -101,7 +101,6 @@
         <div class="right-content">
             <div class="button-container">
                 <a href="index.jsp">Home</a>
-                <a href="buyTicket.jsp">Buy Ticket</a>
                 <a href="logout">Logout</a>
             </div>
 
@@ -112,20 +111,30 @@
                         <label for="city" class="form-label">Select City</label>
                         <select id="city" name="city" class="form-select" required>
                             <option value="" disabled selected>-- Choose a city --</option>
-                            <option value="Rome">Rome</option>
-                            <option value="Milan">Milan</option>
-                            <option value="Naples">Naples</option>
-                            <option value="Florence">Florence</option>
-                            <option value="Turin">Turin</option>
+                            <%
+                                List<Model.Domain.City> cities = (List<Model.Domain.City>) request.getAttribute("cities");
+                                if (cities != null && !cities.isEmpty()) {
+                                    for (Model.Domain.City c : cities) {
+                            %>
+                                        <option value="<%= c.getName() %>"><%= c.getName() %></option>
+                            <%
+                                    }
+                                } else {
+                            %>
+                                <option disabled>(No cities available)</option>
+                            <%
+                                }
+                            %>
                         </select>
                     </div>
+
 
                     <div class="mb-3">
                         <label for="quantity" class="form-label">Number of Tickets</label>
                         <input type="number" id="quantity" name="quantity" class="form-control" min="1" max="10" value="1" required>
                     </div>
 
-                    <button type="submit" class="btn-submit">Confirm Purchase</button>
+                    <button type="submit" class="btn-submit">Confirm</button>
                 </form>
             </div>
         </div>
