@@ -3,7 +3,8 @@ package Model.Domain;
 public enum Ruolo
 {
     WORKER(1),
-    ADMIN(2);
+    ADMIN(2),
+    TRAVELER(3);
 
     private final int id;
 

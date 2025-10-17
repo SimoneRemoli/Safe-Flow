@@ -2,8 +2,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
     <title>RouteX - Metro Finder</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
     <style>
         body {
             margin: 0;
@@ -17,18 +19,16 @@
             position: relative;
         }
 
-        /* Sfocatura per il background */
         .background-blur {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            backdrop-filter: blur(6px); /* Sfocatura leggera */
+            backdrop-filter: blur(6px);
             z-index: -1;
         }
 
-        /* Contenitore principale */
         .main-container {
             display: flex;
             flex-direction: row;
@@ -38,7 +38,6 @@
             color: white;
         }
 
-        /* Box a sinistra per logo e motto */
         .left-box {
             flex: 1;
             padding: 30px;
@@ -68,7 +67,6 @@
             line-height: 1.5;
         }
 
-        /* Contenitore centrale per pulsanti e contenuto */
         .right-content {
             flex: 3;
             display: flex;
@@ -78,7 +76,7 @@
             padding: 40px;
         }
 
-        .right-content .welcome-container {
+        .welcome-container {
             text-align: center;
             background: rgba(0, 0, 0, 0.7);
             padding: 30px;
@@ -86,19 +84,19 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
-        .right-content .welcome-container img {
+        .welcome-container img {
             animation: fadeIn 2s ease-in-out;
             width: 200px;
             margin-bottom: 20px;
         }
 
-        .right-content .welcome-container h1 {
+        .welcome-container h1 {
             color: white;
             font-size: 26px;
             margin-bottom: 20px;
         }
 
-        .welcome-button {
+        .welcome-button, .buy-button {
             background-color: #007bff;
             color: white;
             border: none;
@@ -107,13 +105,13 @@
             font-size: 18px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin-top: 10px;
         }
 
-        .welcome-button:hover {
+        .welcome-button:hover, .buy-button:hover {
             background-color: #0056b3;
         }
 
-        /* Pulsanti di Login e Registrati */
         .button-container {
             position: absolute;
             top: 20px;
@@ -139,7 +137,6 @@
             background-color: #0056b3;
         }
 
-        /* Sezione per loghi della metropolitana */
         .metro-logos {
             position: absolute;
             right: 20px;
@@ -150,35 +147,29 @@
             gap: 15px;
         }
 
-        .metro-logos img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        .metro-logos i {
+            font-size: 50px;
+            color: white;
             transition: transform 0.3s ease;
         }
 
-        .metro-logos img:hover {
+        .metro-logos i:hover {
             transform: scale(1.2);
         }
     </style>
 </head>
+
 <body>
-    <!-- Sfocatura del background -->
     <div class="background-blur"></div>
 
-    <!-- Contenitore principale -->
     <div class="main-container">
-        <!-- Box a sinistra -->
         <div class="left-box">
             <img src="images/logo-no-background.png" alt="Logo">
             <h1>RouteX</h1>
             <p>Navigating the Future,<br>One Stop at a Time</p>
         </div>
 
-        <!-- Contenuto centrale -->
         <div class="right-content">
-            <!-- Pulsanti Login, Register o Logout -->
             <div class="button-container">
                 <%
                     session = request.getSession(false);
@@ -195,47 +186,51 @@
                     } else {
                 %>
                         <a href="index.jsp">Home</a>
+                        <a href="areaRiservata">Area riservata</a>
                         <a href="logout" class="logout-link">Logout</a>
-                        <a href="areaRiservata" method="get">Area riservata</a>
                 <%
                     }
                 %>
-
             </div>
 
             <div class="welcome-container">
                 <img src="images/logo-no-background.png" alt="Logo">
                 <h1>Welcome to RouteX!</h1>
+
                 <form action="search.jsp" method="post">
                     <button class="welcome-button" type="submit">Start Exploring</button>
                 </form>
+
+                <%
+                    // Mostra pulsante "Buy Ticket" solo se l'utente è loggato
+                    if (nome != null) {
+                %>
+                    <form action="buyTicket" method="get">
+                        <button class="buy-button" type="submit">Buy Ticket</button>
+                    </form>
+                <%
+                    }
+                %>
             </div>
         </div>
     </div>
 
-    <!-- Sezione loghi della metropolitana -->
     <div class="metro-logos">
-        <i class="fas fa-subway" style="font-size: 50px; color: white;"></i>
-        <i class="fas fa-train" style="font-size: 50px; color: white;"></i>
-        <i class="fas fa-bus" style="font-size: 50px; color: white;"></i>
-        <i class="fas fa-map-marker-alt" style="font-size: 50px; color: white;"></i>
+        <i class="fas fa-subway"></i>
+        <i class="fas fa-train"></i>
+        <i class="fas fa-bus"></i>
+        <i class="fas fa-map-marker-alt"></i>
     </div>
 
     <script>
-    window.onbeforeunload = function () {
-        // Invia logout in modo sincrono prima che la pagina si chiuda o ricarichi
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "logout", false);  // false = sincrono (blockante)
-        try {
-            xhr.send(null);
-        } catch(e) {
-            // Ignora errori
-        }
-        // Non mostrare messaggi di conferma
-        return undefined;
-    };
+        window.onbeforeunload = function () {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "logout", false);
+            try {
+                xhr.send(null);
+            } catch(e) {}
+            return undefined;
+        };
     </script>
-
-
 </body>
 </html>

@@ -1,0 +1,164 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>RouteX - Conferma Pagamento</title>
+
+    <!-- Bootstrap + FontAwesome -->
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/lib/bootstrap/dist/css/bootstrap.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: "Segoe UI", sans-serif;
+        }
+        .container {
+            margin-top: 60px;
+            max-width: 700px;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .btn-confirm {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 17px;
+            transition: background-color 0.3s ease;
+        }
+        .btn-confirm:hover {
+            background-color: #218838;
+        }
+        .btn-cancel {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 17px;
+            transition: background-color 0.3s ease;
+        }
+        .btn-cancel:hover {
+            background-color: #5a6268;
+        }
+        .payment-section {
+            text-align: left;
+            margin-top: 25px;
+        }
+        .payment-details {
+            display: none;
+            margin-top: 15px;
+        }
+        label {
+            font-weight: 500;
+        }
+    </style>
+
+    <script>
+        function mostraCampiPagamento() {
+            const metodo = document.querySelector('input[name="metodoPagamento"]:checked').value;
+            document.getElementById('paypal-details').style.display = (metodo === 'paypal') ? 'block' : 'none';
+            document.getElementById('mastercard-details').style.display = (metodo === 'mastercard') ? 'block' : 'none';
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card p-4 text-center">
+            <h2 class="mb-3">Riepilogo Acquisto</h2>
+            <hr>
+
+            <%
+                String city = (String) request.getAttribute("city");
+                String quantity = (String) request.getAttribute("quantity");
+                Double prezzo = (Double) request.getAttribute("prezzo");
+            %>
+
+            <p style="font-size: 18px;">
+                <strong>Città selezionata:</strong> <%= city %><br>
+                <strong>Numero di biglietti:</strong> <%= quantity %><br>
+                <strong>Totale da pagare:</strong> € <%= String.format("%.2f", prezzo) %>
+            </p>
+
+            <hr>
+
+            <form action="confermaPagamento" method="post" class="text-start">
+
+                <!-- Hidden data -->
+                <input type="hidden" name="city" value="<%= city %>">
+                <input type="hidden" name="quantity" value="<%= quantity %>">
+                <input type="hidden" name="totale" value="<%= prezzo %>">
+
+                <!-- Sezione scelta metodo -->
+                <div class="payment-section">
+                    <label><strong>Seleziona il metodo di pagamento:</strong></label><br>
+                    <div class="form-check form-check-inline mt-2">
+                        <input class="form-check-input" type="radio" name="metodoPagamento" id="mastercard" value="mastercard" onclick="mostraCampiPagamento()" required>
+                        <label class="form-check-label" for="mastercard">
+                            <i class="fab fa-cc-mastercard text-danger"></i> Mastercard
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="metodoPagamento" id="paypal" value="paypal" onclick="mostraCampiPagamento()" required>
+                        <label class="form-check-label" for="paypal">
+                            <i class="fab fa-paypal text-primary"></i> PayPal
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Mastercard details -->
+                <div id="mastercard-details" class="payment-details">
+                    <div class="mb-3">
+                        <label for="numeroCarta" class="form-label">Numero carta</label>
+                        <input type="text" class="form-control" id="numeroCarta" name="numeroCarta" placeholder="XXXX XXXX XXXX XXXX" pattern="[0-9]{16}" maxlength="16">
+                    </div>
+                    <div class="mb-3">
+                        <label for="scadenza" class="form-label">Data di scadenza</label>
+                        <input type="date" class="form-control" id="scadenza" name="scadenza" min="<%= java.time.LocalDate.now() %>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cvv" class="form-label">CVV</label>
+                        <input type="password" class="form-control" id="cvv" name="cvv" maxlength="3" pattern="[0-9]{3}" placeholder="***">
+                    </div>
+                </div>
+
+                <!-- PayPal details -->
+                <div id="paypal-details" class="payment-details">
+                    <div class="mb-3">
+                        <label for="emailPaypal" class="form-label">Email PayPal</label>
+                        <input type="email" class="form-control" id="emailPaypal" name="emailPaypal" placeholder="esempio@email.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="codiceTransazione" class="form-label">Codice Transazione</label>
+                        <input type="text" class="form-control" id="codiceTransazione" name="codiceTransazione" placeholder="Inserisci codice PayPal">
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn-confirm">
+                        <i class="fas fa-credit-card"></i> Conferma Pagamento
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-3">
+                <a href="buyTicket" class="btn-cancel">
+                    <i class="fas fa-arrow-left"></i> Annulla
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Nasconde i campi all’inizio
+        document.getElementById('paypal-details').style.display = 'none';
+        document.getElementById('mastercard-details').style.display = 'none';
+    </script>
+</body>
+</html>

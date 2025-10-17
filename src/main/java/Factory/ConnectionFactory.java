@@ -18,6 +18,8 @@ public class ConnectionFactory {
             if (input == null) {
                 throw new RuntimeException("Impossibile trovare il file db.properties nel classpath!");
             }
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
 
             Properties properties = new Properties();
             properties.load(input);
@@ -31,6 +33,8 @@ public class ConnectionFactory {
         } catch (IOException | SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Errore durante la creazione della connessione al database: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
