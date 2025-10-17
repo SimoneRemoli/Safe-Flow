@@ -43,6 +43,8 @@ public class LoginControllerGrafico extends HttpServlet {
 
         } catch (ClassNotFoundException ex) {
             throw new RuntimeException(ex);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
         }
 
     }
