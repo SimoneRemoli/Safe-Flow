@@ -8,7 +8,7 @@ public enum Ruolo
 
     private final int id;
 
-    private Ruolo(int id)
+    Ruolo(int id)
     {
         this.id = id;
     }

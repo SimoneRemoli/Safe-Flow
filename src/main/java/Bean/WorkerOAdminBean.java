@@ -1,12 +1,10 @@
 package Bean;
 
-import Controller.Applicativo.RegistrazionePagamentoController;
 import Model.Domain.Ruolo;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class WorkerOAdminBean extends UtenteBeanGenerico
 {

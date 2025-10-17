@@ -13,9 +13,7 @@ public abstract class RegistrazionePagamentoController
         this.utente = utente;
     }
 
-    public UtenteBeanGenerico getUtente() {
-        return utente;
-    }
+
     public abstract int registra_pagamento() throws DAOException, SQLException;
     public abstract void salva_pagamento() throws DAOException, SQLException;
 

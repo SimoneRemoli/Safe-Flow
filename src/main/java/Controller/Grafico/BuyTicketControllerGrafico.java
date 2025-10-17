@@ -1,6 +1,5 @@
 package Controller.Grafico;
 
-import Bean.AutenticazioneBean;
 import Bean.PrezzoTotaleBean;
 import Controller.Applicativo.AcquistoController;
 import Controller.Applicativo.CityController;

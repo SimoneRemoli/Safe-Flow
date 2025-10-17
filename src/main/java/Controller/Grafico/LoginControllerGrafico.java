@@ -5,9 +5,7 @@ package Controller.Grafico;
 import Bean.AutenticazioneBean;
 import Bean.UtenteBeanGenerico;
 import Controller.Applicativo.LoginController;
-import Factory.ConnectionFactory;
 import Exception.DAOException;
-import Model.Domain.Ruolo;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

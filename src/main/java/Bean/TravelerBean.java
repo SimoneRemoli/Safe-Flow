@@ -1,11 +1,9 @@
 package Bean;
 
-import Controller.Applicativo.RegistrazionePagamentoController;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class TravelerBean extends UtenteBeanGenerico {
 
