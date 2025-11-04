@@ -69,6 +69,7 @@
 </head>
 
 <body>
+<%@ include file="header.jspf" %>
     <div class="container">
         <div class="card p-4 text-center">
             <h2 class="mb-3">Riepilogo Acquisto</h2>

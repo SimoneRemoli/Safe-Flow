@@ -224,16 +224,5 @@
         <i class="fas fa-bus"></i>
         <i class="fas fa-map-marker-alt"></i>
     </div>
-
-    <script>
-        window.onbeforeunload = function () {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "logout", false);
-            try {
-                xhr.send(null);
-            } catch(e) {}
-            return undefined;
-        };
-    </script>
 </body>
 </html>

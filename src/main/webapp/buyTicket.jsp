@@ -97,6 +97,7 @@
     </style>
 </head>
 <body>
+    <%@ include file="header.jspf" %>
     <div class="main-container">
         <div class="right-content">
             <div class="button-container">

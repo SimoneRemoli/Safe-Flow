@@ -27,6 +27,7 @@
     </style>
 </head>
 <body>
+<%@ include file="header.jspf" %>
 <div class="box">
     <h2>Accesso non riuscito</h2>
     <p>Le credenziali inserite non sono corrette.</p>

@@ -3,6 +3,8 @@ import Bean.AutenticazioneBean;
 import Bean.UtenteBeanGenerico;
 import Controller.Applicativo.LoginController;
 import Exception.DAOException;
+import Factory.ConnectionFactory;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,11 +39,17 @@ public class LoginControllerGrafico extends HttpServlet {
         }
         System.out.println("Utente loggato: " + utente.getNome() + " " + utente.getCognome() + " ruolo: " + utente.getRuolo());
     }
-    private void gestisciReindirizzamento(UtenteBeanGenerico utente, HttpServletResponse response) throws IOException {
-        switch (utente.getRuolo().toString().toUpperCase()) {
-            case "TRAVELER" -> response.sendRedirect("index.jsp");
-            case "WORKER", "ADMIN" -> response.sendRedirect("dashboardWorker.jsp");
-            default -> response.sendRedirect("erroreLogin.jsp");
+    private void gestisciReindirizzamento(UtenteBeanGenerico utente, HttpServletResponse response) throws IOException, SQLException {
+        try {
+            ConnectionFactory.Cambio_Di_Ruolo(utente.getRuolo());
+            switch (utente.getRuolo().toString().toUpperCase()) {
+                case "TRAVELER" -> response.sendRedirect("index.jsp");
+                case "WORKER", "ADMIN" -> response.sendRedirect("dashboardWorker.jsp");
+                default -> response.sendRedirect("erroreLogin.jsp");
+            }
+        }catch(SQLException e) {
+            e.printStackTrace();
+            response.sendRedirect("erroreLogin.jsp");
         }
     }
     private void gestisciErroreLogin(HttpServletRequest request, HttpServletResponse response, DAOException ex)
