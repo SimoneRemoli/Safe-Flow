@@ -39,7 +39,7 @@ public class BuyTicketControllerGrafico extends HttpServlet {
             // Mostro la pagina JSP
             request.getRequestDispatcher("buyTicket.jsp").forward(request, response);
 
-        } catch (DAOException | SQLException e) {
+        } catch (DAOException e) {
             e.printStackTrace();
             request.setAttribute("errore", "Errore nel caricamento delle città: " + e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);

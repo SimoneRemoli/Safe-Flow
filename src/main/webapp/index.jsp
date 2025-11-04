@@ -161,6 +161,30 @@
 
 <body>
     <%@ include file="header.jspf" %>
+    <%
+        // Recupera la sessione esistente, se presente
+        session = request.getSession(false);
+
+        // Controlla se il server è stato riavviato (flag impostato dal listener)
+        Boolean forceLogout = (Boolean) application.getAttribute("forceLogout");
+        if (forceLogout != null && forceLogout) {
+
+            // Se esiste una sessione attiva, la invalida
+            if (session != null) {
+                session.invalidate();
+            }
+
+            // Reset del flag per evitare di invalidare ogni volta
+            application.setAttribute("forceLogout", Boolean.FALSE);
+
+            System.out.println("🔒 Sessione invalidata dopo riavvio applicazione (JSP).");
+        }
+
+        // Dopo il reset, recupera di nuovo la sessione (potrebbe essere null)
+        session = request.getSession(false);
+    %>
+
+
     <div class="background-blur"></div>
 
     <div class="main-container">
