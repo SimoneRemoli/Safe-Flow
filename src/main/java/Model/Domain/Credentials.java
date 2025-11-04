@@ -1,7 +1,7 @@
 package Model.Domain;
 import java.sql.Date;
 
-public class Credentials
+public class Credentials //questa deve essere una classe singleton che mantiene l'utente loggato
 {
     private String nome;
     private String cognome;

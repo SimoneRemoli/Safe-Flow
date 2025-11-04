@@ -1,6 +1,5 @@
 package Model.DAO;
 
-/*import Bean.TravelerBean;
 import Factory.ConnectionFactory;
 import Model.Domain.Credentials;
 import Exception.DAOException;
@@ -14,7 +13,7 @@ import java.util.List;
 
 public class SalvaPagamentoDAO
 {
-    public void salvataggio(TravelerBean traveler, List<String> codiciBiglietti, String metodopayment, String city) throws DAOException, SQLException {
+    /*public void salvataggio(TravelerBean traveler, List<String> codiciBiglietti, String metodopayment, String city) throws DAOException, SQLException {
 
         try {
             String bigliettiConcatenati = String.join(",", codiciBiglietti);
@@ -37,6 +36,8 @@ public class SalvaPagamentoDAO
             throw new DAOException("Errore " + e.getMessage());
         }
     }
+
+     */
 }
 
- */
+

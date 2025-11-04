@@ -16,6 +16,6 @@ public abstract class RegistrazionePagamentoController
 
 
     public abstract int registra_pagamento() throws DAOException, SQLException;
-    public abstract void gestisciPagamento(double totale, List<String> codiciBiglietti, String city) throws Exception;
+    public abstract void gestisciPagamento(double totale, List<String> codiciBiglietti, String city, UtenteBeanGenerico user) throws Exception;
 
 }

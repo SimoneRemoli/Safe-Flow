@@ -1,7 +1,6 @@
 package Controller.Applicativo;
-/*
-import Bean.TravelerBean;
-import Bean.WorkerOAdminBean;
+
+import Bean.UtenteBeanGenerico;
 import Model.DAO.MastercardDAO;
 import Exception.DAOException;
 import Model.DAO.SalvaPagamentoDAO;
@@ -35,16 +34,18 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
 
     }
 
-    public void gestisciPagamento(double totale, List<String> codiciBiglietti, String city) throws Exception {
+    public void gestisciPagamento(double totale, List<String> codiciBiglietti, String city, UtenteBeanGenerico user) throws Exception {
         if (utente == null) {
-            System.err.println("⚠️ Nessun utente associato al pagamento.");
+            System.err.println(" Nessun utente associato al pagamento.");
             throw new DAOException("Nessun utente loggato associato al pagamento.");
         }
 
+        //quà è problematica
         SalvaPagamentoDAO dao = new SalvaPagamentoDAO();
+        System.out.println("Traveler " + user.getNome() + " "+ user.getCodicefiscale() + " "+user.getNome()+ " "+user.getCognome()+ " " + user.isDisable() + " ha effettuato un pagamento di " + totale + "€");
 
         // --- Caso Traveler ---
-        if (utente instanceof TravelerBean traveler) { //è per forza un traveler
+        /*if (utente instanceof TravelerBean traveler) { //è per forza un traveler
             System.out.println("Traveler " + traveler.getNome() + " "+ traveler.getCodiceFiscale() + " "+traveler.getDisabile()+ " "+ traveler.getCognome()+ " ha effettuato un pagamento di " + totale + "€");
             dao.salvataggio(traveler, codiciBiglietti, "Mastercard", city);
         }
@@ -61,9 +62,12 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
                 throw new SecurityException("L’amministratore non può eseguire pagamenti.");
             }
         }
+        */
+
+
     }
 
 
 }
 
- */
+

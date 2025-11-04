@@ -68,7 +68,6 @@ public class BuyTicketControllerGrafico extends HttpServlet {
             request.setAttribute("city", city);
             request.setAttribute("quantity", quantity);
             request.setAttribute("prezzo", prezzo.getPrezzo_totale());
-
             // Mostro la pagina di conferma
             request.getRequestDispatcher("/confermaPagamento.jsp").forward(request, response);
 

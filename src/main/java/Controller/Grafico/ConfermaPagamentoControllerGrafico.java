@@ -1,5 +1,5 @@
 package Controller.Grafico;
-/*
+
 import Bean.UtenteBeanGenerico;
 import Controller.Applicativo.PagamentoMastercard;
 import Controller.Applicativo.PagamentoPaypal;
@@ -27,6 +27,7 @@ public class ConfermaPagamentoControllerGrafico extends HttpServlet {
         HttpSession session = request.getSession(false); // non crea nuova sessione se scaduta
         UtenteBeanGenerico utente = (UtenteBeanGenerico) session.getAttribute("utenteLoggato");
 
+        System.out.println("CHI SONO: "+ utente.getRuolo()+ " "+utente.getNome());
 
         String city = request.getParameter("city");
         String quantity = request.getParameter("quantity");
@@ -74,7 +75,7 @@ public class ConfermaPagamentoControllerGrafico extends HttpServlet {
             //System.out.println("Pagamento effettuato da: " + utente.getNome() + " " + utente.getCognome());
 
             try {
-                reg.gestisciPagamento(Double.parseDouble(totale), codiciBiglietti, city);
+                reg.gestisciPagamento(Double.parseDouble(totale), codiciBiglietti, city, utente);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             } catch (Exception e) {
@@ -104,4 +105,3 @@ public class ConfermaPagamentoControllerGrafico extends HttpServlet {
 
     }
 }
-*/

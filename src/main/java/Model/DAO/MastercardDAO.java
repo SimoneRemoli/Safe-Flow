@@ -28,7 +28,7 @@ public class MastercardDAO
     public int GetPaymentMastercard() throws DAOException, SQLException
     {
         int esito=-1;
-        ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
+        //ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
         try {
 
             Connection conn = ConnectionFactory.getConnection();
