@@ -113,9 +113,9 @@
                         <select id="city" name="city" class="form-select" required>
                             <option value="" disabled selected>-- Choose a city --</option>
                             <%
-                                List<Model.Domain.City> cities = (List<Model.Domain.City>) request.getAttribute("cities");
+                                List<Bean.CityBean> cities = (List<Bean.CityBean>) request.getAttribute("cities");
                                 if (cities != null && !cities.isEmpty()) {
-                                    for (Model.Domain.City c : cities) {
+                                    for (Bean.CityBean c : cities) {
                             %>
                                         <option value="<%= c.getName() %>"><%= c.getName() %></option>
                             <%
@@ -126,6 +126,7 @@
                             <%
                                 }
                             %>
+
                         </select>
                     </div>
 

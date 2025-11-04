@@ -21,12 +21,12 @@ public class CityDAO
             Connection conn = ConnectionFactory.getConnection();
             CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.getAllCity() }");
             ResultSet rs =  cs.executeQuery();
-            //while(rs.next()) informazioni.add(new City(rs.getString(1)));
             while (rs.next()) {
-                String nome = rs.getString(1);
-                double costo = rs.getDouble(2);
-                System.out.println("Città trovata: " + nome);
-                informazioni.add(new City(nome,costo));
+                String nome = rs.getString("nome_citta");
+                double costo = rs.getDouble("prezzo_ticket");
+                long numero = rs.getLong("numero_stazioni");
+                informazioni.add(new City(nome, costo, numero));
+                System.out.println("Città trovata: " + nome + "numero stazioni: "+numero);
             }
 
 

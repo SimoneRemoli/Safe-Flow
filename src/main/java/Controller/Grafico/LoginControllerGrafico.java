@@ -4,7 +4,6 @@ import Bean.UtenteBeanGenerico;
 import Controller.Applicativo.LoginController;
 import Exception.DAOException;
 import Factory.ConnectionFactory;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -41,7 +40,7 @@ public class LoginControllerGrafico extends HttpServlet {
     }
     private void gestisciReindirizzamento(UtenteBeanGenerico utente, HttpServletResponse response) throws IOException, SQLException {
         try {
-            ConnectionFactory.Cambio_Di_Ruolo(utente.getRuolo());
+            ConnectionFactory.Cambio_Di_Ruolo(utente.getRuolo());//ok
             switch (utente.getRuolo().toString().toUpperCase()) {
                 case "TRAVELER" -> response.sendRedirect("index.jsp");
                 case "WORKER", "ADMIN" -> response.sendRedirect("dashboardWorker.jsp");
