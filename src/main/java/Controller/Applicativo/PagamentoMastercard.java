@@ -1,5 +1,5 @@
 package Controller.Applicativo;
-
+/*
 import Bean.TravelerBean;
 import Bean.WorkerOAdminBean;
 import Model.DAO.MastercardDAO;
@@ -9,6 +9,7 @@ import Model.Domain.Mastercard;
 import Model.Domain.Ruolo;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class PagamentoMastercard extends RegistrazionePagamentoController
 {
@@ -34,7 +35,7 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
 
     }
 
-    public void gestisciPagamento(double totale) throws Exception {
+    public void gestisciPagamento(double totale, List<String> codiciBiglietti, String city) throws Exception {
         if (utente == null) {
             System.err.println("⚠️ Nessun utente associato al pagamento.");
             throw new DAOException("Nessun utente loggato associato al pagamento.");
@@ -45,7 +46,7 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
         // --- Caso Traveler ---
         if (utente instanceof TravelerBean traveler) { //è per forza un traveler
             System.out.println("Traveler " + traveler.getNome() + " "+ traveler.getCodiceFiscale() + " "+traveler.getDisabile()+ " "+ traveler.getCognome()+ " ha effettuato un pagamento di " + totale + "€");
-            //dao.salvaPagamento("Traveler", traveler.getCodiceFiscale(), totale);
+            dao.salvataggio(traveler, codiciBiglietti, "Mastercard", city);
         }
 
         // --- Caso Worker/Admin ---
@@ -64,3 +65,5 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
 
 
 }
+
+ */

@@ -1,48 +1,52 @@
 package Controller.Applicativo;
 
 import Bean.AutenticazioneBean;
-import Bean.TravelerBean;
 import Bean.UtenteBeanGenerico;
-import Bean.WorkerOAdminBean;
 import Model.DAO.LoginProcedureDAO;
 import Model.Domain.Credentials;
 import Exception.DAOException;
 
 import java.sql.SQLException;
 
-public class LoginController
-{
-    AutenticazioneBean autentica;
-    Credentials cred;
-    public LoginController(AutenticazioneBean b)
-    {
-        this.autentica = b;
+/**
+ * Controller applicativo responsabile della logica di autenticazione utente.
+ * Interagisce con il DAO per verificare le credenziali e costruisce il bean utente.
+ */
+public class LoginController {
+
+    private final AutenticazioneBean autenticazione;
+
+    /**
+     * Costruttore che riceve il bean con email e password dell’utente.
+     *
+     * @param autenticazione Bean contenente le credenziali inserite dall’utente
+     */
+    public LoginController(AutenticazioneBean autenticazione) {
+        this.autenticazione = autenticazione;
     }
 
     public UtenteBeanGenerico autenticaUtente() throws DAOException, SQLException {
-        this.cred = new Credentials("", "", "", autentica.getPassword(), autentica.getEmail(), null, false, null);
-        LoginProcedureDAO utente = new LoginProcedureDAO();
-        this.cred= utente.login(cred);
 
-        if(cred.getQuale_tabella()==1)//traveler
-        {
-            TravelerBean un = new TravelerBean();
-            un.setNome(this.cred.getNome());
-            un.setCognome(this.cred.getCognome());
-            un.setCodiceFiscale(this.cred.getCodiceFiscale());
-            un.setDisable(this.cred.getDisabile());
-            return un;
-        }
-        if(cred.getQuale_tabella()==2)//worker o  admin
-        {
-            WorkerOAdminBean wa = new WorkerOAdminBean();
-            wa.setNome(this.cred.getNome());
-            wa.setCognome(this.cred.getCognome());
-            wa.setRuolo(this.cred.getRuolo());
-            return wa;
+        // Creazione dell’oggetto Credentials a partire dalle credenziali ricevute
+        Credentials credenziali = new Credentials(
+                "", "", "",
+                autenticazione.getPassword(),
+                autenticazione.getEmail(),
+                null, false
+        );
 
-        }
-        return null;
+        // Interazione con il DAO per la verifica
+        LoginProcedureDAO loginDAO = new LoginProcedureDAO();
+        Credentials utenteVerificato = loginDAO.login(credenziali);
+
+        // Costruzione del bean da restituire alla parte grafica
+        UtenteBeanGenerico utente = new UtenteBeanGenerico();
+        utente.setNome(utenteVerificato.getNome());
+        utente.setCognome(utenteVerificato.getCognome());
+        utente.setCodice_fiscale(utenteVerificato.getCodiceFiscale());
+        utente.setDisable(utenteVerificato.getDisabile());
+        utente.setRuolo(utenteVerificato.getRuolo());
+
+        return utente;
     }
-
 }

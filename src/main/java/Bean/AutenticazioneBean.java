@@ -6,9 +6,8 @@ public class AutenticazioneBean
     private String password;
 
 
-    public AutenticazioneBean(String email, String password) {
-        this.password = password;
-        this.email = email;
+    public AutenticazioneBean() {
+
     }
 
     public String getPassword() {

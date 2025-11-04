@@ -1,5 +1,5 @@
 package Controller.Grafico;
-
+/*
 import Bean.UtenteBeanGenerico;
 import Controller.Applicativo.PagamentoMastercard;
 import Controller.Applicativo.PagamentoPaypal;
@@ -74,7 +74,7 @@ public class ConfermaPagamentoControllerGrafico extends HttpServlet {
             //System.out.println("Pagamento effettuato da: " + utente.getNome() + " " + utente.getCognome());
 
             try {
-                reg.gestisciPagamento(Double.parseDouble(totale));
+                reg.gestisciPagamento(Double.parseDouble(totale), codiciBiglietti, city);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             } catch (Exception e) {
@@ -104,3 +104,4 @@ public class ConfermaPagamentoControllerGrafico extends HttpServlet {
 
     }
 }
+*/

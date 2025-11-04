@@ -1,12 +1,8 @@
 package Model.DAO;
-
-
 import Factory.ConnectionFactory;
 import Model.Domain.Credentials;
 import Exception.DAOException;
 import Model.Domain.Ruolo;
-
-import java.io.IOException;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.CallableStatement;
@@ -26,19 +22,15 @@ public class LoginProcedureDAO {
             ResultSet rs = cs.executeQuery();
 
             if (rs.next()) {
-             //   cred.setPermessi(Permessi.fromint(rs.getInt("p_ruolo")));
                 cred.setCodiceFiscale(rs.getString("p_codiceFiscale"));
                 cred.setNome(rs.getString("p_nome"));
                 cred.setCognome(rs.getString("p_cognome"));
                 cred.setDataDiNascita(rs.getDate("p_dataDiNascita"));
                 cred.setDisabile(rs.getBoolean("p_disabile"));
-                cred.setQuale_tabella(rs.getInt("buffer"));
                 cred.setRuolo(Ruolo.fromint(rs.getInt("ruolo")));
-
             } else {
                 throw new DAOException("Credenziali non valide.");
             }
-
             return cred;
 
         } catch (Exception e) {

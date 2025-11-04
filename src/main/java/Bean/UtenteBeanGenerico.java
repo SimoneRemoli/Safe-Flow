@@ -1,13 +1,35 @@
 package Bean;
+import Model.Domain.Ruolo;
 
-
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-
-public abstract class UtenteBeanGenerico
+public class UtenteBeanGenerico
 {
-    String nome, cognome;
+    private String nome, cognome, codice_fiscale;
+    private boolean isDisable;
+    private Ruolo ruolo;
+
+    public boolean isDisable() {
+        return isDisable;
+    }
+
+    public void setDisable(boolean disable) {
+        isDisable = disable;
+    }
+
+    public void setCodice_fiscale(String codice_fiscale) {
+        this.codice_fiscale = codice_fiscale;
+    }
+
+    public String getCodicefiscale() {
+        return codice_fiscale;
+    }
+
+    public Ruolo getRuolo() {
+        return ruolo;
+    }
+
+    public void setRuolo(Ruolo ruolo) {
+        this.ruolo = ruolo;
+    }
 
     public void setCognome(String cognome) {
         this.cognome = cognome;
@@ -24,7 +46,4 @@ public abstract class UtenteBeanGenerico
     public String getNome() {
         return nome;
     }
-    public abstract void gestisciLogin(HttpSession session, HttpServletResponse response) throws IOException;
-    //public abstract void gestisciPagamento(RegistrazionePagamentoController reg, double totale) throws SQLException;
-
 }

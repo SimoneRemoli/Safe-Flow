@@ -1,6 +1,7 @@
 package Controller.Applicativo;
 
 
+import java.util.List;
 
 public class PagamentoPaypal extends RegistrazionePagamentoController
 {
@@ -12,7 +13,7 @@ public class PagamentoPaypal extends RegistrazionePagamentoController
     }
 
     @Override
-    public void gestisciPagamento(double totale) throws Exception
+    public void gestisciPagamento(double totale, List<String> codiciBig, String city) throws Exception
     {
         System.out.println("Da implementare");
     }

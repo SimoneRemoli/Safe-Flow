@@ -160,6 +160,7 @@
 </head>
 
 <body>
+    <%@ include file="header.jspf" %>
     <div class="background-blur"></div>
 
     <div class="main-container">
@@ -208,9 +209,11 @@
                     <form action="buyTicket" method="get">
                         <button class="buy-button" type="submit">Buy Ticket</button>
                     </form>
+
                 <%
                     }
                 %>
+
             </div>
         </div>
     </div>
