@@ -5,6 +5,7 @@ import Bean.UtenteBeanGenerico;
 import Controller.Applicativo.LoginController;
 import Exception.DAOException;
 import Factory.ConnectionFactory;
+import Model.Domain.Credentials;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,13 +15,15 @@ import java.sql.SQLException;
 
 /**
  * Controller grafico per la gestione del login utente.
- * Si occupa di autenticare l’utente, gestire la sessione
- * e reindirizzare alla pagina corretta in base al ruolo.
+ * Si occupa di ricevere i dati dal form, delegare la logica al controller applicativo
+ * e reindirizzare l’utente alla pagina corretta in base al ruolo.
  */
 @WebServlet("/login")
 public class LoginControllerGrafico extends HttpServlet {
 
-    /** Crea il bean delle credenziali a partire dai parametri del form */
+    /**
+     * Crea il bean di autenticazione a partire dai parametri del form.
+     */
     private AutenticazioneBean creaBeanAutenticazione(HttpServletRequest request) {
         AutenticazioneBean aut = new AutenticazioneBean();
         aut.setEmail(request.getParameter("Email"));
@@ -28,31 +31,15 @@ public class LoginControllerGrafico extends HttpServlet {
         return aut;
     }
 
-    /** Esegue l’autenticazione dell’utente tramite il controller applicativo */
-    private UtenteBeanGenerico autentica(AutenticazioneBean aut) throws DAOException, SQLException {
-        LoginController login = new LoginController(aut);
-        return login.autenticaUtente();
-    }
-
-    /** Popola la sessione con i dati utente */
-    private void gestisciSessione(HttpSession session, UtenteBeanGenerico utente) {
-        session.setAttribute("utenteLoggato", utente);
-        session.setAttribute("nome", utente.getNome());
-        session.setAttribute("cognome", utente.getCognome());
-        session.setAttribute("cf", utente.getCodicefiscale());
-        session.setAttribute("ruolo", utente.getRuolo());
-        if (utente.isDisable()) {
-            session.setAttribute("disabile", "yes");
-        }
-        System.out.println("Utente loggato: " + utente.getNome() + " " + utente.getCognome() +
-                " | ruolo: " + utente.getRuolo());
-    }
-
-    /** Gestisce il reindirizzamento in base al ruolo */
+    /**
+     * Gestisce il reindirizzamento in base al ruolo dell’utente autenticato.
+     */
     private void gestisciReindirizzamento(UtenteBeanGenerico utente, HttpServletResponse response)
             throws IOException {
         try {
+            // Imposta la connessione corretta in base al ruolo
             ConnectionFactory.Cambio_Di_Ruolo(utente.getRuolo());
+
             switch (utente.getRuolo().toString().toUpperCase()) {
                 case "TRAVELER" -> response.sendRedirect("index.jsp");
                 case "WORKER", "ADMIN" -> response.sendRedirect("dashboardWorker.jsp");
@@ -64,7 +51,9 @@ public class LoginControllerGrafico extends HttpServlet {
         }
     }
 
-    /** Gestisce eventuali errori di login */
+    /**
+     * Gestisce eventuali errori di login (DAO o credenziali errate).
+     */
     private void gestisciErroreLogin(HttpServletRequest request, HttpServletResponse response, DAOException ex)
             throws ServletException, IOException {
         ex.printStackTrace();
@@ -72,47 +61,52 @@ public class LoginControllerGrafico extends HttpServlet {
         request.getRequestDispatcher("erroreLogin.jsp").forward(request, response);
     }
 
-    /** Metodo principale di gestione del login */
+    /**
+     * Metodo principale di gestione del login.
+     * Riceve i dati dal form, invoca il controller applicativo e imposta la sessione.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         try {
-            //  Recupera e invalida eventuale vecchia sessione
-            HttpSession oldSession = request.getSession(false);
-            if (oldSession != null) {
-                oldSession.invalidate();
-            }
-
-            //  Crea una nuova sessione pulita e imposta timeout
+            // 🔹 Crea una nuova sessione e imposta il timeout
             HttpSession session = request.getSession(true);
             session.setMaxInactiveInterval(180); // 3 minuti di inattività
 
-            //️ Controlla se l’app è appena stata avviata
-            Boolean appStarted = (Boolean) getServletContext().getAttribute("appStarted");
-            if (appStarted != null && appStarted) {
-                getServletContext().setAttribute("appStarted", Boolean.FALSE);
-                System.out.println(" Tutte le sessioni precedenti invalidate dopo il riavvio dell'app.");
-            }
-
-            //  Carica il driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            //  Recupera le credenziali dal form
+            // 🔹 Costruisce il bean con i dati del form
             AutenticazioneBean credenziali = creaBeanAutenticazione(request);
 
-            //  Autenticazione
-            UtenteBeanGenerico utente = autentica(credenziali);
+            // 🔹 Delegazione al controller applicativo
+            LoginController loginController = new LoginController(credenziali);
+            UtenteBeanGenerico utente = loginController.autenticaUtente(session);
 
-            //  Salvataggio dati in sessione
-            gestisciSessione(session, utente);
+            // 🔹 Dopo loginController.autenticaUtente(session);
+            session.setAttribute("nome", utente.getNome());
+            session.setAttribute("cognome", utente.getCognome());
+            session.setAttribute("ruolo", utente.getRuolo());
 
-            //  Reindirizzamento
+            Credentials cred = Credentials.getInstance(request.getSession(false)); //aggiunta in più
+            Credentials cred2 = Credentials.getInstance(request.getSession(false)); //aggiunta in più
+
+
+            System.out.println("L’utente loggato na nel controller grafico cifra è: " + cred.getNome() + " " + cred.getCognome());
+            System.out.println("Ruolo: " + cred.getRuolo());
+            System.out.println("L’utente loggato na nel controller grafico cifra è: " + cred2.getNome() + " " + cred2.getCognome());
+            System.out.println("Ruolo: " + cred2.getRuolo());
+
+
+            // 🔹 Stampa debug
+            System.out.println("[LOGIN] Utente autenticato: " + utente.getNome() + " " + utente.getCognome()
+                    + " (" + utente.getRuolo() + ")");
+
+            // 🔹 Reindirizzamento in base al ruolo
             gestisciReindirizzamento(utente, response);
 
         } catch (DAOException ex) {
             gestisciErroreLogin(request, response, ex);
-        } catch (ClassNotFoundException | SQLException ex) {
+
+        } catch (SQLException ex) {
             ex.printStackTrace();
             request.setAttribute("messaggioErrore", "Errore interno: " + ex.getMessage());
             request.getRequestDispatcher("erroreLogin.jsp").forward(request, response);

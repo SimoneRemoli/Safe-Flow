@@ -4,6 +4,7 @@ public class Mastercard
 {
     String numero_carta, data_scadenza, cvv;
 
+
     public String getNumero_carta() {
         return numero_carta;
     }

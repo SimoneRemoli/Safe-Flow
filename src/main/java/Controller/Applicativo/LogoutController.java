@@ -1,5 +1,7 @@
 package Controller.Applicativo;
 
+import Model.Domain.Credentials;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +18,7 @@ public class LogoutController extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false); // prendi la sessione esistente
         if (session != null) {
+            Credentials.clearInstance(session);
             session.invalidate(); // invalida la sessione
         }
         response.sendRedirect("index.jsp"); // reindirizza alla homepage o al login

@@ -6,46 +6,54 @@ import Model.DAO.LoginProcedureDAO;
 import Model.Domain.Credentials;
 import Exception.DAOException;
 
+import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 
 /**
  * Controller applicativo responsabile della logica di autenticazione utente.
- * Interagisce con il DAO per verificare le credenziali e costruisce il bean utente.
+ * Interagisce con il DAO per verificare le credenziali e costruisce il singleton Credentials.
  */
 public class LoginController {
 
     private final AutenticazioneBean autenticazione;
 
-    /**
-     * Costruttore che riceve il bean con email e password dell’utente.
-     *
-     * @param autenticazione Bean contenente le credenziali inserite dall’utente
-     */
     public LoginController(AutenticazioneBean autenticazione) {
         this.autenticazione = autenticazione;
     }
 
-    public UtenteBeanGenerico autenticaUtente() throws DAOException, SQLException {
+    /**
+     * Esegue l’autenticazione dell’utente, crea (o aggiorna) il singleton `Credentials`
+     * e restituisce un `UtenteBeanGenerico` per la parte grafica.
+     */
+    public UtenteBeanGenerico autenticaUtente(HttpSession session) throws DAOException, SQLException {
 
-        // Creazione dell’oggetto Credentials a partire dalle credenziali ricevute
-        Credentials credenziali = new Credentials(
-                "", "", "",
-                autenticazione.getPassword(),
-                autenticazione.getEmail(),
-                null, false
-        );
+        // Crea oggetto per DAO
+        Credentials credenziali = new Credentials();
+        credenziali.setEmail(autenticazione.getEmail());
+        credenziali.setPassword(autenticazione.getPassword());
 
-        // Interazione con il DAO per la verifica
+        // Chiamata al DAO
         LoginProcedureDAO loginDAO = new LoginProcedureDAO();
         Credentials utenteVerificato = loginDAO.login(credenziali);
 
-        // Costruzione del bean da restituire alla parte grafica
+        //  Recupera o crea il singleton legato alla sessione
+        Credentials sessionCred = Credentials.getInstance(session);
+
+        //  Aggiorna i dati nella sessione
+        sessionCred.setNome(utenteVerificato.getNome());
+        sessionCred.setCognome(utenteVerificato.getCognome());
+        sessionCred.setCodiceFiscale(utenteVerificato.getCodiceFiscale());
+        sessionCred.setDisabile(utenteVerificato.getDisabile());
+        sessionCred.setRuolo(utenteVerificato.getRuolo());
+        sessionCred.setEmail(utenteVerificato.getEmail());
+
+        // Popola anche il bean (solo per il layer grafico)
         UtenteBeanGenerico utente = new UtenteBeanGenerico();
-        utente.setNome(utenteVerificato.getNome());
-        utente.setCognome(utenteVerificato.getCognome());
-        utente.setCodice_fiscale(utenteVerificato.getCodiceFiscale());
-        utente.setDisable(utenteVerificato.getDisabile());
-        utente.setRuolo(utenteVerificato.getRuolo());
+        utente.setNome(sessionCred.getNome());
+        utente.setCognome(sessionCred.getCognome());
+        utente.setCodice_fiscale(sessionCred.getCodiceFiscale());
+        utente.setDisable(sessionCred.getDisabile());
+        utente.setRuolo(sessionCred.getRuolo());
 
         return utente;
     }

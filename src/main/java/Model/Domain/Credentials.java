@@ -1,8 +1,11 @@
 package Model.Domain;
+
+import javax.servlet.http.HttpSession;
+import java.io.Serializable;
 import java.sql.Date;
 
-public class Credentials //questa deve essere una classe singleton che mantiene l'utente loggato
-{
+public class Credentials implements Serializable {
+
     private String nome;
     private String cognome;
     private String codiceFiscale;
@@ -12,74 +15,46 @@ public class Credentials //questa deve essere una classe singleton che mantiene 
     private boolean disabile;
     private Ruolo ruolo;
 
+    // Costruttore privato per forzare l'uso del getInstance
+    public Credentials() {}
 
-    public Credentials(String n, String c, String cf, String pwd, String e, Date d, boolean di)
-    {
-        this.nome=n;
-        this.cognome=c;
-        this.codiceFiscale=cf;
-        this.password = pwd;
-        this.email = e;
-        this.dataDiNascita = d;
-        this.disabile = di;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
+    /**  Singleton per sessione */
+    public static Credentials getInstance(HttpSession session) {
+        Credentials cred = (Credentials) session.getAttribute("credentials");
+        if (cred == null) {
+            cred = new Credentials();
+            session.setAttribute("credentials", cred);
+        }
+        return cred;
     }
 
-    public Date getDataDiNascita() {
-        return dataDiNascita;
+    /**  Metodo per rimuovere le credenziali dalla sessione (logout) */
+    public static void clearInstance(HttpSession session) {
+        session.removeAttribute("credentials");
     }
 
-    public String getNome() {
-        return nome;
-    }
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    // Getters & Setters standard ↓
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
 
-    public String getCognome() {
-        return cognome;
-    }
-    public void setCognome(String cognome) {
-        this.cognome = cognome;
-    }
+    public String getCognome() { return cognome; }
+    public void setCognome(String cognome) { this.cognome = cognome; }
 
-    public String getCodiceFiscale() {
-        return codiceFiscale;
-    }
-    public void setCodiceFiscale(String codiceFiscale) {
-        this.codiceFiscale = codiceFiscale;
-    }
+    public String getCodiceFiscale() { return codiceFiscale; }
+    public void setCodiceFiscale(String codiceFiscale) { this.codiceFiscale = codiceFiscale; }
 
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
-    public void setDataDiNascita(Date dataDiNascita) {
-        this.dataDiNascita = dataDiNascita;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public boolean getDisabile() {
-        return disabile;
-    }
-    public void setDisabile(boolean disabile) {
-        this.disabile = disabile;
-    }
+    public Date getDataDiNascita() { return dataDiNascita; }
+    public void setDataDiNascita(Date dataDiNascita) { this.dataDiNascita = dataDiNascita; }
 
-    public Ruolo getRuolo() {
-        return ruolo;
-    }
+    public boolean getDisabile() { return disabile; }
+    public void setDisabile(boolean disabile) { this.disabile = disabile; }
 
-    public void setRuolo(Ruolo role)
-    {
-        this.ruolo = role;
-    }
+    public Ruolo getRuolo() { return ruolo; }
+    public void setRuolo(Ruolo ruolo) { this.ruolo = ruolo; }
 }

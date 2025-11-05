@@ -1,39 +1,34 @@
 package Model.DAO;
 
-import Exception.DAOException;
 import Factory.ConnectionFactory;
-import Model.Domain.Mastercard;
-
+import Exception.DAOException;
+import Model.Domain.Paypal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MastercardDAO {
+public class PaypalDAO
+{
+    public Paypal GetPaymentPaypal(String email, String codice) throws DAOException, SQLException {
 
-    public Mastercard GetPaymentMastercard(String nC, String sc, String cvv)
-            throws DAOException, SQLException {
-
-        final String query = "{ CALL RouteX_Update.getMastercardPayment(?,?,?) }";
+        final String query = "{ CALL RouteX_Update.getPaypalPayment(?,?) }";
 
         try (Connection conn = ConnectionFactory.getConnection();
              CallableStatement cs = conn.prepareCall(query)) {
 
-            cs.setString(1, nC);
-            cs.setString(2, sc);
-            cs.setString(3, cvv);
+            cs.setString(1, email);
+            cs.setString(2, codice);
 
             try (ResultSet rs = cs.executeQuery()) {
 
-                // 🔹 Se la stored procedure ha trovato una riga
+                //  Se la stored procedure ha trovato una riga
                 if (rs.next()) {
                     // Costruisci e restituisci un oggetto Mastercard con i dati trovati
-                    Mastercard found = new Mastercard();
-                    found.setNumero_carta(rs.getString("numero_carta"));
-                    found.setData_scadenza(rs.getString("data_scadenza"));
-                    found.setCvv(rs.getString("cvv"));
-
-                    System.out.println("[DAO] Pagamento trovato per carta: " + found.getNumero_carta());
+                    Paypal found = new Paypal();
+                    found.setEmail(rs.getString("email_paypal"));
+                    found.setCodice(rs.getString("codice_transazione"));
+                    System.out.println("[DAO] Pagamento trovato per carta paypal: " + found.getCodice());
                     return found;
                 } else {
                     // Nessuna riga trovata → ritorna null

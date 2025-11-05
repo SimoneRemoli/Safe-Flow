@@ -1,21 +1,24 @@
 package Controller.Applicativo;
-
 import java.sql.SQLException;
 import java.util.List;
-
-import Bean.UtenteBeanGenerico;
 import Exception.DAOException;
-
+import Model.Domain.Credentials;
 
 public abstract class RegistrazionePagamentoController
 {
-    protected UtenteBeanGenerico utente;
-    public void setUtente(UtenteBeanGenerico utente) {
-        this.utente = utente;
+    double totale;
+    String city;
+    Credentials credenziali;
+    int quantitativo;
+
+    public RegistrazionePagamentoController(double tot, int quantita, String city, Credentials cred)
+    {
+        this.totale = tot;
+        this.quantitativo = quantita;
+        this.city = city;
+        this.credenziali = cred;
     }
-
-
-    public abstract int registra_pagamento() throws DAOException, SQLException;
-    public abstract void gestisciPagamento(double totale, List<String> codiciBiglietti, String city, UtenteBeanGenerico user) throws Exception;
-
+    public abstract List<String> run() throws Exception;
+    //public abstract int controlla_esistenza_card() throws DAOException, SQLException;
+    //public abstract void registra_pagamento_permanente(double totale, List<String> codiciBiglietti, String city, Credentials cred) throws Exception;
 }
