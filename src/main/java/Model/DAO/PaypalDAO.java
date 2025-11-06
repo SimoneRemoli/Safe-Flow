@@ -24,7 +24,7 @@ public class PaypalDAO
 
                 //  Se la stored procedure ha trovato una riga
                 if (rs.next()) {
-                    // Costruisci e restituisci un oggetto Mastercard con i dati trovati
+                    // Costruisco e restituisco un oggetto Paypal con i dati trovati
                     Paypal found = new Paypal();
                     found.setEmail(rs.getString("email_paypal"));
                     found.setCodice(rs.getString("codice_transazione"));

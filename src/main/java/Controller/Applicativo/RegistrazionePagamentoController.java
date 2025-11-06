@@ -19,6 +19,4 @@ public abstract class RegistrazionePagamentoController
         this.credenziali = cred;
     }
     public abstract List<String> run() throws Exception;
-    //public abstract int controlla_esistenza_card() throws DAOException, SQLException;
-    //public abstract void registra_pagamento_permanente(double totale, List<String> codiciBiglietti, String city, Credentials cred) throws Exception;
 }

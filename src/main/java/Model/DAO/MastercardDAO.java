@@ -25,9 +25,9 @@ public class MastercardDAO {
 
             try (ResultSet rs = cs.executeQuery()) {
 
-                // 🔹 Se la stored procedure ha trovato una riga
+                //  Se la stored procedure ha trovato una riga
                 if (rs.next()) {
-                    // Costruisci e restituisci un oggetto Mastercard con i dati trovati
+                    // Costruisco e restituisco un oggetto Mastercard con i dati trovati
                     Mastercard found = new Mastercard();
                     found.setNumero_carta(rs.getString("numero_carta"));
                     found.setData_scadenza(rs.getString("data_scadenza"));
