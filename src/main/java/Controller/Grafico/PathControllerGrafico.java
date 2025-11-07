@@ -1,0 +1,145 @@
+package Controller.Grafico;
+import Bean.InformazioniPercorsoBean;
+import Controller.Applicativo.PathController;
+import Model.Domain.*;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.ArrayList;
+
+@WebServlet("/PathControllerGrafico")
+public class PathControllerGrafico extends HttpServlet {
+    ArrayList<String> Percorsi_Con_Nomi = new ArrayList<String>();
+    ArrayList<Integer> Percorsi_Codifiche = new ArrayList<Integer>();
+    int numero_cambi = 0, numero_stazioni = 0;
+    ArrayList<String> Linee_Metropolitane = new ArrayList<String>();
+    ArrayList<String> Sequenze_di_cambiamento_full = new ArrayList<String>();
+    ArrayList<String> Sequenze_nodi_cruciali_full = new ArrayList<String>();
+    String status="";
+    Double minutaggio = 0.0;
+    Double stazioni_usate = 0.0, app = 0.0;
+
+
+
+
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            // Recupera il valore della città selezionata dal form
+            System.out.println(("ciao"));
+            String city = request.getParameter("city");
+            String startStation = request.getParameter("startStation");
+            String endStation = request.getParameter("endStation");
+
+            final HttpSession session = request.getSession(false);
+            if (session == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
+
+            //  Recupera credenziali dell’utente autenticato
+            final Credentials cred = Credentials.getInstance(session);
+            if (cred == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
+
+            if (city == null || city.trim().isEmpty() || startStation == null || startStation.trim().isEmpty() || endStation == null || endStation.trim().isEmpty())
+            {
+                response.sendRedirect("datiPercorsoAssenti.jsp");
+                return;
+            }
+
+
+
+            if (cred.getDisabile()) {
+                status = "Disabled Traveler";
+            } else {
+                status = "Non-disabled Traveler";
+            }
+
+            System.out.println("City: " + city);
+            System.out.println("Start Station: " + startStation);
+            System.out.println("End Station: " + endStation);
+
+            InformazioniPercorsoBean dto = new InformazioniPercorsoBean();
+            try {
+
+                PathController path = new PathController();
+                dto = path.run(startStation, endStation, city); //parte il controller applicativo
+            } catch (Exception e) {
+                //e.printStackTrace(); // stampa la causa vera sul log Tomcat
+                //throw new RuntimeException(e);
+                request.setAttribute("stazioniNonValide", true);
+                request.getRequestDispatcher("search.jsp").forward(request, response);
+
+                //return;
+            }
+
+
+            Route rI = new Route();
+
+            request.setAttribute("percorsi", dto.getCityLife().getPercorsi_Con_Nomi());
+            request.setAttribute("numero_cambi", dto.getCityLife().getNumero_cambi());
+            request.setAttribute("linee", dto.getCityLife().getLinee());
+            request.setAttribute("numero", dto.getNumero_stazioni_usate());
+            request.setAttribute("status", status);
+            request.setAttribute("minutaggio", dto.getMinutaggio());
+            request.setAttribute("inizio", startStation);
+            request.setAttribute("fine", endStation);
+            request.setAttribute("city", city);
+            request.setAttribute("stazionitotali", dto.getCityLife().getNumero_stazioni_totali());
+            request.setAttribute("suolometropolitano", dto.getPercentuale_stazioni_usate());
+            if (dto.getCityLife().getSequenze_di_cambiamento().isEmpty()) {
+                ArrayList<String> cambiNonPresenti = new ArrayList<>();
+                cambiNonPresenti.add("Non presenti");
+                //request.setAttribute("listacambi", Sequenze_di_cambiamento_full);
+                request.setAttribute("listacambi", cambiNonPresenti);
+
+            } else {
+                request.setAttribute("listacambi", dto.getCityLife().getSequenze_di_cambiamento());
+            }
+
+            if (dto.getCityLife().getSequenze_nodi_cruciali().isEmpty()) {
+                ArrayList<String> nodiNonPresenti = new ArrayList<>();
+                nodiNonPresenti.add("Non presenti");
+                request.setAttribute("nodicruciali", nodiNonPresenti);
+            } else {
+                request.setAttribute("nodicruciali", dto.getCityLife().getSequenze_nodi_cruciali());
+            }
+
+
+            //HttpSession session = request.getSession(false); questo se dovemo registrà er percorso #Brondi
+           /* if (session != null) {
+                request.setAttribute("codiceFiscale", session.getAttribute("cf"));
+
+                if (request.getAttribute("codiceFiscale") != null) {
+                    Route info = new Route(request);
+                    RouteDAO saveRoute = new RouteDAO();
+                    saveRoute.save(info);
+                }
+            }
+            */
+
+            //info.save();
+
+            //inoltro la richiesta al jsp
+            RequestDispatcher dispatcher = request.getRequestDispatcher("PathNOREG.jsp");
+            dispatcher.forward(request, response);
+
+
+            // Aggiungi la logica per calcolare il percorso o qualsiasi altra logica
+            String result = "Route from " + startStation + " to " + endStation + " in " + city;
+            System.out.println(result);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
