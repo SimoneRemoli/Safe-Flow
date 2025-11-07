@@ -269,7 +269,7 @@
     <div class="main-container">
         <div class="form-container">
             <h2>RouteX - Find Your Metro Route</h2>
-            <form action="ServletDemo" method="post" name="select">
+            <form action="PathControllerGrafico" method="post" name="select">
 
                 <select name="city" id="citySelect" onchange="validateForm(); updateStationsAndMap()">
                     <option value="" disabled selected>Select a city</option>
