@@ -1,9 +1,7 @@
 package Controller.Applicativo;
-
 import Bean.CityLifeBean;
 import Bean.FermataRecordBean;
 import Model.DAO.FermataDAO;
-
 import java.io.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -154,12 +152,8 @@ public class CityLifeController
                                         conta = 0;
                                     }
                                 }
-
-
                             }
                         }
-
-
                     } else {
                         cambi_linee_metropolitane = cambi_linee_metropolitane + 1;
                         Sequenze_di_cambiamento.add(linea_temp);
@@ -493,6 +487,4 @@ public class CityLifeController
         }
         return percorsi_codifica;
     }
-
-
 }

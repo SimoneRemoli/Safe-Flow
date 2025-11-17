@@ -14,23 +14,11 @@ import java.util.ArrayList;
 
 @WebServlet("/PathControllerGrafico")
 public class PathControllerGrafico extends HttpServlet {
-    ArrayList<String> Percorsi_Con_Nomi = new ArrayList<String>();
-    ArrayList<Integer> Percorsi_Codifiche = new ArrayList<Integer>();
-    int numero_cambi = 0, numero_stazioni = 0;
-    ArrayList<String> Linee_Metropolitane = new ArrayList<String>();
-    ArrayList<String> Sequenze_di_cambiamento_full = new ArrayList<String>();
-    ArrayList<String> Sequenze_nodi_cruciali_full = new ArrayList<String>();
-    String status="";
-    Double minutaggio = 0.0;
-    Double stazioni_usate = 0.0, app = 0.0;
-
-
-
-
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+            String status="";
+
             // Recupera il valore della città selezionata dal form
             System.out.println(("ciao"));
             String city = request.getParameter("city");

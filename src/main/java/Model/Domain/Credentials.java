@@ -16,11 +16,11 @@ public class Credentials implements Serializable {
     private Ruolo ruolo;
 
     // Costruttore privato per forzare l'uso del getInstance
-    public Credentials() {}
+    public Credentials() {} //Infatti, dovrebbe essere privato [aggiustare]
 
     /**  Singleton per sessione */
     public static Credentials getInstance(HttpSession session) {
-        Credentials cred = (Credentials) session.getAttribute("credentials");
+        Credentials cred = (Credentials) session.getAttribute("credentials"); //singleton per sessione (+ utenti dentro stessa sessione posso averli), non singleton globale, quindi non deve essere static cred
         if (cred == null) {
             cred = new Credentials();
             session.setAttribute("credentials", cred);
