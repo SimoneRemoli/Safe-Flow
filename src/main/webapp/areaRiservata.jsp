@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
-<%@ page import="Model.RouteInfo" %>
+<%@ page import="Model.Domain.Route" %>
+<%@ page import="Bean.TicketBean" %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -168,9 +171,9 @@
                     </thead>
                     <tbody>
                         <%
-                            List<RouteInfo> listaPercorsi = (List<RouteInfo>) request.getAttribute("listaPercorsi");
+                            List<Route> listaPercorsi = (List<Route>) request.getAttribute("listaPercorsi");
                             if (listaPercorsi != null && !listaPercorsi.isEmpty()) {
-                                for (RouteInfo r : listaPercorsi) {
+                                for (Route r : listaPercorsi) {
                         %>
                             <tr>
                                 <td><%= r.getPartenza() %></td>
@@ -196,6 +199,38 @@
                         %>
                     </tbody>
                 </table>
+
+
+               <%
+                   List<TicketBean> tickets = (List<TicketBean>) request.getAttribute("tickets");
+                   if (tickets != null && !tickets.isEmpty()) {
+               %>
+
+               <h3>Biglietti acquistati</h3>
+
+               <table class="table table-striped">
+                   <thead>
+                       <tr>
+                           <th>Codice Biglietto</th>
+                           <th>Città</th>
+                           <th>Data Acquisto</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                   <% for (TicketBean t : tickets) { %>
+                       <tr>
+                           <td><%= t.getCodice() %></td>
+                           <td><%= t.getCitta() %></td>
+                           <td><%= t.getDataAcquisto() %></td>
+                       </tr>
+                   <% } %>
+                   </tbody>
+               </table>
+
+               <% } %>
+
+
+
             </div>
         </div>
     </div>
@@ -229,12 +264,7 @@
             });
         });
 
-        // Logout automatico alla chiusura della pagina
-        window.onbeforeunload = function () {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "logout", false);
-            try { xhr.send(null); } catch (e) {}
-        };
+
     </script>
 </body>
 </html>

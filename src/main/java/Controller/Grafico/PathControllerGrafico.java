@@ -1,6 +1,7 @@
 package Controller.Grafico;
 import Bean.InformazioniPercorsoBean;
 import Controller.Applicativo.PathController;
+import Model.DAO.RouteDAO;
 import Model.Domain.*;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -71,7 +72,6 @@ public class PathControllerGrafico extends HttpServlet {
             }
 
 
-            Route rI = new Route();
 
             request.setAttribute("percorsi", dto.getCityLife().getPercorsi_Con_Nomi());
             request.setAttribute("numero_cambi", dto.getCityLife().getNumero_cambi());
@@ -104,16 +104,17 @@ public class PathControllerGrafico extends HttpServlet {
 
 
             //HttpSession session = request.getSession(false); questo se dovemo registrà er percorso #Brondi
-           /* if (session != null) {
-                request.setAttribute("codiceFiscale", session.getAttribute("cf"));
+            if (session != null) {
+                //request.setAttribute("codiceFiscale", session.getAttribute("cf"));
+                String cf = cred.getCodiceFiscale();
 
-                if (request.getAttribute("codiceFiscale") != null) {
+                if (cf!= null) {
                     Route info = new Route(request);
                     RouteDAO saveRoute = new RouteDAO();
                     saveRoute.save(info);
                 }
             }
-            */
+
 
             //info.save();
 

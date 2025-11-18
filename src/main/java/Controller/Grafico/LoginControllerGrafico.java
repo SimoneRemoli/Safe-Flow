@@ -5,7 +5,9 @@ import Bean.UtenteBeanGenerico;
 import Controller.Applicativo.LoginController;
 import Exception.DAOException;
 import Factory.ConnectionFactory;
+import Model.DAO.RouteDAO;
 import Model.Domain.Credentials;
+import Model.Domain.Route;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -100,8 +102,10 @@ public class LoginControllerGrafico extends HttpServlet {
             System.out.println("[LOGIN] Utente autenticato: " + utente.getNome() + " " + utente.getCognome()
                     + " (" + utente.getRuolo() + ")");
 
+
             // 🔹 Reindirizzamento in base al ruolo
             gestisciReindirizzamento(utente, response);
+
 
         } catch (DAOException ex) {
             gestisciErroreLogin(request, response, ex);

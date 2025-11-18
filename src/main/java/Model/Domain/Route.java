@@ -1,13 +1,5 @@
 package Model.Domain;
-
-
-
-import Factory.ConnectionFactory;
-
 import javax.servlet.http.HttpServletRequest;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +22,8 @@ public class Route {
     @SuppressWarnings("unchecked")
     public Route(HttpServletRequest request)
     {
+        Credentials cred = Credentials.getInstance(request.getSession(false));
+
         try {
             // Conversione sicura di listacambi
             Object objListaCambi = request.getAttribute("listacambi");
@@ -61,7 +55,8 @@ public class Route {
             this.tempoDiArrivo = (Double) request.getAttribute("minutaggio");
             this.nStazioniCitta = (int) request.getAttribute("stazionitotali");
             this.percTerrenoUtilizzato = (Double) request.getAttribute("suolometropolitano");
-            this.utente = (String) request.getAttribute("codiceFiscale");
+            //this.utente = (String) request.getAttribute("codiceFiscale");
+            this.utente = cred.getCodiceFiscale();
 
         } catch (Exception e) {
             throw new RuntimeException(e);
