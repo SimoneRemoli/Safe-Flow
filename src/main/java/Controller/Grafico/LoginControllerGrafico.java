@@ -5,10 +5,7 @@ import Bean.UtenteBeanGenerico;
 import Controller.Applicativo.LoginController;
 import Exception.DAOException;
 import Factory.ConnectionFactory;
-import Model.DAO.RouteDAO;
 import Model.Domain.Credentials;
-import Model.Domain.Route;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;

@@ -111,7 +111,7 @@ public class PathControllerGrafico extends HttpServlet {
                 if (cf!= null) {
                     Route info = new Route(request);
                     RouteDAO saveRoute = new RouteDAO();
-                    saveRoute.save(info);
+                    saveRoute.save(info); //uso route per salvare il percorso. Poi RouteBean è diverso, non ha utente
                 }
             }
 

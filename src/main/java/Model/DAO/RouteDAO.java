@@ -33,7 +33,7 @@ public class RouteDAO {
             cs.setDouble(9, route.getTempoDiArrivo());
             cs.setInt(10, route.getnStazioniCitta());
             cs.setDouble(11, route.getPercTerrenoUtilizzato());
-            cs.setString(12, route.getUtente());
+            cs.setString(12, route.getUtente()); // qui salvo utente
 
             cs.execute();
 
