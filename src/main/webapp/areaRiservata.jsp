@@ -2,6 +2,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="Model.Domain.Route" %>
 <%@ page import="Bean.TicketBean" %>
+<%@ page import="Bean.RouteBean" %>
+
 
 
 <!DOCTYPE html>
@@ -171,9 +173,9 @@
                     </thead>
                     <tbody>
                         <%
-                            List<Route> listaPercorsi = (List<Route>) request.getAttribute("listaPercorsi");
+                            List<RouteBean> listaPercorsi = (List<RouteBean>) request.getAttribute("listaPercorsi");
                             if (listaPercorsi != null && !listaPercorsi.isEmpty()) {
-                                for (Route r : listaPercorsi) {
+                                for (RouteBean r : listaPercorsi) {
                         %>
                             <tr>
                                 <td><%= r.getPartenza() %></td>

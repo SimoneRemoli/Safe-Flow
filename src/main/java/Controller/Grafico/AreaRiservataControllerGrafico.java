@@ -1,6 +1,8 @@
 package Controller.Grafico;
 
+import Bean.RouteBean;
 import Bean.TicketBean;
+import Controller.Applicativo.AreaRiservata;
 import Model.DAO.RouteDAO;
 import Model.DAO.TicketDAO;
 import Model.Domain.Credentials;
@@ -21,6 +23,8 @@ public class AreaRiservataControllerGrafico extends HttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        AreaRiservata reserved = new AreaRiservata();
+
         try {
 
             HttpSession session = request.getSession(false);
@@ -28,19 +32,12 @@ public class AreaRiservataControllerGrafico extends HttpServlet
                 Credentials cred = Credentials.getInstance(session);
                 String cf = cred.getCodiceFiscale();
                 if (cf != null) {
-                    RouteDAO routeDAO = new RouteDAO();
-                    // Ottieni la lista di percorsi dal DAO
-                    List<Route> listaPercorsi = routeDAO.getData(cf);
+
+                    List<RouteBean> listaPercorsi =  reserved.runPath(cf);
+                    List<TicketBean> tickets = reserved.runTicket(cf);
 
                     // Salva in request per la JSP
                     request.setAttribute("listaPercorsi", listaPercorsi);
-
-
-
-
-                    TicketDAO ticketDAO = new TicketDAO();
-
-                    List<TicketBean> tickets = ticketDAO.getTicketByCF(cf);
 
                     request.setAttribute("tickets", tickets);
 
@@ -48,18 +45,9 @@ public class AreaRiservataControllerGrafico extends HttpServlet
                     return;
                 }
 
-
-
-
             }
-
             // Se non sei loggato o cf è null, reindirizza a login o pagina di errore
             response.sendRedirect("login.jsp");
-
-
-
-
-
 
         } catch (Exception e) {
             throw new RuntimeException(e);
