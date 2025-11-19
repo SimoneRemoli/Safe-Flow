@@ -7,8 +7,17 @@ public class TimestampDecorator extends Decorator {
     }
 
     @Override
-    public String genera() {
-        return System.currentTimeMillis() + "-" + component.genera();
+    public String genera()
+    {
+        String preliminary = super.genera();
+        preliminary = this.ApplyFoo(preliminary);
+        return preliminary;
+    }
+
+    private String ApplyFoo(String input)
+    {
+        String out = System.currentTimeMillis() + "-" + input;
+        return out;
     }
 }
 

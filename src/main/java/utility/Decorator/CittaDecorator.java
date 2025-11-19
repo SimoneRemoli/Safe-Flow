@@ -10,7 +10,16 @@ public class CittaDecorator extends Decorator {
     }
 
     @Override
-    public String genera() {
-        return citta.toUpperCase() + "-" + component.genera();
+    public String genera()
+    {
+        String preliminary = super.genera();
+        preliminary = this.ApplyFoo(preliminary);
+        return preliminary;
+    }
+
+    private String ApplyFoo(String input)
+    {
+        String out = citta.toUpperCase() + "-" + input;
+        return out;
     }
 }

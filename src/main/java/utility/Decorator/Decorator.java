@@ -7,4 +7,9 @@ public abstract class Decorator implements Component {
     public Decorator(Component component) {
         this.component = component;
     }
+    public String genera()
+    {
+        String message = this.component.genera();
+        return message;
+    }
 }
