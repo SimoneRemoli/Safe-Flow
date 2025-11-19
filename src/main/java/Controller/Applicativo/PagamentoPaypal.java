@@ -1,14 +1,16 @@
 package Controller.Applicativo;
 import Model.DAO.PaypalDAO;
 import Model.DAO.SalvaPagamentoDAO;
-import Model.Domain.Credentials;
-import Model.Domain.Paypal;
+import Model.Domain.*;
 import Exception.DAOException;
+import utility.Decorator.BaseTicketCode;
+import utility.Decorator.CittaDecorator;
+import utility.Decorator.Component;
+import utility.Decorator.TimestampDecorator;
 
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class PagamentoPaypal extends RegistrazionePagamentoController
 {
@@ -18,18 +20,22 @@ public class PagamentoPaypal extends RegistrazionePagamentoController
     {
         final List<String> codiciBiglietti;
         Paypal p = new PaypalDAO().GetPaymentPaypal(email, codice);
-        if(p !=null)
+        if (p != null)
         {
-            //  Generazione codici biglietti univoci
-            codiciBiglietti = new ArrayList<>();
-            for (int i = 0; i < quantitativo; i++) {
-                codiciBiglietti.add(UUID.randomUUID().toString());
-            }
-            registra_pagamento_permanente(codiciBiglietti);
 
+            Component gen = new TimestampDecorator(new CittaDecorator(new BaseTicketCode(), city));
+
+            codiciBiglietti = new ArrayList<>();
+
+            for (int i = 0; i < quantitativo; i++) {
+                codiciBiglietti.add(gen.genera());
+            }
+
+            registra_pagamento_permanente(codiciBiglietti);
         }
-        else
+        else {
             throw new RuntimeException();
+        }
 
         return codiciBiglietti;
 

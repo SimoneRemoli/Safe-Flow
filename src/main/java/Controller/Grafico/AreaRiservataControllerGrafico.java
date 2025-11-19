@@ -22,6 +22,7 @@ public class AreaRiservataControllerGrafico extends HttpServlet
 
         try {
 
+
             HttpSession session = request.getSession(false);
             if (session != null) {
                 Credentials cred = Credentials.getInstance(session);

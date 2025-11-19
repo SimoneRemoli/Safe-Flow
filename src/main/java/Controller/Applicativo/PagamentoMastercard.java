@@ -3,11 +3,14 @@ package Controller.Applicativo;
 import Model.DAO.MastercardDAO;
 import Exception.DAOException;
 import Model.DAO.SalvaPagamentoDAO;
-import Model.Domain.Credentials;
-import Model.Domain.Mastercard;
+import Model.Domain.*;
+import utility.Decorator.BaseTicketCode;
+import utility.Decorator.CittaDecorator;
+import utility.Decorator.Component;
+import utility.Decorator.TimestampDecorator;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class PagamentoMastercard extends RegistrazionePagamentoController
 {
@@ -19,20 +22,24 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
 
         final List<String> codiciBiglietti;
         Mastercard mastercard = new MastercardDAO().GetPaymentMastercard(numeroCarta, scadenza, cvv);
-        if(mastercard!=null)
+        if (mastercard != null)
         {
-            //  Generazione codici biglietti univoci
-            codiciBiglietti = new ArrayList<>();
-            for (int i = 0; i < quantitativo; i++) {
-                codiciBiglietti.add(UUID.randomUUID().toString());
-            }
-            registra_pagamento_permanente(codiciBiglietti);
+            Component gen = new TimestampDecorator(new CittaDecorator(new BaseTicketCode(), city));
 
+            codiciBiglietti = new ArrayList<>();
+
+            for (int i = 0; i < quantitativo; i++) {
+                codiciBiglietti.add(gen.genera());
+            }
+
+            registra_pagamento_permanente(codiciBiglietti);
         }
-        else
+        else {
             throw new RuntimeException();
+        }
 
         return codiciBiglietti;
+
     }
 
 

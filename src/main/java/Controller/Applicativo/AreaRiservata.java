@@ -5,7 +5,6 @@ import Bean.TicketBean;
 import Model.DAO.RouteDAO;
 import Model.DAO.TicketDAO;
 import Model.Domain.Route;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +40,6 @@ public class AreaRiservata
             listaPercorsiBean.add(rb);
 
         }
-
         return listaPercorsiBean;
-
     }
 }
