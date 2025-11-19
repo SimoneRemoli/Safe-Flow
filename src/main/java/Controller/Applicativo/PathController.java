@@ -3,7 +3,7 @@ package Controller.Applicativo;
 import Bean.CityLifeBean;
 import Bean.InformazioniPercorsoBean;
 import Model.DAO.RestituisciIdStazioniPartenzaArrivoDAO;
-import utility.CityLifeFactory;
+import utility.Factory.CityLifeFactory;
 import Exception.DAOException;
 
 import java.util.ArrayList;

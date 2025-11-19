@@ -1,4 +1,4 @@
-package utility;
+package utility.Factory;
 
 import Controller.Applicativo.CityLifeController;
 import Model.Domain.*;
