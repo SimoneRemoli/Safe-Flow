@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import Exception.DAOException;
-import utility.DecoratorPath.*;
+import utility.Decorator.DecoratorPath.*;
 
 public class AreaRiservata
 {

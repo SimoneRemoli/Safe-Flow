@@ -1,4 +1,4 @@
-package utility.DecoratorTicket;
+package utility.Decorator.DecoratorTicket;
 
 public abstract class Decorator implements Component {
 

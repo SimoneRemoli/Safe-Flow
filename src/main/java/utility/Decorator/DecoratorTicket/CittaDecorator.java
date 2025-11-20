@@ -1,9 +1,12 @@
-package utility.DecoratorTicket;
+package utility.Decorator.DecoratorTicket;
 
-public class TimestampDecorator extends Decorator {
+public class CittaDecorator extends Decorator {
 
-    public TimestampDecorator(Component component) {
+    private final String citta;
+
+    public CittaDecorator(Component component, String citta) {
         super(component);
+        this.citta = citta;
     }
 
     @Override
@@ -16,9 +19,7 @@ public class TimestampDecorator extends Decorator {
 
     private String ApplyFoo(String input)
     {
-        String out = System.currentTimeMillis() + "-" + input;
+        String out = citta.toUpperCase() + "-" + input;
         return out;
     }
 }
-
-

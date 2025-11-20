@@ -3,10 +3,10 @@ import Model.DAO.PaypalDAO;
 import Model.DAO.SalvaPagamentoDAO;
 import Model.Domain.*;
 import Exception.DAOException;
-import utility.DecoratorTicket.BaseTicketCode;
-import utility.DecoratorTicket.CittaDecorator;
-import utility.DecoratorTicket.Component;
-import utility.DecoratorTicket.TimestampDecorator;
+import utility.Decorator.DecoratorTicket.BaseTicketCode;
+import utility.Decorator.DecoratorTicket.CittaDecorator;
+import utility.Decorator.DecoratorTicket.Component;
+import utility.Decorator.DecoratorTicket.TimestampDecorator;
 
 
 import java.util.ArrayList;

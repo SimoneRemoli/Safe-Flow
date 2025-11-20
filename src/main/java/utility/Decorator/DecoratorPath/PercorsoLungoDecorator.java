@@ -1,4 +1,4 @@
-package utility.DecoratorPath;
+package utility.Decorator.DecoratorPath;
 
 import Bean.RouteBean;
 import Model.Domain.Route;
