@@ -1,4 +1,6 @@
 package Model.Domain;
+import utility.Singleton.Credentials;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;

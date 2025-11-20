@@ -2,7 +2,7 @@ package Controller.Grafico;
 import Bean.RouteBean;
 import Bean.TicketBean;
 import Controller.Applicativo.AreaRiservata;
-import Model.Domain.Credentials;
+import utility.Singleton.Credentials;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

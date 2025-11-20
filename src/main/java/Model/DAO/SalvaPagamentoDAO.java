@@ -1,7 +1,7 @@
 package Model.DAO;
 
 import Factory.ConnectionFactory;
-import Model.Domain.Credentials;
+import utility.Singleton.Credentials;
 import Exception.DAOException;
 import java.sql.*;
 import java.sql.Connection;

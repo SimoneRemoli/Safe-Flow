@@ -1,6 +1,6 @@
 package Controller.Applicativo;
 
-import Model.Domain.Credentials;
+import utility.Singleton.Credentials;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

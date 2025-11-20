@@ -1,8 +1,7 @@
 package Controller.Applicativo;
-import java.sql.SQLException;
 import java.util.List;
-import Exception.DAOException;
-import Model.Domain.Credentials;
+
+import utility.Singleton.Credentials;
 
 public abstract class RegistrazionePagamentoController
 {

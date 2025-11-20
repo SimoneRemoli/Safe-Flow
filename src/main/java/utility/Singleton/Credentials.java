@@ -1,4 +1,6 @@
-package Model.Domain;
+package utility.Singleton;
+
+import Model.Domain.Ruolo;
 
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;

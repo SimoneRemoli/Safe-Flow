@@ -3,13 +3,12 @@ package Controller.Grafico;
 import Controller.Applicativo.PagamentoMastercard;
 import Controller.Applicativo.PagamentoPaypal;
 import Controller.Applicativo.RegistrazionePagamentoController;
-import Model.Domain.Credentials;
+import utility.Singleton.Credentials;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.*;
 
 @WebServlet("/confermaPagamento")

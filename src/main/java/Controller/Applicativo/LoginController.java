@@ -3,7 +3,7 @@ package Controller.Applicativo;
 import Bean.AutenticazioneBean;
 import Bean.UtenteBeanGenerico;
 import Model.DAO.LoginProcedureDAO;
-import Model.Domain.Credentials;
+import utility.Singleton.Credentials;
 import Exception.DAOException;
 
 import javax.servlet.http.HttpSession;
