@@ -3,6 +3,9 @@ import Bean.InformazioniPercorsoBean;
 import Controller.Applicativo.PathController;
 import Model.DAO.RouteDAO;
 import Model.Domain.*;
+import utility.Decorator.DecoratorChange.BaseComponent;
+import utility.Decorator.DecoratorChange.CheckCambiamentiDecorator;
+import utility.Decorator.DecoratorChange.Component;
 import utility.Singleton.Credentials;
 
 import javax.servlet.RequestDispatcher;
@@ -73,7 +76,7 @@ public class PathControllerGrafico extends HttpServlet {
                 //return;
             }
 
-
+            Component c = new CheckCambiamentiDecorator(new BaseComponent()); //in più
 
             request.setAttribute("percorsi", dto.getCityLife().getPercorsi_Con_Nomi());
             request.setAttribute("numero_cambi", dto.getCityLife().getNumero_cambi());
@@ -86,51 +89,29 @@ public class PathControllerGrafico extends HttpServlet {
             request.setAttribute("city", city);
             request.setAttribute("stazionitotali", dto.getCityLife().getNumero_stazioni_totali());
             request.setAttribute("suolometropolitano", dto.getPercentuale_stazioni_usate());
-            if (dto.getCityLife().getSequenze_di_cambiamento().isEmpty()) {
-                ArrayList<String> cambiNonPresenti = new ArrayList<>();
-                cambiNonPresenti.add("Non presenti");
-                //request.setAttribute("listacambi", Sequenze_di_cambiamento_full);
-                request.setAttribute("listacambi", cambiNonPresenti);
-
-            } else {
-                request.setAttribute("listacambi", dto.getCityLife().getSequenze_di_cambiamento());
-            }
-
-            if (dto.getCityLife().getSequenze_nodi_cruciali().isEmpty()) {
-                ArrayList<String> nodiNonPresenti = new ArrayList<>();
-                nodiNonPresenti.add("Non presenti");
-                request.setAttribute("nodicruciali", nodiNonPresenti);
-            } else {
-                request.setAttribute("nodicruciali", dto.getCityLife().getSequenze_nodi_cruciali());
-            }
 
 
-            //HttpSession session = request.getSession(false); questo se dovemo registrà er percorso #Brondi
+            ArrayList<String> cambi = c.getChanges(dto.getCityLife().getSequenze_di_cambiamento());//in più
+            request.setAttribute("listacambi", cambi); //in più
+
+
+            ArrayList<String> cambicruciali = c.getChanges(dto.getCityLife().getSequenze_nodi_cruciali());//in più
+            request.setAttribute("nodicruciali", cambicruciali); //in più
+
+
             if (session != null) {
-
                 PathController pathCtrl = new PathController();
                 pathCtrl.save_route(cred, request);
-                /*PathController path = new PathController();
-                String cf = cred.getCodiceFiscale();
-
-                if (cf!= null) {
-                    Route info = new Route(request);
-                    RouteDAO saveRoute = new RouteDAO();
-                    saveRoute.save(info); //uso route per salvare il percorso. Poi RouteBean è diverso, non ha utente
-                }
-
-                 */
             }
 
 
-            //info.save();
 
             //inoltro la richiesta al jsp
             RequestDispatcher dispatcher = request.getRequestDispatcher("PathNOREG.jsp");
             dispatcher.forward(request, response);
 
 
-            // Aggiungi la logica per calcolare il percorso o qualsiasi altra logica
+            //  logica per calcolare il percorso o qualsiasi altra logica
             String result = "Route from " + startStation + " to " + endStation + " in " + city;
             System.out.println(result);
 

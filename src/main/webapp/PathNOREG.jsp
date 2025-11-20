@@ -270,25 +270,21 @@
            out.print("<td>List of all metro line changes </td>");
            out.print("<td>");
 
-           if(sequenza_cambi.isEmpty())
-           {
-                out.print(" No line changes ");
-           }
-           else
-           {
+
+
 
 
                for(int i=0;i<sequenza_cambi.size();i++)
                {
                     String linea_singola = sequenza_cambi.get(i);
                     out.print(" ");
-                    out.print("<img src='images/"+ linea_singola + ".png' alt='Logo' width='30' height='20' />");
+                    //out.print("<img src='images/"+ linea_singola + ".png' alt='Logo' width='30' height='20' />");
 
 
-                    //out.print(" " + linea_singola + " ");
+                    out.print(" " + linea_singola + " ");
 
                }
-           }
+
            out.print("</td>");
 
            out.print("</tr>");
@@ -297,12 +293,7 @@
            out.print("<td>Interchange station </td>");
            out.print("<td>");
 
-           if(sequenza_cruciali.isEmpty())
-           {
-                out.print(" No interchange station ");
-           }
-           else
-           {
+
                for(int i=0;i<sequenza_cruciali.size();i++)
                {
                     String stazione = sequenza_cruciali.get(i);
@@ -314,7 +305,7 @@
                     out.print("</ul>");
                     out.print("</span>");
                }
-           }
+
            out.print("</td>");
            out.print("</tr>");
 
