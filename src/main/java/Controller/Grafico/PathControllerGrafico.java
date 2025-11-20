@@ -76,7 +76,7 @@ public class PathControllerGrafico extends HttpServlet {
                 //return;
             }
 
-            Component c = new CheckCambiamentiDecorator(new BaseComponent()); //in più
+            Component c = new CheckCambiamentiDecorator(new BaseComponent()); //Decorator Pattern
 
             request.setAttribute("percorsi", dto.getCityLife().getPercorsi_Con_Nomi());
             request.setAttribute("numero_cambi", dto.getCityLife().getNumero_cambi());
