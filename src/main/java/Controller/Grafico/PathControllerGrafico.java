@@ -107,7 +107,10 @@ public class PathControllerGrafico extends HttpServlet {
 
             //HttpSession session = request.getSession(false); questo se dovemo registrà er percorso #Brondi
             if (session != null) {
-                //request.setAttribute("codiceFiscale", session.getAttribute("cf"));
+
+                PathController pathCtrl = new PathController();
+                pathCtrl.save_route(cred, request);
+                /*PathController path = new PathController();
                 String cf = cred.getCodiceFiscale();
 
                 if (cf!= null) {
@@ -115,6 +118,8 @@ public class PathControllerGrafico extends HttpServlet {
                     RouteDAO saveRoute = new RouteDAO();
                     saveRoute.save(info); //uso route per salvare il percorso. Poi RouteBean è diverso, non ha utente
                 }
+
+                 */
             }
 
 

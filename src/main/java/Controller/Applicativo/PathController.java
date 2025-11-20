@@ -3,9 +3,14 @@ package Controller.Applicativo;
 import Bean.CityLifeBean;
 import Bean.InformazioniPercorsoBean;
 import Model.DAO.RestituisciIdStazioniPartenzaArrivoDAO;
+import Model.DAO.RouteDAO;
+import Model.Domain.Route;
 import utility.Factory.CityLifeFactory;
 import Exception.DAOException;
+import utility.Singleton.Credentials;
 
+import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class PathController
@@ -85,5 +90,16 @@ public class PathController
         trasferimento.setPercentuale_stazioni_usate(percentuale_stazioni_usate);
 
         return trasferimento;
+    }
+    public void save_route(Credentials cred, HttpServletRequest request) throws DAOException, SQLException {
+        String cf = cred.getCodiceFiscale();
+
+        if (cf!= null) {
+            Route info = new Route(request);
+            RouteDAO saveRoute = new RouteDAO();
+            saveRoute.save(info); //uso route per salvare il percorso. Poi RouteBean è diverso, non ha utente
+        }
+        else
+            throw new DAOException("Utente non autenticato, impossibile salvare il percorso.");
     }
 }
