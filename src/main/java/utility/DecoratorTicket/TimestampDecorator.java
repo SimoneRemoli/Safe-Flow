@@ -1,4 +1,4 @@
-package utility.Decorator;
+package utility.DecoratorTicket;
 
 public class TimestampDecorator extends Decorator {
 

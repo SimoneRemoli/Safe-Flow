@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import Exception.DAOException;
+import utility.DecoratorPath.*;
 
 public class AreaRiservata
 {
@@ -23,6 +24,8 @@ public class AreaRiservata
         List<Route> listaPercorsi = routeDAO.getData(cf);
         List<RouteBean> listaPercorsiBean = new ArrayList<>();
 
+        Component component = new TempoArrivoDecorator(new PercorsoLungoDecorator(new ListaCambiDecorator(new BaseComponent()))); //in più
+
         for(Route r: listaPercorsi)
         {
             RouteBean rb = new RouteBean();
@@ -36,6 +39,9 @@ public class AreaRiservata
             rb.setTempoDiArrivo(r.getTempoDiArrivo());
             rb.setnStazioniCitta(r.getnStazioniCitta());
             rb.setPercTerrenoUtilizzato(r.getPercTerrenoUtilizzato());
+
+            rb = component.update(rb,r); //in più
+
 
             listaPercorsiBean.add(rb);
 

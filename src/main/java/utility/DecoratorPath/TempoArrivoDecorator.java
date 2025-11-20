@@ -1,0 +1,22 @@
+package utility.DecoratorPath;
+
+import Bean.RouteBean;
+import Model.Domain.Route;
+
+public class TempoArrivoDecorator extends Decorator
+{
+    public TempoArrivoDecorator(Component component) {
+        super(component);
+    }
+    @Override
+    public RouteBean update(RouteBean rb, Route r)
+    {
+        System.out.println("ciao sono nel tempo di arrivo decorator");
+        rb = super.update(rb,r);
+        if(rb.getTempoDiArrivo()==0.0)
+        {
+            rb.setPercTerrenoUtilizzato(0.0);
+        }
+        return rb;
+    }
+}

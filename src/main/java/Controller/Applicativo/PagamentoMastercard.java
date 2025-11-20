@@ -4,10 +4,10 @@ import Model.DAO.MastercardDAO;
 import Exception.DAOException;
 import Model.DAO.SalvaPagamentoDAO;
 import Model.Domain.*;
-import utility.Decorator.BaseTicketCode;
-import utility.Decorator.CittaDecorator;
-import utility.Decorator.Component;
-import utility.Decorator.TimestampDecorator;
+import utility.DecoratorTicket.BaseTicketCode;
+import utility.DecoratorTicket.CittaDecorator;
+import utility.DecoratorTicket.Component;
+import utility.DecoratorTicket.TimestampDecorator;
 
 import java.util.ArrayList;
 import java.util.List;
