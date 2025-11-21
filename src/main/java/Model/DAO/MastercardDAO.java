@@ -1,6 +1,7 @@
 package Model.DAO;
 
 import Exception.DAOExceptionRemoli;
+import Model.Domain.PaymentMethod;
 import utility.Factory.ConnectionFactory;
 import Model.Domain.Mastercard;
 
@@ -8,11 +9,12 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import Exception.PaymentValidationExceptionRemoli;
 
 public class MastercardDAO {
 
     public Mastercard GetPaymentMastercard(String nC, String sc, String cvv)
-            throws DAOExceptionRemoli, SQLException {
+            throws DAOExceptionRemoli, PaymentValidationExceptionRemoli{
 
         final String query = "{ CALL RouteX_Update.getMastercardPayment(?,?,?) }";
 
@@ -37,13 +39,14 @@ public class MastercardDAO {
                     return found;
                 } else {
                     // Nessuna riga trovata → ritorna null
-                    System.out.println("[DAO] Nessun pagamento trovato per la carta indicata.");
-                    return null;
+                    throw new PaymentValidationExceptionRemoli("Nessun pagamento trovato per la carta indicata.", PaymentMethod.MASTERCARD, "MastercardDAO.java ha fallito");
+                   //System.out.println("[DAO] Nessun pagamento trovato per la carta indicata.");
+                   // return null;
                 }
             }
 
         } catch (SQLException e) {
-            throw new DAOExceptionRemoli("Errore in GetPaymentMastercard: " + e.getMessage());
+            throw new DAOExceptionRemoli("Errore interno alla connessione: " + e.getMessage());
         }
     }
 }

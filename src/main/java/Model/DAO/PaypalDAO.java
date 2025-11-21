@@ -1,7 +1,9 @@
 package Model.DAO;
 
+import Model.Domain.PaymentMethod;
 import utility.Factory.ConnectionFactory;
 import Exception.DAOExceptionRemoli;
+import Exception.PaymentValidationExceptionRemoli;
 import Model.Domain.Paypal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -10,7 +12,7 @@ import java.sql.SQLException;
 
 public class PaypalDAO
 {
-    public Paypal GetPaymentPaypal(String email, String codice) throws DAOExceptionRemoli, SQLException {
+    public Paypal GetPaymentPaypal(String email, String codice) throws DAOExceptionRemoli, PaymentValidationExceptionRemoli {
 
         final String query = "{ CALL RouteX_Update.getPaypalPayment(?,?) }";
 
@@ -32,8 +34,7 @@ public class PaypalDAO
                     return found;
                 } else {
                     // Nessuna riga trovata → ritorna null
-                    System.out.println("[DAO] Nessun pagamento trovato per la carta indicata.");
-                    return null;
+                    throw new PaymentValidationExceptionRemoli("Nessun pagamento trovato per la carta indicata.", PaymentMethod.PAYPAL, "MastercardDAO.java ha fallito");
                 }
             }
 

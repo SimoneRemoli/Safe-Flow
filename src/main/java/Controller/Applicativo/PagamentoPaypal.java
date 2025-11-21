@@ -8,6 +8,8 @@ import utility.Decorator.DecoratorTicket.CittaDecorator;
 import utility.Decorator.DecoratorTicket.Component;
 import utility.Decorator.DecoratorTicket.TimestampDecorator;
 import utility.Singleton.Credentials;
+import Exception.CredentialsExceptionRemoli;
+import Exception.PaymentValidationExceptionRemoli;
 
 
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ public class PagamentoPaypal extends RegistrazionePagamentoController
 {
     String email;
     String codice;
-    public List<String> run() throws Exception
+    public List<String> run() throws DAOExceptionRemoli, PaymentValidationExceptionRemoli, CredentialsExceptionRemoli
     {
         final List<String> codiciBiglietti;
         Paypal p = new PaypalDAO().GetPaymentPaypal(email, codice);
@@ -52,10 +54,10 @@ public class PagamentoPaypal extends RegistrazionePagamentoController
 
     }
 
-    private void registra_pagamento_permanente(List<String> codiciBiglietti) throws Exception {
+    private void registra_pagamento_permanente(List<String> codiciBiglietti) throws CredentialsExceptionRemoli {
         if (credenziali == null) {
             System.err.println(" Nessun utente associato al pagamento.");
-            throw new DAOExceptionRemoli("Nessun utente loggato associato al pagamento.");
+            throw new CredentialsExceptionRemoli("Nessun utente loggato associato al pagamento.", "Errore nel PagamentoPaypal.java");
         }
         SalvaPagamentoDAO dao = new SalvaPagamentoDAO();
         System.out.println("Traveler " + credenziali.getNome() + " "+ credenziali.getCodiceFiscale() + " "+credenziali.getNome()+ " "+credenziali.getCognome()+ " " + credenziali.getDisabile() + " ha effettuato un pagamento di " + totale + "€");

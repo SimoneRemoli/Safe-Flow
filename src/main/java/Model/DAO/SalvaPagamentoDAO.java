@@ -3,6 +3,7 @@ package Model.DAO;
 import utility.Factory.ConnectionFactory;
 import utility.Singleton.Credentials;
 import Exception.DAOExceptionRemoli;
+import Exception.CredentialsExceptionRemoli;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.CallableStatement;
@@ -10,7 +11,7 @@ import java.util.List;
 
 public class SalvaPagamentoDAO
 {
-    public void salvataggio(Credentials cred, List<String> codiciBiglietti, String metodopayment, String city) throws DAOExceptionRemoli, SQLException
+    public void salvataggio(Credentials cred, List<String> codiciBiglietti, String metodopayment, String city) throws CredentialsExceptionRemoli
     {
 
         try {
@@ -27,8 +28,8 @@ public class SalvaPagamentoDAO
             cs.setString(7, city);
             ResultSet rs = cs.executeQuery();
 
-        } catch (Exception e) {
-            throw new DAOExceptionRemoli("Errore " + e.getMessage());
+        } catch (SQLException e) {
+            throw new CredentialsExceptionRemoli("Nessun salvataggio del percorso nel livello di persistenza " + e.getMessage(), "Errore in SalvaPagamentoDAO.java");
         }
     }
 

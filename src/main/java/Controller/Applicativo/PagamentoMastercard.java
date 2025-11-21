@@ -2,6 +2,8 @@ package Controller.Applicativo;
 
 import Model.DAO.MastercardDAO;
 import Exception.DAOExceptionRemoli;
+import Exception.CredentialsExceptionRemoli;
+import Exception.PaymentValidationExceptionRemoli;
 import Model.DAO.SalvaPagamentoDAO;
 import Model.Domain.*;
 import utility.Decorator.DecoratorTicket.BaseTicketCode;
@@ -19,7 +21,7 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
     String scadenza;
     String cvv;
 
-    public List<String> run() throws Exception {
+    public List<String> run() throws DAOExceptionRemoli, PaymentValidationExceptionRemoli, CredentialsExceptionRemoli {
 
         final List<String> codiciBiglietti;
         Mastercard mastercard = new MastercardDAO().GetPaymentMastercard(numeroCarta, scadenza, cvv);
@@ -54,10 +56,10 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
     }
 
 
-    private void registra_pagamento_permanente(List<String> codiciBiglietti) throws Exception {
+    private void registra_pagamento_permanente(List<String> codiciBiglietti) throws CredentialsExceptionRemoli {
         if (credenziali == null) {
             System.err.println(" Nessun utente associato al pagamento.");
-            throw new DAOExceptionRemoli("Nessun utente loggato associato al pagamento.");
+            throw new CredentialsExceptionRemoli("Nessun utente loggato associato al pagamento.", "Errore nel PagamentoMastercard.java");
         }
         SalvaPagamentoDAO dao = new SalvaPagamentoDAO();
         System.out.println("Traveler " + credenziali.getNome() + " "+ credenziali.getCodiceFiscale() + " "+credenziali.getNome()+ " "+credenziali.getCognome()+ " " + credenziali.getDisabile() + " ha effettuato un pagamento di " + totale + "€");

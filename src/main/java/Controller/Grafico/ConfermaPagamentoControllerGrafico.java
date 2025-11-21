@@ -4,6 +4,9 @@ import Controller.Applicativo.PagamentoMastercard;
 import Controller.Applicativo.PagamentoPaypal;
 import Controller.Applicativo.RegistrazionePagamentoController;
 import utility.Singleton.Credentials;
+import Exception.PaymentValidationExceptionRemoli;
+import Exception.CredentialsExceptionRemoli;
+import Exception.DAOExceptionRemoli;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -101,7 +104,26 @@ public class ConfermaPagamentoControllerGrafico extends HttpServlet {
 
         try {
             codiciBiglietti = controllerPagamento.run(); // se la vede poi chi viene chiamato
-        } catch (Exception e) {
+        }
+        catch(PaymentValidationExceptionRemoli remoli)
+        {
+            System.out.println(" Errore PaymentValidationExceptionRemoli : " + remoli.getMessage() + " | " + remoli.getDetail() + "[" + remoli.getMethod() + "]");
+            request.getRequestDispatcher("/errorePagamento.jsp").forward(request, response);
+            return;
+        }
+        catch(DAOExceptionRemoli remoli)
+        {
+            System.out.println(" Errore DAOExceptionRemoli : " + remoli.getMessage());
+            request.getRequestDispatcher("/errorePagamento.jsp").forward(request, response);
+            return;
+        }
+        catch(CredentialsExceptionRemoli remoli)
+        {
+            System.out.println(" Errore CredentialsExceptionRemoli : " + remoli.getMessage() + " | " + remoli.getDetails());
+            request.getRequestDispatcher("/errorePagamento.jsp").forward(request, response);
+            return;
+        }
+        catch (Exception e) {
             request.getRequestDispatcher("/errorePagamento.jsp").forward(request, response);
             return;
         }
