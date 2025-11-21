@@ -6,11 +6,11 @@ import Model.Domain.Ruolo;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.CallableStatement;
-
+import Exception.LoginNotFoundRemoli;
 
 public class LoginProcedureDAO {
 
-    public Credentials login(Credentials cred) throws DAOException, SQLException {
+    public Credentials login(Credentials cred) throws DAOException, LoginNotFoundRemoli {
 
         try {
             Connection conn = ConnectionFactory.getConnection();
@@ -29,14 +29,16 @@ public class LoginProcedureDAO {
                 cred.setDisabile(rs.getBoolean("p_disabile"));
                 cred.setRuolo(Ruolo.fromint(rs.getInt("ruolo")));
             } else {
-                throw new DAOException("Credenziali non valide.");
+                throw new LoginNotFoundRemoli("Credenziali non valide.", cred.getEmail(), cred.getPassword());
             }
             return cred;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new DAOException("Errore durante il login: " + e.getMessage());
         }
     }
 }
 
-
+/*
+L’eccezione LoginNotFoundRemoli scatterà quando la stored procedure login_user NON restituisce alcuna riga.
+ */

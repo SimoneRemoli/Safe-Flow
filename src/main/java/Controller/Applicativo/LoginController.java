@@ -5,6 +5,7 @@ import Bean.UtenteBeanGenerico;
 import Model.DAO.LoginProcedureDAO;
 import utility.Singleton.Credentials;
 import Exception.DAOException;
+import Exception.LoginNotFoundRemoli;
 
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
@@ -25,7 +26,7 @@ public class LoginController {
      * Esegue l’autenticazione dell’utente, crea (o aggiorna) il singleton `Credentials`
      * e restituisce un `UtenteBeanGenerico` per la parte grafica.
      */
-    public UtenteBeanGenerico autenticaUtente(HttpSession session) throws DAOException, SQLException {
+    public UtenteBeanGenerico autenticaUtente(HttpSession session) throws DAOException, LoginNotFoundRemoli {
 
         // Crea oggetto per DAO
         Credentials credenziali = new Credentials();

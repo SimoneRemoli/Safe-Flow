@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
+import Exception.LoginNotFoundRemoli;
 
 /**
  * Controller grafico per la gestione del login utente.
@@ -107,10 +108,19 @@ public class LoginControllerGrafico extends HttpServlet {
         } catch (DAOException ex) {
             gestisciErroreLogin(request, response, ex);
 
-        } catch (SQLException ex) {
+        } catch (LoginNotFoundRemoli ex) {
             ex.printStackTrace();
-            request.setAttribute("messaggioErrore", "Errore interno: " + ex.getMessage());
+            System.out.println(
+                    "Tentativo di login fallito - Email: " + ex.getEmail() +
+                            ", Password: " + ex.getMaskedPassword()
+            );
+            request.setAttribute("messaggioErrore", ex.getMessage());
             request.getRequestDispatcher("erroreLogin.jsp").forward(request, response);
         }
     }
 }
+
+/*
+Se la password deve stare nell'eccezione, allora la inserisco, ma sempre in modo sicuro, cioè MAI in chiaro,
+perché una eccezione può finire nei log e i log sono consultabili da altri amministratori.
+ */
