@@ -70,18 +70,18 @@ public class LoginControllerGrafico extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-            // 🔹 Crea una nuova sessione e imposta il timeout
+            //  Crea una nuova sessione e imposta il timeout
             HttpSession session = request.getSession(true);
             session.setMaxInactiveInterval(180); // 3 minuti di inattività
 
-            // 🔹 Costruisce il bean con i dati del form
+            //  Costruisce il bean con i dati del form
             AutenticazioneBean credenziali = creaBeanAutenticazione(request);
 
-            // 🔹 Delegazione al controller applicativo
+            //  Delegazione al controller applicativo
             LoginController loginController = new LoginController(credenziali);
             UtenteBeanGenerico utente = loginController.autenticaUtente(session);
 
-            // 🔹 Dopo loginController.autenticaUtente(session);
+            //  Dopo loginController.autenticaUtente(session);
             session.setAttribute("nome", utente.getNome());
             session.setAttribute("cognome", utente.getCognome());
             session.setAttribute("ruolo", utente.getRuolo());
@@ -96,12 +96,12 @@ public class LoginControllerGrafico extends HttpServlet {
             System.out.println("Ruolo: " + cred2.getRuolo());
 
 
-            // 🔹 Stampa debug
+            //  Stampa debug
             System.out.println("[LOGIN] Utente autenticato: " + utente.getNome() + " " + utente.getCognome()
                     + " (" + utente.getRuolo() + ")");
 
 
-            // 🔹 Reindirizzamento in base al ruolo
+            //  Reindirizzamento in base al ruolo
             gestisciReindirizzamento(utente, response);
 
 

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page isELIgnored="false" %>
 <html>
 <head>
     <title>Errore di login</title>
@@ -30,8 +31,9 @@
 <%@ include file="header.jspf" %>
 <div class="box">
     <h2>Accesso non riuscito</h2>
-    <p>Le credenziali inserite non sono corrette.</p>
+    <p>${messaggioErrore}</p>
     <a href="login.jsp">Torna al login</a>
 </div>
+
 </body>
 </html>
