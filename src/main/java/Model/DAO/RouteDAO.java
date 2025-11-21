@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Exception.DAOExceptionRemoli;
+import Exception.PathNotFoundExceptionRemoli;
 import utility.Factory.ConnectionFactory;
 import Model.Domain.Route;
 
@@ -42,7 +43,7 @@ public class RouteDAO {
         }
     }
 
-    public List<Route> getData(String cf) throws SQLException, DAOExceptionRemoli {
+    public List<Route> getData(String cf) throws PathNotFoundExceptionRemoli, DAOExceptionRemoli {
         try (Connection conn = ConnectionFactory.getConnection()){
 
             String sp = "{ CALL RouteX_Update.getPath(?) }";
@@ -78,11 +79,11 @@ public class RouteDAO {
                 return lista;
             } else {
                 System.out.println("Nessun percorso trovato per l’utente.");
+                throw new PathNotFoundExceptionRemoli("Nessun percorso trovato per l’utente.", cf, 404, "Errore nella RouteDAO.java nel metodo getData");
             }
 
         } catch (Exception e) {
-            throw new DAOExceptionRemoli("Errore durante la restituzione del percorso: " + e.getMessage());
+            throw new DAOExceptionRemoli("Errore durante la connessione al database" + e.getMessage());
         }
-        return null;
     }
 }

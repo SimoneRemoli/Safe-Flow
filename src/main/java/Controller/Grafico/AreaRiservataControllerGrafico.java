@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
+import Exception.PathNotFoundExceptionRemoli;
+import Exception.DAOExceptionRemoli;
 
 @WebServlet("/areaRiservata")
 public class AreaRiservataControllerGrafico extends HttpServlet
@@ -45,7 +47,16 @@ public class AreaRiservataControllerGrafico extends HttpServlet
             // Se non sei loggato o cf è null, reindirizza a login o pagina di errore
             response.sendRedirect("login.jsp");
 
-        } catch (Exception e) {
+        }
+        catch(PathNotFoundExceptionRemoli remoli)
+        {
+            System.out.println("Errore PathNotFoundExceptionRemoli: " + remoli.getMessage() + " " + remoli.getCodice_fiscale_utente() + " " + remoli.getCodice_di_errore() + " " + remoli.getDetails());
+        }
+        catch(DAOExceptionRemoli remoli)
+        {
+            System.out.println("Errore DAOExceptionRemoli: " + remoli.getMessage() + " " + remoli.getCause());
+        }
+        catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

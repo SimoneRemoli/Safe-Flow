@@ -9,16 +9,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import Exception.DAOExceptionRemoli;
+import Exception.PathNotFoundExceptionRemoli;
 import utility.Decorator.DecoratorPath.*;
 
 public class AreaRiservata
 {
-    public List<TicketBean> runTicket(String cf) throws SQLException {
+    public List<TicketBean> runTicket(String cf) throws DAOExceptionRemoli, PathNotFoundExceptionRemoli {
         TicketDAO ticketDAO = new TicketDAO();
         List<TicketBean> tickets = ticketDAO.getTicketByCF(cf);
         return tickets;
     }
-    public List<RouteBean> runPath(String cf) throws DAOExceptionRemoli, SQLException {
+    public List<RouteBean> runPath(String cf) throws PathNotFoundExceptionRemoli, DAOExceptionRemoli {
         RouteDAO routeDAO = new RouteDAO();
         // Ottieni la lista di percorsi dal DAO
         List<Route> listaPercorsi = routeDAO.getData(cf);
