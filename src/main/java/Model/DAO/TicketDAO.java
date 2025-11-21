@@ -1,6 +1,6 @@
 package Model.DAO;
 
-import Factory.ConnectionFactory;
+import utility.Factory.ConnectionFactory;
 import Bean.TicketBean;
 
 import java.sql.CallableStatement;

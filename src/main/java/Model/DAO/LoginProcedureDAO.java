@@ -1,5 +1,5 @@
 package Model.DAO;
-import Factory.ConnectionFactory;
+import utility.Factory.ConnectionFactory;
 import utility.Singleton.Credentials;
 import Exception.DAOException;
 import Model.Domain.Ruolo;

@@ -1,7 +1,7 @@
 package Model.DAO;
 
 import Exception.DAOException;
-import Factory.ConnectionFactory;
+import utility.Factory.ConnectionFactory;
 import Model.Domain.Mastercard;
 
 import java.sql.CallableStatement;

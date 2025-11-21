@@ -1,5 +1,5 @@
 package Model.DAO;
-import Factory.ConnectionFactory;
+import utility.Factory.ConnectionFactory;
 import Model.Domain.City;
 import Exception.DAOException;
 

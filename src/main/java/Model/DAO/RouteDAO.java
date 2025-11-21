@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Exception.DAOException;
-import Factory.ConnectionFactory;
+import utility.Factory.ConnectionFactory;
 import Model.Domain.Route;
 
 public class RouteDAO {

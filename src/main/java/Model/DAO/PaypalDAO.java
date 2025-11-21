@@ -1,6 +1,6 @@
 package Model.DAO;
 
-import Factory.ConnectionFactory;
+import utility.Factory.ConnectionFactory;
 import Exception.DAOException;
 import Model.Domain.Paypal;
 import java.sql.CallableStatement;

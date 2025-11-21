@@ -1,7 +1,7 @@
 package Model.DAO;
 
 import Bean.FermataRecordBean;
-import Factory.ConnectionFactory;
+import utility.Factory.ConnectionFactory;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

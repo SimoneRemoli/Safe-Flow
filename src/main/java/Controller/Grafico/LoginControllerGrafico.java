@@ -4,7 +4,7 @@ import Bean.AutenticazioneBean;
 import Bean.UtenteBeanGenerico;
 import Controller.Applicativo.LoginController;
 import Exception.DAOException;
-import Factory.ConnectionFactory;
+import utility.Factory.ConnectionFactory;
 import utility.Singleton.Credentials;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

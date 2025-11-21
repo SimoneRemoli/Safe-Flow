@@ -1,6 +1,6 @@
 package Model.DAO;
 
-import Factory.ConnectionFactory;
+import utility.Factory.ConnectionFactory;
 import java.sql.*;
 
 public class RestituisciIdStazioniPartenzaArrivoDAO {
