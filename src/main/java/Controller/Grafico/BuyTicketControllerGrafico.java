@@ -3,13 +3,12 @@ package Controller.Grafico;
 import Bean.CityBean;
 import Bean.PrezzoTotaleBean;
 import Controller.Applicativo.CityController;
-import Exception.DAOException;
+import Exception.DAOExceptionRemoli;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -39,7 +38,7 @@ public class BuyTicketControllerGrafico extends HttpServlet {
             // Mostro la pagina JSP
             request.getRequestDispatcher("buyTicket.jsp").forward(request, response);
 
-        } catch (DAOException e) {
+        } catch (DAOExceptionRemoli e) {
             e.printStackTrace();
             request.setAttribute("errore", "Errore nel caricamento delle città: " + e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
@@ -71,7 +70,7 @@ public class BuyTicketControllerGrafico extends HttpServlet {
             // Mostro la pagina di conferma
             request.getRequestDispatcher("/confermaPagamento.jsp").forward(request, response);
 
-        } catch (DAOException e) {
+        } catch (DAOExceptionRemoli e) {
             e.printStackTrace();
             request.setAttribute("errore", "Errore durante l'elaborazione dell'acquisto: " + e.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);

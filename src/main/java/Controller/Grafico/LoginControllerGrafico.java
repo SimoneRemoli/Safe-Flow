@@ -3,7 +3,7 @@ package Controller.Grafico;
 import Bean.AutenticazioneBean;
 import Bean.UtenteBeanGenerico;
 import Controller.Applicativo.LoginController;
-import Exception.DAOException;
+import Exception.DAOExceptionRemoli;
 import utility.Factory.ConnectionFactory;
 import utility.Singleton.Credentials;
 import javax.servlet.ServletException;
@@ -54,10 +54,10 @@ public class LoginControllerGrafico extends HttpServlet {
     /**
      * Gestisce eventuali errori di login (DAO o credenziali errate).
      */
-    private void gestisciErroreLogin(HttpServletRequest request, HttpServletResponse response, DAOException ex)
+    private void gestisciErroreLogin(HttpServletRequest request, HttpServletResponse response, DAOExceptionRemoli ex)
             throws ServletException, IOException {
         ex.printStackTrace();
-        request.setAttribute("messaggioErrore", "Credenziali non valide. Riprova.");
+        request.setAttribute("messaggioErrore", "Errore nella connessione al DB [500 internal error]");
         request.getRequestDispatcher("erroreLogin.jsp").forward(request, response);
     }
 
@@ -105,7 +105,7 @@ public class LoginControllerGrafico extends HttpServlet {
             gestisciReindirizzamento(utente, response);
 
 
-        } catch (DAOException ex) {
+        } catch (DAOExceptionRemoli ex) {
             gestisciErroreLogin(request, response, ex);
 
         } catch (LoginNotFoundRemoli ex) {

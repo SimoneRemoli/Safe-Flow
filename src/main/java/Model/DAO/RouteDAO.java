@@ -8,12 +8,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import Exception.DAOException;
+import Exception.DAOExceptionRemoli;
 import utility.Factory.ConnectionFactory;
 import Model.Domain.Route;
 
 public class RouteDAO {
-    public void save(Route route) throws DAOException, SQLException {
+    public void save(Route route) throws DAOExceptionRemoli, SQLException {
         try (Connection conn = ConnectionFactory.getConnection()){
 
 
@@ -38,11 +38,11 @@ public class RouteDAO {
             cs.execute();
 
         } catch (Exception e) {
-            throw new DAOException("Errore durante la registrazione del percorso: " + e.getMessage());
+            throw new DAOExceptionRemoli("Errore durante la registrazione del percorso: " + e.getMessage());
         }
     }
 
-    public List<Route> getData(String cf) throws SQLException, DAOException {
+    public List<Route> getData(String cf) throws SQLException, DAOExceptionRemoli {
         try (Connection conn = ConnectionFactory.getConnection()){
 
             String sp = "{ CALL RouteX_Update.getPath(?) }";
@@ -81,7 +81,7 @@ public class RouteDAO {
             }
 
         } catch (Exception e) {
-            throw new DAOException("Errore durante la restituzione del percorso: " + e.getMessage());
+            throw new DAOExceptionRemoli("Errore durante la restituzione del percorso: " + e.getMessage());
         }
         return null;
     }

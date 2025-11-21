@@ -4,9 +4,8 @@ import Bean.CityBean;
 import Bean.PrezzoTotaleBean;
 import Model.DAO.CityDAO;
 import Model.Domain.City;
-import Exception.DAOException;
+import Exception.DAOExceptionRemoli;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class CityController {
     /**
      * Recupera tutte le città dal database e le converte in CityBean per la View.
      */
-    public List<CityBean> getAllCities() throws DAOException {
+    public List<CityBean> getAllCities() throws DAOExceptionRemoli {
         CityDAO dao = new CityDAO();
         List<City> cities = dao.ListCities();
 
@@ -28,18 +27,18 @@ public class CityController {
 
         // Caso 1: DAO restituisce null (errore anomalo nel livello inferiore)
         if (cities == null) {
-            throw new DAOException("Errore nel recupero delle città: nessun dato disponibile dal database.");
+            throw new DAOExceptionRemoli("Errore nel recupero delle città: nessun dato disponibile dal database.");
         }
 
         // Caso 2: la lista è vuota
         if (cities.isEmpty()) {
-            throw new DAOException("Nessuna città disponibile per l’acquisto al momento.");
+            throw new DAOExceptionRemoli("Nessuna città disponibile per l’acquisto al momento.");
         }
 
         // Caso 3: presenza di dati non coerenti
         for (City c : cities) {
             if (c == null || c.getName() == null || c.getName().isEmpty()) {
-                throw new DAOException("Sono stati trovati dati città non validi nel database.");
+                throw new DAOExceptionRemoli("Sono stati trovati dati città non validi nel database.");
             }
         }
 
@@ -60,24 +59,24 @@ public class CityController {
      * @param city     nome della città selezionata
      * @param quantity quantità di biglietti richiesta
      * @return Bean contenente il prezzo totale
-     * @throws DAOException in caso di errore logico o di accesso ai dati
+     * @throws DAOExceptionRemoli in caso di errore logico o di accesso ai dati
      */
-    public PrezzoTotaleBean ottieni_prezzo_totale(String city, String quantity) throws DAOException
+    public PrezzoTotaleBean ottieni_prezzo_totale(String city, String quantity) throws DAOExceptionRemoli
     {
 
         if (city == null || city.isEmpty()) {
-            throw new DAOException("La città selezionata non è valida.");
+            throw new DAOExceptionRemoli("La città selezionata non è valida.");
         }
 
         int quantita;
         try {
             quantita = Integer.parseInt(quantity);
         } catch (NumberFormatException e) {
-            throw new DAOException("La quantità inserita non è un numero valido.");
+            throw new DAOExceptionRemoli("La quantità inserita non è un numero valido.");
         }
 
         if (quantita <= 0) {
-            throw new DAOException("La quantità deve essere maggiore di zero.");
+            throw new DAOExceptionRemoli("La quantità deve essere maggiore di zero.");
         }
 
         // === CALCOLO DEL PREZZO ===
@@ -91,7 +90,7 @@ public class CityController {
         }
 
         // Nessuna città trovata nel DB
-        throw new DAOException("La città selezionata non è disponibile nel database.");
+        throw new DAOExceptionRemoli("La città selezionata non è disponibile nel database.");
     }
 
     /**

@@ -1,7 +1,7 @@
 package Model.DAO;
 import utility.Factory.ConnectionFactory;
 import utility.Singleton.Credentials;
-import Exception.DAOException;
+import Exception.DAOExceptionRemoli;
 import Model.Domain.Ruolo;
 import java.sql.*;
 import java.sql.Connection;
@@ -10,7 +10,7 @@ import Exception.LoginNotFoundRemoli;
 
 public class LoginProcedureDAO {
 
-    public Credentials login(Credentials cred) throws DAOException, LoginNotFoundRemoli {
+    public Credentials login(Credentials cred) throws DAOExceptionRemoli, LoginNotFoundRemoli {
 
         try {
             Connection conn = ConnectionFactory.getConnection();
@@ -34,7 +34,7 @@ public class LoginProcedureDAO {
             return cred;
 
         } catch (SQLException e) {
-            throw new DAOException("Errore durante il login: " + e.getMessage());
+            throw new DAOExceptionRemoli("Errore durante il login: " + e.getMessage());
         }
     }
 }

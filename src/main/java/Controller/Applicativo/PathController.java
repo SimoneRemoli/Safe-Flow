@@ -6,7 +6,7 @@ import Model.DAO.RestituisciIdStazioniPartenzaArrivoDAO;
 import Model.DAO.RouteDAO;
 import Model.Domain.Route;
 import utility.Factory.CityLifeFactory;
-import Exception.DAOException;
+import Exception.DAOExceptionRemoli;
 import utility.Singleton.Credentials;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,7 +52,7 @@ public class PathController
         int codeFinishStation = dao.getStazioneDiArrivo();
 
         if (codeFinishStation == 0 || codeStartStation == 0) {
-            throw new DAOException("Stazioni non trovate o nomi errati");
+            throw new DAOExceptionRemoli("Stazioni non trovate o nomi errati");
         }
 
         System.out.println("Id partenza = " + codeStartStation);
@@ -91,7 +91,7 @@ public class PathController
 
         return trasferimento;
     }
-    public void save_route(Credentials cred, HttpServletRequest request) throws DAOException, SQLException {
+    public void save_route(Credentials cred, HttpServletRequest request) throws DAOExceptionRemoli, SQLException {
         String cf = cred.getCodiceFiscale();
 
         if (cf!= null) {
@@ -100,6 +100,6 @@ public class PathController
             saveRoute.save(info); //uso route per salvare il percorso. Poi RouteBean è diverso, non ha utente
         }
         else
-            throw new DAOException("Utente non autenticato, impossibile salvare il percorso.");
+            throw new DAOExceptionRemoli("Utente non autenticato, impossibile salvare il percorso.");
     }
 }

@@ -8,7 +8,7 @@ import Model.Domain.Route;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import Exception.DAOException;
+import Exception.DAOExceptionRemoli;
 import utility.Decorator.DecoratorPath.*;
 
 public class AreaRiservata
@@ -18,7 +18,7 @@ public class AreaRiservata
         List<TicketBean> tickets = ticketDAO.getTicketByCF(cf);
         return tickets;
     }
-    public List<RouteBean> runPath(String cf) throws DAOException, SQLException {
+    public List<RouteBean> runPath(String cf) throws DAOExceptionRemoli, SQLException {
         RouteDAO routeDAO = new RouteDAO();
         // Ottieni la lista di percorsi dal DAO
         List<Route> listaPercorsi = routeDAO.getData(cf);

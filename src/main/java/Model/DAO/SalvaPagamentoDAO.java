@@ -2,7 +2,7 @@ package Model.DAO;
 
 import utility.Factory.ConnectionFactory;
 import utility.Singleton.Credentials;
-import Exception.DAOException;
+import Exception.DAOExceptionRemoli;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.CallableStatement;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public class SalvaPagamentoDAO
 {
-    public void salvataggio(Credentials cred, List<String> codiciBiglietti, String metodopayment, String city) throws DAOException, SQLException
+    public void salvataggio(Credentials cred, List<String> codiciBiglietti, String metodopayment, String city) throws DAOExceptionRemoli, SQLException
     {
 
         try {
@@ -28,7 +28,7 @@ public class SalvaPagamentoDAO
             ResultSet rs = cs.executeQuery();
 
         } catch (Exception e) {
-            throw new DAOException("Errore " + e.getMessage());
+            throw new DAOExceptionRemoli("Errore " + e.getMessage());
         }
     }
 

@@ -1,6 +1,6 @@
 package Model.DAO;
 
-import Exception.DAOException;
+import Exception.DAOExceptionRemoli;
 import utility.Factory.ConnectionFactory;
 import Model.Domain.Mastercard;
 
@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class MastercardDAO {
 
     public Mastercard GetPaymentMastercard(String nC, String sc, String cvv)
-            throws DAOException, SQLException {
+            throws DAOExceptionRemoli, SQLException {
 
         final String query = "{ CALL RouteX_Update.getMastercardPayment(?,?,?) }";
 
@@ -43,7 +43,7 @@ public class MastercardDAO {
             }
 
         } catch (SQLException e) {
-            throw new DAOException("Errore in GetPaymentMastercard: " + e.getMessage());
+            throw new DAOExceptionRemoli("Errore in GetPaymentMastercard: " + e.getMessage());
         }
     }
 }

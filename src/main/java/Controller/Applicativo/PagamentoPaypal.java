@@ -2,7 +2,7 @@ package Controller.Applicativo;
 import Model.DAO.PaypalDAO;
 import Model.DAO.SalvaPagamentoDAO;
 import Model.Domain.*;
-import Exception.DAOException;
+import Exception.DAOExceptionRemoli;
 import utility.Decorator.DecoratorTicket.BaseTicketCode;
 import utility.Decorator.DecoratorTicket.CittaDecorator;
 import utility.Decorator.DecoratorTicket.Component;
@@ -55,7 +55,7 @@ public class PagamentoPaypal extends RegistrazionePagamentoController
     private void registra_pagamento_permanente(List<String> codiciBiglietti) throws Exception {
         if (credenziali == null) {
             System.err.println(" Nessun utente associato al pagamento.");
-            throw new DAOException("Nessun utente loggato associato al pagamento.");
+            throw new DAOExceptionRemoli("Nessun utente loggato associato al pagamento.");
         }
         SalvaPagamentoDAO dao = new SalvaPagamentoDAO();
         System.out.println("Traveler " + credenziali.getNome() + " "+ credenziali.getCodiceFiscale() + " "+credenziali.getNome()+ " "+credenziali.getCognome()+ " " + credenziali.getDisabile() + " ha effettuato un pagamento di " + totale + "€");

@@ -1,7 +1,7 @@
 package Model.DAO;
 
 import utility.Factory.ConnectionFactory;
-import Exception.DAOException;
+import Exception.DAOExceptionRemoli;
 import Model.Domain.Paypal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class PaypalDAO
 {
-    public Paypal GetPaymentPaypal(String email, String codice) throws DAOException, SQLException {
+    public Paypal GetPaymentPaypal(String email, String codice) throws DAOExceptionRemoli, SQLException {
 
         final String query = "{ CALL RouteX_Update.getPaypalPayment(?,?) }";
 
@@ -38,7 +38,7 @@ public class PaypalDAO
             }
 
         } catch (SQLException e) {
-            throw new DAOException("Errore in GetPaymentMastercard: " + e.getMessage());
+            throw new DAOExceptionRemoli("Errore in GetPaymentMastercard: " + e.getMessage());
         }
     }
 }

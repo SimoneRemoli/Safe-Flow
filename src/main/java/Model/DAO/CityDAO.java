@@ -1,7 +1,7 @@
 package Model.DAO;
 import utility.Factory.ConnectionFactory;
 import Model.Domain.City;
-import Exception.DAOException;
+import Exception.DAOExceptionRemoli;
 
 
 import java.sql.CallableStatement;
@@ -14,7 +14,7 @@ import java.util.List;
 public class CityDAO
 {
     private final List<City> informazioni = new ArrayList<>();
-    public List<City> ListCities() throws DAOException
+    public List<City> ListCities() throws DAOExceptionRemoli
     {
         try {
 
@@ -31,7 +31,7 @@ public class CityDAO
 
 
         }catch (SQLException e) {
-        throw new DAOException("Errore. " + e.getMessage());
+        throw new DAOExceptionRemoli("Errore. " + e.getMessage());
         }
         return informazioni;
 
