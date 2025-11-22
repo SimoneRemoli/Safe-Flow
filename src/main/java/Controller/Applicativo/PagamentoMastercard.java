@@ -4,14 +4,15 @@ import Model.DAO.MastercardDAO;
 import Exception.DAOExceptionRemoli;
 import Exception.CredentialsExceptionRemoli;
 import Exception.PaymentValidationExceptionRemoli;
-import Model.DAO.SalvaPagamentoDAO;
+import Model.DAO.SalvaTicketDBDAO;
+import Model.DAO.TicketDAOLayer;
 import Model.Domain.*;
 import utility.Decorator.DecoratorTicket.BaseTicketCode;
 import utility.Decorator.DecoratorTicket.CittaDecorator;
 import utility.Decorator.DecoratorTicket.Component;
 import utility.Decorator.DecoratorTicket.TimestampDecorator;
+import utility.Factory.FactoryPersistence;
 import utility.Singleton.Credentials;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,9 +62,12 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
             System.err.println(" Nessun utente associato al pagamento.");
             throw new CredentialsExceptionRemoli("Nessun utente loggato associato al pagamento.", "Errore nel PagamentoMastercard.java");
         }
-        SalvaPagamentoDAO dao = new SalvaPagamentoDAO();
+        //SalvaTicketDBDAO dao = new SalvaTicketDBDAO();
         System.out.println("Traveler " + credenziali.getNome() + " "+ credenziali.getCodiceFiscale() + " "+credenziali.getNome()+ " "+credenziali.getCognome()+ " " + credenziali.getDisabile() + " ha effettuato un pagamento di " + totale + "€");
-        dao.salvataggio(credenziali,codiciBiglietti,"Mastercard", city);
+       // dao.salvataggio(credenziali,codiciBiglietti,"Mastercard", city);
+
+        TicketDAOLayer daoLayer = FactoryPersistence.createTicketDAO(TypesOfPersistenceLayer.FileSystem);
+        daoLayer.salvataggio(credenziali, codiciBiglietti, "Mastercard", city);
 
 
 

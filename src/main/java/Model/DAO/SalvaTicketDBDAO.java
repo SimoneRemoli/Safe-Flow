@@ -2,14 +2,13 @@ package Model.DAO;
 
 import utility.Factory.ConnectionFactory;
 import utility.Singleton.Credentials;
-import Exception.DAOExceptionRemoli;
 import Exception.CredentialsExceptionRemoli;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.CallableStatement;
 import java.util.List;
 
-public class SalvaPagamentoDAO
+public class SalvaTicketDBDAO
 {
     public void salvataggio(Credentials cred, List<String> codiciBiglietti, String metodopayment, String city) throws CredentialsExceptionRemoli
     {
@@ -32,8 +31,6 @@ public class SalvaPagamentoDAO
             throw new CredentialsExceptionRemoli("Nessun salvataggio del percorso nel livello di persistenza " + e.getMessage(), "Errore in SalvaPagamentoDAO.java");
         }
     }
-
-
 }
 
 

@@ -1,12 +1,14 @@
 package Controller.Applicativo;
 import Model.DAO.PaypalDAO;
-import Model.DAO.SalvaPagamentoDAO;
+import Model.DAO.SalvaTicketDBDAO;
+import Model.DAO.TicketDAOLayer;
 import Model.Domain.*;
 import Exception.DAOExceptionRemoli;
 import utility.Decorator.DecoratorTicket.BaseTicketCode;
 import utility.Decorator.DecoratorTicket.CittaDecorator;
 import utility.Decorator.DecoratorTicket.Component;
 import utility.Decorator.DecoratorTicket.TimestampDecorator;
+import utility.Factory.FactoryPersistence;
 import utility.Singleton.Credentials;
 import Exception.CredentialsExceptionRemoli;
 import Exception.PaymentValidationExceptionRemoli;
@@ -59,10 +61,12 @@ public class PagamentoPaypal extends RegistrazionePagamentoController
             System.err.println(" Nessun utente associato al pagamento.");
             throw new CredentialsExceptionRemoli("Nessun utente loggato associato al pagamento.", "Errore nel PagamentoPaypal.java");
         }
-        SalvaPagamentoDAO dao = new SalvaPagamentoDAO();
+        //SalvaTicketDBDAO dao = new SalvaTicketDBDAO();
         System.out.println("Traveler " + credenziali.getNome() + " "+ credenziali.getCodiceFiscale() + " "+credenziali.getNome()+ " "+credenziali.getCognome()+ " " + credenziali.getDisabile() + " ha effettuato un pagamento di " + totale + "€");
-        dao.salvataggio(credenziali,codiciBiglietti,"Paypal", city);
+        //dao.salvataggio(credenziali,codiciBiglietti,"Paypal", city);
 
+        TicketDAOLayer daoLayer = FactoryPersistence.createTicketDAO(TypesOfPersistenceLayer.FileSystem);
+        daoLayer.salvataggio(credenziali,codiciBiglietti,"Paypal", city);
 
 
     }
