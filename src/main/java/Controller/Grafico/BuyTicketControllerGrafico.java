@@ -56,6 +56,7 @@ public class BuyTicketControllerGrafico extends HttpServlet {
         String city = request.getParameter("city");
         String quantity = request.getParameter("quantity");
 
+
         System.out.println("Richiesta acquisto: " + quantity + " biglietti per la città di " + city);
 
         try {

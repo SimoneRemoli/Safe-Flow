@@ -20,7 +20,7 @@ public class AreaRiservata
     public List<TicketBean> runTicket(String cf) throws DAOExceptionRemoli, PathNotFoundExceptionRemoli {
         //TicketDAODB ticketDAO = new TicketDAODB();
         //List<TicketBean> tickets = ticketDAO.getTicketByCF(cf);
-        TicketDAOLayer daolayer = FactoryPersistence.createTicketDAO(TypesOfPersistenceLayer.FileSystem);
+        TicketDAOLayer daolayer = FactoryPersistence.createTicketDAO();
         List<TicketBean> tickets = daolayer.getTicketByCF(cf);
         return tickets;
     }

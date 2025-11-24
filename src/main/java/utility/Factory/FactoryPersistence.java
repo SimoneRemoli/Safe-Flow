@@ -3,17 +3,23 @@ import Model.DAO.TicketDAODB;
 import Model.DAO.TicketDAOFile;
 import Model.DAO.TicketDAOLayer;
 import Model.Domain.TypesOfPersistenceLayer;
+import utility.Singleton.PersistenceMode;
+
+import static Model.Domain.TypesOfPersistenceLayer.FileSystem;
+import static Model.Domain.TypesOfPersistenceLayer.JDBC;
 
 public class FactoryPersistence {
 
-    public static TicketDAOLayer createTicketDAO(TypesOfPersistenceLayer type) {
-        switch (type) {
+    public static TicketDAOLayer createTicketDAO() {
+
+        TypesOfPersistenceLayer typesPer = PersistenceMode.getInstance().getTipo();
+        switch (typesPer) {
             case JDBC:
                 return new TicketDAODB();
             case FileSystem:
                 return new TicketDAOFile();
             default:
-                throw new IllegalArgumentException("Tipo di persistenza non supportato: " + type);
+                throw new IllegalArgumentException("Tipo di persistenza non supportato: " + typesPer);
         }
     }
 }

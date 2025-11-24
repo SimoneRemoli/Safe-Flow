@@ -131,10 +131,13 @@
                     </div>
 
 
+
                     <div class="mb-3">
                         <label for="quantity" class="form-label">Number of Tickets</label>
                         <input type="number" id="quantity" name="quantity" class="form-control" min="1" max="10" value="1" required>
                     </div>
+
+
 
                     <button type="submit" class="btn-submit">Confirm</button>
                 </form>

@@ -3,10 +3,12 @@ package Controller.Grafico;
 import Controller.Applicativo.PagamentoMastercard;
 import Controller.Applicativo.PagamentoPaypal;
 import Controller.Applicativo.RegistrazionePagamentoController;
+import Model.Domain.TypesOfPersistenceLayer;
 import utility.Singleton.Credentials;
 import Exception.PaymentValidationExceptionRemoli;
 import Exception.CredentialsExceptionRemoli;
 import Exception.DAOExceptionRemoli;
+import utility.Singleton.PersistenceMode;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -47,6 +49,20 @@ public class ConfermaPagamentoControllerGrafico extends HttpServlet {
         final String quantityParam = request.getParameter("quantity");
         final String totaleParam = request.getParameter("totale");
         final String metodo = request.getParameter("metodoPagamento");
+        String persistence = request.getParameter("persistence"); //JDBC o FILE SYSTEM
+        TypesOfPersistenceLayer persistenceLayer;
+
+        if(persistence.equals("JDBC"))
+        {
+            persistenceLayer = TypesOfPersistenceLayer.JDBC;
+        }
+        else
+        {
+            persistenceLayer = TypesOfPersistenceLayer.FileSystem;
+        }
+
+        PersistenceMode.getInstance().setTipo(persistenceLayer); //singleton che mantiene il tipo di persistenza scelto
+
 
         if (city == null || quantityParam == null || totaleParam == null || metodo == null) {
             response.sendRedirect("errorePagamento.jsp");

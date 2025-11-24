@@ -1,6 +1,5 @@
 package Controller.Applicativo;
 import Model.DAO.PaypalDAO;
-import Model.DAO.SalvaTicketDBDAO;
 import Model.DAO.TicketDAOLayer;
 import Model.Domain.*;
 import Exception.DAOExceptionRemoli;
@@ -65,13 +64,11 @@ public class PagamentoPaypal extends RegistrazionePagamentoController
         System.out.println("Traveler " + credenziali.getNome() + " "+ credenziali.getCodiceFiscale() + " "+credenziali.getNome()+ " "+credenziali.getCognome()+ " " + credenziali.getDisabile() + " ha effettuato un pagamento di " + totale + "€");
         //dao.salvataggio(credenziali,codiciBiglietti,"Paypal", city);
 
-        TicketDAOLayer daoLayer = FactoryPersistence.createTicketDAO(TypesOfPersistenceLayer.FileSystem);
-        daoLayer.salvataggio(credenziali,codiciBiglietti,"Paypal", city);
+        TicketDAOLayer daoLayerJDBC = FactoryPersistence.createTicketDAO();
+        daoLayerJDBC.salvataggio(credenziali, codiciBiglietti, "Paypal", city);
+        return;
 
 
     }
-
-
-
 
 }

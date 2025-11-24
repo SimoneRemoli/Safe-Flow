@@ -4,7 +4,6 @@ import Model.DAO.MastercardDAO;
 import Exception.DAOExceptionRemoli;
 import Exception.CredentialsExceptionRemoli;
 import Exception.PaymentValidationExceptionRemoli;
-import Model.DAO.SalvaTicketDBDAO;
 import Model.DAO.TicketDAOLayer;
 import Model.Domain.*;
 import utility.Decorator.DecoratorTicket.BaseTicketCode;
@@ -66,14 +65,12 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
         System.out.println("Traveler " + credenziali.getNome() + " "+ credenziali.getCodiceFiscale() + " "+credenziali.getNome()+ " "+credenziali.getCognome()+ " " + credenziali.getDisabile() + " ha effettuato un pagamento di " + totale + "€");
        // dao.salvataggio(credenziali,codiciBiglietti,"Mastercard", city);
 
-        TicketDAOLayer daoLayer = FactoryPersistence.createTicketDAO(TypesOfPersistenceLayer.FileSystem);
+
+        TicketDAOLayer daoLayer = FactoryPersistence.createTicketDAO();
         daoLayer.salvataggio(credenziali, codiciBiglietti, "Mastercard", city);
-
-
+        return;
 
     }
-
-
 }
 
 

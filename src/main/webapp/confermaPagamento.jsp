@@ -141,6 +141,28 @@
                     </div>
                 </div>
 
+                <!-- Sezione scelta persistenza -->
+                <div class="payment-section mt-4">
+                    <label><strong>Modello di persistenza:</strong></label><br>
+
+                    <div class="form-check form-check-inline mt-2">
+                        <input class="form-check-input" type="radio" name="persistence"
+                               id="persistenceJDBC" value="JDBC" checked>
+                        <label class="form-check-label" for="persistenceJDBC">
+                            <i class="fas fa-database text-primary"></i> Database (JDBC)
+                        </label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="persistence"
+                               id="persistenceFile" value="FileSystem">
+                        <label class="form-check-label" for="persistenceFile">
+                            <i class="fas fa-file-csv text-success"></i> File System (CSV)
+                        </label>
+                    </div>
+                </div>
+
+
                 <div class="text-center mt-4">
                     <button type="submit" class="btn-confirm">
                         <i class="fas fa-credit-card"></i> Conferma Pagamento
