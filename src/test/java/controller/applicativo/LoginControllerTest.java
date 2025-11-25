@@ -168,5 +168,16 @@ class LoginControllerTest {
         Component gen = new TimestampDecorator(new CittaDecorator(new BaseTicketCode(), "Rome"));
         assertTrue(gen.genera().contains("ROME"));
     }
+    @Test
+    void TestingTimeStamp()
+    {
+        Component gen = new TimestampDecorator(new CittaDecorator(new BaseTicketCode(), "Boh"));
+        String ticket = gen.genera();
+
+        String [] st = ticket.split("-");
+        String timestamp = st[0];
+
+        assertEquals(13, timestamp.length());
+    }
 }
 
