@@ -27,4 +27,5 @@ public class PersistenceMode {
     public void setTipo(TypesOfPersistenceLayer tipo) {
         this.tipo = tipo;
     }
+
 }

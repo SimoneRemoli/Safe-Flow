@@ -58,7 +58,6 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
 
     private void registra_pagamento_permanente(List<String> codiciBiglietti) throws CredentialsExceptionRemoli {
         if (credenziali == null) {
-            System.err.println(" Nessun utente associato al pagamento.");
             throw new CredentialsExceptionRemoli("Nessun utente loggato associato al pagamento.", "Errore nel PagamentoMastercard.java");
         }
         //SalvaTicketDBDAO dao = new SalvaTicketDBDAO();

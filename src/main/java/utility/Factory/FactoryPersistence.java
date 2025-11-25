@@ -22,6 +22,20 @@ public class FactoryPersistence {
                 throw new IllegalArgumentException("Tipo di persistenza non supportato: " + typesPer);
         }
     }
+
+   /* public static DAOGenericLayer createDAO(String dao)
+    {
+        switch (dao) {
+            case "A":
+                return ADAO();
+            // Aggiungere altri casi per altri DAO se necessario
+            default:
+                throw new IllegalArgumentException("DAO non supportato: " + dao);
+        }
+
+    }
+
+    */
 }
 
 
