@@ -20,11 +20,18 @@ class LoginControllerTest {
 
     private static final ResourceBundle RB = ResourceBundle.getBundle("configurations/testpaths");
 
+    static {
+        System.out.println("La classe di Test viene caricata dalla JVM");
+    }
+
     static Stream<String> validPathsProvider() {
         return Stream.of(
                 RB.getString("valid1"),
                 RB.getString("valid2")
         );
+        /*
+        Stream.of("Ottaviano:Quintiliani:Rome", "Spagna:Anagnina:Rome")
+         */
     }
 
     static Stream<String> invalidPathsProvider() {
@@ -33,6 +40,7 @@ class LoginControllerTest {
                 RB.getString("invalid2")
         );
     }
+
 
     @Test
     void TestPersistenza()
@@ -45,6 +53,11 @@ class LoginControllerTest {
     }
     @ParameterizedTest
     @MethodSource("validPathsProvider")
+    /*
+    Chiamo il metodo validPathsProvider();
+    Prendo ogni valore dello stream
+    e invoco TestPath(String) con uno alla volta.
+     */
     void TestPath(String strings) throws Exception {
 
         String[] parts = strings.split(":");
@@ -59,7 +72,6 @@ class LoginControllerTest {
     void TestExceptionPath(String strings) {
 
         String[] parts = strings.split(":");
-
         PathController path = new PathController();
         assertThrows(DAOExceptionRemoli.class, () ->
         {
