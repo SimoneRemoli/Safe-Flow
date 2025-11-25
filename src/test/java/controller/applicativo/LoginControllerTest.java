@@ -1,6 +1,5 @@
 package controller.applicativo;
 import Bean.PrezzoTotaleBean;
-import Bean.UtenteBeanGenerico;
 import Controller.Applicativo.CityController;
 import Exception.PaymentValidationExceptionRemoli;
 import Exception.CredentialsExceptionRemoli;
@@ -15,6 +14,10 @@ import Model.Domain.TypesOfPersistenceLayer;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import utility.Decorator.DecoratorTicket.BaseTicketCode;
+import utility.Decorator.DecoratorTicket.CittaDecorator;
+import utility.Decorator.DecoratorTicket.Component;
+import utility.Decorator.DecoratorTicket.TimestampDecorator;
 import utility.Factory.ConnectionFactory;
 import utility.Factory.FactoryPersistence;
 import utility.Singleton.Credentials;
@@ -158,6 +161,12 @@ class LoginControllerTest {
         PrezzoTotaleBean prezzo = cityController.ottieni_prezzo_totale("Rome", "2");
         assertEquals(3.0, prezzo.getPrezzo_totale());
 
+    }
+    @Test
+    void TestingGenertingTicket()
+    {
+        Component gen = new TimestampDecorator(new CittaDecorator(new BaseTicketCode(), "Rome"));
+        assertTrue(gen.genera().contains("ROME"));
     }
 }
 
