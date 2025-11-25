@@ -108,22 +108,15 @@ class LoginControllerTest {
     }
 
     @Test
-    void TestingPermessiSbagliati() throws DAOExceptionRemoli, PaymentValidationExceptionRemoli, CredentialsExceptionRemoli {
-        // Implementa il test per PagamentoMastercard qui
+    void TestingPermessiSbagliati(){
 
         PagamentoMastercard pagamento = new PagamentoMastercard("1234567890123456", "12/25", "123", null, 10.0, 2, "Rome");
-        //assertEquals(pagamento.run().size(), 2);
 
         assertThrows(DAOExceptionRemoli.class, () -> //l'utente login_user non ha i permessi sul db per una stored procedure
         {
            pagamento.run();
         });
-
-
-
     }
-
-    // ora devo mette un test che prende il ruolo giusto
 
     @Test
     void TestingPermessiGiusti() throws DAOExceptionRemoli, PaymentValidationExceptionRemoli, CredentialsExceptionRemoli, SQLException {
@@ -142,10 +135,6 @@ class LoginControllerTest {
 
         PagamentoMastercard pagamento = new PagamentoMastercard("4539456721894321", "2027-03-01", "248", cred, 10.0, 2, "Rome");
         assertEquals(pagamento.run().size(), 2);
-
-
-
-
     }
 
 
@@ -153,15 +142,12 @@ class LoginControllerTest {
     void NoUserLoggedPayment() throws SQLException, DAOExceptionRemoli, PaymentValidationExceptionRemoli, CredentialsExceptionRemoli {
         ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
         PagamentoMastercard pagamento = new PagamentoMastercard("4539456721894321", "2027-03-01", "248", null, 10.0, 2, "Rome");
-       // assertEquals(pagamento.run().size(), 2);
         assertThrows(CredentialsExceptionRemoli.class, () -> //l'utente login_user non ha i permessi sul db per una stored procedure
         {
             pagamento.run();
         });
 
-
         //Exception.CredentialsExceptionRemoli: Nessun utente loggato associato al pagamento.
-
     }
 
     @Test
@@ -173,7 +159,5 @@ class LoginControllerTest {
         assertEquals(3.0, prezzo.getPrezzo_totale());
 
     }
-
-
 }
 
