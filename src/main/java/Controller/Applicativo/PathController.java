@@ -52,7 +52,7 @@ public class PathController
         int codeFinishStation = dao.getStazioneDiArrivo();
 
         if (codeFinishStation == 0 || codeStartStation == 0) {
-            throw new DAOExceptionRemoli("Stazioni non trovate o nomi errati");
+            throw new DAOExceptionRemoli("Stazioni non trovate nella città selezionata.");
         }
 
         System.out.println("Id partenza = " + codeStartStation);
