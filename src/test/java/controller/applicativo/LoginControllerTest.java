@@ -3,6 +3,7 @@ package controller.applicativo;
 import Bean.InformazioniPercorsoBean;
 import Controller.Applicativo.PathController;
 import Model.DAO.TicketDAODB;
+import Model.DAO.TicketDAOFile;
 import Model.DAO.TicketDAOLayer;
 import Model.Domain.TypesOfPersistenceLayer;
 import org.junit.jupiter.api.*;
@@ -24,6 +25,14 @@ class LoginControllerTest {
         System.out.println("La classe di Test viene caricata dalla JVM");
     }
 
+    static Stream<String> persistenceJDBC(){
+        return Stream.of(RB.getString("persistenzaJDBC"));
+    }
+
+    static Stream<String> persistenceFile(){
+        return Stream.of(RB.getString("persistenzafile"));
+    }
+
     static Stream<String> validPathsProvider() {
         return Stream.of(
                 RB.getString("valid1"),
@@ -41,16 +50,25 @@ class LoginControllerTest {
         );
     }
 
-
-    @Test
-    void TestPersistenza()
+    @ParameterizedTest
+    @MethodSource("persistenceJDBC")
+    void TestPersistenzaDB(String strings)
     {
-        PersistenceMode.getInstance().setTipo(TypesOfPersistenceLayer.JDBC);
-        //PersistenceMode.getInstance().setTipo(TypesOfPersistenceLayer.FileSystem);
+        TypesOfPersistenceLayer type = TypesOfPersistenceLayer.valueOf(strings);
+        PersistenceMode.getInstance().setTipo(type);
         TicketDAOLayer dao = FactoryPersistence.createTicketDAO();
         assertTrue(dao instanceof TicketDAODB);
-        //assertTrue(dao instanceof TicketDAOFile);
     }
+    @ParameterizedTest
+    @MethodSource("persistenceFile")
+    void TestPersistenzaFile(String strings)
+    {
+        TypesOfPersistenceLayer type = TypesOfPersistenceLayer.valueOf(strings);
+        PersistenceMode.getInstance().setTipo(type);
+        TicketDAOLayer dao = FactoryPersistence.createTicketDAO();
+        assertTrue(dao instanceof TicketDAOFile);
+    }
+
     @ParameterizedTest
     @MethodSource("validPathsProvider")
     /*
