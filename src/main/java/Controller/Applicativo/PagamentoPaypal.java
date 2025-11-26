@@ -42,8 +42,6 @@ public class PagamentoPaypal extends RegistrazionePagamentoController
         }
 
         return codiciBiglietti;
-
-
     }
 
     public PagamentoPaypal(String email, String codiceTransazione, Credentials cred

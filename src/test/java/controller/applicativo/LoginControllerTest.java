@@ -1,12 +1,9 @@
 package controller.applicativo;
-import Bean.PrezzoTotaleBean;
-import Bean.RouteBean;
-import Bean.TicketBean;
+import Bean.*;
 import Controller.Applicativo.AreaRiservata;
 import Controller.Applicativo.CityController;
 import Exception.PaymentValidationExceptionRemoli;
 import Exception.CredentialsExceptionRemoli;
-import Bean.InformazioniPercorsoBean;
 import Controller.Applicativo.PagamentoMastercard;
 import Controller.Applicativo.PathController;
 import Model.DAO.TicketDAODB;
@@ -41,6 +38,40 @@ class LoginControllerTest {
     static {
         System.out.println("La classe di Test viene caricata dalla JVM");
     }
+    static Stream<String> noUserProvider() {
+        return Stream.of(RB.getString("noUser"));
+    }
+
+    static Stream<String> ticketCFProvider() {
+        return Stream.of(RB.getString("ticketCF").split(":"));
+    }
+
+
+    static Stream<String> Permission(){
+        return Stream.of(RB.getString("permission"));
+    }
+
+    static Stream<String> permessiGiustiProvider() {
+        return Stream.of(RB.getString("permessiOK"));
+    }
+
+    static Stream<String> timestampProvider() {
+        return Stream.of(RB.getString("timestamp").split(":"));
+    }
+
+    static Stream<String> invalidTicketCFProvider() {
+        return Stream.of(RB.getString("invalidTicketCF").split(":"));
+    }
+
+
+
+    static Stream<String> prezzoTotaleProvider() {
+        return Stream.of(
+                RB.getString("prezzo1"),
+                RB.getString("prezzo2"),
+                RB.getString("prezzo3")
+        );
+    }
 
     static Stream<String> persistenceJDBC(){
         return Stream.of(RB.getString("persistenzaJDBC"));
@@ -49,6 +80,11 @@ class LoginControllerTest {
     static Stream<String> persistenceFile(){
         return Stream.of(RB.getString("persistenzafile"));
     }
+
+    static Stream<String> pathCFProvider() {
+        return Stream.of(RB.getString("pathsCF").split(":"));
+    }
+
 
     static Stream<String> validPathsProvider() {
         return Stream.of(
@@ -59,6 +95,11 @@ class LoginControllerTest {
         Stream.of("Ottaviano:Quintiliani:Rome", "Spagna:Anagnina:Rome")
          */
     }
+
+    static Stream<String> ticketGeneratingProvider() {
+        return Stream.of(RB.getString("ticketgen").split(":"));
+    }
+
 
     static Stream<String> invalidPathsProvider() {
         return Stream.of(
@@ -114,10 +155,14 @@ class LoginControllerTest {
         });
     }
 
-    @Test
-    void TestingPermessiSbagliati(){
+    @ParameterizedTest
+    @MethodSource("Permission")
+    void TestingPermessiSbagliati(String strings){
 
-        PagamentoMastercard pagamento = new PagamentoMastercard("1234567890123456", "12/25", "123", null, 10.0, 2, "Rome");
+        String[] parts = strings.split(":");
+        double tot = Double.parseDouble(parts[3]);
+        int quantitativo = Integer.parseInt(parts[4]);
+        PagamentoMastercard pagamento = new PagamentoMastercard(parts[0], parts[1], parts[2], null, tot, quantitativo, parts[5]);
 
         assertThrows(DAOExceptionRemoli.class, () -> //l'utente login_user non ha i permessi sul db per una stored procedure
         {
@@ -125,99 +170,139 @@ class LoginControllerTest {
         });
     }
 
-    @Test
-    void TestingPermessiGiusti() throws DAOExceptionRemoli, PaymentValidationExceptionRemoli, CredentialsExceptionRemoli, SQLException {
-        // Implementa il test per PagamentoMastercard qui
+    @ParameterizedTest
+    @MethodSource("permessiGiustiProvider")
+    void TestingPermessiGiusti(String s) throws Exception {
+
+        String[] p = s.split(":");
 
         ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
 
         Credentials cred = new Credentials();
-        cred.setNome("Giulio");
-        cred.setCognome("Andreotti");
-        cred.setCodiceFiscale("BCCSLL98");
-        cred.setDisabile(true);
+        cred.setNome(p[0]);
+        cred.setCognome(p[1]);
+        cred.setCodiceFiscale(p[2]);
+        cred.setDisabile(Boolean.parseBoolean(p[3]));
+        cred.setEmail(p[4]);
+        cred.setPassword(p[5]);
         cred.setRuolo(Ruolo.TRAVELER);
-        cred.setEmail("andreotti@gmail.com");
-        cred.setPassword("mammina");
 
-        PagamentoMastercard pagamento = new PagamentoMastercard("4539456721894321", "2027-03-01", "248", cred, 10.0, 2, "Rome");
-        assertEquals(pagamento.run().size(), 2);
+        PagamentoMastercard pagamento = new PagamentoMastercard(
+                p[6], p[7], p[8], cred,
+                Double.parseDouble(p[9]),
+                Integer.parseInt(p[10]),
+                p[11]
+        );
+
+        assertEquals(2, pagamento.run().size());
     }
 
 
-    @Test
-    void NoUserLoggedPayment() throws SQLException, DAOExceptionRemoli, PaymentValidationExceptionRemoli, CredentialsExceptionRemoli {
+    @ParameterizedTest
+    @MethodSource("noUserProvider")
+    void NoUserLoggedPayment(String s) throws Exception {
+
         ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
-        PagamentoMastercard pagamento = new PagamentoMastercard("4539456721894321", "2027-03-01", "248", null, 10.0, 2, "Rome");
-        assertThrows(CredentialsExceptionRemoli.class, () -> //l'utente login_user non ha i permessi sul db per una stored procedure
-        {
-            pagamento.run();
-        });
 
-        //Exception.CredentialsExceptionRemoli: Nessun utente loggato associato al pagamento.
+        String[] p = s.split(":");
+
+        Credentials cred = p[3].equals("null") ? null : new Credentials();
+
+        PagamentoMastercard pagamento = new PagamentoMastercard(
+                p[0],       // numero carta
+                p[1],       // scadenza
+                p[2],       // cvv
+                cred,       // CREDENZIALI NULLE
+                Double.parseDouble(p[4]),
+                Integer.parseInt(p[5]),
+                p[6]
+        );
+
+        assertThrows(CredentialsExceptionRemoli.class, pagamento::run);
+    }
+
+    @ParameterizedTest
+    @MethodSource("prezzoTotaleProvider")
+    void TestPrezzoTotale(String s) throws Exception {
+
+        ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
+
+        String[] parts = s.split(":");
+        String city = parts[0];
+        String quantita = parts[1];
+        double expected = Double.parseDouble(parts[2]);
+
+        CityController cityController = new CityController();
+        PrezzoTotaleBean prezzo = cityController.ottieni_prezzo_totale(city, quantita);
+
+        assertEquals(expected, prezzo.getPrezzo_totale());
+    }
+
+    @ParameterizedTest
+    @MethodSource("ticketGeneratingProvider")
+    void TestingGeneratingTicket(String city) {
+
+        Component gen = new TimestampDecorator(new CittaDecorator(new BaseTicketCode(), city));
+        String ticket = gen.genera();
+
+        assertTrue(ticket.contains(city.toUpperCase()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("timestampProvider")
+    void TestingTimeStamp(String city) {
+
+        Component gen = new TimestampDecorator(new CittaDecorator(new BaseTicketCode(), city));
+        String ticket = gen.genera();
+
+        String[] st = ticket.split("-");
+        String timestamp = st[0];
+
+        assertEquals(13, timestamp.length());   // Deve essere lungo 13
+    }
+
+    @ParameterizedTest
+    @MethodSource("pathCFProvider")
+    void CheckListaPercorsi(String codiceFiscale) throws Exception {
+
+        ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
+        AreaRiservata reserved = new AreaRiservata();
+        List<RouteBean> listaPercorsi = reserved.runPath(codiceFiscale);
+        assertTrue(listaPercorsi.size() > 0);
+    }
+
+    @ParameterizedTest
+    @MethodSource("ticketCFProvider")
+    void checkticket(String codiceFiscale) throws Exception {
+
+        ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
+        PersistenceMode.getInstance().setTipo(TypesOfPersistenceLayer.JDBC);
+        AreaRiservata reserved = new AreaRiservata();
+        List<TicketBean> tickets = reserved.runTicket(codiceFiscale);
+        assertTrue(tickets.size() > 0);
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidTicketCFProvider")
+    void checkTicketErrorCF(String codiceFiscale) throws Exception {
+
+        ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
+        PersistenceMode.getInstance().setTipo(TypesOfPersistenceLayer.JDBC);
+
+        AreaRiservata reserved = new AreaRiservata();
+
+        assertThrows(PathNotFoundExceptionRemoli.class, () -> {
+            reserved.runTicket(codiceFiscale);
+        });
     }
 
     @Test
-    void TestPrezzoTotale() throws DAOExceptionRemoli,SQLException {
+    void OttieniCity() throws DAOExceptionRemoli, SQLException {
 
         ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
         CityController cityController = new CityController();
-        PrezzoTotaleBean prezzo = cityController.ottieni_prezzo_totale("Rome", "2");
-        assertEquals(3.0, prezzo.getPrezzo_totale());
-
-    }
-    @Test
-    void TestingGenertingTicket()
-    {
-        Component gen = new TimestampDecorator(new CittaDecorator(new BaseTicketCode(), "Rome"));
-        assertTrue(gen.genera().contains("ROME"));
-    }
-    @Test
-    void TestingTimeStamp()
-    {
-        Component gen = new TimestampDecorator(new CittaDecorator(new BaseTicketCode(), "Boh"));
-        String ticket = gen.genera();
-
-        String [] st = ticket.split("-");
-
-        String timestamp = st[0];
-
-        assertEquals(13, timestamp.length());
-    }
-    @Test
-    void CheckListaPercorsi() throws DAOExceptionRemoli, PathNotFoundExceptionRemoli, SQLException {
-
-        ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
-        AreaRiservata reserved = new AreaRiservata();
-        List<RouteBean> listaPercorsi =  reserved.runPath("RMLSMN00RO2H501D");// cambi il codice fiscale e restituisce percorsi diversi
-        assertTrue(listaPercorsi.size() > 0);
-
-    }
-
-    @Test
-    void checkticket() throws DAOExceptionRemoli, PathNotFoundExceptionRemoli, SQLException {
-
-        ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
-        PersistenceMode.getInstance().setTipo(TypesOfPersistenceLayer.JDBC);
-        AreaRiservata reserved = new AreaRiservata();
-        List<TicketBean> tickets = reserved.runTicket("RMLSMN00RO2H501D");
-        assertTrue(tickets.size() > 0);
-
-    }
-    @Test
-    void checkTicketErrorCF() throws Exception
-    {
-        ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
-        PersistenceMode.getInstance().setTipo(TypesOfPersistenceLayer.JDBC);
-        AreaRiservata reserved = new AreaRiservata();
-        assertThrows(PathNotFoundExceptionRemoli.class, () ->
-        {
-            List<TicketBean> tickets = reserved.runTicket("INVALIDCF123");
-        });
-    }
-    void SalvataggiopercorsoTesting()
-    {
-
+        List<CityBean> city = cityController.getAllCities();
+        assertTrue(city.size() > 0);
 
     }
 }
