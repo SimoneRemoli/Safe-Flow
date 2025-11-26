@@ -81,8 +81,6 @@ public class PathController
         minutaggio = numero_stazioni_usate * 2.5;
         app = (double) numero_stazioni_usate / cityLife.getNumero_stazioni_totali();
         percentuale_stazioni_usate = (double) app * 100.0;
-
-
         trasferimento.setCityLife(cityLife);
         trasferimento.setMinutaggio(minutaggio);
         trasferimento.setNumero_stazioni_usate(numero_stazioni_usate);

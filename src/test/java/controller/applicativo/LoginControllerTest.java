@@ -1,5 +1,8 @@
 package controller.applicativo;
 import Bean.PrezzoTotaleBean;
+import Bean.RouteBean;
+import Bean.TicketBean;
+import Controller.Applicativo.AreaRiservata;
 import Controller.Applicativo.CityController;
 import Exception.PaymentValidationExceptionRemoli;
 import Exception.CredentialsExceptionRemoli;
@@ -23,8 +26,9 @@ import utility.Factory.FactoryPersistence;
 import utility.Singleton.Credentials;
 import utility.Singleton.PersistenceMode;
 import Exception.DAOExceptionRemoli;
-
+import Exception.PathNotFoundExceptionRemoli;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
@@ -175,9 +179,46 @@ class LoginControllerTest {
         String ticket = gen.genera();
 
         String [] st = ticket.split("-");
+
         String timestamp = st[0];
 
         assertEquals(13, timestamp.length());
+    }
+    @Test
+    void CheckListaPercorsi() throws DAOExceptionRemoli, PathNotFoundExceptionRemoli, SQLException {
+
+        ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
+        AreaRiservata reserved = new AreaRiservata();
+        List<RouteBean> listaPercorsi =  reserved.runPath("RMLSMN00RO2H501D");// cambi il codice fiscale e restituisce percorsi diversi
+        assertTrue(listaPercorsi.size() > 0);
+
+    }
+
+    @Test
+    void checkticket() throws DAOExceptionRemoli, PathNotFoundExceptionRemoli, SQLException {
+
+        ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
+        PersistenceMode.getInstance().setTipo(TypesOfPersistenceLayer.JDBC);
+        AreaRiservata reserved = new AreaRiservata();
+        List<TicketBean> tickets = reserved.runTicket("RMLSMN00RO2H501D");
+        assertTrue(tickets.size() > 0);
+
+    }
+    @Test
+    void checkTicketErrorCF() throws Exception
+    {
+        ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
+        PersistenceMode.getInstance().setTipo(TypesOfPersistenceLayer.JDBC);
+        AreaRiservata reserved = new AreaRiservata();
+        assertThrows(PathNotFoundExceptionRemoli.class, () ->
+        {
+            List<TicketBean> tickets = reserved.runTicket("INVALIDCF123");
+        });
+    }
+    void SalvataggiopercorsoTesting()
+    {
+
+
     }
 }
 
