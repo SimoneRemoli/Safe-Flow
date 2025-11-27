@@ -1,4 +1,4 @@
-package controller.applicativo;
+package Testing.Remoli;
 
 import Bean.TicketBean;
 import Controller.Applicativo.AreaRiservata;
@@ -23,7 +23,13 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
-
+/**
+ * ------------------------------------------------------------
+ *  Test Class : <TicketTest>
+ *  Author     : Simone Remoli
+ *  Description: Test della generazione del codice del ticket
+ * ------------------------------------------------------------
+ */
 public class TicketTest {
     private static final ResourceBundle RB = ResourceBundle.getBundle("configurations/testpaths");
     static Stream<String> ticketCFProvider() {

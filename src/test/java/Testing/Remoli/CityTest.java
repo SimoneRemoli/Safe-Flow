@@ -1,4 +1,4 @@
-package controller.applicativo;
+package Testing.Remoli;
 
 import Bean.CityBean;
 import Bean.PrezzoTotaleBean;
@@ -17,6 +17,15 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+/**
+ * ------------------------------------------------------------
+ *  Test Class : <CityTest>
+ *  Author     : Simone Remoli
+ *  Description: Test della classe CityController, in particolare
+ *               del metodo ottieni_prezzo_totale e getAllCities.
+ * ------------------------------------------------------------
+ */
 
 public class CityTest {
 

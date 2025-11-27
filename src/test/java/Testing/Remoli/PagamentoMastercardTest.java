@@ -1,4 +1,4 @@
-package controller.applicativo;
+package Testing.Remoli;
 
 import Controller.Applicativo.PagamentoMastercard;
 import Model.Domain.Ruolo;
@@ -17,13 +17,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
 
+/**
+ * ------------------------------------------------------------
+ *  Test Class : <PagamentoMastercardTest>
+ *  Author     : Simone Remoli
+ *  Description: Test della classe PagamentoMastercard
+ * ------------------------------------------------------------
+ */
+
 public class PagamentoMastercardTest
 {
     private static final ResourceBundle RB = ResourceBundle.getBundle("configurations/testpaths");
     static Stream<String> Permission(){
         return Stream.of(RB.getString("permission"));
     }
-    static Stream<String> permessiGiustiProvider() {
+    static Stream<String> permessiGiustiProvider(){
         return Stream.of(RB.getString("permessiOK"));
     }
     static Stream<String> noUserProvider() {

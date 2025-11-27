@@ -1,4 +1,4 @@
-package controller.applicativo;
+package Testing.Remoli;
 
 import Bean.InformazioniPercorsoBean;
 import Bean.RouteBean;
@@ -20,6 +20,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
+/**
+ * ------------------------------------------------------------
+ *  Test Class : <PercorsoTest>
+ *  Author     : Simone Remoli
+ *  Description: Test di integrazione per la classe PathController.
+ * ------------------------------------------------------------
+ */
 public class PercorsoTest
 {
     private static final ResourceBundle RB = ResourceBundle.getBundle("configurations/testpaths");

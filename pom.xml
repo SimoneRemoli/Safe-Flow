@@ -51,6 +51,18 @@
       <version>1.0.4</version>
     </dependency>
 
+    <!-- JUnit Platform Suite per raggruppare test suites -->
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-suite</artifactId>
+      <version>1.10.2</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- junit-platform-runner è per Junit4, io mo sto usando Junit5 -->
+
+
+
   </dependencies>
 
   <build>

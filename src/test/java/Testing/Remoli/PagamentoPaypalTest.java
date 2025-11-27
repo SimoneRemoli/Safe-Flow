@@ -1,6 +1,5 @@
-package controller.applicativo;
+package Testing.Remoli;
 
-import Controller.Applicativo.PagamentoMastercard;
 import Controller.Applicativo.PagamentoPaypal;
 import Model.Domain.Ruolo;
 import org.junit.jupiter.api.MethodOrderer;
@@ -19,6 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
+
+/**
+ * ------------------------------------------------------------
+ *  Test Class : <PagamentoPaypalTest>
+ *  Author     : Simone Remoli
+ *  Description: Test della classe PagamentoPaypal che gestisce i pagamenti tramite PayPal.
+ * ------------------------------------------------------------
+ */
 
 
 public class PagamentoPaypalTest {
