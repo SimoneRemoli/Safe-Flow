@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
 
-public class PagamentoTest
+public class PagamentoMastercardTest
 {
     private static final ResourceBundle RB = ResourceBundle.getBundle("configurations/testpaths");
     static Stream<String> Permission(){
