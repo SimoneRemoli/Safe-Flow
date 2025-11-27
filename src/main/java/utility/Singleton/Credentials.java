@@ -1,12 +1,8 @@
 package utility.Singleton;
-
 import Model.Domain.Ruolo;
-
-import javax.servlet.http.HttpSession;
-import java.io.Serializable;
 import java.sql.Date;
 
-public class Credentials implements Serializable {
+public class Credentials {
 
     private String nome;
     private String cognome;
@@ -17,25 +13,15 @@ public class Credentials implements Serializable {
     private boolean disabile;
     private Ruolo ruolo;
 
-    // Costruttore privato per forzare l'uso del getInstance
-    public Credentials() {} //Infatti, dovrebbe essere privato [aggiustare]
-
-    /**  Singleton per sessione */
-    public static Credentials getInstance(HttpSession session) {
-        Credentials cred = (Credentials) session.getAttribute("credentials"); //singleton per sessione (+ utenti dentro stessa sessione posso averli), non singleton globale, quindi non deve essere static cred
-        if (cred == null) {
-            cred = new Credentials();
-            session.setAttribute("credentials", cred);
-        }
-        return cred;
+    private static class LazyCointainer{
+        public final static Credentials sigletonInstance = new Credentials();
     }
 
-    /**  Metodo per rimuovere le credenziali dalla sessione (logout) */
-    public static void clearInstance(HttpSession session) {
-        session.removeAttribute("credentials");
+    public static final  Credentials getInstanceSingleton() {
+        return LazyCointainer.sigletonInstance;
     }
 
-    // Getters & Setters standard ↓
+    // Getters & Setters standard
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
 
@@ -59,4 +45,16 @@ public class Credentials implements Serializable {
 
     public Ruolo getRuolo() { return ruolo; }
     public void setRuolo(Ruolo ruolo) { this.ruolo = ruolo; }
+
+    public void clear() {
+        this.nome = null;
+        this.cognome = null;
+        this.codiceFiscale = null;
+        this.password = null;
+        this.email = null;
+        this.dataDiNascita = null;
+        this.disabile = false;
+        this.ruolo = null;
+    }
+
 }

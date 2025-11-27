@@ -5,6 +5,7 @@ import org.junit.platform.suite.api.Suite;
 
 @Suite
 @SelectClasses({
+        LoginTest.class,
         PagamentoPaypalTest.class,
         PagamentoMastercardTest.class,
         PersistenzaTest.class,

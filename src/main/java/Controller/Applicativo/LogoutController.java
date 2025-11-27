@@ -9,18 +9,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-
 @WebServlet("/logout")
 public class LogoutController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(false); // prendi la sessione esistente
+
+        // 1. Svuota il singleton delle credenziali
+        Credentials.getInstanceSingleton().clear();
+
+        // 2. Invalida anche la sessione (per sicurezza)
+        HttpSession session = request.getSession(false);
         if (session != null) {
-            Credentials.clearInstance(session);
-            session.invalidate(); // invalida la sessione
+            session.invalidate();
         }
-        response.sendRedirect("index.jsp"); // reindirizza alla homepage o al login
+
+        // 3. Torna alla home / login
+        response.sendRedirect("index.jsp");
     }
 }

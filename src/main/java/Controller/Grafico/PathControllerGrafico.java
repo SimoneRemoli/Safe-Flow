@@ -38,7 +38,7 @@ public class PathControllerGrafico extends HttpServlet {
             }
 
             //  Recupera credenziali dell’utente autenticato
-            final Credentials cred = Credentials.getInstance(session);
+            final Credentials cred = Credentials.getInstanceSingleton();
             if (cred == null) {
                 response.sendRedirect("login.jsp");
                 return;

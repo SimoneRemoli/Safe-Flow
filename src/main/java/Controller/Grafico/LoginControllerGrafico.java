@@ -79,21 +79,21 @@ public class LoginControllerGrafico extends HttpServlet {
 
             //  Delegazione al controller applicativo
             LoginController loginController = new LoginController(credenziali);
-            UtenteBeanGenerico utente = loginController.autenticaUtente(session);
+            UtenteBeanGenerico utente = loginController.autenticaUtente();
 
             //  Dopo loginController.autenticaUtente(session);
             session.setAttribute("nome", utente.getNome());
             session.setAttribute("cognome", utente.getCognome());
             session.setAttribute("ruolo", utente.getRuolo());
 
-            Credentials cred = Credentials.getInstance(request.getSession(false)); //aggiunta in più
-            Credentials cred2 = Credentials.getInstance(request.getSession(false)); //aggiunta in più
+            //Credentials cred = Credentials.getInstance(request.getSession(false)); //aggiunta in più
+            //Credentials cred2 = Credentials.getInstance(request.getSession(false)); //aggiunta in più
 
 
-            System.out.println("L’utente loggato na nel controller grafico cifra è: " + cred.getNome() + " " + cred.getCognome());
-            System.out.println("Ruolo: " + cred.getRuolo());
-            System.out.println("L’utente loggato na nel controller grafico cifra è: " + cred2.getNome() + " " + cred2.getCognome());
-            System.out.println("Ruolo: " + cred2.getRuolo());
+            //System.out.println("L’utente loggato na nel controller grafico cifra è: " + cred.getNome() + " " + cred.getCognome());
+            //System.out.println("Ruolo: " + cred.getRuolo());
+            //System.out.println("L’utente loggato na nel controller grafico cifra è: " + cred2.getNome() + " " + cred2.getCognome());
+            //System.out.println("Ruolo: " + cred2.getRuolo());
 
 
             //  Stampa debug

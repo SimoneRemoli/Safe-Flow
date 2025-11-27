@@ -67,7 +67,7 @@ public class PercorsoTest
     }
     @ParameterizedTest
     @MethodSource("invalidPathsProvider")
-    void TestExceptionPath(String strings) {
+    void TestExceptionPath(String strings) throws Exception {
 
         String[] parts = strings.split(":");
         PathController path = new PathController();
@@ -75,6 +75,9 @@ public class PercorsoTest
         {
             path.run(parts[0], parts[1], parts[2]);
         });
+
+
+        //path.run(parts[0], parts[1], parts[2]);
     }
     @ParameterizedTest
     @MethodSource("pathCFProvider")

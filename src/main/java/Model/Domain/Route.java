@@ -24,7 +24,7 @@ public class Route {
     @SuppressWarnings("unchecked")
     public Route(HttpServletRequest request)
     {
-        Credentials cred = Credentials.getInstance(request.getSession(false));
+        Credentials cred = Credentials.getInstanceSingleton();
 
         try {
             // Conversione sicura di listacambi

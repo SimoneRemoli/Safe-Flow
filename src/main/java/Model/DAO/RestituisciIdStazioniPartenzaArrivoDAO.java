@@ -18,6 +18,8 @@ public class RestituisciIdStazioniPartenzaArrivoDAO {
 
     public void restituisciIdStazioni(String startStation, String endStation, String city) throws SQLException {
         String procedure = "{CALL RouteX_Update.RestituisciStazioni(?,?,?)}";
+        boolean partenzaTrovata = false;
+        boolean arrivoTrovata = false;
 
         try (Connection conn = ConnectionFactory.getConnection();
              CallableStatement cs = conn.prepareCall(procedure)) {
@@ -33,11 +35,15 @@ public class RestituisciIdStazioniPartenzaArrivoDAO {
                 try (ResultSet rs = cs.getResultSet()) {
                     resultIndex++;
                     if (rs != null) {
-                        if (resultIndex == 1 && rs.next())
+                        if (resultIndex == 1 && rs.next()) {
                             this.stazioneDiPartenza = rs.getInt("id");
+                            partenzaTrovata = true;
+                        }
 
-                        if (resultIndex == 2 && rs.next())
+                        if (resultIndex == 2 && rs.next()) {
                             this.stazioneDiArrivo = rs.getInt("id");
+                            arrivoTrovata = true;
+                        }
                     }
                 }
                 hasResults = cs.getMoreResults();
@@ -45,6 +51,12 @@ public class RestituisciIdStazioniPartenzaArrivoDAO {
 
         } catch (SQLException e) {
             throw new SQLException("Errore durante l'esecuzione della stored procedure RestituisciStazioni", e);
+        }
+        if (!partenzaTrovata) {
+            this.stazioneDiPartenza = 9999; // Valore di default se non trovata
+        }
+        if (!arrivoTrovata) {
+            this.stazioneDiArrivo = 9999; // Valore di default se non trovata
         }
     }
 }

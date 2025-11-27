@@ -21,13 +21,10 @@ public class AreaRiservataControllerGrafico extends HttpServlet
             throws ServletException, IOException {
 
         AreaRiservata reserved = new AreaRiservata();
-
         try {
-
-
             HttpSession session = request.getSession(false);
             if (session != null) {
-                Credentials cred = Credentials.getInstance(session);
+                Credentials cred = Credentials.getInstanceSingleton();
                 String cf = cred.getCodiceFiscale();
                 if (cf != null) {
 

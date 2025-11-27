@@ -25,27 +25,16 @@ public class LoginController {
      * Esegue l’autenticazione dell’utente, crea (o aggiorna) il singleton `Credentials`
      * e restituisce un `UtenteBeanGenerico` per la parte grafica.
      */
-    public UtenteBeanGenerico autenticaUtente(HttpSession session) throws DAOExceptionRemoli, LoginNotFoundRemoli {
-
-        // Crea oggetto per DAO
-        Credentials credenziali = new Credentials();
-        credenziali.setEmail(autenticazione.getEmail());
-        credenziali.setPassword(autenticazione.getPassword());
+    public UtenteBeanGenerico autenticaUtente() throws DAOExceptionRemoli, LoginNotFoundRemoli {
 
         // Chiamata al DAO
         LoginProcedureDAO loginDAO = new LoginProcedureDAO();
-        Credentials utenteVerificato = loginDAO.login(credenziali);
+        loginDAO.login(autenticazione.getEmail(), autenticazione.getPassword());
 
-        //  Recupera o crea il singleton legato alla sessione
-        Credentials sessionCred = Credentials.getInstance(session);
+        // Ottieni l'istanza singleton delle credenziali
+        Credentials sessionCred = Credentials.getInstanceSingleton();
 
-        //  Aggiorna i dati nella sessione
-        sessionCred.setNome(utenteVerificato.getNome());
-        sessionCred.setCognome(utenteVerificato.getCognome());
-        sessionCred.setCodiceFiscale(utenteVerificato.getCodiceFiscale());
-        sessionCred.setDisabile(utenteVerificato.getDisabile());
-        sessionCred.setRuolo(utenteVerificato.getRuolo());
-        sessionCred.setEmail(utenteVerificato.getEmail());
+        System.out.println("Utente autenticato: " + sessionCred.getNome() + " " + sessionCred.getCognome());
 
         // Popola anche il bean (solo per il layer grafico)
         UtenteBeanGenerico utente = new UtenteBeanGenerico();

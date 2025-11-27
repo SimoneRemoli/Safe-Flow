@@ -48,10 +48,13 @@ public class PathController
         RestituisciIdStazioniPartenzaArrivoDAO dao = new RestituisciIdStazioniPartenzaArrivoDAO();
         dao.restituisciIdStazioni(startStation, endStation, city);
 
-        int codeStartStation = dao.getStazioneDiPartenza();
-        int codeFinishStation = dao.getStazioneDiArrivo();
+        int codeStartStation=9999;
+        int codeFinishStation=9999;
 
-        if (codeFinishStation == 0 || codeStartStation == 0) {
+        codeStartStation = dao.getStazioneDiPartenza();
+        codeFinishStation = dao.getStazioneDiArrivo();
+
+        if (codeFinishStation == 9999 || codeStartStation == 9999) {
             throw new DAOExceptionRemoli("Stazioni non trovate nella città selezionata.");
         }
 
@@ -98,6 +101,12 @@ public class PathController
             saveRoute.save(info); //uso route per salvare il percorso. Poi RouteBean è diverso, non ha utente
         }
         else
-            throw new DAOExceptionRemoli("Utente non autenticato, impossibile salvare il percorso.");
+        {
+            System.out.println("Utente non autenticato, impossibile salvare il percorso.");
+           // throw new DAOExceptionRemoli("Utente non autenticato, impossibile salvare il percorso.");
+        }
     }
 }
+/*
+L'errore è quì
+ */
