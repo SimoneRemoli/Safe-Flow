@@ -4,7 +4,7 @@ import Bean.RoutingRequestBean;
 import Model.DAO.RestituisciIdStazioniPartenzaArrivoDAO;
 import Model.DAO.RouteDAO;
 import Model.Domain.Route;
-import utility.Facade.Facade;
+import utility.Facade.FacadePath;
 import Exception.DAOExceptionRemoli;
 import utility.Singleton.Credentials;
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +36,7 @@ public class PathController
         route.setStartId(codeStartStation);
         route.setEndId(codeFinishStation);
 
-        InformazioniPercorsoBean trasferimento = new Facade().compute(route);
+        InformazioniPercorsoBean trasferimento = new FacadePath().compute(route);
         return trasferimento;
     }
     public void save_route(Credentials cred, HttpServletRequest request) throws DAOExceptionRemoli, SQLException {

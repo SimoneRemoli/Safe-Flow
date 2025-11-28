@@ -6,7 +6,7 @@ import Controller.Applicativo.CityLifeController;
 import utility.Factory.CityLifeFactory;
 import java.util.ArrayList;
 
-public class Facade
+public class FacadePath
 {
     public InformazioniPercorsoBean compute(RoutingRequestBean route) throws Exception {
         CityLifeBean cityLife = RoutingProcess(route);
