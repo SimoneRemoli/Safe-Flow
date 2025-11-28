@@ -1,50 +1,19 @@
 package Controller.Applicativo;
-
-import Bean.CityLifeBean;
 import Bean.InformazioniPercorsoBean;
+import Bean.RoutingRequestBean;
 import Model.DAO.RestituisciIdStazioniPartenzaArrivoDAO;
 import Model.DAO.RouteDAO;
 import Model.Domain.Route;
-import utility.Factory.CityLifeFactory;
+import utility.Facade.Facade;
 import Exception.DAOExceptionRemoli;
 import utility.Singleton.Credentials;
-
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class PathController
 {
-
-    private void remove_duplicate(ArrayList<String> Sequenze_di_cambiamento_full,int indice)
-    {
-        for(int i=indice;i<Sequenze_di_cambiamento_full.size();i++)
-        {
-            if(i==Sequenze_di_cambiamento_full.size()-1)
-                return;
-            if(Sequenze_di_cambiamento_full.get(i).equals(Sequenze_di_cambiamento_full.get(i+1)))
-            {
-                Sequenze_di_cambiamento_full.remove(i);
-                remove_duplicate(Sequenze_di_cambiamento_full,i);
-
-            }
-        }
-
-    }
     public InformazioniPercorsoBean run(String startStation, String endStation, String city) throws Exception
     {
-        int numero_stazioni_totali;
-        ArrayList<String> Percorsi_Con_Nomi = new ArrayList<String>();
-        ArrayList<Integer> Percorsi_Codifiche = new ArrayList<Integer>();
-        int numero_cambi = 0, numero_stazioni_usate = 0;
-        ArrayList<String> Linee_Metropolitane = new ArrayList<String>();
-        ArrayList<String> Sequenze_di_cambiamento_full = new ArrayList<String>();
-        ArrayList<String> Sequenze_nodi_cruciali_full = new ArrayList<String>();
-        String status="";
-        Double minutaggio = 0.0;
-        Double percentuale_stazioni_usate = 0.0, app = 0.0;
-
-
         RestituisciIdStazioniPartenzaArrivoDAO dao = new RestituisciIdStazioniPartenzaArrivoDAO();
         dao.restituisciIdStazioni(startStation, endStation, city);
 
@@ -62,34 +31,12 @@ public class PathController
         System.out.println("Id arrivo = " + codeFinishStation);
 
 
-        CityLifeController metropoli = CityLifeFactory.createCity(city); //FIN QUì OK
+        RoutingRequestBean route = new RoutingRequestBean();
+        route.setCity(city);
+        route.setStartId(codeStartStation);
+        route.setEndId(codeFinishStation);
 
-        Percorsi_Codifiche = metropoli.Dijkstra(codeStartStation, codeFinishStation, city); //potrei far tornare una bean
-
-        CityLifeBean cityLife = metropoli.calcolaPercorso(Percorsi_Codifiche,city);
-
-        InformazioniPercorsoBean trasferimento = new InformazioniPercorsoBean();
-
-        System.out.println(" ");
-        System.out.println("-----------Numero cambi =  " + numero_cambi);
-        for (String s : cityLife.getLinee()) System.out.println("Sequenza di linee metropolitane =  " + s);
-        if (cityLife.getNumero_cambi() == -1) cityLife.setNumero_cambi(0);
-
-        System.out.println("Stampe robe");
-        for (int i = 0; i < cityLife.getPercorsi_Con_Nomi().size(); i++)
-            System.out.print(" " + cityLife.getPercorsi_Con_Nomi().get(i) + " ---> ");
-        for (int i = 0; i < Percorsi_Codifiche.size(); i++)
-            System.out.println(" " + Percorsi_Codifiche.get(i) + " ----> ");
-        numero_stazioni_usate = cityLife.getPercorsi_Con_Nomi().size();
-        minutaggio = numero_stazioni_usate * 2.5;
-        app = (double) numero_stazioni_usate / cityLife.getNumero_stazioni_totali();
-        percentuale_stazioni_usate = (double) app * 100.0;
-        trasferimento.setCityLife(cityLife);
-        trasferimento.setMinutaggio(minutaggio);
-        trasferimento.setNumero_stazioni_usate(numero_stazioni_usate);
-        trasferimento.setPercentuale_stazioni_usate(percentuale_stazioni_usate);
-        trasferimento.setPercentuale_stazioni_usate(percentuale_stazioni_usate);
-
+        InformazioniPercorsoBean trasferimento = new Facade().compute(route);
         return trasferimento;
     }
     public void save_route(Credentials cred, HttpServletRequest request) throws DAOExceptionRemoli, SQLException {
@@ -107,6 +54,3 @@ public class PathController
         }
     }
 }
-/*
-L'errore è quì
- */

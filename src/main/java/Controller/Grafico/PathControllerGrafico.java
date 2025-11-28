@@ -39,10 +39,6 @@ public class PathControllerGrafico extends HttpServlet {
 
             //  Recupera credenziali dell’utente autenticato
             final Credentials cred = Credentials.getInstanceSingleton();
-            if (cred == null) {
-                response.sendRedirect("login.jsp");
-                return;
-            }
 
             if (city == null || city.trim().isEmpty() || startStation == null || startStation.trim().isEmpty() || endStation == null || endStation.trim().isEmpty())
             {
@@ -51,11 +47,16 @@ public class PathControllerGrafico extends HttpServlet {
             }
 
 
+            if(cred.getNome()!=null) {
 
-            if (cred.getDisabile()) {
-                status = "Disabled Traveler";
-            } else {
-                status = "Non-disabled Traveler";
+                if (cred.getDisabile()) {
+                    status = "Disabled Traveler";
+                } else {
+                    status = "Non-disabled Traveler";
+                }
+            }
+            else {
+                status = "NO REG Traveler";
             }
 
             System.out.println("City: " + city);
