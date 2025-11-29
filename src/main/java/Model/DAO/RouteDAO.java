@@ -16,10 +16,6 @@ import Model.Domain.Route;
 public class RouteDAO {
     public void save(Route route) throws DAOExceptionRemoli, SQLException {
         try (Connection conn = ConnectionFactory.getConnection()){
-
-
-
-
             String sp = "{ CALL RouteX_Update.saveRoute(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }";
             CallableStatement cs = conn.prepareCall(sp);
 

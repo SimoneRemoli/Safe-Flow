@@ -9,6 +9,7 @@ import Exception.DAOExceptionRemoli;
 import utility.Singleton.Credentials;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
+import Exception.CFIsNullRemoli;
 
 public class PathController
 {
@@ -39,7 +40,7 @@ public class PathController
         InformazioniPercorsoBean trasferimento = new FacadePath().compute(route);
         return trasferimento;
     }
-    public void save_route(Credentials cred, HttpServletRequest request) throws DAOExceptionRemoli, SQLException {
+    public void save_route(Credentials cred, HttpServletRequest request) throws DAOExceptionRemoli, SQLException, CFIsNullRemoli {
         String cf = cred.getCodiceFiscale();
 
         if (cf!= null) {
@@ -50,7 +51,11 @@ public class PathController
         else
         {
             System.out.println("Utente non autenticato, impossibile salvare il percorso.");
-           // throw new DAOExceptionRemoli("Utente non autenticato, impossibile salvare il percorso.");
+            throw new CFIsNullRemoli("Devi effettuare il login per salvare il percorso.",
+                    "CF nullo: richiesta di salvataggio senza autenticazione.",
+                    "ERR-CF-NULL",
+                    CFIsNullRemoli.Severity.CRITICAL);
+            //throw new DAOExceptionRemoli("Utente non autenticato, impossibile salvare il percorso.");
         }
     }
 }

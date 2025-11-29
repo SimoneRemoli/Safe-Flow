@@ -15,6 +15,108 @@ public class CityLifeController
 
     public int[][] matriceAdiacenza; //le classi figlie possono specializzare la loro matrice di adiacenza
 
+    /*public CityLifeBean calcolaPercorso(ArrayList<Integer> ids, String city) throws SQLException {
+
+        // --- 1. LISTE RISULTATO IDENTICHE ALLE TUE ---
+        ArrayList<String> Percorsi_Con_Fermate = new ArrayList<>();
+        ArrayList<String> linee = new ArrayList<>();
+
+        ArrayList<String> Sequenze_di_cambiamento = new ArrayList<>();
+        ArrayList<String> Sequenze_nodi_cruciali = new ArrayList<>();
+
+        // --- 2. OTTIENI LE FERMATE DAL DB ---
+        FermataDAO fermataDAO = new FermataDAO();
+        List<FermataRecordBean> fermate_tot = fermataDAO.getFermateByIds(ids, city);
+
+        if (fermate_tot == null || fermate_tot.isEmpty()) {
+            CityLifeBean empty = new CityLifeBean();
+            empty.setPercorsi_Con_Nomi(Percorsi_Con_Fermate);
+            empty.setLinee(linee);
+            empty.setSequenze_di_cambiamento(Sequenze_di_cambiamento);
+            empty.setSequenze_nodi_cruciali(Sequenze_nodi_cruciali);
+            empty.setNumero_cambi(0);
+            empty.setNumero_stazioni_totali(matriceAdiacenza[0].length);
+            return empty;
+        }
+
+        // --- 3. POPOLAZIONE LISTE PRINCIPALI ---
+        for (FermataRecordBean f : fermate_tot) {
+            Percorsi_Con_Fermate.add(f.getNome());
+            linee.add(f.getLinea());
+        }
+
+        // --- 4. PARSING LINEE (da "MA-MB" → ["MA","MB"]) ---
+        ArrayList<ArrayList<String>> lineeSet = new ArrayList<>();
+
+        for (String l : linee) {
+            ArrayList<String> gruppi = new ArrayList<>();
+            for (String parte : l.split("-")) {
+                if (!parte.isEmpty()) gruppi.add(parte.trim());
+            }
+            lineeSet.add(gruppi);
+        }
+
+        // --- 5. SCELTA LINEA INIZIALE ---
+        String currentLine = null;
+        ArrayList<String> firstSet = lineeSet.get(0);
+
+        if (firstSet.size() > 0) {
+            currentLine = firstSet.get(0);   // prima linea disponibile
+            Sequenze_di_cambiamento.add(currentLine);
+        }
+
+        // --- 6. RILEVAZIONE CAMBI LINEA ---
+        for (int i = 1; i < lineeSet.size(); i++) {
+
+            ArrayList<String> prev = lineeSet.get(i - 1);
+            ArrayList<String> curr = lineeSet.get(i);
+
+            boolean prevHas = prev.contains(currentLine);
+            boolean currHas = curr.contains(currentLine);
+
+            // Caso 1: la linea attuale è ancora valida
+            if (currHas) {
+                continue;
+            }
+
+            // Caso 2: trova intersezione e cambia linea
+            String newLine = trovaIntersezione(prev, curr);
+            if (newLine != null) {
+                Sequenze_nodi_cruciali.add(fermate_tot.get(i - 1).getNome());
+                Sequenze_di_cambiamento.add(newLine);
+                currentLine = newLine;
+                continue;
+            }
+
+            // Caso 3: nessuna intersezione (linee separate) → scegli una linea della fermata corrente
+            if (!curr.isEmpty()) {
+                String forcedLine = curr.get(0);
+                Sequenze_nodi_cruciali.add(fermate_tot.get(i - 1).getNome());
+                Sequenze_di_cambiamento.add(forcedLine);
+                currentLine = forcedLine;
+            }
+        }
+
+        // --- 7. RIMOZIONE DUPLICATI CONSECUTIVI NELLA SEQUENZA ---
+        Sequenze_di_cambiamento = removeConsecutiveDuplicates(Sequenze_di_cambiamento);
+
+        // --- 8. COSTRUZIONE BEAN RISULTANTE ---
+        CityLifeBean c = new CityLifeBean();
+        c.setLinee(linee);
+        c.setNumero_cambi(Sequenze_nodi_cruciali.size());
+        c.setSequenze_di_cambiamento(Sequenze_di_cambiamento);
+        c.setSequenze_nodi_cruciali(Sequenze_nodi_cruciali);
+        c.setPercorsi_Con_Nomi(Percorsi_Con_Fermate);
+        c.setNumero_stazioni_totali(matriceAdiacenza[0].length);
+
+        return c;
+    }
+
+     */
+
+
+
+
     private void remove_change_lines(ArrayList<String> Sequenze_di_cambiamento_full)
     {
         for(int i=0;i<Sequenze_di_cambiamento_full.size();i++)
@@ -43,6 +145,25 @@ public class CityLifeController
         }
 
     }
+    private String trovaIntersezione(ArrayList<String> a, ArrayList<String> b) {
+        for (String s : a) {
+            if (b.contains(s)) return s;
+        }
+        return null;
+    }
+
+    private ArrayList<String> removeConsecutiveDuplicates(ArrayList<String> lista) {
+        ArrayList<String> out = new ArrayList<>();
+        String prev = null;
+        for (String s : lista) {
+            if (!s.equals(prev)) {
+                out.add(s);
+                prev = s;
+            }
+        }
+        return out;
+    }
+
 
     public CityLifeBean calcolaPercorso(ArrayList<Integer> ids, String city) throws SQLException {
         ArrayList<String> Percorsi_Con_Fermate = new ArrayList<String>();
@@ -342,6 +463,7 @@ public class CityLifeController
         c.setSequenze_nodi_cruciali(Sequenze_nodi_cruciali);
         return c;
     }
+
 
     protected void caricaMatriceDaClasspath(String resourcePath) {
         try (
