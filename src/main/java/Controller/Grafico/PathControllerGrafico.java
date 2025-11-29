@@ -2,6 +2,8 @@ package Controller.Grafico;
 import Bean.InformazioniPercorsoBean;
 import Controller.Applicativo.PathController;
 import Model.Domain.*;
+import Model.Extractor.RouteInputExtractor;
+import Model.Record.RouteRecord;
 import utility.Singleton.Credentials;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +25,7 @@ public class PathControllerGrafico extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     {
         try {
-            RouteInput route;
+            RouteRecord route;
             final HttpSession session = request.getSession(false);
             if (session == null) {
                 response.sendRedirect("login.jsp");

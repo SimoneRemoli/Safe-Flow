@@ -1,11 +1,12 @@
-package Model.Domain;
+package Model.Extractor;
 
 import javax.servlet.http.HttpServletRequest;
 import Exception.InvalidRouteInputExceptionRemoli;
+import Model.Record.RouteRecord;
 
 public class RouteInputExtractor {
 
-    public static RouteInput from(HttpServletRequest request)
+    public static RouteRecord from(HttpServletRequest request)
             throws InvalidRouteInputExceptionRemoli {
 
         String city = sanitize(request.getParameter("city"));
@@ -21,7 +22,7 @@ public class RouteInputExtractor {
         if (end == null || end.isEmpty())
             throw new InvalidRouteInputExceptionRemoli("endStation", "End station is missing");
 
-        return new RouteInput(city, start, end);
+        return new RouteRecord(city, start, end);
     }
 
     private static String sanitize(String s) {
