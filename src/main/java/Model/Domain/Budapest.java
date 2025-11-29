@@ -3,7 +3,7 @@ package Model.Domain;
 import Controller.Applicativo.CityLifeController;
 
 public class Budapest extends CityLifeController {
-    public Budapest() throws Exception {
+    public Budapest(){
 
         this.matriceAdiacenza = new int[48][48];
         caricaMatriceDaClasspath("/Adjacency_Matrix/Budapest.csv");

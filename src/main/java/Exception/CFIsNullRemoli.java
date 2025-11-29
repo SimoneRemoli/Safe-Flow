@@ -21,27 +21,6 @@ public class CFIsNullRemoli extends Exception {
         this.severity = severity;
         this.timestamp = LocalDateTime.now();
     }
-
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public String getUserMessage() {
-        return userMessage;
-    }
-
-    public String getTechnicalMessage() {
-        return technicalMessage;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public Severity getSeverity() {
-        return severity;
-    }
-
     @Override
     public String toString() {
         return "CFIsNullRemoliException {" +

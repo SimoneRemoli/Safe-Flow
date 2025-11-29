@@ -10,7 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import Exception.DAOExceptionRemoli;
-import Exception.CFIsNullRemoli;
+import Exception.FuoriRangeExceptionRemoli;
+import Exception.UnreacheableNodeExceptionRemoli;
+import Exception.InvalidRouteInputExceptionRemoli;
+
+import java.sql.SQLException;
+
 @WebServlet("/PathControllerGrafico")
 public class PathControllerGrafico extends HttpServlet {
 
@@ -18,7 +23,7 @@ public class PathControllerGrafico extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     {
         try {
-
+            RouteInput route;
             final HttpSession session = request.getSession(false);
             if (session == null) {
                 response.sendRedirect("login.jsp");
@@ -26,7 +31,15 @@ public class PathControllerGrafico extends HttpServlet {
             }
 
             final Credentials cred = Credentials.getInstanceSingleton();
-            RouteInput route = RouteInputExtractor.from(request);
+
+            try {
+                route = RouteInputExtractor.from(request);
+            } catch (InvalidRouteInputExceptionRemoli e)
+            {
+                System.out.println("Errore nell'input del percorso: " + e.getMessage());
+                request.getRequestDispatcher("search.jsp").forward(request, response);
+                return;
+            }
             String status = UserStatusResolver.resolve(cred);
 
             if(!RouteValidator.isValid(route))
@@ -43,7 +56,9 @@ public class PathControllerGrafico extends HttpServlet {
             try {
                 PathController path = new PathController();
                 dto = path.run(route.start(), route.end(), route.city()); //controller applicativo
-            } catch (Exception e) {
+            } catch (IllegalArgumentException | UnreacheableNodeExceptionRemoli |
+                     FuoriRangeExceptionRemoli | DAOExceptionRemoli | SQLException e) {
+                System.out.println("Errore: " + e.getMessage());
                 request.setAttribute("stazioniNonValide", true);
                 request.getRequestDispatcher("search.jsp").forward(request, response);
             }
@@ -55,17 +70,8 @@ public class PathControllerGrafico extends HttpServlet {
             request.setAttribute("city", route.city());
 
 
-
             PathController pathCtrl = new PathController();
-            try{
             pathCtrl.save_route(cred, request);
-            } catch (DAOExceptionRemoli e){
-                System.out.println("Errore nel salvataggio del percorso: " + e.getMessage());
-            } catch (CFIsNullRemoli e)
-            {
-                System.out.println("Utente non autenticato, impossibile salvare il percorso: " + e);
-            }
-
 
 
             //inoltro la richiesta al jsp

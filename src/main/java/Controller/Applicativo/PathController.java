@@ -10,11 +10,12 @@ import utility.Singleton.Credentials;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import Exception.CFIsNullRemoli;
+import Exception.FuoriRangeExceptionRemoli;
+import Exception.UnreacheableNodeExceptionRemoli;
 
 public class PathController
 {
-    public InformazioniPercorsoBean run(String startStation, String endStation, String city) throws Exception
-    {
+    public InformazioniPercorsoBean run(String startStation, String endStation, String city) throws IllegalArgumentException, FuoriRangeExceptionRemoli, UnreacheableNodeExceptionRemoli, SQLException, DAOExceptionRemoli {
         RestituisciIdStazioniPartenzaArrivoDAO dao = new RestituisciIdStazioniPartenzaArrivoDAO();
         dao.restituisciIdStazioni(startStation, endStation, city);
 
@@ -40,22 +41,28 @@ public class PathController
         InformazioniPercorsoBean trasferimento = new FacadePath().compute(route);
         return trasferimento;
     }
-    public void save_route(Credentials cred, HttpServletRequest request) throws DAOExceptionRemoli, SQLException, CFIsNullRemoli {
+    public void save_route(Credentials cred, HttpServletRequest request) {
         String cf = cred.getCodiceFiscale();
+        try {
 
-        if (cf!= null) {
-            Route info = new Route(request);
-            RouteDAO saveRoute = new RouteDAO();
-            saveRoute.save(info); //uso route per salvare il percorso. Poi RouteBean è diverso, non ha utente
-        }
-        else
+            if (cf != null) {
+                Route info = new Route(request);
+                RouteDAO saveRoute = new RouteDAO();
+                saveRoute.save(info); //uso route per salvare il percorso. Poi RouteBean è diverso, non ha utente
+            } else {
+                System.out.println("Utente non autenticato, impossibile salvare il percorso.");
+                throw new CFIsNullRemoli("Devi effettuare il login per salvare il percorso.",
+                        "CF nullo: richiesta di salvataggio senza autenticazione.",
+                        "ERR-CF-NULL",
+                        CFIsNullRemoli.Severity.CRITICAL);
+            }
+        }catch (CFIsNullRemoli e)
         {
-            System.out.println("Utente non autenticato, impossibile salvare il percorso.");
-            throw new CFIsNullRemoli("Devi effettuare il login per salvare il percorso.",
-                    "CF nullo: richiesta di salvataggio senza autenticazione.",
-                    "ERR-CF-NULL",
-                    CFIsNullRemoli.Severity.CRITICAL);
-            //throw new DAOExceptionRemoli("Utente non autenticato, impossibile salvare il percorso.");
+            System.out.println("Utente non autenticato, impossibile salvare il percorso: " + e);
+        }
+        catch (DAOExceptionRemoli e)
+        {
+            System.out.println("Errore nel salvataggio del percorso: " + e.getMessage());
         }
     }
 }

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
+import Exception.FuoriRangeExceptionRemoli;
+import Exception.UnreacheableNodeExceptionRemoli;
 
 public class CityLifeController
 {
@@ -557,8 +559,14 @@ public class CityLifeController
 
         }
     }
-    public ArrayList<Integer> Dijkstra(int partenza, int arrivo, String city) throws Exception
-    {
+    public ArrayList<Integer> Dijkstra(int partenza, int arrivo) throws FuoriRangeExceptionRemoli, UnreacheableNodeExceptionRemoli {
+        if (partenza < 0 || partenza >= matriceAdiacenza.length)
+            throw new FuoriRangeExceptionRemoli("ID partenza fuori range: " + partenza);
+
+        if (arrivo < 0 || arrivo >= matriceAdiacenza.length)
+            throw new FuoriRangeExceptionRemoli("ID arrivo fuori range: " + arrivo);
+
+
         ArrayList<Integer> percorsi_codifica = new ArrayList<Integer>();
         int nodo_partenza = partenza, nodo_arrivo = arrivo;
         int [] know = new int[matriceAdiacenza.length];
@@ -599,6 +607,15 @@ public class CityLifeController
         this.views_arrays(know,cost, matriceAdiacenza);
         System.out.println();
         System.out.println("Path.");
+
+        if (cost[nodo_arrivo] == 1000 || precedente[nodo_arrivo] == -1) {
+            throw new UnreacheableNodeExceptionRemoli(
+                    "Il percorso verso la stazione selezionata non è disponibile.",
+                    "Nodo " + nodo_arrivo + " irraggiungibile da " + nodo_partenza,
+                    UnreacheableNodeExceptionRemoli.Severity.CRITICAL
+            );
+        }
+
         for (int i = 0; i < matriceAdiacenza.length; i++)
         {
             if(i==nodo_arrivo) { //se levassi questa condizione mi stamperebbe tutti i percorsi dalla stazione di partenza to *

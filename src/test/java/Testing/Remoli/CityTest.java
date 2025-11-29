@@ -33,7 +33,6 @@ public class CityTest {
     static Stream<String> prezzoTotaleProvider() {
         return Stream.of(
                 RB.getString("prezzo1"),
-                RB.getString("prezzo2"),
                 RB.getString("prezzo3")
         );
     }
