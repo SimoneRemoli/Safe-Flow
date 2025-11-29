@@ -3,7 +3,7 @@ import Bean.TicketBean;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import Exception.PathNotFoundExceptionRemoli;;
+import Exception.PathNotFoundExceptionRemoli;
 import Exception.DAOExceptionRemoli;
 import utility.Singleton.Credentials;
 import Exception.CredentialsExceptionRemoli;

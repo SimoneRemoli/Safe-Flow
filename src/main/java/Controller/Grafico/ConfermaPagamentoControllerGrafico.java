@@ -13,6 +13,8 @@ import utility.Singleton.PersistenceMode;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @WebServlet("/confermaPagamento")
 public class ConfermaPagamentoControllerGrafico extends HttpServlet {
@@ -21,12 +23,17 @@ public class ConfermaPagamentoControllerGrafico extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 
+        final Logger logger = LoggerFactory.getLogger(ConfermaPagamentoControllerGrafico.class);
+        logger.debug("Avvio del processo di conferma pagamento.");
+
         try {
             final HttpSession session = request.getSession(false);
             if (session == null) {
                 response.sendRedirect("login.jsp");
                 return;
             }
+
+
             final Credentials cred = Credentials.getInstanceSingleton();
             System.out.printf("[PAGAMENTO] Utente loggato: %s %s (%s)%n",
                     cred.getNome(), cred.getCognome(), cred.getRuolo());
