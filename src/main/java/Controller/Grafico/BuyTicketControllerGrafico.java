@@ -4,6 +4,8 @@ import Bean.CityBean;
 import Bean.PrezzoTotaleBean;
 import Controller.Applicativo.CityController;
 import Exception.DAOExceptionRemoli;
+import Model.Extractor.BuyTicketExtractor;
+import Model.Record.BuyTicketRecord;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -50,31 +52,36 @@ public class BuyTicketControllerGrafico extends HttpServlet {
      * Calcola il prezzo totale e inoltra alla pagina di conferma pagamento.
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        String city = request.getParameter("city");
-        String quantity = request.getParameter("quantity");
-
-
-        System.out.println("Richiesta acquisto: " + quantity + " biglietti per la città di " + city);
-
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
-            // Delego al controller applicativo il calcolo del prezzo totale
-            CityController cityController = new CityController();
-            PrezzoTotaleBean prezzo = cityController.ottieni_prezzo_totale(city, quantity);
+            final HttpSession session = request.getSession(false);
+            if (session == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
+            BuyTicketRecord buyTicket = BuyTicketExtractor.from(request);
 
-            // Passo i dati alla pagina di conferma
-            request.setAttribute("city", city);
-            request.setAttribute("quantity", quantity);
-            request.setAttribute("prezzo", prezzo.getPrezzo_totale());
-            // Mostro la pagina di conferma
-            request.getRequestDispatcher("/confermaPagamento.jsp").forward(request, response);
+            System.out.println("Richiesta acquisto: " + buyTicket.quantity() + " biglietti per la città di " + buyTicket.city());
 
-        } catch (DAOExceptionRemoli e) {
-            e.printStackTrace();
-            request.setAttribute("errore", "Errore durante l'elaborazione dell'acquisto: " + e.getMessage());
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            try {
+                // Delego al controller applicativo il calcolo del prezzo totale
+                CityController cityController = new CityController();
+                PrezzoTotaleBean prezzo = cityController.ottieni_prezzo_totale(buyTicket.city(), String.valueOf(buyTicket.quantity()));
+
+                // Passo i dati alla pagina di conferma
+                request.setAttribute("city", buyTicket.city());
+                request.setAttribute("quantity", String.valueOf(buyTicket.quantity()));
+                request.setAttribute("prezzo", prezzo.getPrezzo_totale());
+                // Mostro la pagina di conferma
+                request.getRequestDispatcher("/confermaPagamento.jsp").forward(request, response);
+
+            } catch (DAOExceptionRemoli e) {
+                e.printStackTrace();
+                request.setAttribute("errore", "Errore durante l'elaborazione dell'acquisto: " + e.getMessage());
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }
