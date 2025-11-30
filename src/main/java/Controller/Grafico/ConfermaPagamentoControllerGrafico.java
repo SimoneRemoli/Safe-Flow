@@ -15,6 +15,7 @@ import javax.servlet.http.*;
 import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import Exception.InvalidPaymentInputExceptionRemoli;
 
 @WebServlet("/confermaPagamento")
 public class ConfermaPagamentoControllerGrafico extends HttpServlet {
@@ -33,11 +34,19 @@ public class ConfermaPagamentoControllerGrafico extends HttpServlet {
                 return;
             }
 
-
+            PaymentRecord paymentRecord;
             final Credentials cred = Credentials.getInstanceSingleton();
             System.out.printf("[PAGAMENTO] Utente loggato: %s %s (%s)%n",
                     cred.getNome(), cred.getCognome(), cred.getRuolo());
-            PaymentRecord paymentRecord = PagamentoExtractor.from(request);
+            try{
+                paymentRecord = PagamentoExtractor.from(request);
+            }catch(InvalidPaymentInputExceptionRemoli e) {
+                logger.error("Errore nell'input del pagamento: {}", e.getMessage());
+                response.sendRedirect("errorePagamento.jsp");
+                return;
+            }
+
+
             TypesOfPersistenceLayer persistenceLayer = paymentRecord.persistenceLayer();
             PersistenceMode.getInstance().setTipo(persistenceLayer); //singleton che mantiene il tipo di persistenza scelto
 
