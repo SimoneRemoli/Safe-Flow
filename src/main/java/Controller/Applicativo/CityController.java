@@ -61,30 +61,22 @@ public class CityController {
      * @return Bean contenente il prezzo totale
      * @throws DAOExceptionRemoli in caso di errore logico o di accesso ai dati
      */
-    public PrezzoTotaleBean ottieni_prezzo_totale(String city, String quantity) throws DAOExceptionRemoli
+    public PrezzoTotaleBean ottieni_prezzo_totale(String city, int quantity) throws DAOExceptionRemoli
     {
 
         if (city == null || city.isEmpty()) {
             throw new DAOExceptionRemoli("La città selezionata non è valida.");
         }
 
-        int quantita;
-        try {
-            quantita = Integer.parseInt(quantity);
-        } catch (NumberFormatException e) {
-            throw new DAOExceptionRemoli("La quantità inserita non è un numero valido.");
-        }
-
-        if (quantita <= 0) {
+        if (quantity <= 0) {
             throw new DAOExceptionRemoli("La quantità deve essere maggiore di zero.");
         }
 
         // === CALCOLO DEL PREZZO ===
         List<City> cities = new CityDAO().ListCities();
-
         for (City a : cities) {
             if (a.getName().equalsIgnoreCase(city)) {
-                double totale = calculate(a.getCosto_biglietto(), quantita);
+                double totale = calculate(a.getCosto_biglietto(), quantity);
                 return new PrezzoTotaleBean(totale);
             }
         }

@@ -48,7 +48,7 @@ public class CityTest {
         double expected = Double.parseDouble(parts[2]);
 
         CityController cityController = new CityController();
-        PrezzoTotaleBean prezzo = cityController.ottieni_prezzo_totale(city, quantita);
+        PrezzoTotaleBean prezzo = cityController.ottieni_prezzo_totale(city, Integer.parseInt(quantita));
 
         assertEquals(expected, prezzo.getPrezzo_totale());
     }

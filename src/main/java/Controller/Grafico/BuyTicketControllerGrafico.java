@@ -54,19 +54,27 @@ public class BuyTicketControllerGrafico extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
+            BuyTicketRecord buyTicket;
             final HttpSession session = request.getSession(false);
             if (session == null) {
                 response.sendRedirect("login.jsp");
                 return;
             }
-            BuyTicketRecord buyTicket = BuyTicketExtractor.from(request);
+
+            try {
+                buyTicket = BuyTicketExtractor.from(request);
+            } catch (DAOExceptionRemoli e) {
+                System.out.println("Errore di validazione input: " + e.getMessage());
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+                return;
+            }
 
             System.out.println("Richiesta acquisto: " + buyTicket.quantity() + " biglietti per la città di " + buyTicket.city());
 
             try {
                 // Delego al controller applicativo il calcolo del prezzo totale
                 CityController cityController = new CityController();
-                PrezzoTotaleBean prezzo = cityController.ottieni_prezzo_totale(buyTicket.city(), String.valueOf(buyTicket.quantity()));
+                PrezzoTotaleBean prezzo = cityController.ottieni_prezzo_totale(buyTicket.city(), buyTicket.quantity());
 
                 // Passo i dati alla pagina di conferma
                 request.setAttribute("city", buyTicket.city());

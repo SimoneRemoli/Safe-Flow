@@ -25,7 +25,7 @@ public class RouteInputExtractor {
         return new RouteRecord(city, start, end);
     }
 
-    private static String sanitize(String s) {
+    static String sanitize(String s) {
         return (s == null) ? null : s.trim();
     }
 }
