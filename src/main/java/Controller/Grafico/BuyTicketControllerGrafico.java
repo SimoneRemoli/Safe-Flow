@@ -6,6 +6,7 @@ import Controller.Applicativo.CityController;
 import Exception.DAOExceptionRemoli;
 import Model.Extractor.BuyTicketExtractor;
 import Model.Record.BuyTicketRecord;
+import Exception.InvalidBuyTicketInputExceptionRemoli;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -63,7 +64,7 @@ public class BuyTicketControllerGrafico extends HttpServlet {
 
             try {
                 buyTicket = BuyTicketExtractor.from(request);
-            } catch (DAOExceptionRemoli e) {
+            } catch (InvalidBuyTicketInputExceptionRemoli e) {
                 System.out.println("Errore di validazione input: " + e.getMessage());
                 request.getRequestDispatcher("error.jsp").forward(request, response);
                 return;
