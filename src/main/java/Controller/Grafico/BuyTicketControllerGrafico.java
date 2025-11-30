@@ -66,6 +66,7 @@ public class BuyTicketControllerGrafico extends HttpServlet {
                 buyTicket = BuyTicketExtractor.from(request);
             } catch (InvalidBuyTicketInputExceptionRemoli e) {
                 System.out.println("Errore di validazione input: " + e.getMessage());
+                request.setAttribute("errore", e.getUserMessage());
                 request.getRequestDispatcher("error.jsp").forward(request, response);
                 return;
             }

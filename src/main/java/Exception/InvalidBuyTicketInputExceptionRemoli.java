@@ -22,6 +22,11 @@ public class InvalidBuyTicketInputExceptionRemoli extends Exception {
     this.severity = severity;
     this.timestamp = LocalDateTime.now();
   }
+
+  public String getUserMessage() {
+    return userMessage;
+  }
+
   @Override
   public String toString() {
     return "InvalidBuyTicketInputExceptionRemoli {" +

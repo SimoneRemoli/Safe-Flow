@@ -76,25 +76,29 @@
 </head>
 
 <body>
-    <%@ include file="header.jspf" %>
-    <div class="error-container">
-        <i class="fas fa-exclamation-triangle error-icon"></i>
-        <h1>Something went wrong!</h1>
+<%@ include file="header.jspf" %>
+
+<div class="error-container">
+    <i class="fas fa-exclamation-triangle error-icon"></i>
+    <h1>Something went wrong!</h1>
+
+    <%
+        String errore = (String) request.getAttribute("errore");
+    %>
+
+    <% if (errore != null) { %>
+        <p>We encountered an unexpected error:</p>
+
+        <div class="details">
+            <strong>Details:</strong><br>
+            <%= org.apache.commons.lang3.StringEscapeUtils.escapeHtml4(errore) %>
+        </div>
+    <% } else { %>
         <p>We encountered an unexpected error. Please try again later.</p>
+    <% } %>
 
-        <%
-            String errore = (String) request.getAttribute("errore");
-            if (errore != null) {
-        %>
-            <div class="details">
-                <strong>Details:</strong><br>
-                <%= errore %>
-            </div>
-        <%
-            }
-        %>
+    <a href="index.jsp" class="btn-home"><i class="fas fa-home"></i> Back to Home</a>
+</div>
 
-        <a href="index.jsp" class="btn-home"><i class="fas fa-home"></i> Back to Home</a>
-    </div>
 </body>
 </html>
