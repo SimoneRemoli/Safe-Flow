@@ -2,6 +2,7 @@ package Controller.Grafico;
 import Controller.Applicativo.PagamentoMastercard;
 import Controller.Applicativo.PagamentoPaypal;
 import Controller.Applicativo.RegistrazionePagamentoController;
+import Model.Domain.LoggedHttpServlet;
 import Model.Extractor.PagamentoExtractor;
 import Model.Record.PaymentRecord;
 import Model.Domain.TypesOfPersistenceLayer;
@@ -18,14 +19,11 @@ import org.slf4j.LoggerFactory;
 import Exception.InvalidPaymentInputExceptionRemoli;
 
 @WebServlet("/confermaPagamento")
-public class ConfermaPagamentoControllerGrafico extends HttpServlet {
+public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
 
     List<String> codiciBiglietti;
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-
-        final Logger logger = LoggerFactory.getLogger(ConfermaPagamentoControllerGrafico.class);
-        logger.debug("Avvio del processo di conferma pagamento.");
 
         try {
             final HttpSession session = request.getSession(false);

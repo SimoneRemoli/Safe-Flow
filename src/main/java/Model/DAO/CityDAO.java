@@ -13,28 +13,35 @@ import java.util.List;
 
 public class CityDAO
 {
-    private final List<City> informazioni = new ArrayList<>();
-    public List<City> ListCities() throws DAOExceptionRemoli
-    {
-        try {
+    public List<City> ListCities() throws DAOExceptionRemoli {
 
-            Connection conn = ConnectionFactory.getConnection();
-            CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.getAllCity() }");
-            ResultSet rs =  cs.executeQuery();
+        final List<City> informazioni = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.getAllCity() }");
+             ResultSet rs = cs.executeQuery()) {
+
+            // Se la stored procedure NON restituisce righe:  errore grave
+            if (!rs.isBeforeFirst()) {  // controlla se ci sono righe
+                throw new DAOExceptionRemoli(
+                        "Il database non ha restituito nessuna città. "
+                                + "Possibile errore nella stored procedure o nel caricamento dati."
+                );
+            }
+
             while (rs.next()) {
                 String nome = rs.getString("nome_citta");
                 double costo = rs.getDouble("prezzo_ticket");
                 long numero = rs.getLong("numero_stazioni");
+
                 informazioni.add(new City(nome, costo, numero));
-                System.out.println("Città trovata: " + nome + "numero stazioni: "+numero);
             }
 
-
-        }catch (SQLException e) {
-            throw new DAOExceptionRemoli("Errore nella comunicazione con il database: " + e.getMessage());
+        } catch (SQLException e) {
+            throw new DAOExceptionRemoli(
+                    "Errore nella comunicazione con il database: " + e.getMessage()
+            );
         }
         return informazioni;
-
     }
-
 }

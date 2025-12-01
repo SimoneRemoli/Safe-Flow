@@ -40,6 +40,7 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
 
                 // Mostro la pagina JSP
                 request.getRequestDispatcher("buyTicket.jsp").forward(request, response);
+                logger.info("Visualizzata la pagina di acquisto biglietti con size={} città disponibili.", cities.size());
 
             } catch (DAOExceptionRemoli e) {
                 e.printStackTrace();
@@ -47,7 +48,6 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
                 request.getRequestDispatcher("error.jsp").forward(request, response);
                 logger.error("Errore nella presentazione della view il caricamento delle città: {}", e.toString());
             } catch (InvalidCityDataExceptionRemoli e) {
-                System.out.println("Errore nei dati delle città: " + e.getMessage());
                 request.setAttribute("errore", e.getUserMessage());
                 request.getRequestDispatcher("error.jsp").forward(request, response);
                 logger.error("Errore nei dati delle città: {}", e.toString());
@@ -74,18 +74,20 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
             try {
                 buyTicket = BuyTicketExtractor.from(request);
             } catch (InvalidBuyTicketInputExceptionRemoli e) {
-                System.out.println("Errore di validazione input: " + e.getMessage());
+                logger.error("Errore di validazione input nell'acquisto biglietti: {}", e.toString());
                 request.setAttribute("errore", e.getUserMessage());
                 request.getRequestDispatcher("error.jsp").forward(request, response);
                 return;
             }
 
-            System.out.println("Richiesta acquisto: " + buyTicket.quantity() + " biglietti per la città di " + buyTicket.city());
+            logger.info("Elaborazione richiesta acquisto biglietti per città='{}', quantità={}", buyTicket.city(), buyTicket.quantity());
 
             try {
                 // Delego al controller applicativo il calcolo del prezzo totale
                 CityController cityController = new CityController();
                 PrezzoTotaleBean prezzo = cityController.ottieni_prezzo_totale(buyTicket.city(), buyTicket.quantity());
+                logger.info("Elaborazione prezzo: prezzo={}", buyTicket.city(),prezzo.getPrezzo_totale());
+
 
                 // Passo i dati alla pagina di conferma
                 request.setAttribute("city", buyTicket.city());
@@ -98,8 +100,9 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
                 e.printStackTrace();
                 request.setAttribute("errore", "Errore durante l'elaborazione dell'acquisto: " + e.getMessage());
                 request.getRequestDispatcher("error.jsp").forward(request, response);
+                logger.error("Errore nella DAO. ", e.toString());
             } catch (InvalidPriceCalculationExceptionRemoli e) {
-                System.out.println("Errore nel calcolo del prezzo: " + e.getMessage());
+                logger.error("Errore nei dati inseriti: {}", e.toString());
                 request.setAttribute("errore", e.getUserMessage());
                 request.getRequestDispatcher("error.jsp").forward(request, response);
             }
