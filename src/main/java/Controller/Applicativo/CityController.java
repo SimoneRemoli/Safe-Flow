@@ -5,6 +5,7 @@ import Bean.PrezzoTotaleBean;
 import Model.DAO.CityDAO;
 import Model.Domain.City;
 import Exception.DAOExceptionRemoli;
+import Exception.InvalidPriceCalculationExceptionRemoli;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,18 +62,24 @@ public class CityController {
      * @return Bean contenente il prezzo totale
      * @throws DAOExceptionRemoli in caso di errore logico o di accesso ai dati
      */
-    public PrezzoTotaleBean ottieni_prezzo_totale(String city, int quantity) throws DAOExceptionRemoli
-    {
+    public PrezzoTotaleBean ottieni_prezzo_totale(String city, int quantity) throws DAOExceptionRemoli, InvalidPriceCalculationExceptionRemoli {
 
         if (city == null || city.isEmpty()) {
-            throw new DAOExceptionRemoli("La città selezionata non è valida.");
+            throw new InvalidPriceCalculationExceptionRemoli(
+                    "La città selezionata non è valida.",
+                    "Parametro 'city' nullo o vuoto durante il calcolo del prezzo.",
+                    InvalidPriceCalculationExceptionRemoli.Severity.LOW
+            );
         }
 
         if (quantity <= 0) {
-            throw new DAOExceptionRemoli("La quantità deve essere maggiore di zero.");
+            throw new InvalidPriceCalculationExceptionRemoli(
+                    "La quantità deve essere maggiore di zero.",
+                    "Quantity <= 0 nel calcolo del prezzo. Valore: " + quantity,
+                    InvalidPriceCalculationExceptionRemoli.Severity.MEDIUM
+            );
         }
 
-        // === CALCOLO DEL PREZZO ===
         List<City> cities = new CityDAO().ListCities();
         for (City a : cities) {
             if (a.getName().equalsIgnoreCase(city)) {
@@ -81,8 +88,11 @@ public class CityController {
             }
         }
 
-        // Nessuna città trovata nel DB
-        throw new DAOExceptionRemoli("La città selezionata non è disponibile nel database.");
+        throw new InvalidPriceCalculationExceptionRemoli(
+                "La città selezionata non è disponibile nel database.",
+                "Nessuna corrispondenza in CityDAO.ListCities() per la city='" + city + "'",
+                InvalidPriceCalculationExceptionRemoli.Severity.HIGH
+        );
     }
 
     /**

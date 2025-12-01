@@ -7,6 +7,7 @@ import Exception.DAOExceptionRemoli;
 import Model.Extractor.BuyTicketExtractor;
 import Model.Record.BuyTicketRecord;
 import Exception.InvalidBuyTicketInputExceptionRemoli;
+import Exception.InvalidPriceCalculationExceptionRemoli;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,23 +29,26 @@ public class BuyTicketControllerGrafico extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    {
         try {
-            // Recupero delle città tramite il controller applicativo
-            CityController cityController = new CityController();
-            List<CityBean> cities = cityController.getAllCities();
+            try {
+                // Recupero delle città tramite il controller applicativo
+                CityController cityController = new CityController();
+                List<CityBean> cities = cityController.getAllCities();
 
-            // Passo la lista alla view
-            request.setAttribute("cities", cities);
+                // Passo la lista alla view
+                request.setAttribute("cities", cities);
 
-            // Mostro la pagina JSP
-            request.getRequestDispatcher("buyTicket.jsp").forward(request, response);
+                // Mostro la pagina JSP
+                request.getRequestDispatcher("buyTicket.jsp").forward(request, response);
 
-        } catch (DAOExceptionRemoli e) {
-            e.printStackTrace();
-            request.setAttribute("errore", "Errore nel caricamento delle città: " + e.getMessage());
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            } catch (DAOExceptionRemoli e) {
+                e.printStackTrace();
+                request.setAttribute("errore", "Errore nel caricamento delle città: " + e.getMessage());
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -88,6 +92,10 @@ public class BuyTicketControllerGrafico extends HttpServlet {
             } catch (DAOExceptionRemoli e) {
                 e.printStackTrace();
                 request.setAttribute("errore", "Errore durante l'elaborazione dell'acquisto: " + e.getMessage());
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+            } catch (InvalidPriceCalculationExceptionRemoli e) {
+                System.out.println("Errore nel calcolo del prezzo: " + e.getMessage());
+                request.setAttribute("errore", e.getUserMessage());
                 request.getRequestDispatcher("error.jsp").forward(request, response);
             }
         } catch (Exception e) {
