@@ -37,7 +37,4 @@ public class InvalidLoginInputExceptionRemoli extends Exception {
         return userMessage;
     }
 
-    public String getTechnicalMessage() {
-        return technicalMessage;
-    }
 }

@@ -4,6 +4,8 @@ import Bean.AutenticazioneBean;
 import Bean.UtenteBeanGenerico;
 import Controller.Applicativo.LoginController;
 import Exception.DAOExceptionRemoli;
+import Model.Domain.AbstractLogger;
+import Model.Domain.LoggedHttpServlet;
 import Model.Extractor.LoginExtractor;
 import Model.Record.LoginRecord;
 import utility.Factory.ConnectionFactory;
@@ -20,7 +22,7 @@ import Exception.InvalidLoginInputExceptionRemoli;
  * e reindirizzare l’utente alla pagina corretta in base al ruolo.
  */
 @WebServlet("/login")
-public class LoginControllerGrafico extends HttpServlet {
+public class LoginControllerGrafico extends LoggedHttpServlet {
 
     /**
      * Crea il bean di autenticazione a partire dai parametri del form.
@@ -35,6 +37,7 @@ public class LoginControllerGrafico extends HttpServlet {
                 System.out.println("Errore di validazione input login: " + e.getMessage());
                 request.setAttribute("messaggioErrore", e.getUserMessage());
                 request.getRequestDispatcher("erroreLogin.jsp").forward(request, response);
+                logger.error("Errore di validazione input login: {}", e.toString());
             }
             aut.setEmail(login.email());
             aut.setPassword(login.password());
@@ -84,7 +87,6 @@ public class LoginControllerGrafico extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-
         try {
             try {
                 //  Crea una nuova sessione e imposta il timeout

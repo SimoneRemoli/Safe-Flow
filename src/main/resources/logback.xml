@@ -4,7 +4,7 @@
     <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger - %msg%n" />
 
     <!-- CARTELLA LOG PERSONALIZZATA -->
-    <property name="LOG_DIR" value="/Users/simoneremoli/Desktop/RouteX_logs" />
+    <property name="LOG_DIR" value="/Users/simoneremoli/IdeaProjects/RouteX_MVC_Project" />
 
     <!-- LOG SU CONSOLE -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -13,7 +13,7 @@
         </encoder>
     </appender>
 
-    <!-- LOG SU FILE -->
+    <!-- LOG SU FILE -->s
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_DIR}/app.log</file>
 

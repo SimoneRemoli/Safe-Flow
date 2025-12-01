@@ -9,8 +9,7 @@ import static Model.Extractor.RouteInputExtractor.sanitize;
 
 public class LoginExtractor {
 
-    public static LoginRecord from(HttpServletRequest request)
-            throws InvalidLoginInputExceptionRemoli {
+    public static LoginRecord from(HttpServletRequest request) throws InvalidLoginInputExceptionRemoli {
 
         String rawEmail = request.getParameter("Email");
         String rawPassword = request.getParameter("Password");
