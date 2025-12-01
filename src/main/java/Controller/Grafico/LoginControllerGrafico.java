@@ -105,7 +105,7 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
                 session.setAttribute("cognome", utente.getCognome());
                 session.setAttribute("ruolo", utente.getRuolo());
 
-                logger.info("Utente autenticato: nome={}, cognome={}, ruolo={}", utente.getNome(), utente.getCognome(), utente.getRuolo());
+                logger.info("Utente perfettamente autenticato: nome={}, cognome={}, ruolo={}", utente.getNome(), utente.getCognome(), utente.getRuolo());
 
                 //  Reindirizzamento in base al ruolo
                 gestisciReindirizzamento(utente, response);

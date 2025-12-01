@@ -6,3 +6,7 @@
 2025-12-01 10:31:29 INFO  [http-nio-8080-exec-6] Controller.Grafico.LoginControllerGrafico - Bean di autenticazione creato con email: simo@yahoo.it
 2025-12-01 10:31:29 ERROR [http-nio-8080-exec-6] Controller.Grafico.LoginControllerGrafico - Tentativo di login fallito: email=simo@yahoo.it, Maskedpassw=*******, message=Credenziali non valide.
 2025-12-01 10:34:01 ERROR [http-nio-8080-exec-7] Controller.Grafico.LoginControllerGrafico - Errore di validazione input login: InvalidLoginInputExceptionRemoli {errorCode='ERR-LOGIN-INPUT', userMessage='Ok che l'utente è scemo, ma non così tanto. Inserisci una email valida.', technicalMessage='Regex email non rispettata: simo"yahoo.net', severity=MEDIUM, timestamp=2025-12-01T10:34:00.976129}
+2025-12-01 10:41:35 INFO  [http-nio-8080-exec-7] Controller.Grafico.LoginControllerGrafico - Bean di autenticazione creato con email: NotCheckedEmail=androtti@gmail.com, NotCheckedPassword=mammino
+2025-12-01 10:41:36 ERROR [http-nio-8080-exec-7] Controller.Grafico.LoginControllerGrafico - Tentativo di login fallito: email=androtti@gmail.com, Maskedpassw=*******, message=Credenziali non valide.
+2025-12-01 10:42:42 INFO  [http-nio-8080-exec-7] Controller.Grafico.LoginControllerGrafico - Bean di autenticazione creato con email: NotCheckedEmail=andreotti@gmail.com, NotCheckedPassword=mammina
+2025-12-01 10:42:43 INFO  [http-nio-8080-exec-7] Controller.Grafico.LoginControllerGrafico - Utente autenticato: nome=Giulio, cognome=Andreotti, ruolo=TRAVELER
