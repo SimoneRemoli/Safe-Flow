@@ -31,7 +31,7 @@ public class CityDAO
 
 
         }catch (SQLException e) {
-        throw new DAOExceptionRemoli("Errore. " + e.getMessage());
+            throw new DAOExceptionRemoli("Errore nella comunicazione con il database: " + e.getMessage());
         }
         return informazioni;
 

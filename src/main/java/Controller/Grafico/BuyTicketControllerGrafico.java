@@ -4,10 +4,12 @@ import Bean.CityBean;
 import Bean.PrezzoTotaleBean;
 import Controller.Applicativo.CityController;
 import Exception.DAOExceptionRemoli;
+import Model.Domain.LoggedHttpServlet;
 import Model.Extractor.BuyTicketExtractor;
 import Model.Record.BuyTicketRecord;
 import Exception.InvalidBuyTicketInputExceptionRemoli;
 import Exception.InvalidPriceCalculationExceptionRemoli;
+import Exception.InvalidCityDataExceptionRemoli;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.util.List;
@@ -19,7 +21,7 @@ import java.util.List;
  * @SimoneRemoli
  */
 @WebServlet("/buyTicket")
-public class BuyTicketControllerGrafico extends HttpServlet {
+public class BuyTicketControllerGrafico extends LoggedHttpServlet {
 
     /**
      * Mostra la pagina di acquisto dei biglietti con la lista delle città disponibili.
@@ -43,6 +45,12 @@ public class BuyTicketControllerGrafico extends HttpServlet {
                 e.printStackTrace();
                 request.setAttribute("errore", "Errore nel caricamento delle città: " + e.getMessage());
                 request.getRequestDispatcher("error.jsp").forward(request, response);
+                logger.error("Errore nella presentazione della view il caricamento delle città: {}", e.toString());
+            } catch (InvalidCityDataExceptionRemoli e) {
+                System.out.println("Errore nei dati delle città: " + e.getMessage());
+                request.setAttribute("errore", e.getUserMessage());
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+                logger.error("Errore nei dati delle città: {}", e.toString());
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

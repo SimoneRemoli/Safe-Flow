@@ -9,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import utility.Factory.ConnectionFactory;
 import Exception.DAOExceptionRemoli;
+import Exception.InvalidCityDataExceptionRemoli;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -53,7 +54,7 @@ public class CityTest {
         assertEquals(expected, prezzo.getPrezzo_totale());
     }
     @Test
-    void OttieniCity() throws DAOExceptionRemoli, SQLException {
+    void OttieniCity() throws InvalidCityDataExceptionRemoli, SQLException, DAOExceptionRemoli {
 
         ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
         CityController cityController = new CityController();

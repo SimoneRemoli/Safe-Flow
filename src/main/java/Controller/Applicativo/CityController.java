@@ -6,6 +6,7 @@ import Model.DAO.CityDAO;
 import Model.Domain.City;
 import Exception.DAOExceptionRemoli;
 import Exception.InvalidPriceCalculationExceptionRemoli;
+import Exception.InvalidCityDataExceptionRemoli;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,30 +21,40 @@ public class CityController {
     /**
      * Recupera tutte le città dal database e le converte in CityBean per la View.
      */
-    public List<CityBean> getAllCities() throws DAOExceptionRemoli {
+    public List<CityBean> getAllCities() throws InvalidCityDataExceptionRemoli, DAOExceptionRemoli {
+
         CityDAO dao = new CityDAO();
         List<City> cities = dao.ListCities();
 
         // === CONTROLLI DI VALIDAZIONE ===
 
-        // Caso 1: DAO restituisce null (errore anomalo nel livello inferiore)
         if (cities == null) {
-            throw new DAOExceptionRemoli("Errore nel recupero delle città: nessun dato disponibile dal database.");
+            throw new InvalidCityDataExceptionRemoli(
+                    "Nessun dato disponibile al momento.",
+                    "DAO ha restituito null nella lista delle città.",
+                    InvalidCityDataExceptionRemoli.Severity.CRITICAL
+            );
         }
 
-        // Caso 2: la lista è vuota
         if (cities.isEmpty()) {
-            throw new DAOExceptionRemoli("Nessuna città disponibile per l’acquisto al momento.");
+            throw new InvalidCityDataExceptionRemoli(
+                    "Nessuna città disponibile per l’acquisto al momento.",
+                    "La lista delle città è vuota.",
+                    InvalidCityDataExceptionRemoli.Severity.MEDIUM
+            );
         }
 
-        // Caso 3: presenza di dati non coerenti
         for (City c : cities) {
-            if (c == null || c.getName() == null || c.getName().isEmpty()) {
-                throw new DAOExceptionRemoli("Sono stati trovati dati città non validi nel database.");
+            if (c == null || c.getName() == null || c.getName().isBlank()) {
+                throw new InvalidCityDataExceptionRemoli(
+                        "Sono stati trovati dati città non validi.",
+                        "Elemento città nullo o con nome vuoto.",
+                        InvalidCityDataExceptionRemoli.Severity.HIGH
+                );
             }
         }
 
-        // === COSTRUZIONE DELLE BEAN ===
+        // === COSTRUZIONE BEAN ===
         List<CityBean> cityBeans = new ArrayList<>();
         for (City c : cities) {
             cityBeans.add(new CityBean(c));
@@ -51,6 +62,7 @@ public class CityController {
 
         return cityBeans;
     }
+
 
 
     /**
