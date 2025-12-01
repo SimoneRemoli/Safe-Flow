@@ -4,12 +4,15 @@ import Bean.AutenticazioneBean;
 import Bean.UtenteBeanGenerico;
 import Controller.Applicativo.LoginController;
 import Exception.DAOExceptionRemoli;
+import Model.Extractor.LoginExtractor;
+import Model.Record.LoginRecord;
 import utility.Factory.ConnectionFactory;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import Exception.LoginNotFoundRemoli;
+import Exception.InvalidLoginInputExceptionRemoli;
 
 /**
  * Controller grafico per la gestione del login utente.
@@ -22,10 +25,22 @@ public class LoginControllerGrafico extends HttpServlet {
     /**
      * Crea il bean di autenticazione a partire dai parametri del form.
      */
-    private AutenticazioneBean creaBeanAutenticazione(HttpServletRequest request) {
+    private AutenticazioneBean creaBeanAutenticazione(HttpServletRequest request, HttpServletResponse response) {
         AutenticazioneBean aut = new AutenticazioneBean();
-        aut.setEmail(request.getParameter("Email"));
-        aut.setPassword(request.getParameter("Password"));
+        LoginRecord login = null;
+        try {
+            try {
+                login = LoginExtractor.from(request);
+            } catch (InvalidLoginInputExceptionRemoli e) {
+                System.out.println("Errore di validazione input login: " + e.getMessage());
+                request.setAttribute("messaggioErrore", e.getUserMessage());
+                request.getRequestDispatcher("erroreLogin.jsp").forward(request, response);
+            }
+            aut.setEmail(login.email());
+            aut.setPassword(login.password());
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
         return aut;
     }
 
@@ -77,7 +92,7 @@ public class LoginControllerGrafico extends HttpServlet {
                 session.setMaxInactiveInterval(180); // 3 minuti di inattività
 
                 //  Costruisce il bean con i dati del form
-                AutenticazioneBean credenziali = creaBeanAutenticazione(request);
+                AutenticazioneBean credenziali = creaBeanAutenticazione(request,response);
 
                 //  Delegazione al controller applicativo
                 LoginController loginController = new LoginController(credenziali);
