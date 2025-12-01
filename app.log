@@ -1,2 +1,7 @@
 2025-12-01 10:14:20 DEBUG [http-nio-8080-exec-8] Controller.Grafico.LoginControllerGrafico - Errore di validazione input login: InvalidLoginInputExceptionRemoli {errorCode='ERR-LOGIN-INPUT', userMessage='Come pensi di autenticarti senza email? Io boh', technicalMessage='Email è blank dopo sanitizzazione.', severity=MEDIUM, timestamp=2025-12-01T10:14:20.688571}
 2025-12-01 10:20:37 ERROR [http-nio-8080-exec-6] Controller.Grafico.LoginControllerGrafico - Errore di validazione input login: InvalidLoginInputExceptionRemoli {errorCode='ERR-LOGIN-INPUT', userMessage='Come pensi di autenticarti senza email? Io boh', technicalMessage='Email è blank dopo sanitizzazione.', severity=MEDIUM, timestamp=2025-12-01T10:20:37.864773}
+2025-12-01 10:24:53 INFO  [http-nio-8080-exec-5] Controller.Grafico.LoginControllerGrafico - Bean di autenticazione creato con email: andreotti@gmail.com
+2025-12-01 10:28:58 INFO  [http-nio-8080-exec-6] Controller.Grafico.LoginControllerGrafico - Bean di autenticazione creato con email: andreotti@yahoo.it
+2025-12-01 10:28:59 ERROR [http-nio-8080-exec-6] Controller.Grafico.LoginControllerGrafico - Tentativo di login fallito: andreotti@yahoo.it
+2025-12-01 10:31:29 INFO  [http-nio-8080-exec-6] Controller.Grafico.LoginControllerGrafico - Bean di autenticazione creato con email: simo@yahoo.it
+2025-12-01 10:31:29 ERROR [http-nio-8080-exec-6] Controller.Grafico.LoginControllerGrafico - Tentativo di login fallito: email=simo@yahoo.it, Maskedpassw=*******, message=Credenziali non valide.

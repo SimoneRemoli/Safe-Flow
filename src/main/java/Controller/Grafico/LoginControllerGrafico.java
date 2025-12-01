@@ -39,6 +39,7 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
             }
             aut.setEmail(login.email());
             aut.setPassword(login.password());
+            logger.info("Bean di autenticazione creato con email: email={}, NotCheckedPassword={}", login.email(), login.password());
         }catch(Exception e){
             throw new RuntimeException(e);
         }
@@ -115,12 +116,9 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
 
             } catch (LoginNotFoundRemoli ex) {
                 ex.printStackTrace();
-                System.out.println(
-                        "Tentativo di login fallito - Email: " + ex.getEmail() +
-                                ", Password: " + ex.getMaskedPassword()
-                );
                 request.setAttribute("messaggioErrore", ex.getMessage());
                 request.getRequestDispatcher("erroreLogin.jsp").forward(request, response);
+                logger.error("Tentativo di login fallito: email={}, Maskedpassw={}, message={}", ex.getEmail(), ex.getMaskedPassword(), ex.getMessage());
             }
         }catch(Exception e){
             throw new RuntimeException(e);
