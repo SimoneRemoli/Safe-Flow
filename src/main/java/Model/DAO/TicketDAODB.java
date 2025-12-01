@@ -37,7 +37,7 @@ public class TicketDAODB extends TicketDAOLayer {
                             "Nessun biglietto trovato per il codice fiscale fornito.",
                             cf,
                             404,
-                            "Errore in TicketDAO.getTicketByCF"
+                            "Errore in TicketDAODB.getTicketByCF"
                     );
                 }
 

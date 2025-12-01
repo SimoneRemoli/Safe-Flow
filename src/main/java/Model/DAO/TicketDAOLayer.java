@@ -1,8 +1,5 @@
 package Model.DAO;
-
 import Bean.TicketBean;
-
-import java.io.IOException;
 import java.util.List;
 import Exception.PathNotFoundExceptionRemoli;
 import Exception.CredentialsExceptionRemoli;
