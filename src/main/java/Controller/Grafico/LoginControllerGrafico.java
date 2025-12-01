@@ -39,7 +39,7 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
             }
             aut.setEmail(login.email());
             aut.setPassword(login.password());
-            logger.info("Bean di autenticazione creato con email: email={}, NotCheckedPassword={}", login.email(), login.password());
+            logger.info("Bean di autenticazione creato con email: NotCheckedEmail={}, NotCheckedPassword={}", login.email(), login.password());
         }catch(Exception e){
             throw new RuntimeException(e);
         }
@@ -75,8 +75,9 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
                     ex.printStackTrace();
                     request.setAttribute("messaggioErrore", "Errore nella connessione al DB [500 internal error]");
                     request.getRequestDispatcher("erroreLogin.jsp").forward(request, response);
+                    logger.error("Errore DAO durante il login: message={}", ex.getMessage());
                 }catch(Exception e) {
-                    throw new RuntimeException(e);
+                    logger.error("Errore generico non catturato: message={}", e.getMessage());
                 }
     }
 
@@ -104,9 +105,7 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
                 session.setAttribute("cognome", utente.getCognome());
                 session.setAttribute("ruolo", utente.getRuolo());
 
-                //  Stampa debug
-                System.out.println("[LOGIN] Utente autenticato: " + utente.getNome() + " " + utente.getCognome()
-                        + " (" + utente.getRuolo() + ")");
+                logger.info("Utente autenticato: nome={}, cognome={}, ruolo={}", utente.getNome(), utente.getCognome(), utente.getRuolo());
 
                 //  Reindirizzamento in base al ruolo
                 gestisciReindirizzamento(utente, response);
@@ -129,5 +128,5 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
 
 /*
 Se la password deve stare nell'eccezione, allora la inserisco, ma sempre in modo sicuro, cioè MAI in chiaro,
-perché una eccezione può finire nei log e i log sono consultabili da altri amministratori.
+perché una eccezione può finire nel log e il log è consultabile da tutti.
  */
