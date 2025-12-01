@@ -1,10 +1,8 @@
 package Controller.Grafico;
-
 import Bean.AutenticazioneBean;
 import Bean.UtenteBeanGenerico;
 import Controller.Applicativo.LoginController;
 import Exception.DAOExceptionRemoli;
-import Model.Domain.AbstractLogger;
 import Model.Domain.LoggedHttpServlet;
 import Model.Extractor.LoginExtractor;
 import Model.Record.LoginRecord;
