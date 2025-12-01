@@ -8,11 +8,8 @@ import Model.Extractor.BuyTicketExtractor;
 import Model.Record.BuyTicketRecord;
 import Exception.InvalidBuyTicketInputExceptionRemoli;
 import Exception.InvalidPriceCalculationExceptionRemoli;
-
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-import java.io.IOException;
 import java.util.List;
 
 /**

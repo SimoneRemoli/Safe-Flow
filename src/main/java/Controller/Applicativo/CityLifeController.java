@@ -561,10 +561,10 @@ public class CityLifeController
     }
     public ArrayList<Integer> Dijkstra(int partenza, int arrivo) throws FuoriRangeExceptionRemoli, UnreacheableNodeExceptionRemoli {
         if (partenza < 0 || partenza >= matriceAdiacenza.length)
-            throw new FuoriRangeExceptionRemoli("ID partenza fuori range: " + partenza);
+            throw new FuoriRangeExceptionRemoli("ID partenza fuori range: " + partenza, FuoriRangeExceptionRemoli.Severity.CRITICAL );
 
         if (arrivo < 0 || arrivo >= matriceAdiacenza.length)
-            throw new FuoriRangeExceptionRemoli("ID arrivo fuori range: " + arrivo);
+            throw new FuoriRangeExceptionRemoli("ID arrivo fuori range: " + arrivo, FuoriRangeExceptionRemoli.Severity.CRITICAL);
 
 
         ArrayList<Integer> percorsi_codifica = new ArrayList<Integer>();

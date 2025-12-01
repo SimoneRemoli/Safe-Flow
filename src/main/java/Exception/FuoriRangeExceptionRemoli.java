@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
  * Eccezione lanciata quando un indice (ID stazione, nodo, ecc.)
  * è fuori dal range della matrice di adiacenza.
  */
-public class FuoriRangeExceptionRemoli extends RuntimeException {
+public class FuoriRangeExceptionRemoli extends Exception {
 
     private final String errorCode;
     private final String userMessage;
@@ -18,20 +18,14 @@ public class FuoriRangeExceptionRemoli extends RuntimeException {
         LOW, MEDIUM, HIGH, CRITICAL
     }
 
-    public FuoriRangeExceptionRemoli(String technicalMessage) {
+    public FuoriRangeExceptionRemoli(String technicalMessage, Severity severity) {
         super(technicalMessage);
         this.errorCode = "ERR-RANGE-REMOLI";
         this.userMessage = "Parametro fuori dal range consentito. Verifica la stazione selezionata.";
         this.technicalMessage = technicalMessage;
         this.timestamp = LocalDateTime.now();
-        this.severity = Severity.HIGH;
+        this.severity = severity;
     }
-
-    public String getErrorCode() { return errorCode; }
-    public String getUserMessage() { return userMessage; }
-    public String getTechnicalMessage() { return technicalMessage; }
-    public LocalDateTime getTimestamp() { return timestamp; }
-    public Severity getSeverity() { return severity; }
 
     @Override
     public String toString() {

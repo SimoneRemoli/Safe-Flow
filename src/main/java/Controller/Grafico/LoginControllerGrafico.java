@@ -5,8 +5,6 @@ import Bean.UtenteBeanGenerico;
 import Controller.Applicativo.LoginController;
 import Exception.DAOExceptionRemoli;
 import utility.Factory.ConnectionFactory;
-import utility.Singleton.Credentials;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
@@ -55,10 +53,14 @@ public class LoginControllerGrafico extends HttpServlet {
      * Gestisce eventuali errori di login (DAO o credenziali errate).
      */
     private void gestisciErroreLogin(HttpServletRequest request, HttpServletResponse response, DAOExceptionRemoli ex)
-            throws ServletException, IOException {
-        ex.printStackTrace();
-        request.setAttribute("messaggioErrore", "Errore nella connessione al DB [500 internal error]");
-        request.getRequestDispatcher("erroreLogin.jsp").forward(request, response);
+    {
+                try {
+                    ex.printStackTrace();
+                    request.setAttribute("messaggioErrore", "Errore nella connessione al DB [500 internal error]");
+                    request.getRequestDispatcher("erroreLogin.jsp").forward(request, response);
+                }catch(Exception e) {
+                    throw new RuntimeException(e);
+                }
     }
 
     /**
@@ -66,57 +68,49 @@ public class LoginControllerGrafico extends HttpServlet {
      * Riceve i dati dal form, invoca il controller applicativo e imposta la sessione.
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 
         try {
-            //  Crea una nuova sessione e imposta il timeout
-            HttpSession session = request.getSession(true);
-            session.setMaxInactiveInterval(180); // 3 minuti di inattività
+            try {
+                //  Crea una nuova sessione e imposta il timeout
+                HttpSession session = request.getSession(true);
+                session.setMaxInactiveInterval(180); // 3 minuti di inattività
 
-            //  Costruisce il bean con i dati del form
-            AutenticazioneBean credenziali = creaBeanAutenticazione(request);
+                //  Costruisce il bean con i dati del form
+                AutenticazioneBean credenziali = creaBeanAutenticazione(request);
 
-            //  Delegazione al controller applicativo
-            LoginController loginController = new LoginController(credenziali);
-            UtenteBeanGenerico utente = loginController.autenticaUtente();
+                //  Delegazione al controller applicativo
+                LoginController loginController = new LoginController(credenziali);
+                UtenteBeanGenerico utente = loginController.autenticaUtente();
 
-            //  Dopo loginController.autenticaUtente(session);
-            session.setAttribute("nome", utente.getNome());
-            session.setAttribute("cognome", utente.getCognome());
-            session.setAttribute("ruolo", utente.getRuolo());
+                //  Dopo loginController.autenticaUtente(session);
+                session.setAttribute("nome", utente.getNome());
+                session.setAttribute("cognome", utente.getCognome());
+                session.setAttribute("ruolo", utente.getRuolo());
 
-            //Credentials cred = Credentials.getInstance(request.getSession(false)); //aggiunta in più
-            //Credentials cred2 = Credentials.getInstance(request.getSession(false)); //aggiunta in più
+                //  Stampa debug
+                System.out.println("[LOGIN] Utente autenticato: " + utente.getNome() + " " + utente.getCognome()
+                        + " (" + utente.getRuolo() + ")");
 
+                //  Reindirizzamento in base al ruolo
+                gestisciReindirizzamento(utente, response);
 
-            //System.out.println("L’utente loggato na nel controller grafico cifra è: " + cred.getNome() + " " + cred.getCognome());
-            //System.out.println("Ruolo: " + cred.getRuolo());
-            //System.out.println("L’utente loggato na nel controller grafico cifra è: " + cred2.getNome() + " " + cred2.getCognome());
-            //System.out.println("Ruolo: " + cred2.getRuolo());
+            } catch (DAOExceptionRemoli ex) {
+                gestisciErroreLogin(request, response, ex);
 
-
-            //  Stampa debug
-            System.out.println("[LOGIN] Utente autenticato: " + utente.getNome() + " " + utente.getCognome()
-                    + " (" + utente.getRuolo() + ")");
-
-
-            //  Reindirizzamento in base al ruolo
-            gestisciReindirizzamento(utente, response);
-
-
-        } catch (DAOExceptionRemoli ex) {
-            gestisciErroreLogin(request, response, ex);
-
-        } catch (LoginNotFoundRemoli ex) {
-            ex.printStackTrace();
-            System.out.println(
-                    "Tentativo di login fallito - Email: " + ex.getEmail() +
-                            ", Password: " + ex.getMaskedPassword()
-            );
-            request.setAttribute("messaggioErrore", ex.getMessage());
-            request.getRequestDispatcher("erroreLogin.jsp").forward(request, response);
+            } catch (LoginNotFoundRemoli ex) {
+                ex.printStackTrace();
+                System.out.println(
+                        "Tentativo di login fallito - Email: " + ex.getEmail() +
+                                ", Password: " + ex.getMaskedPassword()
+                );
+                request.setAttribute("messaggioErrore", ex.getMessage());
+                request.getRequestDispatcher("erroreLogin.jsp").forward(request, response);
+            }
+        }catch(Exception e){
+            throw new RuntimeException(e);
         }
+
     }
 }
 
