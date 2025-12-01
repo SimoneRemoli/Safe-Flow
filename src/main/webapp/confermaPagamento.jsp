@@ -117,11 +117,11 @@
                 <div id="mastercard-details" class="payment-details">
                     <div class="mb-3">
                         <label for="numeroCarta" class="form-label">Numero carta</label>
-                        <input type="text" class="form-control" id="numeroCarta" name="numeroCarta" placeholder="XXXX XXXX XXXX XXXX" pattern="[0-9]{16}" maxlength="16">
+                        <input type="text" class="form-control" id="numeroCarta" name="numeroCarta">
                     </div>
                     <div class="mb-3">
                         <label for="scadenza" class="form-label">Data di scadenza</label>
-                        <input type="date" class="form-control" id="scadenza" name="scadenza" min="<%= java.time.LocalDate.now() %>">
+                        <input type="text" class="form-control" id="scadenza" name="scadenza" min="<%= java.time.LocalDate.now() %>">
                     </div>
                     <div class="mb-3">
                         <label for="cvv" class="form-label">CVV</label>

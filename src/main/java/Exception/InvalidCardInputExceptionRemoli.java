@@ -1,8 +1,7 @@
 package Exception;
-
 import java.time.LocalDateTime;
 
-public class InvalidPaymentInputExceptionRemoli extends Exception {
+public class InvalidCardInputExceptionRemoli extends Exception {
 
     private final String errorCode;
     private final String userMessage;
@@ -12,24 +11,24 @@ public class InvalidPaymentInputExceptionRemoli extends Exception {
 
     public enum Severity { LOW, MEDIUM, HIGH, CRITICAL }
 
-    public InvalidPaymentInputExceptionRemoli(String userMessage,
-                                              String technicalMessage,
-                                              Severity severity) {
+    public InvalidCardInputExceptionRemoli(String userMessage,
+                                           String technicalMessage,
+                                           Severity severity) {
         super(technicalMessage);
-        this.errorCode = "ERR-PAYMENT-INPUT";
+
+        this.errorCode = "ERR-CARD-INPUT";
         this.userMessage = userMessage;
         this.technicalMessage = technicalMessage;
         this.severity = severity;
         this.timestamp = LocalDateTime.now();
     }
 
-    public String getUserMessage() {
-        return userMessage;
-    }
+    public String getUserMessage() { return userMessage; }
+
 
     @Override
     public String toString() {
-        return "InvalidPaymentInputExceptionRemoli {" +
+        return "InvalidCardInputExceptionRemoli {" +
                 "errorCode='" + errorCode + '\'' +
                 ", userMessage='" + userMessage + '\'' +
                 ", technicalMessage='" + technicalMessage + '\'' +
@@ -38,3 +37,4 @@ public class InvalidPaymentInputExceptionRemoli extends Exception {
                 '}';
     }
 }
+

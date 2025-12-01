@@ -86,7 +86,7 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
                 // Delego al controller applicativo il calcolo del prezzo totale
                 CityController cityController = new CityController();
                 PrezzoTotaleBean prezzo = cityController.ottieni_prezzo_totale(buyTicket.city(), buyTicket.quantity());
-                logger.info("Elaborazione prezzo: prezzo={}", buyTicket.city(),prezzo.getPrezzo_totale());
+                logger.info("Elaborazione prezzo: prezzo={}",prezzo.getPrezzo_totale());
 
 
                 // Passo i dati alla pagina di conferma

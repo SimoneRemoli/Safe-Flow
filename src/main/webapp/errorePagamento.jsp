@@ -1,97 +1,83 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page isELIgnored="false" %>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>RouteX - Pagamento non riuscito</title>
-
-    <!-- Bootstrap + FontAwesome -->
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/lib/bootstrap/dist/css/bootstrap.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
+    <title>Errore nel pagamento</title>
     <style>
         body {
-            background-color: #f8f9fa;
-            font-family: "Segoe UI", sans-serif;
+            font-family: Arial, sans-serif;
+            background-color: #f8d7da;
+            color: #721c24;
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100vh;
+            margin: 0;
         }
 
-        .card {
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        .box {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             text-align: center;
-            padding: 40px;
-            max-width: 600px;
+            max-width: 450px;
         }
 
-        .card i {
-            font-size: 70px;
-            color: #dc3545;
-            margin-bottom: 20px;
+        h2 {
+            margin-bottom: 1rem;
+            font-size: 24px;
         }
 
-        .card h2 {
-            color: #dc3545;
-            margin-bottom: 15px;
-        }
-
-        .card p {
-            color: #555;
+        p {
             font-size: 18px;
-            margin-bottom: 30px;
+            margin-bottom: 1.5rem;
+            white-space: pre-line; /* supporta messaggi multilinea */
         }
 
-        .btn-home {
-            background-color: #007bff;
+        .links a {
+            display: inline-block;
+            margin: 0.4rem;
+            padding: 10px 20px;
             color: white;
-            border: none;
-            border-radius: 10px;
-            padding: 10px 25px;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
         }
 
-        .btn-home:hover {
-            background-color: #0056b3;
-        }
-
-        .btn-retry {
+        .retry-btn {
             background-color: #6c757d;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            padding: 10px 25px;
-            font-size: 16px;
-            margin-left: 10px;
-            transition: background-color 0.3s ease;
         }
 
-        .btn-retry:hover {
+        .retry-btn:hover {
             background-color: #5a6268;
+        }
+
+        .home-btn {
+            background-color: #007bff;
+        }
+
+        .home-btn:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 
 <body>
-    <div class="card">
-        <i class="fas fa-times-circle"></i>
-        <h2>Pagamento non riuscito</h2>
-        <p>
-            Si è verificato un errore durante l’elaborazione del pagamento.<br>
-            Ti invitiamo a controllare i dati inseriti o a riprovare più tardi.
-        </p>
 
-        <div>
-            <a href="index.jsp" class="btn-home">
-                <i class="fas fa-home"></i> Torna alla Home
-            </a>
-            <a href="buyTicket" class="btn-retry">
-                <i class="fas fa-redo"></i> Riprova Pagamento
-            </a>
-        </div>
+<%@ include file="header.jspf" %>
+
+<div class="box">
+    <h2>Pagamento non riuscito</h2>
+
+    <!-- MESSAGGIO DI ERRORE DAL CONTROLLER -->
+    <p>${messaggioErrore}</p>
+
+    <div class="links">
+        <a href="buyTicket" class="retry-btn">Riprova pagamento</a>
+        <a href="index.jsp" class="home-btn">Torna alla Home</a>
     </div>
+</div>
+
 </body>
 </html>
