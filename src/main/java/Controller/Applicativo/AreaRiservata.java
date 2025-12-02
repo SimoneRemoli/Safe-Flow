@@ -3,15 +3,12 @@ package Controller.Applicativo;
 import Bean.RouteBean;
 import Bean.TicketBean;
 import Model.DAO.RouteDAO;
-import Model.DAO.TicketDAODB;
 import Model.DAO.TicketDAOLayer;
 import Model.Domain.Route;
-
 import java.util.ArrayList;
 import java.util.List;
 import Exception.DAOExceptionRemoli;
 import Exception.PathNotFoundExceptionRemoli;
-import Model.Domain.TypesOfPersistenceLayer;
 import utility.Decorator.DecoratorPath.*;
 import utility.Factory.FactoryPersistence;
 
