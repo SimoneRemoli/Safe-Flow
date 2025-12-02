@@ -7,7 +7,6 @@ import Model.Record.RouteRecord;
 import utility.Singleton.Credentials;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -15,11 +14,10 @@ import Exception.DAOExceptionRemoli;
 import Exception.FuoriRangeExceptionRemoli;
 import Exception.UnreacheableNodeExceptionRemoli;
 import Exception.InvalidRouteInputExceptionRemoli;
-
 import java.sql.SQLException;
 
 @WebServlet("/PathControllerGrafico")
-public class PathControllerGrafico extends HttpServlet {
+public class PathControllerGrafico extends LoggedHttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -38,7 +36,7 @@ public class PathControllerGrafico extends HttpServlet {
                 route = RouteInputExtractor.from(request);
             } catch (InvalidRouteInputExceptionRemoli e)
             {
-                System.out.println("Errore nell'input del percorso: " + e.getMessage());
+                logger.error("Errore nell'input del percorso {}", e.getMessage());
                 request.getRequestDispatcher("search.jsp").forward(request, response);
                 return;
             }
@@ -49,10 +47,8 @@ public class PathControllerGrafico extends HttpServlet {
                 response.sendRedirect("datiPercorsoAssenti.jsp");
                 return;
             }
-            System.out.println("City: " + route.city());
-            System.out.println("Start Station: " + route.start());
-            System.out.println("End Station: " + route.end());
 
+            logger.info("Dati per il percorso acquisiti correttamente. Città={}, StazPart={}, StazArr={}", route.city(), route.start(), route.end());
             InformazioniPercorsoBean dto = new InformazioniPercorsoBean();
 
             try {
@@ -60,7 +56,7 @@ public class PathControllerGrafico extends HttpServlet {
                 dto = path.run(route.start(), route.end(), route.city()); //controller applicativo
             } catch (IllegalArgumentException | UnreacheableNodeExceptionRemoli |
                      FuoriRangeExceptionRemoli | DAOExceptionRemoli | SQLException e) {
-                System.out.println("Errore: " + e.getMessage());
+                logger.error("Errore processamento dati percorso {}", e.toString());
                 request.setAttribute("stazioniNonValide", true);
                 request.getRequestDispatcher("search.jsp").forward(request, response);
             }
@@ -74,16 +70,16 @@ public class PathControllerGrafico extends HttpServlet {
 
             PathController pathCtrl = new PathController();
             pathCtrl.save_route(cred, request);
+            logger.info("Percorso salvato correttamente per l'utente {} {} {} relativo alla città {}.", cred.getNome(), cred.getCognome(), cred.getRuolo(), route.city());
 
 
             //inoltro la richiesta al jsp
             RequestDispatcher dispatcher = request.getRequestDispatcher("PathNOREG.jsp");
             dispatcher.forward(request, response);
 
-
             //  logica per calcolare il percorso o qualsiasi altra logica
             String result = "Route from " + route.start() + " to " + route.end() + " in " + route.city();
-            System.out.println(result);
+            logger.info(result);
 
         } catch (Exception e) {
             throw new RuntimeException(e);

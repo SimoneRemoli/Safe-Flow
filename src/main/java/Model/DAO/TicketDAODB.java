@@ -1,9 +1,6 @@
 package Model.DAO;
-
 import utility.Factory.ConnectionFactory;
 import Bean.TicketBean;
-
-import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -20,7 +17,6 @@ public class TicketDAODB extends TicketDAOLayer {
     @Override
     public List<TicketBean> getTicketByCF(String cf) throws DAOExceptionRemoli, PathNotFoundExceptionRemoli
     {
-
         List<TicketBean> lista = new ArrayList<>();
         String SP = "{ CALL RouteX_Update.getTicketByCF(?) }";
 

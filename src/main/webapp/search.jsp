@@ -335,7 +335,7 @@
             ],
             "Naples": ["Pozzuoli Solfatara", "Bagnoli-Agnano Terme", "Campi Flegrei", "Mostra", "P.Leopardi", "Augusto", "Lala",
                        "Mergellina", "Arco Mirelli", "San Pasquale", "Chiaia", "P.Amedeo", "Montesanto", "Museo-Piazza Cavour",
-                       "Dante", "Toledo", "Municipio", "Università", "Duomo", "Garibaldi", "Gianturco", "S.Giovanni-Barra",
+                       "Dante", "Toledo", "Municipio", "Universita", "Duomo", "Garibaldi", "Gianturco", "S.Giovanni-Barra",
                        "Materdei", "Salvator Rosa", "Quattro Giornate", "Vanvitelli", "Medaglie D'Oro", "Montedonzelli",
                        "Rione Alto", "Policlinico", "Colli Aminei", "Frullone", "Chiaiano", "Piscinola", "Mugnano", "Giugliano",
                        "Aversa Ippodromo", "Aversa Centro", "Cavalleggeri Aosta"],
@@ -360,7 +360,6 @@
                         "Goncz Arpad Vkp", "Dozsa Gyorgy Ut", "Lehel Ter", "Nyugati Palyaudva", "Arany Janos Utca",
                         "Kossuth Lajos Ter", "Battyhany Ter", "Szell Kalman Ter", "Deli Palyaudvar", "Astoria"]
         };
-
 
         function searchStation(inputId, resultsId) {
                     let input = document.getElementById(inputId).value.toLowerCase();

@@ -4,6 +4,8 @@ import Bean.RoutingRequestBean;
 import Model.DAO.RestituisciIdStazioniPartenzaArrivoDAO;
 import Model.DAO.RouteDAO;
 import Model.Domain.Route;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import utility.Facade.FacadePath;
 import Exception.DAOExceptionRemoli;
 import utility.Singleton.Credentials;
@@ -12,6 +14,7 @@ import java.sql.SQLException;
 import Exception.CFIsNullRemoli;
 import Exception.FuoriRangeExceptionRemoli;
 import Exception.UnreacheableNodeExceptionRemoli;
+
 
 public class PathController
 {
@@ -42,6 +45,9 @@ public class PathController
         return trasferimento;
     }
     public void save_route(Credentials cred, HttpServletRequest request) {
+
+        final Logger logger = LoggerFactory.getLogger(getClass());
+
         String cf = cred.getCodiceFiscale();
         try {
 
@@ -58,11 +64,11 @@ public class PathController
             }
         }catch (CFIsNullRemoli e)
         {
-            System.out.println("Utente non autenticato, impossibile salvare il percorso: " + e);
+            logger.error("Utente non autenticato, impossibile salvare il percorso. {}", e.toString());
         }
         catch (DAOExceptionRemoli e)
         {
-            System.out.println("Errore nel salvataggio del percorso: " + e.getMessage());
+            logger.error("Errore nel salvataggio del percorso. {}", e.toString());
         }
     }
 }
