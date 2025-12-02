@@ -22,6 +22,9 @@ public class PathController
         RestituisciIdStazioniPartenzaArrivoDAO dao = new RestituisciIdStazioniPartenzaArrivoDAO();
         dao.restituisciIdStazioni(startStation, endStation, city);
 
+        final Logger logger = LoggerFactory.getLogger(getClass());
+
+
         int codeStartStation=9999;
         int codeFinishStation=9999;
 
@@ -32,22 +35,18 @@ public class PathController
             throw new DAOExceptionRemoli("Stazioni non trovate nella città selezionata.");
         }
 
-        System.out.println("Id partenza = " + codeStartStation);
-        System.out.println("Id arrivo = " + codeFinishStation);
-
+        logger.info("Stazioni trovate. Id stazione di partenza = {} e stazione di arrivo = {}", codeStartStation, codeFinishStation);
 
         RoutingRequestBean route = new RoutingRequestBean();
         route.setCity(city);
         route.setStartId(codeStartStation);
         route.setEndId(codeFinishStation);
-
         InformazioniPercorsoBean trasferimento = new FacadePath().compute(route);
         return trasferimento;
     }
     public void save_route(Credentials cred, HttpServletRequest request) {
 
         final Logger logger = LoggerFactory.getLogger(getClass());
-
         String cf = cred.getCodiceFiscale();
         try {
 
