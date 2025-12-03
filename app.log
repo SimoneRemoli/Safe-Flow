@@ -5,3 +5,18 @@
 2025-12-03 14:48:56 INFO  [http-nio-8080-exec-1] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 31 e stazione di arrivo = 36
 2025-12-03 14:48:57 INFO  [http-nio-8080-exec-1] it.web.routex.controller.grafico.PathControllerGrafico - Percorso salvato correttamente per l'utente Giulio Andreotti TRAVELER relativo alla città Naples.
 2025-12-03 14:48:57 INFO  [http-nio-8080-exec-1] it.web.routex.controller.grafico.PathControllerGrafico - Route from Colli Aminei to Giugliano in Naples
+2025-12-03 18:54:11 INFO  [http-nio-8080-exec-4] it.web.routex.controller.grafico.LoginControllerGrafico - Bean di autenticazione creato con email: NotCheckedEmail=andreotti@gmail.com, NotCheckedPassword=mammina
+2025-12-03 18:54:12 INFO  [http-nio-8080-exec-4] it.web.routex.controller.applicativo.LoginController - Funzione autenticaUtente() dentro LoginController.java con autenticazione Giulio e Andreotti
+2025-12-03 18:54:12 INFO  [http-nio-8080-exec-4] it.web.routex.controller.grafico.LoginControllerGrafico - Utente perfettamente autenticato: nome=Giulio, cognome=Andreotti, ruolo=TRAVELER
+2025-12-03 18:54:23 INFO  [http-nio-8080-exec-8] it.web.routex.controller.grafico.PathControllerGrafico - Dati per il percorso acquisiti correttamente. Città=Naples, StazPart=Pozzuoli Solfatara, StazArr=Mergellina
+2025-12-03 18:54:23 INFO  [http-nio-8080-exec-8] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 0 e stazione di arrivo = 8
+2025-12-03 18:54:23 INFO  [http-nio-8080-exec-8] it.web.routex.controller.grafico.PathControllerGrafico - Percorso salvato correttamente per l'utente Giulio Andreotti TRAVELER relativo alla città Naples.
+2025-12-03 18:54:23 INFO  [http-nio-8080-exec-8] it.web.routex.controller.grafico.PathControllerGrafico - Route from Pozzuoli Solfatara to Mergellina in Naples
+2025-12-03 18:55:01 INFO  [http-nio-8080-exec-3] it.web.routex.controller.grafico.PathControllerGrafico - Dati per il percorso acquisiti correttamente. Città=Rome, StazPart=Porta Furba, StazArr=Battistini
+2025-12-03 18:55:01 INFO  [http-nio-8080-exec-3] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 32 e stazione di arrivo = 75
+2025-12-03 18:55:01 INFO  [http-nio-8080-exec-3] it.web.routex.controller.grafico.PathControllerGrafico - Percorso salvato correttamente per l'utente Giulio Andreotti TRAVELER relativo alla città Rome.
+2025-12-03 18:55:01 INFO  [http-nio-8080-exec-3] it.web.routex.controller.grafico.PathControllerGrafico - Route from Porta Furba to Battistini in Rome
+2025-12-03 18:55:11 INFO  [http-nio-8080-exec-4] it.web.routex.controller.grafico.PathControllerGrafico - Dati per il percorso acquisiti correttamente. Città=Rome, StazPart=Porta Furba, StazArr=Ponte Mammolo
+2025-12-03 18:55:11 INFO  [http-nio-8080-exec-4] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 32 e stazione di arrivo = 1
+2025-12-03 18:55:11 INFO  [http-nio-8080-exec-4] it.web.routex.controller.grafico.PathControllerGrafico - Percorso salvato correttamente per l'utente Giulio Andreotti TRAVELER relativo alla città Rome.
+2025-12-03 18:55:11 INFO  [http-nio-8080-exec-4] it.web.routex.controller.grafico.PathControllerGrafico - Route from Porta Furba to Ponte Mammolo in Rome

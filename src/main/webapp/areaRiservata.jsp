@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
-<%@ page import="Model.Domain.Route" %>
-<%@ page import="Bean.TicketBean" %>
-<%@ page import="Bean.RouteBean" %>
+<%@ page import="it.web.routex.model.domain.Route" %>
+<%@ page import="it.web.routex.bean.TicketBean" %>
+<%@ page import="it.web.routex.bean.RouteBean" %>
 
 
 

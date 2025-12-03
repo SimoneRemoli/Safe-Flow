@@ -1,5 +1,5 @@
 <%@ page import="java.util.List" %>
-<%@ page import="Model.Segnalazione" %>
+<%@ page import="it.web.routex.model.Segnalazione" %>
 <!DOCTYPE html>
 <html>
 <head>

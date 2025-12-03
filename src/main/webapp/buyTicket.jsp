@@ -113,9 +113,9 @@
                         <select id="city" name="city" class="form-select" required>
                             <option value="" disabled selected>-- Choose a city --</option>
                             <%
-                                List<Bean.CityBean> cities = (List<Bean.CityBean>) request.getAttribute("cities");
+                                List<it.web.routex.bean.CityBean> cities = (List<it.web.routex.bean.CityBean>) request.getAttribute("cities");
                                 if (cities != null && !cities.isEmpty()) {
-                                    for (Bean.CityBean c : cities) {
+                                    for (it.web.routex.bean.CityBean c : cities) {
                             %>
                                         <option value="<%= c.getName() %>"><%= c.getName() %></option>
                             <%
