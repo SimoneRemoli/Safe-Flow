@@ -331,7 +331,7 @@
                 "Garbatella", "Piramide", "Circo Massimo", "Colosseo","Cavour", "Termini",
                 "Castro Pretorio", "Policlinico", "Bologna", "Tiburtina FS", "Quintiliani",
                 "Monti Tiburtini", "Pietralata", "Santa Maria del Soccorso", "Ponte Mammolo",
-                "Rebibbia", "Annibaliano", "Libia", "Conca d'Oro", "Jonio"
+                "Rebibbia", "Annibaliano", "Libia", "Conca D oro", "Jonio"
             ],
             "Naples": ["Pozzuoli Solfatara", "Bagnoli-Agnano Terme", "Campi Flegrei", "Mostra", "P.Leopardi", "Augusto", "Lala",
                        "Mergellina", "Arco Mirelli", "San Pasquale", "Chiaia", "P.Amedeo", "Montesanto", "Museo-Piazza Cavour",
