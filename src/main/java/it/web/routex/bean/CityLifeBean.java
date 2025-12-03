@@ -36,7 +36,7 @@ public class CityLifeBean //OGGETTO DI TRASPORTO
         return sequenzeNodiCruciali;
     }
 
-    public int getNumero_cambi() {
+    public int getNumeroCambi() {
         return numeroCambi;
     }
 

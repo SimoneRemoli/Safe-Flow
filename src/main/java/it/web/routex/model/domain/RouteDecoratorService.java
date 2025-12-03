@@ -13,7 +13,7 @@ public class RouteDecoratorService {
         Component c = new CheckCambiamentiDecorator(new BaseComponent());
 
         request.setAttribute("percorsi", dto.getCityLife().getPercorsiConNomi());
-        request.setAttribute("numero_cambi", dto.getCityLife().getNumero_cambi());
+        request.setAttribute("numero_cambi", dto.getCityLife().getNumeroCambi());
         request.setAttribute("linee", dto.getCityLife().getLinee());
         request.setAttribute("numero", dto.getNumeroStazioniUsate());
         request.setAttribute("minutaggio", dto.getMinutaggio());

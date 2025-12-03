@@ -50,3 +50,438 @@
 2025-12-03 19:21:12 INFO  [http-nio-8080-exec-7] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 10 e stazione di arrivo = 63
 2025-12-03 19:21:12 INFO  [http-nio-8080-exec-7] it.web.routex.controller.grafico.PathControllerGrafico - Percorso salvato correttamente per l'utente Giulio Andreotti TRAVELER relativo alla città Rome.
 2025-12-03 19:21:12 INFO  [http-nio-8080-exec-7] it.web.routex.controller.grafico.PathControllerGrafico - Route from Conca D oro to Manzoni in Rome
+2025-12-03 22:07:24 INFO  [http-nio-8080-exec-4] it.web.routex.controller.grafico.PathControllerGrafico - Dati per il percorso acquisiti correttamente. Città=Rome, StazPart=Ponte Mammolo, StazArr=Marconi
+2025-12-03 22:07:24 ERROR [http-nio-8080-exec-4] it.web.routex.controller.grafico.PathControllerGrafico - Errore processamento dati percorso java.sql.SQLException: Errore durante l'esecuzione della stored procedure RestituisciStazioni
+2025-12-03 22:08:44 INFO  [http-nio-8080-exec-5] it.web.routex.controller.grafico.LoginControllerGrafico - Bean di autenticazione creato con email: NotCheckedEmail=andreotti@gmail.com, NotCheckedPassword=mammina
+2025-12-03 22:08:50 INFO  [http-nio-8080-exec-5] it.web.routex.controller.applicativo.LoginController - Funzione autenticaUtente() dentro LoginController.java con autenticazione Giulio e Andreotti
+2025-12-03 22:08:50 INFO  [http-nio-8080-exec-5] it.web.routex.controller.grafico.LoginControllerGrafico - Utente perfettamente autenticato: nome=Giulio, cognome=Andreotti, ruolo=TRAVELER
+2025-12-03 22:09:09 INFO  [http-nio-8080-exec-6] it.web.routex.controller.grafico.LoginControllerGrafico - Bean di autenticazione creato con email: NotCheckedEmail=andreotti@gmail.com, NotCheckedPassword=mammina
+2025-12-03 22:09:09 INFO  [http-nio-8080-exec-6] it.web.routex.controller.applicativo.LoginController - Funzione autenticaUtente() dentro LoginController.java con autenticazione Giulio e Andreotti
+2025-12-03 22:09:09 INFO  [http-nio-8080-exec-6] it.web.routex.controller.grafico.LoginControllerGrafico - Utente perfettamente autenticato: nome=Giulio, cognome=Andreotti, ruolo=TRAVELER
+2025-12-03 22:09:19 INFO  [http-nio-8080-exec-9] it.web.routex.controller.grafico.PathControllerGrafico - Dati per il percorso acquisiti correttamente. Città=Rome, StazPart=Ponte Mammolo, StazArr=Marconi
+2025-12-03 22:09:19 INFO  [http-nio-8080-exec-9] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 1 e stazione di arrivo = 21
+2025-12-03 22:09:19 INFO  [http-nio-8080-exec-9] it.web.routex.controller.grafico.PathControllerGrafico - Percorso salvato correttamente per l'utente Giulio Andreotti TRAVELER relativo alla città Rome.
+2025-12-03 22:09:19 INFO  [http-nio-8080-exec-9] it.web.routex.controller.grafico.PathControllerGrafico - Route from Ponte Mammolo to Marconi in Rome
+2025-12-03 22:15:34 INFO  [http-nio-8080-exec-5] it.web.routex.controller.grafico.LoginControllerGrafico - Bean di autenticazione creato con email: NotCheckedEmail=andreotti@gmail.com, NotCheckedPassword=mammina
+2025-12-03 22:15:34 INFO  [http-nio-8080-exec-5] it.web.routex.controller.applicativo.LoginController - Funzione autenticaUtente() dentro LoginController.java con autenticazione Giulio e Andreotti
+2025-12-03 22:15:34 INFO  [http-nio-8080-exec-5] it.web.routex.controller.grafico.LoginControllerGrafico - Utente perfettamente autenticato: nome=Giulio, cognome=Andreotti, ruolo=TRAVELER
+2025-12-03 22:15:43 INFO  [http-nio-8080-exec-8] it.web.routex.controller.grafico.PathControllerGrafico - Dati per il percorso acquisiti correttamente. Città=Rome, StazPart=Ponte Mammolo, StazArr=Marconi
+2025-12-03 22:15:43 INFO  [http-nio-8080-exec-8] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 1 e stazione di arrivo = 21
+2025-12-03 22:15:43 INFO  [http-nio-8080-exec-8] it.web.routex.controller.grafico.PathControllerGrafico - Percorso salvato correttamente per l'utente Giulio Andreotti TRAVELER relativo alla città Rome.
+2025-12-03 22:15:43 INFO  [http-nio-8080-exec-8] it.web.routex.controller.grafico.PathControllerGrafico - Route from Ponte Mammolo to Marconi in Rome
+2025-12-03 22:22:33 INFO  [main] it.web.routex.controller.applicativo.PagamentoMastercard - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 10.0 euro con la Mastercard
+2025-12-03 22:22:34 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 70 e stazione di arrivo = 5
+2025-12-03 22:22:34 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 67 e stazione di arrivo = 26
+2025-12-03 22:22:34 INFO  [main] it.web.routex.controller.applicativo.PagamentoPaypal - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 4.0 euro con Paypal
+2025-12-03 22:23:14 INFO  [main] it.web.routex.controller.applicativo.LoginController - Funzione autenticaUtente() dentro LoginController.java con autenticazione Simone e Remoli
+2025-12-03 22:23:14 INFO  [main] it.web.routex.controller.applicativo.LoginController - Funzione autenticaUtente() dentro LoginController.java con autenticazione Giulio e Andreotti
+2025-12-03 22:23:14 INFO  [main] it.web.routex.controller.applicativo.PagamentoPaypal - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 4.0 euro con Paypal
+2025-12-03 22:23:14 INFO  [main] it.web.routex.controller.applicativo.PagamentoMastercard - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 10.0 euro con la Mastercard
+2025-12-03 22:23:15 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 70 e stazione di arrivo = 5
+2025-12-03 22:23:15 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 67 e stazione di arrivo = 26
+2025-12-03 22:23:35 INFO  [main] it.web.routex.controller.applicativo.PagamentoMastercard - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 10.0 euro con la Mastercard
+2025-12-03 22:23:35 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 70 e stazione di arrivo = 5
+2025-12-03 22:23:35 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 67 e stazione di arrivo = 26
+2025-12-03 22:23:35 INFO  [main] it.web.routex.controller.applicativo.PagamentoPaypal - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 4.0 euro con Paypal
+2025-12-03 22:26:15 INFO  [main] it.web.routex.controller.applicativo.PagamentoMastercard - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 10.0 euro con la Mastercard
+2025-12-03 22:26:15 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 70 e stazione di arrivo = 5
+2025-12-03 22:26:15 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 67 e stazione di arrivo = 26
+2025-12-03 22:26:15 INFO  [main] it.web.routex.controller.applicativo.PagamentoPaypal - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 4.0 euro con Paypal
+2025-12-03 22:26:25 INFO  [main] it.web.routex.controller.applicativo.PagamentoMastercard - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 10.0 euro con la Mastercard
+2025-12-03 22:26:25 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 70 e stazione di arrivo = 5
+2025-12-03 22:26:25 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 67 e stazione di arrivo = 26
+2025-12-03 22:26:25 INFO  [main] it.web.routex.controller.applicativo.PagamentoPaypal - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 4.0 euro con Paypal
+2025-12-03 23:16:59 INFO  [http-nio-8080-exec-5] it.web.routex.controller.grafico.LoginControllerGrafico - Bean di autenticazione creato con email: NotCheckedEmail=andreotti@gmail.com, NotCheckedPassword=mammina
+2025-12-03 23:17:00 INFO  [http-nio-8080-exec-5] it.web.routex.controller.applicativo.LoginController - Funzione autenticaUtente() dentro LoginController.java con autenticazione Giulio e Andreotti
+2025-12-03 23:17:00 INFO  [http-nio-8080-exec-5] it.web.routex.controller.grafico.LoginControllerGrafico - Utente perfettamente autenticato: nome=Giulio, cognome=Andreotti, ruolo=TRAVELER
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.controller.grafico.PathControllerGrafico - Dati per il percorso acquisiti correttamente. Città=Rome, StazPart=Ponte Mammolo, StazArr=Graniti
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 1 e stazione di arrivo = 61
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: -1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1000
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Percorso: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 0
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 2
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 3
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 4
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 5
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 6
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 7
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 8
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 9
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 10
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 7
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 8
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 9
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 10
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 11
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 12
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 13
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 14
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 15
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 16
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 17
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 18
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 19
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 20
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 24
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 23
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 22
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 21
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 20
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 19
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 18
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 17
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 16
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 15
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 14
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 13
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 12
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 13
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 14
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 15
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 16
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 17
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 18
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 19
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 20
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 21
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 22
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 23
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 24
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 25
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 26
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 27
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 28
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 29
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 30
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 31
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 32
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 33
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 34
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 35
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 36
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 11
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 10
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 10
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 11
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 12
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 13
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 14
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 15
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 16
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 17
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 18
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 19
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Costo: 20
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 1
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 2
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 3
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 4
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 5
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 6
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 7
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 12
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 13
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 14
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 64
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 63
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 38
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 39
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 40
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 41
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 42
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 43
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 44
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 45
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 46
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 47
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 48
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 49
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 50
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 51
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 52
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 53
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 54
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 55
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 56
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 57
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 58
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 59
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 60
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 61
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Cambi linee metropolitane in CityLifeController.java 2
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.controller.grafico.PathControllerGrafico - Percorso salvato correttamente per l'utente Giulio Andreotti TRAVELER relativo alla città Rome.
+2025-12-03 23:17:11 INFO  [http-nio-8080-exec-8] it.web.routex.controller.grafico.PathControllerGrafico - Route from Ponte Mammolo to Graniti in Rome
+2025-12-03 23:19:50 INFO  [http-nio-8080-exec-1] it.web.routex.controller.grafico.PathControllerGrafico - Dati per il percorso acquisiti correttamente. Città=Rome, StazPart=Ponte Mammolo, StazArr=Graniti
+2025-12-03 23:19:51 ERROR [http-nio-8080-exec-1] it.web.routex.controller.grafico.PathControllerGrafico - Errore processamento dati percorso java.sql.SQLException: Errore durante l'esecuzione della stored procedure RestituisciStazioni
+2025-12-03 23:20:02 INFO  [http-nio-8080-exec-5] it.web.routex.controller.grafico.LoginControllerGrafico - Bean di autenticazione creato con email: NotCheckedEmail=andreotti@gmail.com, NotCheckedPassword=mammina
+2025-12-03 23:20:02 INFO  [http-nio-8080-exec-5] it.web.routex.controller.applicativo.LoginController - Funzione autenticaUtente() dentro LoginController.java con autenticazione Giulio e Andreotti
+2025-12-03 23:20:02 INFO  [http-nio-8080-exec-5] it.web.routex.controller.grafico.LoginControllerGrafico - Utente perfettamente autenticato: nome=Giulio, cognome=Andreotti, ruolo=TRAVELER
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.controller.grafico.PathControllerGrafico - Dati per il percorso acquisiti correttamente. Città=Rome, StazPart=Ponte Mammolo, StazArr=Graniti
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 1 e stazione di arrivo = 61
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 1
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 2
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 3
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 4
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 5
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 6
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 7
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 12
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 13
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 14
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 64
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 63
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 38
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 39
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 40
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 41
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 42
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 43
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 44
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 45
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 46
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 47
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 48
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 49
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 50
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 51
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 52
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 53
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 54
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 55
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 56
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 57
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 58
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 59
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 60
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Ricorsione 61
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.model.domain.Rome - Cambi linee metropolitane in CityLifeController.java 2
+2025-12-03 23:20:14 INFO  [http-nio-8080-exec-8] it.web.routex.controller.grafico.PathControllerGrafico - Percorso salvato correttamente per l'utente Giulio Andreotti TRAVELER relativo alla città Rome.
+2025-12-03 23:20:15 INFO  [http-nio-8080-exec-8] it.web.routex.controller.grafico.PathControllerGrafico - Route from Ponte Mammolo to Graniti in Rome

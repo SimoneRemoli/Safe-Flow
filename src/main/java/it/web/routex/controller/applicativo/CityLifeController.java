@@ -4,25 +4,24 @@ import it.web.routex.bean.FermataRecordBean;
 import it.web.routex.model.dao.FermataDAO;
 import java.io.*;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
+
 import it.web.routex.exception.FuoriRangeExceptionRemoli;
 import it.web.routex.exception.UnreacheableNodeExceptionRemoli;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CityLifeController
 {
     protected int[][] matriceAdiacenza; //le classi figlie possono specializzare la loro matrice di adiacenza
     private void removeChangeLines(List<String> sequenzeDiCambiamentoFull)
     {
-        for(int i=0;i<sequenzeDiCambiamentoFull.size();i++)
-        {
-            if(sequenzeDiCambiamentoFull.get(i).contains("-"))
-            {
+        for (int i = sequenzeDiCambiamentoFull.size() - 1; i >= 0; i--) {
+            if (sequenzeDiCambiamentoFull.get(i).contains("-")) {
                 sequenzeDiCambiamentoFull.remove(i);
             }
         }
+
     }
     private void removeDuplicate(List<String> sequenzeDiCambiamentoFull,int indice) {
         for(int i=indice;i<sequenzeDiCambiamentoFull.size();i++)
@@ -40,6 +39,7 @@ public class CityLifeController
     }
 
     public CityLifeBean calcolaPercorso(List<Integer> ids, String city) throws SQLException {
+        final Logger logger = LoggerFactory.getLogger(getClass());
         List<String> percorsiConFermate = new ArrayList<String>();
         List<Integer> percorsiCodifica = new ArrayList<Integer>();
         List<String> sequenzediCambiamento = new ArrayList<String>();
@@ -52,7 +52,6 @@ public class CityLifeController
         int cambiLineeMetropolitane = 0;
         String nomeStazioneCambio = "";
         String ev="";
-        String precedente = "";
         List<String> linee = new ArrayList<String>();
         List<String> inMezzo = new ArrayList<String>();
         List<String> inMezzoNomi = new ArrayList<String>();
@@ -61,10 +60,27 @@ public class CityLifeController
         FermataDAO fermataDAO = new FermataDAO();
         List<FermataRecordBean> fermateTot = fermataDAO.getFermateByIds(ids, city);
 
+        String lineaTemp = "";
+        String daRaggiungere="";
+        String temp="";
+        String successivo="";
+        String success="";
+        String daNonRipetere="";
 
-        String lineaTemp = "", daRaggiungere="",temp="",successivo="",success="", daNonRipetere="";
-        boolean check = false, noPass=false,controllo=false,ciSonPassato=false,stopping=false,ancora=false,uno=false;
-        int countBin = 0,quantoCiPasso=0,contatore=0,count=0,conta=0,checkino=0;
+        boolean check = false;
+        boolean noPass=false;
+        boolean controllo=false;
+        boolean ciSonPassato=false;
+        boolean stopping=false;
+        boolean ancora=false;
+        boolean uno=false;
+
+        int countBin = 0;
+        int quantoCiPasso=0;
+        int contatore=0;
+        int count=0;
+        int conta=0;
+        int checkino=0;
 
         for (int i = 0; i < fermateTot.size(); i++)
         {
@@ -72,14 +88,14 @@ public class CityLifeController
             String fermate = fermata.getNome();
             String linea = fermata.getLinea();
 
-            if (((linea.contains("-"))) && (i == 0)) {
+            if (linea.contains("-") && i == 0) {
                 controllo = true;
                 cambiIniziali.add(fermate);
                 cambiInizialiLinee.add(linea);
                 uno = true;
             }
 
-            if (((linea.contains("-"))) && (i == 1)) {
+            if (linea.contains("-") && i == 1) {
                 noPass = true;
                 cambiIniziali.add(fermate);
                 cambiInizialiLinee.add(linea);
@@ -90,7 +106,7 @@ public class CityLifeController
             } else if ((!lineaTemp.equals(linea)) && (i == 1)) {
                 noPass = true;
             }
-            if ((stopping == false) && (ancora == true)) {
+            if ((!stopping) && (ancora)) {
                 if (i > 1) {
                     if ((linea.contains("-"))) {
                         stopping = false;
@@ -188,7 +204,6 @@ public class CityLifeController
 
                                         String[] parole = listaAppoggio.get(l).split("-");
                                         for (String parola : parole) {
-                                            //System.out.println(parola);
                                             if (!(parola.equals(daNonRipetere))) //se parola != linea
                                             {
                                                 daRaggiungere = parola;
@@ -227,7 +242,7 @@ public class CityLifeController
                     check = false;
                     lineaTemp = linea;
 
-                    if (ciSonPassato == true) {
+                    if (ciSonPassato) {
                         inMezzo.clear();
                         inMezzoNomi.clear();
                         check = false;
@@ -236,21 +251,19 @@ public class CityLifeController
                     }
                 }
             } else {
-                if (!(countBin == 0)) {
+                if (countBin != 0) {
                     if (!lineaTemp.equals(linea)) {
 
-                        if ((i == 1) && (controllo == false)) {
+                        if ((i == 1) && (!controllo)) {
                             check = true;
-                            precedente = linea;
                             nomeStazioneCambio = fermate; //la aggiungo solo se poi effettivamente rispetta check
                             noPass = false;
                             inMezzo.add(linea);
                             inMezzoNomi.add(fermate);
                             ev = lineaTemp;
                         } else {
-                            if (noPass == false) {
+                            if (!noPass) {
                                 check = true;
-                                precedente = linea;
                                 nomeStazioneCambio = fermate; //la aggiungo solo se poi effettivamente rispetta check
                                 inMezzo.add(linea);
                                 inMezzoNomi.add(fermate);
@@ -258,7 +271,7 @@ public class CityLifeController
                                 ciSonPassato = true;
                             } else {
                                 noPass = false;
-                                if (stopping == true) {
+                                if (stopping) {
                                     for (int j = 0; j < cambiInizialiLinee.size(); j++) {
                                         String[] parole = cambiInizialiLinee.get(j).split("-");
                                         for (String parola : parole) {
@@ -269,7 +282,6 @@ public class CityLifeController
                                         }
                                     }
                                     if (contatore == cambiInizialiLinee.size()) {
-                                        System.out.println("Nessun cambio");
                                         nomeStazioneCambio = "";
                                     } else {
                                         sequenzeNodiCruciali.add(nomeStazioneCambio);
@@ -288,7 +300,7 @@ public class CityLifeController
                     } else {
                         lineaTemp = linea;
                     }
-                } else if (countBin == 0) {
+                } else {
                     lineaTemp = linea;
                     countBin = countBin + 1;
 
@@ -302,12 +314,11 @@ public class CityLifeController
 
         for(int j=cambi.size()-1;j>=0;j--)
         {
-            System.out.println(" CAMBIO = " + cambi.get(j));
+            logger.info("Cambio {} ", cambi.get(j));
             sequenzeNodiCruciali.add(cambi.get(j));
         }
         cambiLineeMetropolitane = sequenzeNodiCruciali.size();
-        System.out.println("CAMBI LINEE METROPOLITANE in CityLifeController.Java = " + cambiLineeMetropolitane);
-
+        logger.info("Cambi linee metropolitane in CityLifeController.java {}", cambiLineeMetropolitane);
 
         removeDuplicate(sequenzediCambiamento, 0);
         removeChangeLines(sequenzediCambiamento);
@@ -346,23 +357,7 @@ public class CityLifeController
         }
     }
 
-    private void views_arrays(int[]a,int[]b, int[][]matrice)
-    {
-        //System.out.print("Matrice.lenght =  "+ matrice.length);
-        System.out.print("Know = ");
-        for(int i=0; i< matrice.length; i++)
-        {
-            System.out.print( "[ " + a[i] + " ] ");
-        }
-        System.out.println();
-        System.out.print("Cost = ");
-        for(int i=0; i< matrice.length; i++)
-        {
-            System.out.print( "[ " + b[i] + " ] ");
-        }
-
-    }
-    private boolean checkfill(int[]a, int[]b, int dim)
+    private boolean checkfill(int[]a, int dim)
     {
         for(int i=0;i<dim;i++)
         {
@@ -386,26 +381,27 @@ public class CityLifeController
         }
         return adiacenti;
     }
-    private int nodo_costo_minore(int[]cost, int[]know)
+    private int nodoCostoMinore(int[]cost, int[]know)
     {
-        int min=0, minimo_nodo=0, temp = 10000;
+        int min=0;
+        int minimoNodo=0;
+        int temp = 10000;
         for(int i=0;i<cost.length;i++)
         {
             if(know[i]==-1)
             {
                 min = cost[i];
-
                 if(temp > min)
                 {
                     temp = min;
-                    minimo_nodo = i;
+                    minimoNodo = i;
                 }
             }
         }
-        return minimo_nodo;
+        return minimoNodo;
     }
-    private void stampaPercorso(int nodo, int[] precedente, ArrayList<Integer> percorsi_codifica) {
-        Stack<Integer> percorso = new Stack<>();
+    private void stampaPercorso(int nodo, int[] precedente, ArrayList<Integer> percorsiCodifica) {
+        Deque<Integer> percorso = new ArrayDeque<>();
         int app;
         while (nodo != -1) {
             percorso.push(nodo);
@@ -413,8 +409,7 @@ public class CityLifeController
         }
         while (!percorso.isEmpty()) {
             app = percorso.pop();
-            System.out.print(app + " ");
-            percorsi_codifica.add(app);
+            percorsiCodifica.add(app);
 
         }
     }
@@ -432,7 +427,6 @@ public class CityLifeController
         int [] cost = new int[matriceAdiacenza.length];
         Arrays.fill(cost, 1000);
         Arrays.fill(know, -1);
-        this.views_arrays(know,cost, matriceAdiacenza);
         System.out.println();
         int [] adiacenti_vector = new int[(matriceAdiacenza.length)-1];
         int adj_temp = 0;
@@ -442,7 +436,7 @@ public class CityLifeController
         int[] precedente = new int[matriceAdiacenza.length];  // Array per tracciare il percorso
         Arrays.fill(precedente, -1);
 
-        while(this.checkfill(know,cost,matriceAdiacenza.length))
+        while(this.checkfill(know,matriceAdiacenza.length))
         {
             adiacenti_vector = this.trovaAdj(nodo_partenza, matriceAdiacenza);
             for(int i=0;i<adiacenti_vector.length;i++)
@@ -460,10 +454,9 @@ public class CityLifeController
                     }
                 }
             }
-            nodo_partenza = this.nodo_costo_minore(cost,know);
+            nodo_partenza = this.nodoCostoMinore(cost,know);
             know[nodo_partenza] = 1;
         }
-        this.views_arrays(know,cost, matriceAdiacenza);
         System.out.println();
         System.out.println("Path.");
 
