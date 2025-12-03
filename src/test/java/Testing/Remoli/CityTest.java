@@ -1,15 +1,15 @@
 package Testing.Remoli;
 
-import Bean.CityBean;
-import Bean.PrezzoTotaleBean;
-import Controller.Applicativo.CityController;
-import Model.Domain.Ruolo;
+import it.web.routex.bean.CityBean;
+import it.web.routex.bean.PrezzoTotaleBean;
+import it.web.routex.controller.applicativo.CityController;
+import it.web.routex.model.domain.Ruolo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import utility.Factory.ConnectionFactory;
-import Exception.DAOExceptionRemoli;
-import Exception.InvalidCityDataExceptionRemoli;
+import it.web.routex.utility.Factory.ConnectionFactory;
+import it.web.routex.exception.DAOExceptionRemoli;
+import it.web.routex.exception.InvalidCityDataExceptionRemoli;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -49,9 +49,9 @@ public class CityTest {
         double expected = Double.parseDouble(parts[2]);
 
         CityController cityController = new CityController();
-        PrezzoTotaleBean prezzo = cityController.ottieni_prezzo_totale(city, Integer.parseInt(quantita));
+        PrezzoTotaleBean prezzo = cityController.ottieniPrezzoTotale(city, Integer.parseInt(quantita));
 
-        assertEquals(expected, prezzo.getPrezzo_totale());
+        assertEquals(expected, prezzo.getPrezzoTotale());
     }
     @Test
     void OttieniCity() throws InvalidCityDataExceptionRemoli, SQLException, DAOExceptionRemoli {

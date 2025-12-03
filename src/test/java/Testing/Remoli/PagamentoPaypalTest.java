@@ -1,15 +1,15 @@
 package Testing.Remoli;
 
-import Controller.Applicativo.PagamentoPaypal;
-import Model.Domain.Ruolo;
+import it.web.routex.controller.applicativo.PagamentoPaypal;
+import it.web.routex.model.domain.Ruolo;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import utility.Factory.ConnectionFactory;
-import utility.Singleton.Credentials;
-import Exception.DAOExceptionRemoli;
-import Exception.CredentialsExceptionRemoli;
+import it.web.routex.utility.Factory.ConnectionFactory;
+import it.web.routex.utility.Singleton.Credentials;
+import it.web.routex.exception.DAOExceptionRemoli;
+import it.web.routex.exception.CredentialsExceptionRemoli;
 
 import java.util.ResourceBundle;
 import java.util.stream.Stream;

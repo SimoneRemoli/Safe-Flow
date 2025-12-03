@@ -1,16 +1,16 @@
 package Testing.Remoli;
 
-import Bean.InformazioniPercorsoBean;
-import Bean.RouteBean;
-import Controller.Applicativo.AreaRiservata;
-import Controller.Applicativo.PathController;
-import Model.Domain.Ruolo;
+import it.web.routex.bean.InformazioniPercorsoBean;
+import it.web.routex.bean.RouteBean;
+import it.web.routex.controller.applicativo.AreaRiservata;
+import it.web.routex.controller.applicativo.PathController;
+import it.web.routex.model.domain.Ruolo;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import Exception.DAOExceptionRemoli;
-import utility.Factory.ConnectionFactory;
+import it.web.routex.exception.DAOExceptionRemoli;
+import it.web.routex.utility.Factory.ConnectionFactory;
 
 import java.util.List;
 import java.util.ResourceBundle;
@@ -61,7 +61,7 @@ public class PercorsoTest
         String[] parts = strings.split(":");
         PathController path = new PathController();
         InformazioniPercorsoBean dto = path.run(parts[0], parts[1], parts[2]);
-        int stazioniTotali = dto.getCityLife().getNumero_stazioni_totali();
+        int stazioniTotali = dto.getCityLife().getNumeroStazioniTotali();
         assertTrue(stazioniTotali > 0);
 
     }

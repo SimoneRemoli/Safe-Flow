@@ -1,14 +1,12 @@
 package Testing.Remoli;
 
-import Bean.AutenticazioneBean;
-import Bean.UtenteBeanGenerico;
-import Controller.Applicativo.LoginController;
-import org.junit.jupiter.api.Test;
+import it.web.routex.bean.AutenticazioneBean;
+import it.web.routex.bean.UtenteBeanGenerico;
+import it.web.routex.controller.applicativo.LoginController;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import utility.Singleton.Credentials;
-import Exception.DAOExceptionRemoli;
-import Exception.LoginNotFoundRemoli;
+import it.web.routex.exception.DAOExceptionRemoli;
+import it.web.routex.exception.LoginNotFoundRemoli;
 
 import java.util.ResourceBundle;
 import java.util.stream.Stream;

@@ -1,20 +1,20 @@
 package Testing.Remoli;
 
-import Bean.TicketBean;
-import Controller.Applicativo.AreaRiservata;
-import Model.Domain.Ruolo;
-import Model.Domain.TypesOfPersistenceLayer;
+import it.web.routex.bean.TicketBean;
+import it.web.routex.controller.applicativo.AreaRiservata;
+import it.web.routex.model.domain.Ruolo;
+import it.web.routex.model.domain.TypesOfPersistenceLayer;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import utility.Decorator.DecoratorTicket.BaseTicketCode;
-import utility.Decorator.DecoratorTicket.CittaDecorator;
-import utility.Decorator.DecoratorTicket.Component;
-import utility.Decorator.DecoratorTicket.TimestampDecorator;
-import utility.Factory.ConnectionFactory;
-import utility.Singleton.PersistenceMode;
-import Exception.PathNotFoundExceptionRemoli;
+import it.web.routex.utility.Decorator.DecoratorTicket.BaseTicketCode;
+import it.web.routex.utility.Decorator.DecoratorTicket.CittaDecorator;
+import it.web.routex.utility.Decorator.DecoratorTicket.Component;
+import it.web.routex.utility.Decorator.DecoratorTicket.TimestampDecorator;
+import it.web.routex.utility.Factory.ConnectionFactory;
+import it.web.routex.utility.Singleton.PersistenceMode;
+import it.web.routex.exception.PathNotFoundExceptionRemoli;
 
 import java.util.List;
 import java.util.ResourceBundle;
