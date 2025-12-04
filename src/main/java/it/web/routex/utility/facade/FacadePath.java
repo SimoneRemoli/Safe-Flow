@@ -18,7 +18,6 @@ public class FacadePath
     }
     private CityLifeBean routingProcess (RoutingRequestBean route) throws IllegalArgumentException, FuoriRangeExceptionRemoli, UnreacheableNodeExceptionRemoli, SQLException {
         CityLifeController controller = CityLifeFactory.createCity(route.getCity());
-
         ArrayList<Integer> path = controller.Dijkstra(
                 route.getStartId(),
                 route.getEndId()
