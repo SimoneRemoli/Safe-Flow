@@ -81,8 +81,8 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
                 buyTicket = BuyTicketExtractor.from(request);
             } catch (InvalidBuyTicketInputExceptionRemoli e) {
                 logger.error("Errore di validazione input nell'acquisto biglietti: {}", e.toString());
-                request.setAttribute("errore", e.getUserMessage());
-                request.getRequestDispatcher("error.jsp").forward(request, response);
+                request.setAttribute(ERRORE, e.getUserMessage());
+                request.getRequestDispatcher(PAGE_ERROR).forward(request, response);
                 return;
             }
 
@@ -104,13 +104,13 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
 
             } catch (DAOExceptionRemoli e) {
                 e.printStackTrace();
-                request.setAttribute("errore", "Errore durante l'elaborazione dell'acquisto: " + e.getMessage());
-                request.getRequestDispatcher("error.jsp").forward(request, response);
+                request.setAttribute(ERRORE, "Errore durante l'elaborazione dell'acquisto: " + e.getMessage());
+                request.getRequestDispatcher(PAGE_ERROR).forward(request, response);
                 logger.error("Errore nella DAO {}. ", e.getMessage());
             } catch (InvalidPriceCalculationExceptionRemoli e) {
                 logger.error("Errore nei dati inseriti: {}", e.toString());
-                request.setAttribute("errore", e.getUserMessage());
-                request.getRequestDispatcher("error.jsp").forward(request, response);
+                request.setAttribute(ERRORE, e.getUserMessage());
+                request.getRequestDispatcher(PAGE_ERROR).forward(request, response);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

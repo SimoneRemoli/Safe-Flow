@@ -7,7 +7,12 @@ import java.time.LocalDate;
 
 import static it.web.routex.model.extractor.RouteInputExtractor.sanitize;
 
-public class MastercardExtractor {
+public final class MastercardExtractor {
+
+    private MastercardExtractor()
+    {
+        throw new AssertionError("Classe di estrazione dati, non si creano new");
+    }
 
     public static MastercardRecord from(HttpServletRequest request)
             throws InvalidCardInputExceptionRemoli {

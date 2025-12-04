@@ -7,7 +7,12 @@ import it.web.routex.exception.InvalidBuyTicketInputExceptionRemoli;
 
 import static it.web.routex.model.extractor.RouteInputExtractor.sanitize;
 
-public class BuyTicketExtractor {
+public final class BuyTicketExtractor {
+
+    private BuyTicketExtractor()
+    {
+        throw new AssertionError("Classe di estrazione dati, non si creano new");
+    }
 
     public static BuyTicketRecord from(HttpServletRequest request)
             throws InvalidBuyTicketInputExceptionRemoli {

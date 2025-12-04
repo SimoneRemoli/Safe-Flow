@@ -7,7 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import static it.web.routex.model.extractor.RouteInputExtractor.sanitize;
 
-public class LoginExtractor {
+public final class LoginExtractor {
+
+    private LoginExtractor()
+    {
+        throw new AssertionError("Classe di estrazione dati, non si creano new");
+    }
 
     public static LoginRecord from(HttpServletRequest request) throws InvalidLoginInputExceptionRemoli {
 

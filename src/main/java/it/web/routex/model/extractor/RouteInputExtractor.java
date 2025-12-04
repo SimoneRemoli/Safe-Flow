@@ -4,7 +4,12 @@ import javax.servlet.http.HttpServletRequest;
 import it.web.routex.exception.InvalidRouteInputExceptionRemoli;
 import it.web.routex.model.record.RouteRecord;
 
-public class RouteInputExtractor {
+public final class RouteInputExtractor {
+
+    private RouteInputExtractor()
+    {
+        throw new AssertionError("Classe di estrazione dati, non si creano new");
+    }
 
     public static RouteRecord from(HttpServletRequest request)
             throws InvalidRouteInputExceptionRemoli {

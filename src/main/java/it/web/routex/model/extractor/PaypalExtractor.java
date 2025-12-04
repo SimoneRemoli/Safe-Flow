@@ -4,7 +4,12 @@ import it.web.routex.exception.InvalidCardInputExceptionRemoli;
 import javax.servlet.http.HttpServletRequest;
 import static it.web.routex.model.extractor.RouteInputExtractor.sanitize;
 
-public class PaypalExtractor {
+public final class PaypalExtractor {
+
+    private PaypalExtractor()
+    {
+        throw new AssertionError("Classe di estrazione dati, non si creano new");
+    }
 
     public static PaypalRecord from(HttpServletRequest request)
             throws InvalidCardInputExceptionRemoli {

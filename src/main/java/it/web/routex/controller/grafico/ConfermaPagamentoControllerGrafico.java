@@ -53,7 +53,6 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
             TypesOfPersistenceLayer persistenceLayer = paymentRecord.persistenceLayer();
             logger.info("Tipo di persistenza scelto {}", persistenceLayer.toString());
             PersistenceMode.getSingletonInstance().setTipo(persistenceLayer);
-
             RegistrazionePagamentoController controllerPagamento = null;
             String messaggio;
             MastercardRecord master;

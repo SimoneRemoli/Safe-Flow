@@ -7,7 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import it.web.routex.exception.InvalidPaymentInputExceptionRemoli;
 
-public class PagamentoExtractor {
+public final class PagamentoExtractor {
+
+    private PagamentoExtractor()
+    {
+        throw new AssertionError("Classe di estrazione dati, non si creano new");
+    }
 
     public static PaymentRecord from(HttpServletRequest request)
             throws InvalidPaymentInputExceptionRemoli {

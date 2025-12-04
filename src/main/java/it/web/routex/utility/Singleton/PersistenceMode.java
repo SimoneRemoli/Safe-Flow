@@ -8,7 +8,6 @@ import it.web.routex.model.domain.TypesOfPersistenceLayer;
  */
 
 public class PersistenceMode {
-
     private TypesOfPersistenceLayer tipo;
     private static class Container
     {
