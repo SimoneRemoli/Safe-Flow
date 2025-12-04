@@ -25,6 +25,11 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
     /**
      * Crea il bean di autenticazione a partire dai parametri del form.
      */
+
+    private static final String ATTR_MESSAGGIO_ERRORE = "messaggioErrore";
+    private static final String PAGE_ERRORE_LOGIN = "/erroreLogin.jsp";
+
+
     private AutenticazioneBean creaBeanAutenticazione(HttpServletRequest request, HttpServletResponse response) {
         AutenticazioneBean aut = new AutenticazioneBean();
         LoginRecord login = null;
@@ -32,9 +37,8 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
             try {
                 login = LoginExtractor.from(request);
             } catch (InvalidLoginInputExceptionRemoli e) {
-                System.out.println("Errore di validazione input login: " + e.getMessage());
-                request.setAttribute("messaggioErrore", e.getUserMessage());
-                request.getRequestDispatcher("erroreLogin.jsp").forward(request, response);
+                request.setAttribute(ATTR_MESSAGGIO_ERRORE, e.getUserMessage());
+                request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
                 logger.error("Errore di validazione input login: {}", e.toString());
             }
             aut.setEmail(login.email());
@@ -73,8 +77,8 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
     {
                 try {
                     ex.printStackTrace();
-                    request.setAttribute("messaggioErrore", "Errore nella connessione al DB [500 internal error]");
-                    request.getRequestDispatcher("erroreLogin.jsp").forward(request, response);
+                    request.setAttribute(ATTR_MESSAGGIO_ERRORE, "Errore nella connessione al DB [500 internal error]");
+                    request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
                     logger.error("Errore DAO durante il login: message={}", ex.getMessage());
                 }catch(Exception e) {
                     logger.error("Errore generico non catturato: message={}", e.getMessage());
@@ -100,7 +104,6 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
                 LoginController loginController = new LoginController(credenziali);
                 UtenteBeanGenerico utente = loginController.autenticaUtente();
 
-                //  Dopo loginController.autenticaUtente(session);
                 session.setAttribute("nome", utente.getNome());
                 session.setAttribute("cognome", utente.getCognome());
                 session.setAttribute("ruolo", utente.getRuolo());
@@ -115,8 +118,8 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
 
             } catch (LoginNotFoundRemoli ex) {
                 ex.printStackTrace();
-                request.setAttribute("messaggioErrore", ex.getMessage());
-                request.getRequestDispatcher("erroreLogin.jsp").forward(request, response);
+                request.setAttribute(ATTR_MESSAGGIO_ERRORE, ex.getMessage());
+                request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
                 logger.error("Tentativo di login fallito: email={}, Maskedpassw={}, message={}", ex.getEmail(), ex.getMaskedPassword(), ex.getMessage());
             }
         }catch(Exception e){

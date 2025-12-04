@@ -421,61 +421,53 @@ public class CityLifeController
             throw new FuoriRangeExceptionRemoli("ID arrivo fuori range: " + arrivo, FuoriRangeExceptionRemoli.Severity.CRITICAL);
 
 
-        ArrayList<Integer> percorsi_codifica = new ArrayList<Integer>();
-        int nodo_partenza = partenza, nodo_arrivo = arrivo;
+        ArrayList<Integer> percorsiCodifica = new ArrayList<Integer>();
+        int nodoPartenza = partenza;
+        int nodoArrivo = arrivo;
         int [] know = new int[matriceAdiacenza.length];
         int [] cost = new int[matriceAdiacenza.length];
+        int [] adiacentiVector = new int[(matriceAdiacenza.length)-1];
+        int adjTemp = 0;
+        int[] precedente = new int[matriceAdiacenza.length];
+
+
         Arrays.fill(cost, 1000);
         Arrays.fill(know, -1);
-        System.out.println();
-        int [] adiacenti_vector = new int[(matriceAdiacenza.length)-1];
-        int adj_temp = 0;
-        know[nodo_partenza] = 1;
-        cost[nodo_partenza] = 0;
-        System.out.println();
-        int[] precedente = new int[matriceAdiacenza.length];  // Array per tracciare il percorso
+        know[nodoPartenza] = 1;
+        cost[nodoPartenza] = 0;
         Arrays.fill(precedente, -1);
 
         while(this.checkfill(know,matriceAdiacenza.length))
         {
-            adiacenti_vector = this.trovaAdj(nodo_partenza, matriceAdiacenza);
-            for(int i=0;i<adiacenti_vector.length;i++)
+            adiacentiVector = this.trovaAdj(nodoPartenza, matriceAdiacenza);
+            for(int i=0;i<adiacentiVector.length;i++)
             {
-                if(adiacenti_vector[i]!=-1)
+                if(adiacentiVector[i]!=-1)
                 {
-                    adj_temp = adiacenti_vector[i];
-                    if(know[adj_temp]==-1)
+                    adjTemp = adiacentiVector[i];
+                    if(know[adjTemp]==-1)
                     {
-                        if(cost[adj_temp] > cost[nodo_partenza] + matriceAdiacenza[nodo_partenza][adj_temp])
+                        if(cost[adjTemp] > cost[nodoPartenza] + matriceAdiacenza[nodoPartenza][adjTemp])
                         {
-                            cost[adj_temp] = cost[nodo_partenza] + matriceAdiacenza[nodo_partenza][adj_temp];
-                            precedente[adj_temp] = nodo_partenza;
+                            cost[adjTemp] = cost[nodoPartenza] + matriceAdiacenza[nodoPartenza][adjTemp];
+                            precedente[adjTemp] = nodoPartenza;
                         }
                     }
                 }
             }
-            nodo_partenza = this.nodoCostoMinore(cost,know);
-            know[nodo_partenza] = 1;
+            nodoPartenza = this.nodoCostoMinore(cost,know);
+            know[nodoPartenza] = 1;
         }
-        System.out.println();
-        System.out.println("Path.");
-
-        if (cost[nodo_arrivo] == 1000 || precedente[nodo_arrivo] == -1) {
+        if (cost[nodoArrivo] == 1000 || precedente[nodoArrivo] == -1) {
             throw new UnreacheableNodeExceptionRemoli(
                     "Il percorso verso la stazione selezionata non è disponibile.",
-                    "Nodo " + nodo_arrivo + " irraggiungibile da " + nodo_partenza,
+                    "Nodo " + nodoArrivo + " irraggiungibile da " + nodoPartenza,
                     UnreacheableNodeExceptionRemoli.Severity.CRITICAL
             );
         }
-
         for (int i = 0; i < matriceAdiacenza.length; i++)
-        {
-            if(i==nodo_arrivo) { //se levassi questa condizione mi stamperebbe tutti i percorsi dalla stazione di partenza to *
-                System.out.print("Nodo " + i + ": Num fermate da attraversare = " + cost[i] + ", Percorso = ");
-                this.stampaPercorso(i, precedente, percorsi_codifica); // si crea solo questa
-                System.out.println();
-            }
-        }
-        return percorsi_codifica;
+            if(i==nodoArrivo) this.stampaPercorso(i, precedente, percorsiCodifica);
+
+        return percorsiCodifica;
     }
 }

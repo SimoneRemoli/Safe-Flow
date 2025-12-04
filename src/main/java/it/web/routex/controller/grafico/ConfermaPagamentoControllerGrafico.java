@@ -23,7 +23,8 @@ import it.web.routex.exception.InvalidCardInputExceptionRemoli;
 
 @WebServlet("/confermaPagamento")
 public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
-
+    private static final String ATTR_MESSAGGIO_ERRORE = "messaggioErrore";
+    private static final String PAGE_ERRORE_PAGAMENTO = "/errorePagamento.jsp";
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     {
@@ -44,16 +45,14 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
                 paymentRecord = PagamentoExtractor.from(request);
             }catch(InvalidPaymentInputExceptionRemoli e) {
                 logger.error("Errore nell'input del pagamento: {}", e.toString());
-                request.setAttribute("messaggioErrore", e.getUserMessage());
-                request.getRequestDispatcher("/errorePagamento.jsp").forward(request, response);
+                request.setAttribute(ATTR_MESSAGGIO_ERRORE, e.getUserMessage());
+                request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO).forward(request, response);
                 return;
             }
 
-    //fin qui ok
             TypesOfPersistenceLayer persistenceLayer = paymentRecord.persistenceLayer();
             PersistenceMode.getInstance().setTipo(persistenceLayer); //singleton che mantiene il tipo di persistenza scelto
 
-            //  Selezione metodo di pagamento ----------------------------------------------
             RegistrazionePagamentoController controllerPagamento = null;
             String messaggio;
             MastercardRecord master;
@@ -67,8 +66,8 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
                     }catch(InvalidCardInputExceptionRemoli ex)
                     {
                         logger.error("Errore nei dati Mastercard {}", ex.toString());
-                        request.setAttribute("messaggioErrore", ex.getUserMessage());
-                        request.getRequestDispatcher("/errorePagamento.jsp").forward(request, response);
+                        request.setAttribute(ATTR_MESSAGGIO_ERRORE, ex.getUserMessage());
+                        request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO).forward(request, response);
                         return;
                     }
                     controllerPagamento = new PagamentoMastercard(master.numero_carta(), master.scadenza(), master.cvv(), cred, paymentRecord.total(), paymentRecord.quantity(), paymentRecord.city());
@@ -79,8 +78,8 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
                         pay = PaypalExtractor.from(request);
                     } catch (InvalidCardInputExceptionRemoli e) {
                         logger.error("Errore nei dati Paypal {}", e.toString());
-                        request.setAttribute("messaggioErrore", e.getUserMessage());
-                        request.getRequestDispatcher("/errorePagamento.jsp").forward(request, response);
+                        request.setAttribute(ATTR_MESSAGGIO_ERRORE, e.getUserMessage());
+                        request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO).forward(request, response);
                         return;
                     }
                     controllerPagamento = new PagamentoPaypal(pay.email_paypal(), pay.codice_transazione(), cred, paymentRecord.total(), paymentRecord.quantity(), paymentRecord.city());
@@ -92,26 +91,26 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
                 }
             }
             try {
-                codiciBiglietti = controllerPagamento.run(); // se la vede poi chi viene chiamato
+                codiciBiglietti = controllerPagamento.run();
             } catch (PaymentValidationExceptionRemoli remoli) {
-                request.setAttribute("messaggioErrore", remoli.getMessage());
-                request.getRequestDispatcher("/errorePagamento.jsp").forward(request, response);
+                request.setAttribute(ATTR_MESSAGGIO_ERRORE, remoli.getMessage());
+                request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO).forward(request, response);
                 logger.error("Errore PaymentValidationExceptionRemoli : {}", remoli.toString());
                 return;
             } catch (DAOExceptionRemoli remoli) {
                 logger.error("Errore Errore DAOExceptionRemoli : {}", remoli.toString());
-                request.setAttribute("messaggioErrore", remoli.getMessage());
-                request.getRequestDispatcher("/errorePagamento.jsp").forward(request, response);
+                request.setAttribute(ATTR_MESSAGGIO_ERRORE, remoli.getMessage());
+                request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO).forward(request, response);
                 return;
             } catch (CredentialsExceptionRemoli remoli) {
                 logger.error("Errore CredentialsExceptionRemoli : {}", remoli.toString());
-                request.setAttribute("messaggioErrore", remoli.getMessage());
-                request.getRequestDispatcher("/errorePagamento.jsp").forward(request, response);
+                request.setAttribute(ATTR_MESSAGGIO_ERRORE, remoli.getMessage());
+                request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO).forward(request, response);
                 return;
             } catch (Exception e) {
-                request.setAttribute("messaggioErrore", e.getMessage());
-                request.getRequestDispatcher("/errorePagamento.jsp").forward(request, response);
-                logger.error("Errore CredentialsExceptionRemoli : {}", new RuntimeException(e));
+                request.setAttribute(ATTR_MESSAGGIO_ERRORE, e.getMessage());
+                request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO).forward(request, response);
+                logger.error("Errore CredentialsExceptionRemoli", e);
                 return;
             }
 

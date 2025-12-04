@@ -26,11 +26,15 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
     /**
      * Mostra la pagina di acquisto dei biglietti con la lista delle città disponibili.
      */
+
+    private static final String ERRORE = "errore";
+    private static final String PAGE_ERROR = "error.jsp";
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     {
-        String s = "errore";
-        String pageErr = "error.jsp";
+        String s = ERRORE;
+        String pageErr = PAGE_ERROR;
         try {
             try {
                 // Recupero delle città tramite il controller applicativo
