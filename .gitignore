@@ -36,3 +36,17 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+####################################
+#  Aggiunte consigliate per WebApp - Simone Remoli  #
+####################################
+
+# File WAR o EAR generati
+*.war
+*.ear
+
+# Logs
+*.log
+/FileLog/
+/src/main/webapp/css/
+/src/main/webapp/lib/
