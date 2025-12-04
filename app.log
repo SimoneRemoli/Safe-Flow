@@ -115,7 +115,7 @@
 2025-12-04 13:33:35 INFO  [http-nio-8080-exec-1] it.web.routex.controller.grafico.BuyTicketControllerGrafico - Elaborazione richiesta acquisto biglietti per città='Naples', quantità=1
 2025-12-04 13:33:35 INFO  [http-nio-8080-exec-1] it.web.routex.controller.grafico.BuyTicketControllerGrafico - Elaborazione prezzo: prezzo=1.5
 2025-12-04 13:33:48 INFO  [http-nio-8080-exec-2] it.web.routex.controller.grafico.ConfermaPagamentoControllerGrafico - [PROCESSAMENTO PAGAMENTO] Utente loggato: nome=Giulio, cognome=Andreotti, ruolo=TRAVELER
-2025-12-04 13:33:48 INFO  [http-nio-8080-exec-2] it.web.routex.utility.configLoader.ConfigLoader - File path.properties caricato correttamente.
+2025-12-04 13:33:48 INFO  [http-nio-8080-exec-2] it.web.routex.utility.configloader.ConfigLoader - File path.properties caricato correttamente.
 2025-12-04 13:33:48 INFO  [http-nio-8080-exec-2] it.web.routex.controller.applicativo.PagamentoMastercard - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 1.5 euro con la Mastercard
 2025-12-04 13:33:48 INFO  [http-nio-8080-exec-2] it.web.routex.controller.grafico.ConfermaPagamentoControllerGrafico - Pagamento confermato con successo. City=Naples, Quantity=1, Total=1.5, Method=mastercard, MessageCheck=Pagamento con Mastercard completato (4539456721894321)., TicketCode=[1764851628104-NAPLES-790ffa1d]
 2025-12-04 13:37:40 INFO  [http-nio-8080-exec-7] it.web.routex.controller.grafico.LoginControllerGrafico - Bean di autenticazione creato con email: NotCheckedEmail=andreotti@gmail.com, NotCheckedPassword=mammina
@@ -125,14 +125,14 @@
 2025-12-04 13:37:45 INFO  [http-nio-8080-exec-3] it.web.routex.controller.grafico.BuyTicketControllerGrafico - Elaborazione richiesta acquisto biglietti per città='Athens', quantità=1
 2025-12-04 13:37:45 INFO  [http-nio-8080-exec-3] it.web.routex.controller.grafico.BuyTicketControllerGrafico - Elaborazione prezzo: prezzo=1.2
 2025-12-04 13:38:01 INFO  [http-nio-8080-exec-4] it.web.routex.controller.grafico.ConfermaPagamentoControllerGrafico - [PROCESSAMENTO PAGAMENTO] Utente loggato: nome=Giulio, cognome=Andreotti, ruolo=TRAVELER
-2025-12-04 13:38:01 INFO  [http-nio-8080-exec-4] it.web.routex.utility.configLoader.ConfigLoader - File path.properties caricato correttamente.
+2025-12-04 13:38:01 INFO  [http-nio-8080-exec-4] it.web.routex.utility.configloader.ConfigLoader - File path.properties caricato correttamente.
 2025-12-04 13:38:01 INFO  [http-nio-8080-exec-4] it.web.routex.controller.applicativo.PagamentoMastercard - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 1.2 euro con la Mastercard
 2025-12-04 13:38:01 INFO  [http-nio-8080-exec-4] it.web.routex.controller.grafico.ConfermaPagamentoControllerGrafico - Pagamento confermato con successo. City=Athens, Quantity=1, Total=1.2, Method=mastercard, MessageCheck=Pagamento con Mastercard completato (4539456721894321)., TicketCode=[1764851881257-ATHENS-fa50722d]
 2025-12-04 15:09:33 INFO  [main] it.web.routex.controller.applicativo.LoginController - Funzione autenticaUtente() dentro LoginController.java con autenticazione Simone e Remoli
 2025-12-04 15:09:33 INFO  [main] it.web.routex.controller.applicativo.LoginController - Funzione autenticaUtente() dentro LoginController.java con autenticazione Giulio e Andreotti
 2025-12-04 15:09:33 INFO  [main] it.web.routex.controller.applicativo.PagamentoPaypal - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 4.0 euro con Paypal
 2025-12-04 15:09:33 INFO  [main] it.web.routex.controller.applicativo.PagamentoMastercard - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 10.0 euro con la Mastercard
-2025-12-04 15:09:33 INFO  [main] it.web.routex.utility.configLoader.ConfigLoader - File path.properties caricato correttamente.
+2025-12-04 15:09:33 INFO  [main] it.web.routex.utility.configloader.ConfigLoader - File path.properties caricato correttamente.
 2025-12-04 15:09:34 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 70 e stazione di arrivo = 5
 2025-12-04 15:09:34 INFO  [main] it.web.routex.model.domain.Rome - Cambi linee metropolitane in CityLifeController.java 1
 2025-12-04 15:09:34 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 67 e stazione di arrivo = 26
@@ -143,7 +143,7 @@
 2025-12-04 15:20:00 INFO  [main] it.web.routex.controller.applicativo.LoginController - Funzione autenticaUtente() dentro LoginController.java con autenticazione Giulio e Andreotti
 2025-12-04 15:20:00 INFO  [main] it.web.routex.controller.applicativo.PagamentoPaypal - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 4.0 euro con Paypal
 2025-12-04 15:20:00 INFO  [main] it.web.routex.controller.applicativo.PagamentoMastercard - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 10.0 euro con la Mastercard
-2025-12-04 15:20:00 INFO  [main] it.web.routex.utility.configLoader.ConfigLoader - File path.properties caricato correttamente.
+2025-12-04 15:20:00 INFO  [main] it.web.routex.utility.configloader.ConfigLoader - File path.properties caricato correttamente.
 2025-12-04 15:20:00 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 70 e stazione di arrivo = 5
 2025-12-04 15:20:00 INFO  [main] it.web.routex.model.domain.Rome - Cambi linee metropolitane in CityLifeController.java 1
 2025-12-04 15:20:00 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 67 e stazione di arrivo = 26
@@ -160,7 +160,7 @@
 2025-12-04 15:54:54 INFO  [main] it.web.routex.controller.applicativo.LoginController - Funzione autenticaUtente() dentro LoginController.java con autenticazione Giulio e Andreotti
 2025-12-04 15:54:54 INFO  [main] it.web.routex.controller.applicativo.PagamentoPaypal - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 4.0 euro con Paypal
 2025-12-04 15:54:54 INFO  [main] it.web.routex.controller.applicativo.PagamentoMastercard - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 10.0 euro con la Mastercard
-2025-12-04 15:54:54 INFO  [main] it.web.routex.utility.configLoader.ConfigLoader - File path.properties caricato correttamente.
+2025-12-04 15:54:54 INFO  [main] it.web.routex.utility.configloader.ConfigLoader - File path.properties caricato correttamente.
 2025-12-04 15:54:54 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 70 e stazione di arrivo = 5
 2025-12-04 15:54:54 INFO  [main] it.web.routex.model.domain.Rome - Cambi linee metropolitane in CityLifeController.java 1
 2025-12-04 15:54:54 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 67 e stazione di arrivo = 26
@@ -172,7 +172,7 @@
 2025-12-04 15:58:00 INFO  [http-nio-8080-exec-5] it.web.routex.controller.grafico.BuyTicketControllerGrafico - Elaborazione richiesta acquisto biglietti per città='Budapest', quantità=5
 2025-12-04 15:58:00 INFO  [http-nio-8080-exec-5] it.web.routex.controller.grafico.BuyTicketControllerGrafico - Elaborazione prezzo: prezzo=6.4
 2025-12-04 15:58:13 INFO  [http-nio-8080-exec-7] it.web.routex.controller.grafico.ConfermaPagamentoControllerGrafico - [PROCESSAMENTO PAGAMENTO] Utente loggato: nome=Giulio, cognome=Andreotti, ruolo=TRAVELER
-2025-12-04 15:58:13 INFO  [http-nio-8080-exec-7] it.web.routex.utility.configLoader.ConfigLoader - File path.properties caricato correttamente.
+2025-12-04 15:58:13 INFO  [http-nio-8080-exec-7] it.web.routex.utility.configloader.ConfigLoader - File path.properties caricato correttamente.
 2025-12-04 15:58:13 INFO  [http-nio-8080-exec-7] it.web.routex.controller.applicativo.PagamentoMastercard - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 6.4 euro con la Mastercard
 2025-12-04 15:58:13 INFO  [http-nio-8080-exec-7] it.web.routex.controller.grafico.ConfermaPagamentoControllerGrafico - Pagamento confermato con successo. City=Budapest, Quantity=5, Total=6.4, Method=mastercard, MessageCheck=Pagamento con Mastercard completato (4539456721894321)., TicketCode=[1764860293449-BUDAPEST-2a98ae2d, 1764860293453-BUDAPEST-e37e4ca8, 1764860293453-BUDAPEST-cd9950ac, 1764860293453-BUDAPEST-1c9a110c, 1764860293453-BUDAPEST-ce304d52]
 2025-12-04 16:02:27 INFO  [http-nio-8080-exec-10] it.web.routex.controller.grafico.LoginControllerGrafico - Bean di autenticazione creato con email: NotCheckedEmail=andreotti@gmail.com, NotCheckedPassword=mammina
@@ -183,7 +183,7 @@
 2025-12-04 16:02:32 INFO  [http-nio-8080-exec-6] it.web.routex.controller.grafico.BuyTicketControllerGrafico - Elaborazione prezzo: prezzo=6.0
 2025-12-04 16:02:43 INFO  [http-nio-8080-exec-7] it.web.routex.controller.grafico.ConfermaPagamentoControllerGrafico - [PROCESSAMENTO PAGAMENTO] Utente loggato: nome=Giulio, cognome=Andreotti, ruolo=TRAVELER
 2025-12-04 16:02:43 INFO  [http-nio-8080-exec-7] it.web.routex.controller.grafico.ConfermaPagamentoControllerGrafico - Tipo di persistenza scelto FILE_SYSTEM
-2025-12-04 16:02:43 INFO  [http-nio-8080-exec-7] it.web.routex.utility.configLoader.ConfigLoader - File path.properties caricato correttamente.
+2025-12-04 16:02:43 INFO  [http-nio-8080-exec-7] it.web.routex.utility.configloader.ConfigLoader - File path.properties caricato correttamente.
 2025-12-04 16:02:43 INFO  [http-nio-8080-exec-7] it.web.routex.controller.applicativo.PagamentoMastercard - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 6.0 euro con la Mastercard
 2025-12-04 16:02:43 INFO  [http-nio-8080-exec-7] it.web.routex.controller.grafico.ConfermaPagamentoControllerGrafico - Pagamento confermato con successo. City=Naples, Quantity=4, Total=6.0, Method=mastercard, MessageCheck=Pagamento con Mastercard completato (4539456721894321)., TicketCode=[1764860563904-NAPLES-1306e337, 1764860563906-NAPLES-73a3df56, 1764860563906-NAPLES-64ba1836, 1764860563906-NAPLES-4f29a945]
 2025-12-04 16:02:59 INFO  [http-nio-8080-exec-1] it.web.routex.controller.grafico.BuyTicketControllerGrafico - Visualizzata la pagina di acquisto biglietti con size=4 città disponibili.
@@ -197,7 +197,7 @@
 2025-12-04 16:05:09 INFO  [main] it.web.routex.controller.applicativo.LoginController - Funzione autenticaUtente() dentro LoginController.java con autenticazione Giulio e Andreotti
 2025-12-04 16:05:09 INFO  [main] it.web.routex.controller.applicativo.PagamentoPaypal - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 4.0 euro con Paypal
 2025-12-04 16:05:09 INFO  [main] it.web.routex.controller.applicativo.PagamentoMastercard - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 10.0 euro con la Mastercard
-2025-12-04 16:05:09 INFO  [main] it.web.routex.utility.configLoader.ConfigLoader - File path.properties caricato correttamente.
+2025-12-04 16:05:09 INFO  [main] it.web.routex.utility.configloader.ConfigLoader - File path.properties caricato correttamente.
 2025-12-04 16:05:10 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 70 e stazione di arrivo = 5
 2025-12-04 16:05:10 INFO  [main] it.web.routex.model.domain.Rome - Cambi linee metropolitane in CityLifeController.java 1
 2025-12-04 16:05:10 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 67 e stazione di arrivo = 26
@@ -207,7 +207,7 @@
 2025-12-04 17:58:19 INFO  [main] it.web.routex.controller.applicativo.LoginController - Funzione autenticaUtente() dentro LoginController.java con autenticazione Giulio e Andreotti
 2025-12-04 17:58:19 INFO  [main] it.web.routex.controller.applicativo.PagamentoPaypal - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 4.0 euro con Paypal
 2025-12-04 17:58:19 INFO  [main] it.web.routex.controller.applicativo.PagamentoMastercard - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 10.0 euro con la Mastercard
-2025-12-04 17:58:19 INFO  [main] it.web.routex.utility.configLoader.ConfigLoader - File path.properties caricato correttamente.
+2025-12-04 17:58:19 INFO  [main] it.web.routex.utility.configloader.ConfigLoader - File path.properties caricato correttamente.
 2025-12-04 17:58:19 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 70 e stazione di arrivo = 5
 2025-12-04 17:58:19 INFO  [main] it.web.routex.model.domain.Rome - Cambi linee metropolitane in CityLifeController.java 1
 2025-12-04 17:58:19 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 67 e stazione di arrivo = 26
@@ -220,3 +220,12 @@
 2025-12-04 18:39:21 INFO  [http-nio-8080-exec-3] it.web.routex.model.domain.Rome - Cambi linee metropolitane in CityLifeController.java 2
 2025-12-04 18:39:21 INFO  [http-nio-8080-exec-3] it.web.routex.controller.grafico.PathControllerGrafico - Percorso salvato correttamente per l'utente Giulio Andreotti TRAVELER relativo alla città Rome.
 2025-12-04 18:39:21 INFO  [http-nio-8080-exec-3] it.web.routex.controller.grafico.PathControllerGrafico - Route from Ponte Mammolo to Graniti in Rome
+2025-12-04 18:50:07 INFO  [main] it.web.routex.controller.applicativo.LoginController - Funzione autenticaUtente() dentro LoginController.java con autenticazione Simone e Remoli
+2025-12-04 18:50:07 INFO  [main] it.web.routex.controller.applicativo.LoginController - Funzione autenticaUtente() dentro LoginController.java con autenticazione Giulio e Andreotti
+2025-12-04 18:50:07 INFO  [main] it.web.routex.controller.applicativo.PagamentoPaypal - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 4.0 euro con Paypal
+2025-12-04 18:50:07 INFO  [main] it.web.routex.controller.applicativo.PagamentoMastercard - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 10.0 euro con la Mastercard
+2025-12-04 18:50:07 INFO  [main] it.web.routex.utility.configloader.ConfigLoader - File path.properties caricato correttamente.
+2025-12-04 18:50:07 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 70 e stazione di arrivo = 5
+2025-12-04 18:50:07 INFO  [main] it.web.routex.model.domain.Rome - Cambi linee metropolitane in CityLifeController.java 1
+2025-12-04 18:50:07 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 67 e stazione di arrivo = 26
+2025-12-04 18:50:07 INFO  [main] it.web.routex.model.domain.Rome - Cambi linee metropolitane in CityLifeController.java 0

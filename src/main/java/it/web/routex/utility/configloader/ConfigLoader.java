@@ -1,4 +1,4 @@
-package it.web.routex.utility.configLoader;
+package it.web.routex.utility.configloader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.InputStream;
