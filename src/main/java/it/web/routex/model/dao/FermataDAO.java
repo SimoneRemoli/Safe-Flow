@@ -14,8 +14,9 @@ public class FermataDAO {
         try (Connection conn = ConnectionFactory.getConnection();
              CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.GetFermataById(?, ?) }")) {
 
+            cs.setString(1, city);
+
             for (int id : ids) {
-                cs.setString(1, city);
                 cs.setInt(2, id);
 
                 try (ResultSet rs = cs.executeQuery()) {

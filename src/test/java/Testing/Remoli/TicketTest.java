@@ -67,7 +67,7 @@ public class TicketTest {
     void checkticket(String codiceFiscale) throws Exception {
 
         ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
-        PersistenceMode.getInstance().setTipo(TypesOfPersistenceLayer.JDBC);
+        PersistenceMode.getSingletonInstance().setTipo(TypesOfPersistenceLayer.JDBC);
         AreaRiservata reserved = new AreaRiservata();
         List<TicketBean> tickets = reserved.runTicket(codiceFiscale);
         assertTrue(tickets.size() > 0);
@@ -77,7 +77,7 @@ public class TicketTest {
     void checkTicketErrorCF(String codiceFiscale) throws Exception {
 
         ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
-        PersistenceMode.getInstance().setTipo(TypesOfPersistenceLayer.JDBC);
+        PersistenceMode.getSingletonInstance().setTipo(TypesOfPersistenceLayer.JDBC);
         AreaRiservata reserved = new AreaRiservata();
         assertThrows(PathNotFoundExceptionRemoli.class, () -> {
             reserved.runTicket(codiceFiscale);

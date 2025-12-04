@@ -65,18 +65,12 @@ public class RouteDAO {
                     r.setUtente(cf);
                     r.setListaCambi(rs.getString("ListaCambi"));
                     r.setStazInterscambio(rs.getString("StazioneDiInterscambio"));
-
-
                     lista.add(r);
-                    // Qui puoi salvare o stampare i dati
-                    System.out.println("🟢 RouteInfo: " + r.getPartenza() + " | " + r.getArrivo() + " | " + r.getCitta() + " | " + r.getTipoViaggiatore() + " | " + r.getnCambi() + " | " + r.getListaCambi() + " | " + r.getStazInterscambio() + " | " + r.getnStazAttraversate() + " | " + r.getTempoDiArrivo() + " | " + r.getnStazioniCitta() + " | " + r.getPercTerrenoUtilizzato() + " | " + r.getUtente());
                 }
                 return lista;
             } else {
-                System.out.println("Nessun percorso trovato per l’utente.");
                 throw new PathNotFoundExceptionRemoli("Nessun percorso trovato per l’utente.", cf, 404, "Errore nella RouteDAO.java nel metodo getData");
             }
-
         } catch (Exception e) {
             throw new DAOExceptionRemoli("Errore durante la connessione al database" + e.getMessage());
         }

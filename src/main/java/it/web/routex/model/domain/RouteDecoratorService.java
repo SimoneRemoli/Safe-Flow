@@ -7,7 +7,11 @@ import it.web.routex.utility.Decorator.DecoratorChange.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class RouteDecoratorService {
+public final class RouteDecoratorService {
+
+    private RouteDecoratorService() {
+        throw new AssertionError("Utility class - non deve essere istanziata");
+    }
 
     public static void decorate(InformazioniPercorsoBean dto, HttpServletRequest request) {
         Component c = new CheckCambiamentiDecorator(new BaseComponent());
@@ -20,10 +24,7 @@ public class RouteDecoratorService {
         request.setAttribute("stazionitotali", dto.getCityLife().getNumeroStazioniTotali());
         request.setAttribute("suolometropolitano", dto.getPercentualeStazioniUsate());
 
-        request.setAttribute("listacambi",
-                c.getChanges(dto.getCityLife().getSequenzeDiCambiamento()));
-
-        request.setAttribute("nodicruciali",
-                c.getChanges(dto.getCityLife().getSequenzeNodiCruciali()));
+        request.setAttribute("listacambi", c.getChanges(dto.getCityLife().getSequenzeDiCambiamento()));
+        request.setAttribute("nodicruciali", c.getChanges(dto.getCityLife().getSequenzeNodiCruciali()));
     }
 }

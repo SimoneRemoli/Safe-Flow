@@ -7,22 +7,29 @@ import it.web.routex.exception.PathNotFoundExceptionRemoli;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.utility.Singleton.Credentials;
 import it.web.routex.exception.CredentialsExceptionRemoli;
+import it.web.routex.utility.configLoader.ConfigLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TicketDAOFile extends TicketDAOLayer
 {
-    public List<TicketBean> getTicketByCF(String cf)
-            throws DAOExceptionRemoli, PathNotFoundExceptionRemoli {
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
+    private final String filePath = ConfigLoader.get("ticket.csv.path");
+
+    public List<TicketBean> getTicketByCF(String cf) throws DAOExceptionRemoli, PathNotFoundExceptionRemoli {
 
         List<TicketBean> tickets = new ArrayList<>();
-
-        final String filePath = "/Users/simoneremoli/IdeaProjects/RouteX_MVC_Project/FilePersistenza/Tickets_sync.csv";
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
 
             String line;
 
             // Salta header
-            br.readLine();
+            String header = br.readLine();
+            if (header == null) {
+                throw new DAOExceptionRemoli("File tickets CSV vuoto o corrotto");
+            }
+
 
             while ((line = br.readLine()) != null) {
 
@@ -66,11 +73,7 @@ public class TicketDAOFile extends TicketDAOLayer
     @Override
     public void salvataggio(Credentials cred, List<String> codiciBiglietti, String metodopayment, String city) throws CredentialsExceptionRemoli
     {
-
-        final String filePath = "/Users/simoneremoli/IdeaProjects/RouteX_MVC_Project/FilePersistenza/Tickets_sync.csv";
-
         boolean fileVuoto = !new File(filePath).exists() || new File(filePath).length() == 0;
-
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))) {
 
             // Se il file è nuovo o vuoto → scrivi l'header UNA sola volta
@@ -79,7 +82,6 @@ public class TicketDAOFile extends TicketDAOLayer
                 bw.newLine();
             }
 
-            // Conversione lista biglietti in stringa separata da ;
             String listaCodici = String.join(";", codiciBiglietti);
 
             // Timestamp formattato
@@ -103,6 +105,4 @@ public class TicketDAOFile extends TicketDAOLayer
                     "Errore in TicketDAOFile.java");
         }
     }
-
-
 }

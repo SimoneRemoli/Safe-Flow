@@ -26,7 +26,7 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
     public List<String> run() throws DAOExceptionRemoli, PaymentValidationExceptionRemoli, CredentialsExceptionRemoli {
 
         final List<String> codiciBiglietti;
-        Mastercard mastercard = new MastercardDAO().GetPaymentMastercard(numeroCarta, scadenza, cvv);
+        Mastercard mastercard = new MastercardDAO().getPaymentMastercard(numeroCarta, scadenza, cvv);
         if (mastercard != null)
         {
             Component gen = new TimestampDecorator(new CittaDecorator(new BaseTicketCode(), city));

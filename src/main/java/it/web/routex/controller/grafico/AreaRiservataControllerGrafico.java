@@ -38,7 +38,7 @@ public class AreaRiservataControllerGrafico extends LoggedHttpServlet
                 // Se non sei loggato o cf è null, reindirizza a login
                 response.sendRedirect("login.jsp");
             } catch (PathNotFoundExceptionRemoli remoli) {
-                logger.error("Errore PathNotFoundExceptionRemoli. Messaggio={} Cf={} CodiceErrore={} Dettagli={}.", remoli.getMessage(), remoli.getCodice_fiscale_utente(), remoli.getCodice_di_errore(), remoli.getDetails());
+                logger.error("Errore PathNotFoundExceptionRemoli. Messaggio={} Cf={} CodiceErrore={} Dettagli={}.", remoli.getMessage(), remoli.getCodiceFiscaleUtente(), remoli.getCodice_di_errore(), remoli.getDetails());
                 request.setAttribute("errore", remoli.getMessage());
                 request.getRequestDispatcher("error.jsp").forward(request, response);
             } catch (DAOExceptionRemoli remoli) {

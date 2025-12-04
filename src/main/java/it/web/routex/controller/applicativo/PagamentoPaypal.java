@@ -25,7 +25,7 @@ public class PagamentoPaypal extends RegistrazionePagamentoController
     public List<String> run() throws DAOExceptionRemoli, PaymentValidationExceptionRemoli, CredentialsExceptionRemoli
     {
         final List<String> codiciBiglietti;
-        Paypal p = new PaypalDAO().GetPaymentPaypal(email, codice);
+        Paypal p = new PaypalDAO().getPaymentPaypal(email, codice);
         if (p != null)
         {
 

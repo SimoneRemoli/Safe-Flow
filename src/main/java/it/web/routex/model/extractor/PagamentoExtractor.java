@@ -100,7 +100,7 @@ public class PagamentoExtractor {
         if (persistence.equals("JDBC")) {
             persistenceLayer = TypesOfPersistenceLayer.JDBC;
         } else if (persistence.equals("FileSystem")) {
-            persistenceLayer = TypesOfPersistenceLayer.FileSystem;
+            persistenceLayer = TypesOfPersistenceLayer.FILE_SYSTEM;
         } else {
             throw new InvalidPaymentInputExceptionRemoli(
                     "Tipo di persistenza non valido.",

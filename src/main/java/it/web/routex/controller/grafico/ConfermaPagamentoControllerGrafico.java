@@ -51,7 +51,8 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
             }
 
             TypesOfPersistenceLayer persistenceLayer = paymentRecord.persistenceLayer();
-            PersistenceMode.getInstance().setTipo(persistenceLayer); //singleton che mantiene il tipo di persistenza scelto
+            logger.info("Tipo di persistenza scelto {}", persistenceLayer.toString());
+            PersistenceMode.getSingletonInstance().setTipo(persistenceLayer);
 
             RegistrazionePagamentoController controllerPagamento = null;
             String messaggio;

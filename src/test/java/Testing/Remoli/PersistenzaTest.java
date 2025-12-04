@@ -39,7 +39,7 @@ public class PersistenzaTest {
     void TestPersistenzaDB(String strings)
     {
         TypesOfPersistenceLayer type = TypesOfPersistenceLayer.valueOf(strings);
-        PersistenceMode.getInstance().setTipo(type);
+        PersistenceMode.getSingletonInstance().setTipo(type);
         TicketDAOLayer dao = FactoryPersistence.createTicketDAO();
         assertTrue(dao instanceof TicketDAODB);
     }
@@ -48,7 +48,7 @@ public class PersistenzaTest {
     void TestPersistenzaFile(String strings)
     {
         TypesOfPersistenceLayer type = TypesOfPersistenceLayer.valueOf(strings);
-        PersistenceMode.getInstance().setTipo(type);
+        PersistenceMode.getSingletonInstance().setTipo(type);
         TicketDAOLayer dao = FactoryPersistence.createTicketDAO();
         assertTrue(dao instanceof TicketDAOFile);
     }

@@ -24,7 +24,7 @@ public class CityController {
     public List<CityBean> getAllCities() throws InvalidCityDataExceptionRemoli, DAOExceptionRemoli {
 
         CityDAO dao = new CityDAO();
-        List<City> cities = dao.ListCities();
+        List<City> cities = dao.listCities();
 
         // === CONTROLLI DI VALIDAZIONE ===
 
@@ -92,10 +92,10 @@ public class CityController {
             );
         }
 
-        List<City> cities = new CityDAO().ListCities();
+        List<City> cities = new CityDAO().listCities();
         for (City a : cities) {
             if (a.getName().equalsIgnoreCase(city)) {
-                double totale = calculate(a.getCosto_biglietto(), quantity);
+                double totale = calculate(a.getCostoBiglietto(), quantity);
                 return new PrezzoTotaleBean(totale);
             }
         }

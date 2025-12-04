@@ -13,7 +13,7 @@ import it.web.routex.exception.PaymentValidationExceptionRemoli;
 
 public class MastercardDAO {
 
-    public Mastercard GetPaymentMastercard(String nC, String sc, String cvv)
+    public Mastercard getPaymentMastercard(String nC, String sc, String cvv)
             throws DAOExceptionRemoli, PaymentValidationExceptionRemoli{
 
         final String query = "{ CALL RouteX_Update.getMastercardPayment(?,?,?) }";
@@ -31,20 +31,14 @@ public class MastercardDAO {
                 if (rs.next()) {
                     // Costruisco e restituisco un oggetto Mastercard con i dati trovati
                     Mastercard found = new Mastercard();
-                    found.setNumero_carta(rs.getString("numero_carta"));
-                    found.setData_scadenza(rs.getString("data_scadenza"));
+                    found.setNumeroCarta(rs.getString("numero_carta"));
+                    found.setDataScadenza(rs.getString("data_scadenza"));
                     found.setCvv(rs.getString("cvv"));
-
-                    System.out.println("[DAO] Pagamento trovato per carta: " + found.getNumero_carta());
                     return found;
                 } else {
-                    // Nessuna riga trovata → ritorna null
                     throw new PaymentValidationExceptionRemoli("Nessun pagamento trovato per la carta indicata.", PaymentMethod.MASTERCARD, "MastercardDAO.java ha fallito");
-                   //System.out.println("[DAO] Nessun pagamento trovato per la carta indicata.");
-                   // return null;
                 }
             }
-
         } catch (SQLException e) {
             throw new DAOExceptionRemoli("Errore interno alla connessione: " + e.getMessage());
         }

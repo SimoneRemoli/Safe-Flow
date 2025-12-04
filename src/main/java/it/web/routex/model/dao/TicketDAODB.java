@@ -18,10 +18,10 @@ public class TicketDAODB extends TicketDAOLayer {
     public List<TicketBean> getTicketByCF(String cf) throws DAOExceptionRemoli, PathNotFoundExceptionRemoli
     {
         List<TicketBean> lista = new ArrayList<>();
-        String SP = "{ CALL RouteX_Update.getTicketByCF(?) }";
+        String sP = "{ CALL RouteX_Update.getTicketByCF(?) }";
 
         try (Connection conn = ConnectionFactory.getConnection();
-             CallableStatement cs = conn.prepareCall(SP)) {
+             CallableStatement cs = conn.prepareCall(sP)) {
 
             cs.setString(1, cf);
 
@@ -69,7 +69,7 @@ public class TicketDAODB extends TicketDAOLayer {
             cs.setString(5, metodopayment);
             cs.setString(6, bigliettiConcatenati);
             cs.setString(7, city);
-            ResultSet rs = cs.executeQuery();
+            cs.executeQuery();
 
         } catch (SQLException e) {
             throw new CredentialsExceptionRemoli("Nessun salvataggio del percorso nel livello di persistenza " + e.getMessage(), "Errore in SalvaPagamentoDAO.java");

@@ -2,7 +2,12 @@ package it.web.routex.model.domain;
 
 import it.web.routex.utility.Singleton.Credentials;
 
-public class UserStatusResolver {
+public final class UserStatusResolver {
+
+    private UserStatusResolver()
+    {
+        throw new AssertionError("Classe di utilità - non deve essere istanziata");
+    }
 
     public static String resolve(Credentials cred) {
         if (cred.getNome() == null) return "NO REG Traveler";

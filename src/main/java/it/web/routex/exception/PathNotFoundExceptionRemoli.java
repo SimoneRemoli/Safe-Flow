@@ -2,23 +2,23 @@ package it.web.routex.exception;
 
 public class PathNotFoundExceptionRemoli extends Exception {
 
-    String codice_fiscale_utente;
-    int codice_di_errore;
+    String codiceFiscaleUtente;
+    int codiceDiErrore;
     String details;
 
-    public PathNotFoundExceptionRemoli(String message, String codice_fiscale_utente, int codice_di_errore, String details) {
+    public PathNotFoundExceptionRemoli(String message, String codiceFiscaleUtente, int codiceDiErrore, String details) {
         super(message);
-        this.codice_fiscale_utente = codice_fiscale_utente;
-        this.codice_di_errore = codice_di_errore;
+        this.codiceFiscaleUtente = codiceFiscaleUtente;
+        this.codiceDiErrore = codiceDiErrore;
         this.details = details;
     }
 
     public int getCodice_di_errore() {
-        return codice_di_errore;
+        return codiceDiErrore;
     }
 
-    public String getCodice_fiscale_utente() {
-        return codice_fiscale_utente;
+    public String getCodiceFiscaleUtente() {
+        return codiceFiscaleUtente;
     }
     public String getDetails() {
         return details;

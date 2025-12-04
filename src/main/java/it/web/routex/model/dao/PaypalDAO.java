@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public class PaypalDAO
 {
-    public Paypal GetPaymentPaypal(String email, String codice) throws DAOExceptionRemoli, PaymentValidationExceptionRemoli {
+    public Paypal getPaymentPaypal(String email, String codice) throws DAOExceptionRemoli, PaymentValidationExceptionRemoli {
 
         final String query = "{ CALL RouteX_Update.getPaypalPayment(?,?) }";
 
@@ -30,14 +30,11 @@ public class PaypalDAO
                     Paypal found = new Paypal();
                     found.setEmail(rs.getString("email_paypal"));
                     found.setCodice(rs.getString("codice_transazione"));
-                    System.out.println("[DAO] Pagamento trovato per carta paypal: " + found.getCodice());
                     return found;
                 } else {
-                    // Nessuna riga trovata → ritorna null
                     throw new PaymentValidationExceptionRemoli("Nessun pagamento trovato per la carta indicata.", PaymentMethod.PAYPAL, "MastercardDAO.java ha fallito");
                 }
             }
-
         } catch (SQLException e) {
             throw new DAOExceptionRemoli("Errore in GetPaymentMastercard: " + e.getMessage());
         }

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class CityDAO
 {
-    public List<City> ListCities() throws DAOExceptionRemoli {
+    public List<City> listCities() throws DAOExceptionRemoli {
 
         final List<City> informazioni = new ArrayList<>();
 

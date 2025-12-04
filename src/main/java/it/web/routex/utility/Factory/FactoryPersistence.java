@@ -8,11 +8,11 @@ public class FactoryPersistence {
 
     public static TicketDAOLayer createTicketDAO() {
 
-        TypesOfPersistenceLayer typesPer = PersistenceMode.getInstance().getTipo();
+        TypesOfPersistenceLayer typesPer = PersistenceMode.getSingletonInstance().getTipo();
         switch (typesPer) {
             case JDBC:
                 return new TicketDAODB();
-            case FileSystem:
+            case FILE_SYSTEM:
                 return new TicketDAOFile();
             default:
                 throw new IllegalArgumentException("Tipo di persistenza non supportato: " + typesPer);
