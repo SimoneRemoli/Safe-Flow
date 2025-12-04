@@ -10,6 +10,11 @@ public final class ConfigLoader {
     private static final Logger logger = LoggerFactory.getLogger(ConfigLoader.class);
     private static final Properties props = new Properties();
 
+    private ConfigLoader()
+    {
+        throw new AssertionError("Classe che legge il path.properties - new proibito");
+    }
+
     static {
         loadProperties();
     }
