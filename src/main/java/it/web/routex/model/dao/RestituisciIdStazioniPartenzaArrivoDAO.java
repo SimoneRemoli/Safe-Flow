@@ -1,6 +1,6 @@
 package it.web.routex.model.dao;
 
-import it.web.routex.utility.Factory.ConnectionFactory;
+import it.web.routex.utility.factory.ConnectionFactory;
 import java.sql.*;
 
 public class RestituisciIdStazioniPartenzaArrivoDAO {

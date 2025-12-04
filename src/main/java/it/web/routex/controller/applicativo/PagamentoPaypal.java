@@ -5,12 +5,12 @@ import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.model.domain.Paypal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import it.web.routex.utility.Decorator.DecoratorTicket.BaseTicketCode;
-import it.web.routex.utility.Decorator.DecoratorTicket.CittaDecorator;
-import it.web.routex.utility.Decorator.DecoratorTicket.Component;
-import it.web.routex.utility.Decorator.DecoratorTicket.TimestampDecorator;
-import it.web.routex.utility.Factory.FactoryPersistence;
-import it.web.routex.utility.Singleton.Credentials;
+import it.web.routex.utility.decorator.decoratorticket.BaseTicketCode;
+import it.web.routex.utility.decorator.decoratorticket.CittaDecorator;
+import it.web.routex.utility.decorator.decoratorticket.Component;
+import it.web.routex.utility.decorator.decoratorticket.TimestampDecorator;
+import it.web.routex.utility.factory.FactoryPersistence;
+import it.web.routex.utility.singleton.Credentials;
 import it.web.routex.exception.CredentialsExceptionRemoli;
 import it.web.routex.exception.PaymentValidationExceptionRemoli;
 

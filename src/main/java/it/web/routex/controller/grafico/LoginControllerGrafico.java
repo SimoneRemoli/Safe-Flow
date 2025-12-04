@@ -6,7 +6,7 @@ import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.model.domain.LoggedHttpServlet;
 import it.web.routex.model.extractor.LoginExtractor;
 import it.web.routex.model.record.LoginRecord;
-import it.web.routex.utility.Factory.ConnectionFactory;
+import it.web.routex.utility.factory.ConnectionFactory;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;

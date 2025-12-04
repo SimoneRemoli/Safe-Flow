@@ -1,11 +1,11 @@
-package it.web.routex.utility.Facade;
+package it.web.routex.utility.facade;
 import it.web.routex.bean.CityLifeBean;
 import it.web.routex.bean.InformazioniPercorsoBean;
 import it.web.routex.bean.RoutingRequestBean;
 import it.web.routex.controller.applicativo.CityLifeController;
 import it.web.routex.exception.FuoriRangeExceptionRemoli;
 import it.web.routex.exception.UnreacheableNodeExceptionRemoli;
-import it.web.routex.utility.Factory.CityLifeFactory;
+import it.web.routex.utility.factory.CityLifeFactory;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,10 +13,10 @@ import java.util.ArrayList;
 public class FacadePath
 {
     public InformazioniPercorsoBean compute(RoutingRequestBean route) throws IllegalArgumentException, FuoriRangeExceptionRemoli, UnreacheableNodeExceptionRemoli, SQLException {
-        CityLifeBean cityLife = RoutingProcess(route);
-        return SettingProcess(cityLife);
+        CityLifeBean cityLife = routingProcess(route);
+        return settingProcess(cityLife);
     }
-    private CityLifeBean RoutingProcess (RoutingRequestBean route) throws IllegalArgumentException, FuoriRangeExceptionRemoli, UnreacheableNodeExceptionRemoli, SQLException {
+    private CityLifeBean routingProcess (RoutingRequestBean route) throws IllegalArgumentException, FuoriRangeExceptionRemoli, UnreacheableNodeExceptionRemoli, SQLException {
         CityLifeController controller = CityLifeFactory.createCity(route.getCity());
 
         ArrayList<Integer> path = controller.Dijkstra(
@@ -25,7 +25,7 @@ public class FacadePath
         );
         return controller.calcolaPercorso(path, route.getCity());
     }
-    private InformazioniPercorsoBean SettingProcess(CityLifeBean cityLife)
+    private InformazioniPercorsoBean settingProcess(CityLifeBean cityLife)
     {
         int numero_stazioni_usate = 0;
         Double minutaggio = 0.0, percentuale_stazioni_usate = 0.0, app = 0.0;

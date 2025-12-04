@@ -1,4 +1,4 @@
-package it.web.routex.utility.Factory;
+package it.web.routex.utility.factory;
 
 import it.web.routex.controller.applicativo.CityLifeController;
 import it.web.routex.model.domain.Athens;

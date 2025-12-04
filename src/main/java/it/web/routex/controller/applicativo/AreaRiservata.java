@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.PathNotFoundExceptionRemoli;
-import it.web.routex.utility.Decorator.DecoratorPath.*;
-import it.web.routex.utility.Factory.FactoryPersistence;
+import it.web.routex.utility.decorator.decoratorpath.*;
+import it.web.routex.utility.factory.FactoryPersistence;
 
 public class AreaRiservata
 {

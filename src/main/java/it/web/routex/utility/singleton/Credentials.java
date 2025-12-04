@@ -1,4 +1,4 @@
-package it.web.routex.utility.Singleton;
+package it.web.routex.utility.singleton;
 import it.web.routex.model.domain.Ruolo;
 import java.sql.Date;
 

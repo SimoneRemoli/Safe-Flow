@@ -7,8 +7,8 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import it.web.routex.utility.Factory.FactoryPersistence;
-import it.web.routex.utility.Singleton.PersistenceMode;
+import it.web.routex.utility.factory.FactoryPersistence;
+import it.web.routex.utility.singleton.PersistenceMode;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 

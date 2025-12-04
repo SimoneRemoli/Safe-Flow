@@ -5,7 +5,7 @@ import it.web.routex.bean.UtenteBeanGenerico;
 import it.web.routex.model.dao.LoginProcedureDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import it.web.routex.utility.Singleton.Credentials;
+import it.web.routex.utility.singleton.Credentials;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.LoginNotFoundRemoli;
 

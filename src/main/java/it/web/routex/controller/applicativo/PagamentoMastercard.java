@@ -8,12 +8,12 @@ import it.web.routex.model.dao.TicketDAOLayer;
 import it.web.routex.model.domain.Mastercard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import it.web.routex.utility.Decorator.DecoratorTicket.BaseTicketCode;
-import it.web.routex.utility.Decorator.DecoratorTicket.CittaDecorator;
-import it.web.routex.utility.Decorator.DecoratorTicket.Component;
-import it.web.routex.utility.Decorator.DecoratorTicket.TimestampDecorator;
-import it.web.routex.utility.Factory.FactoryPersistence;
-import it.web.routex.utility.Singleton.Credentials;
+import it.web.routex.utility.decorator.decoratorticket.BaseTicketCode;
+import it.web.routex.utility.decorator.decoratorticket.CittaDecorator;
+import it.web.routex.utility.decorator.decoratorticket.Component;
+import it.web.routex.utility.decorator.decoratorticket.TimestampDecorator;
+import it.web.routex.utility.factory.FactoryPersistence;
+import it.web.routex.utility.singleton.Credentials;
 import java.util.ArrayList;
 import java.util.List;
 

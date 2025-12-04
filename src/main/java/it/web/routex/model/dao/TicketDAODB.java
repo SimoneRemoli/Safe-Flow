@@ -1,5 +1,5 @@
 package it.web.routex.model.dao;
-import it.web.routex.utility.Factory.ConnectionFactory;
+import it.web.routex.utility.factory.ConnectionFactory;
 import it.web.routex.bean.TicketBean;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import it.web.routex.exception.PathNotFoundExceptionRemoli;
 import it.web.routex.exception.DAOExceptionRemoli;
-import it.web.routex.utility.Singleton.Credentials;
+import it.web.routex.utility.singleton.Credentials;
 import it.web.routex.exception.CredentialsExceptionRemoli;
 
 public class TicketDAODB extends TicketDAOLayer {

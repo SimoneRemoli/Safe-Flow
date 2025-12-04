@@ -1,7 +1,7 @@
 package it.web.routex.controller.applicativo;
 import java.util.List;
 
-import it.web.routex.utility.Singleton.Credentials;
+import it.web.routex.utility.singleton.Credentials;
 
 public abstract class RegistrazionePagamentoController
 {

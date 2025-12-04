@@ -1,7 +1,7 @@
 package it.web.routex.model.dao;
 
 import it.web.routex.model.domain.PaymentMethod;
-import it.web.routex.utility.Factory.ConnectionFactory;
+import it.web.routex.utility.factory.ConnectionFactory;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.PaymentValidationExceptionRemoli;
 import it.web.routex.model.domain.Paypal;

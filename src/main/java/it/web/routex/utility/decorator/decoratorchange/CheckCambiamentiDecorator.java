@@ -1,4 +1,4 @@
-package it.web.routex.utility.Decorator.DecoratorChange;
+package it.web.routex.utility.decorator.decoratorchange;
 import java.util.List;
 
 public class CheckCambiamentiDecorator extends Decorator

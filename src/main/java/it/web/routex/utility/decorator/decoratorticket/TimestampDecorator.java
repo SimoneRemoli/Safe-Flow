@@ -1,4 +1,4 @@
-package it.web.routex.utility.Decorator.DecoratorTicket;
+package it.web.routex.utility.decorator.decoratorticket;
 
 public class TimestampDecorator extends Decorator {
 
@@ -10,14 +10,13 @@ public class TimestampDecorator extends Decorator {
     public String genera()
     {
         String preliminary = super.genera();
-        preliminary = this.ApplyFoo(preliminary);
+        preliminary = this.applyFoo(preliminary);
         return preliminary;
     }
 
-    private String ApplyFoo(String input)
+    private String applyFoo(String input)
     {
-        String out = System.currentTimeMillis() + "-" + input;
-        return out;
+        return System.currentTimeMillis() + "-" + input;
     }
 }
 

@@ -1,7 +1,7 @@
 package it.web.routex.model.dao;
 
 import it.web.routex.bean.FermataRecordBean;
-import it.web.routex.utility.Factory.ConnectionFactory;
+import it.web.routex.utility.factory.ConnectionFactory;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,5 +1,5 @@
 package it.web.routex.model.dao;
-import it.web.routex.utility.Factory.ConnectionFactory;
+import it.web.routex.utility.factory.ConnectionFactory;
 import it.web.routex.model.domain.City;
 import it.web.routex.exception.DAOExceptionRemoli;
 

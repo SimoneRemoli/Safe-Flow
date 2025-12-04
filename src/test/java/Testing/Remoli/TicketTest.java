@@ -8,12 +8,12 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import it.web.routex.utility.Decorator.DecoratorTicket.BaseTicketCode;
-import it.web.routex.utility.Decorator.DecoratorTicket.CittaDecorator;
-import it.web.routex.utility.Decorator.DecoratorTicket.Component;
-import it.web.routex.utility.Decorator.DecoratorTicket.TimestampDecorator;
-import it.web.routex.utility.Factory.ConnectionFactory;
-import it.web.routex.utility.Singleton.PersistenceMode;
+import it.web.routex.utility.decorator.decoratorticket.BaseTicketCode;
+import it.web.routex.utility.decorator.decoratorticket.CittaDecorator;
+import it.web.routex.utility.decorator.decoratorticket.Component;
+import it.web.routex.utility.decorator.decoratorticket.TimestampDecorator;
+import it.web.routex.utility.factory.ConnectionFactory;
+import it.web.routex.utility.singleton.PersistenceMode;
 import it.web.routex.exception.PathNotFoundExceptionRemoli;
 
 import java.util.List;

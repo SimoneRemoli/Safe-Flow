@@ -3,7 +3,7 @@ import it.web.routex.bean.RouteBean;
 import it.web.routex.bean.TicketBean;
 import it.web.routex.controller.applicativo.AreaRiservata;
 import it.web.routex.model.domain.LoggedHttpServlet;
-import it.web.routex.utility.Singleton.Credentials;
+import it.web.routex.utility.singleton.Credentials;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

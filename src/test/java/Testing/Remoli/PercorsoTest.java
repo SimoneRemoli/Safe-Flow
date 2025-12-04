@@ -10,7 +10,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import it.web.routex.exception.DAOExceptionRemoli;
-import it.web.routex.utility.Factory.ConnectionFactory;
+import it.web.routex.utility.factory.ConnectionFactory;
 
 import java.util.List;
 import java.util.ResourceBundle;

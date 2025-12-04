@@ -1,6 +1,6 @@
 package it.web.routex.controller.applicativo;
 
-import it.web.routex.utility.Singleton.Credentials;
+import it.web.routex.utility.singleton.Credentials;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

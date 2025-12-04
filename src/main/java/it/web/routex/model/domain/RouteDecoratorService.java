@@ -1,9 +1,9 @@
 package it.web.routex.model.domain;
 
 import it.web.routex.bean.InformazioniPercorsoBean;
-import it.web.routex.utility.Decorator.DecoratorChange.BaseComponent;
-import it.web.routex.utility.Decorator.DecoratorChange.CheckCambiamentiDecorator;
-import it.web.routex.utility.Decorator.DecoratorChange.Component;
+import it.web.routex.utility.decorator.decoratorchange.BaseComponent;
+import it.web.routex.utility.decorator.decoratorchange.CheckCambiamentiDecorator;
+import it.web.routex.utility.decorator.decoratorchange.Component;
 
 import javax.servlet.http.HttpServletRequest;
 

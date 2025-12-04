@@ -1,6 +1,6 @@
 package it.web.routex.model.domain;
 
-import it.web.routex.utility.Singleton.Credentials;
+import it.web.routex.utility.singleton.Credentials;
 
 public final class UserStatusResolver {
 

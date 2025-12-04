@@ -202,3 +202,13 @@
 2025-12-04 16:05:10 INFO  [main] it.web.routex.model.domain.Rome - Cambi linee metropolitane in CityLifeController.java 1
 2025-12-04 16:05:10 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 67 e stazione di arrivo = 26
 2025-12-04 16:05:10 INFO  [main] it.web.routex.model.domain.Rome - Cambi linee metropolitane in CityLifeController.java 0
+2025-12-04 17:49:16 ERROR [http-nio-8080-exec-7] it.web.routex.controller.grafico.LoginControllerGrafico - Errore di validazione input login: InvalidLoginInputExceptionRemoli {errorCode='ERR-LOGIN-INPUT', userMessage='Come pensi di autenticarti senza email? Io boh', technicalMessage='Email è blank dopo sanitizzazione.', severity=MEDIUM, timestamp=2025-12-04T17:49:16.043361}
+2025-12-04 17:58:19 INFO  [main] it.web.routex.controller.applicativo.LoginController - Funzione autenticaUtente() dentro LoginController.java con autenticazione Simone e Remoli
+2025-12-04 17:58:19 INFO  [main] it.web.routex.controller.applicativo.LoginController - Funzione autenticaUtente() dentro LoginController.java con autenticazione Giulio e Andreotti
+2025-12-04 17:58:19 INFO  [main] it.web.routex.controller.applicativo.PagamentoPaypal - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 4.0 euro con Paypal
+2025-12-04 17:58:19 INFO  [main] it.web.routex.controller.applicativo.PagamentoMastercard - Traveler Giulio BCCSLL98 Andreotti true ha effettuato un pagamento di 10.0 euro con la Mastercard
+2025-12-04 17:58:19 INFO  [main] it.web.routex.utility.configLoader.ConfigLoader - File path.properties caricato correttamente.
+2025-12-04 17:58:19 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 70 e stazione di arrivo = 5
+2025-12-04 17:58:19 INFO  [main] it.web.routex.model.domain.Rome - Cambi linee metropolitane in CityLifeController.java 1
+2025-12-04 17:58:19 INFO  [main] it.web.routex.controller.applicativo.PathController - Stazioni trovate. Id stazione di partenza = 67 e stazione di arrivo = 26
+2025-12-04 17:58:19 INFO  [main] it.web.routex.model.domain.Rome - Cambi linee metropolitane in CityLifeController.java 0

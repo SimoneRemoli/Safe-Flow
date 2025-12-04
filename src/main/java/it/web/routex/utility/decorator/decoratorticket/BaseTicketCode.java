@@ -1,4 +1,4 @@
-package it.web.routex.utility.Decorator.DecoratorTicket;
+package it.web.routex.utility.decorator.decoratorticket;
 
 import java.util.UUID;
 

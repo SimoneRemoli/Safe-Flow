@@ -7,7 +7,7 @@ import it.web.routex.model.domain.RouteValidator;
 import it.web.routex.model.domain.UserStatusResolver;
 import it.web.routex.model.extractor.RouteInputExtractor;
 import it.web.routex.model.record.RouteRecord;
-import it.web.routex.utility.Singleton.Credentials;
+import it.web.routex.utility.singleton.Credentials;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;

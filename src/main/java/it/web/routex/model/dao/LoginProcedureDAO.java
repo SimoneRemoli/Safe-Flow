@@ -1,6 +1,6 @@
 package it.web.routex.model.dao;
-import it.web.routex.utility.Factory.ConnectionFactory;
-import it.web.routex.utility.Singleton.Credentials;
+import it.web.routex.utility.factory.ConnectionFactory;
+import it.web.routex.utility.singleton.Credentials;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.model.domain.Ruolo;
 import java.sql.*;

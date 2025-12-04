@@ -1,4 +1,4 @@
-package it.web.routex.utility.Decorator.DecoratorTicket;
+package it.web.routex.utility.decorator.decoratorticket;
 
 public class CittaDecorator extends Decorator {
 
@@ -13,13 +13,12 @@ public class CittaDecorator extends Decorator {
     public String genera()
     {
         String preliminary = super.genera();
-        preliminary = this.ApplyFoo(preliminary);
+        preliminary = this.applyFoo(preliminary);
         return preliminary;
     }
 
-    private String ApplyFoo(String input)
+    private String applyFoo(String input)
     {
-        String out = citta.toUpperCase() + "-" + input;
-        return out;
+        return citta.toUpperCase() + "-" + input;
     }
 }

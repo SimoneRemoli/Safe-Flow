@@ -1,6 +1,5 @@
-package it.web.routex.utility.Decorator.DecoratorChange;
+package it.web.routex.utility.decorator.decoratorchange;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Decorator implements Component
