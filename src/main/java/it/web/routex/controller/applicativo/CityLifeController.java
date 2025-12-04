@@ -413,7 +413,7 @@ public class CityLifeController
 
         }
     }
-    public ArrayList<Integer> Dijkstra(int partenza, int arrivo) throws FuoriRangeExceptionRemoli, UnreacheableNodeExceptionRemoli {
+    public List<Integer> dijkstra(int partenza, int arrivo) throws FuoriRangeExceptionRemoli, UnreacheableNodeExceptionRemoli {
         if (partenza < 0 || partenza >= matriceAdiacenza.length)
             throw new FuoriRangeExceptionRemoli("ID partenza fuori range: " + partenza, FuoriRangeExceptionRemoli.Severity.CRITICAL );
 
@@ -445,13 +445,10 @@ public class CityLifeController
                 if(adiacentiVector[i]!=-1)
                 {
                     adjTemp = adiacentiVector[i];
-                    if(know[adjTemp]==-1)
+                    if (know[adjTemp] == -1 && cost[adjTemp] > cost[nodoPartenza] + matriceAdiacenza[nodoPartenza][adjTemp])
                     {
-                        if(cost[adjTemp] > cost[nodoPartenza] + matriceAdiacenza[nodoPartenza][adjTemp])
-                        {
-                            cost[adjTemp] = cost[nodoPartenza] + matriceAdiacenza[nodoPartenza][adjTemp];
-                            precedente[adjTemp] = nodoPartenza;
-                        }
+                        cost[adjTemp] = cost[nodoPartenza] + matriceAdiacenza[nodoPartenza][adjTemp];
+                        precedente[adjTemp] = nodoPartenza;
                     }
                 }
             }

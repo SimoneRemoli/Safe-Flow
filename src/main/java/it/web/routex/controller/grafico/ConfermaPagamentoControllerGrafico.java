@@ -51,7 +51,7 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
             }
 
             TypesOfPersistenceLayer persistenceLayer = paymentRecord.persistenceLayer();
-            logger.info("Tipo di persistenza scelto {}", persistenceLayer.toString());
+            logger.info("Tipo di persistenza scelto {}", persistenceLayer);
             PersistenceMode.getSingletonInstance().setTipo(persistenceLayer);
             RegistrazionePagamentoController controllerPagamento = null;
             String messaggio;
@@ -121,7 +121,7 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
             request.setAttribute("metodo", paymentRecord.method());
             request.setAttribute("messaggio", messaggio);
             request.setAttribute("codiciBiglietti", codiciBiglietti);
-            logger.info("Pagamento confermato con successo. City={}, Quantity={}, Total={}, Method={}, MessageCheck={}, TicketCode={}", paymentRecord.city(), String.valueOf(paymentRecord.quantity()), paymentRecord.total(), paymentRecord.method(), messaggio, codiciBiglietti );
+            logger.info("Pagamento confermato con successo. City={}, Quantity={}, Total={}, Method={}, MessageCheck={}, TicketCode={}", paymentRecord.city(), paymentRecord.quantity(), paymentRecord.total(), paymentRecord.method(), messaggio, codiciBiglietti );
 
             request.getRequestDispatcher("/successoPagamento.jsp").forward(request, response);
         }catch (Exception e) {
