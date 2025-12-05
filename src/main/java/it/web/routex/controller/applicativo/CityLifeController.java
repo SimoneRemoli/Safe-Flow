@@ -247,8 +247,6 @@ public class CityLifeController
         int nodoArrivo = arrivo;
         int [] know = new int[matriceAdiacenza.length];
         int [] cost = new int[matriceAdiacenza.length];
-        int [] adiacentiVector = new int[(matriceAdiacenza.length)-1];
-        int adjTemp = 0;
         int[] precedente = new int[matriceAdiacenza.length];
 
 
@@ -534,7 +532,6 @@ public class CityLifeController
             statoPercorso.cambiIniziali.add(fermate);
             statoPercorso.cambiInizialiLinee.add(linea);
             statoPercorso.uno = true;
-            return;
         }
     }
     private void checkSecondStation(StatoPercorso statoPercorso, String linea, String fermate, int i)
@@ -548,7 +545,6 @@ public class CityLifeController
             if (statoPercorso.uno) {
                 statoPercorso.ancora = true;
             }
-            return;
         }
     }
 
