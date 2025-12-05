@@ -269,20 +269,22 @@ public class CityLifeController
         if (!statoPercorso.lineaTemp.equals(linea) && i == 1) {
             statoPercorso.noPass = true;
         }
-        if ((!statoPercorso.stopping) && (statoPercorso.ancora)) {
-            if (i > 1) {
-                if ((linea.contains("-"))) {
-                    statoPercorso.stopping = false;
-                    statoPercorso.noPass = true;
-                    statoPercorso.cambiIniziali.add(fermate);
-                    statoPercorso.cambiInizialiLinee.add(linea);
-                    statoPercorso.ancora = true;
-                } else {
-                    statoPercorso.stopping = true;
-                    statoPercorso.success = linea;
-                    statoPercorso.noPass = true;
-                }
+        if (!statoPercorso.stopping && statoPercorso.ancora && i > 1) {
+            if ((linea.contains("-")))
+            {
+                statoPercorso.stopping = false;
+                statoPercorso.noPass = true;
+                statoPercorso.cambiIniziali.add(fermate);
+                statoPercorso.cambiInizialiLinee.add(linea);
+                statoPercorso.ancora = true;
             }
+            else
+            {
+                statoPercorso.stopping = true;
+                statoPercorso.success = linea;
+                statoPercorso.noPass = true;
+            }
+
         }
     }
     private void gestisciLogicaCambiPassoInduttivo(String linea, StatoPercorso statoPercorso, int i, String fermate)
