@@ -14,6 +14,50 @@ import org.slf4j.LoggerFactory;
 public class CityLifeController
 {
     protected int[][] matriceAdiacenza; //le classi figlie possono specializzare la loro matrice di adiacenza
+
+    private static class StatoPercorso {
+        // boolean
+        boolean check = false;
+        boolean noPass = false;
+        boolean controllo = false;
+        boolean ciSonPassato = false;
+        boolean stopping = false;
+        boolean ancora = false;
+        boolean uno = false;
+
+        // contatori
+        int countBin = 0;
+        int cambiLineeMetropolitane = 0;
+        int quantoCiPasso = 0;
+        int contatore = 0;
+        int count = 0;
+        int conta = 0;
+        int checkino = 0;
+
+        // stringhe
+        String nomeStazioneCambio = "";
+        String ev = "";
+        String lineaTemp = "";
+        String daRaggiungere="";
+        String temp="";
+        String successivo="";
+        String success="";
+        String daNonRipetere="";
+
+        // liste
+        List<String> percorsiConFermate = new ArrayList<>();
+        List<Integer> percorsiCodifica = new ArrayList<>();
+        List<String> sequenzeDiCambiamento = new ArrayList<>();
+        List<String> sequenzeNodiCruciali = new ArrayList<>();
+        List<String> listaAppoggio = new ArrayList<>();
+        List<String> nomeCambio = new ArrayList<>();
+        List<String> cambi = new ArrayList<>();
+        List<String> cambiIniziali = new ArrayList<>();
+        List<String> cambiInizialiLinee = new ArrayList<>();
+        List<String> linee = new ArrayList<>();
+        List<String> inMezzo = new ArrayList<>();
+        List<String> inMezzoNomi = new ArrayList<>();
+    }
     private void removeChangeLines(List<String> sequenzeDiCambiamentoFull)
     {
         for (int i = sequenzeDiCambiamentoFull.size() - 1; i >= 0; i--) {
@@ -40,298 +84,42 @@ public class CityLifeController
 
     public CityLifeBean calcolaPercorso(List<Integer> ids, String city) throws SQLException {
         final Logger logger = LoggerFactory.getLogger(getClass());
-        List<String> percorsiConFermate = new ArrayList<String>();
-        List<Integer> percorsiCodifica = new ArrayList<Integer>();
-        List<String> sequenzediCambiamento = new ArrayList<String>();
-        List<String> sequenzeNodiCruciali = new ArrayList<String>();
-        List<String> listaAppoggio = new ArrayList<String>();
-        List<String> nomeCambio = new ArrayList<String>();
-        List<String> cambi = new ArrayList<String>();
-        List<String> cambiIniziali = new ArrayList<String>();
-        List<String> cambiInizialiLinee = new ArrayList<String>();
-        int cambiLineeMetropolitane = 0;
-        String nomeStazioneCambio = "";
-        String ev="";
-        List<String> linee = new ArrayList<String>();
-        List<String> inMezzo = new ArrayList<String>();
-        List<String> inMezzoNomi = new ArrayList<String>();
-
-
+        StatoPercorso stato = new StatoPercorso();
         FermataDAO fermataDAO = new FermataDAO();
         List<FermataRecordBean> fermateTot = fermataDAO.getFermateByIds(ids, city);
-
-        String lineaTemp = "";
-        String daRaggiungere="";
-        String temp="";
-        String successivo="";
-        String success="";
-        String daNonRipetere="";
-
-        boolean check = false;
-        boolean noPass=false;
-        boolean controllo=false;
-        boolean ciSonPassato=false;
-        boolean stopping=false;
-        boolean ancora=false;
-        boolean uno=false;
-
-        int countBin = 0;
-        int quantoCiPasso=0;
-        int contatore=0;
-        int count=0;
-        int conta=0;
-        int checkino=0;
 
         for (int i = 0; i < fermateTot.size(); i++)
         {
             FermataRecordBean fermata = fermateTot.get(i);
             String fermate = fermata.getNome();
             String linea = fermata.getLinea();
+            gestisciCambiIniziali(linea, stato, i, fermate);
+            gestisciLogicaCambiPassoInduttivo(linea, stato, i, fermate);
 
-            if (linea.contains("-") && i == 0) {
-                controllo = true;
-                cambiIniziali.add(fermate);
-                cambiInizialiLinee.add(linea);
-                uno = true;
-            }
-
-            if (linea.contains("-") && i == 1) {
-                noPass = true;
-                cambiIniziali.add(fermate);
-                cambiInizialiLinee.add(linea);
-                stopping = false;
-                if (uno)
-                    ancora = true;
-
-            } else if ((!lineaTemp.equals(linea)) && (i == 1)) {
-                noPass = true;
-            }
-            if ((!stopping) && (ancora)) {
-                if (i > 1) {
-                    if ((linea.contains("-"))) {
-                        stopping = false;
-                        noPass = true;
-                        cambiIniziali.add(fermate);
-                        cambiInizialiLinee.add(linea);
-                        ancora = true;
-                    } else {
-                        stopping = true;
-                        success = linea;
-                        noPass = true;
-                    }
-                }
-            }
-
-            if (check) {
-                if (!lineaTemp.equals(linea)) {
-                    if (linea.contains("-")) {
-                        quantoCiPasso = quantoCiPasso + 1;
-
-
-                        inMezzo.add(linea);
-                        inMezzoNomi.add(fermate);
-                        check = true;
-                        ciSonPassato = true;
-
-//nuovo
-                        if (i == percorsiCodifica.size() - 1) {
-                            for (int k = 0; k < inMezzo.size(); k++) {
-                                String[] appoggio = inMezzo.get(k).split("-");
-                                for (String parola : appoggio) {
-                                    if (!parola.equals(ev)) {
-                                        conta = conta + 1;
-                                        if (conta == appoggio.length) {
-                                            cambiLineeMetropolitane = cambiLineeMetropolitane + 1;
-                                            sequenzeNodiCruciali.add(inMezzoNomi.get(k - 1));
-                                            sequenzediCambiamento.add(ev);
-                                            for (int index = 0; index < inMezzo.size() - 1; index++) {
-                                                String[] parolina = inMezzo.get(index).split("-");
-                                                for (String p : parolina) {
-                                                    if (!p.equals(ev)) {
-                                                        String par = p;
-                                                        String[] parolina2 = inMezzo.get(index + 1).split("-");
-                                                        for (String g : parolina2) {
-                                                            if (par.equals(g)) {
-                                                                sequenzediCambiamento.add(par);
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    } else {
-                                        conta = 0;
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        cambiLineeMetropolitane = cambiLineeMetropolitane + 1;
-                        sequenzediCambiamento.add(lineaTemp);
-                        successivo = linea;
-                        daNonRipetere = linea;
-                        if (quantoCiPasso == 0)
-                            sequenzeNodiCruciali.add(nomeStazioneCambio);
-                        else {
-
-                            for (int j = 0; j < inMezzo.size() - 1; j++) {
-                                if (inMezzo.get(j).equals(inMezzo.get(j + 1))) {
-                                    count = count + 1;
-                                }
-                            }
-                            if (count == inMezzo.size() - 1) {
-                                count = 0;
-                                sequenzeNodiCruciali.add(inMezzoNomi.get(inMezzoNomi.size() - 1));
-                            } else {
-
-
-                                while (!(daRaggiungere.equals(ev))) {
-                                    for (int j = 0; j < inMezzo.size(); j++) {
-                                        if (inMezzo.get(j).contains(linea)) {
-                                            temp = inMezzo.get(j);
-                                            nomeCambio.add(inMezzoNomi.get(j)); //nome_cambio ho tutto
-                                            listaAppoggio.add(temp);
-                                            inMezzo.set(j, "");
-                                            inMezzoNomi.set(j, "");
-
-                                        }
-                                    }
-                                    //puo essere che lista appoggio abbia più di un elemento
-                                    //ora strtok sugli elementi iesimi
-                                    for (int l = 0; l < listaAppoggio.size(); l++) {
-                                        checkino = 0;
-
-
-                                        String[] parole = listaAppoggio.get(l).split("-");
-                                        for (String parola : parole) {
-                                            if (!(parola.equals(daNonRipetere))) //se parola != linea
-                                            {
-                                                daRaggiungere = parola;
-                                                if (!(daRaggiungere.equals(ev))) {
-                                                    linea = daRaggiungere;
-                                                    sequenzediCambiamento.add(linea);
-                                                    if (checkino == 0) {
-                                                        cambiLineeMetropolitane = cambiLineeMetropolitane + 1;
-                                                        cambi.add(nomeCambio.get(l));
-                                                    }
-                                                    checkino++;
-                                                } else {
-                                                    cambi.add(nomeCambio.get(l));
-                                                    l = 1000;
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    listaAppoggio.clear();
-                                    nomeCambio.clear();
-                                }
-                            }
-
-                        }
-                        inMezzo.clear();
-                        inMezzoNomi.clear();
-                        check = false;
-                        lineaTemp = daNonRipetere;
-                        quantoCiPasso = 0;
-                        sequenzediCambiamento.add(successivo);
-
-                    }
-                } else {
-
-                    check = false;
-                    lineaTemp = linea;
-
-                    if (ciSonPassato) {
-                        inMezzo.clear();
-                        inMezzoNomi.clear();
-                        check = false;
-                        lineaTemp = linea;
-                        ciSonPassato = false;
-                    }
-                }
-            } else {
-                if (countBin != 0) {
-                    if (!lineaTemp.equals(linea)) {
-
-                        if ((i == 1) && (!controllo)) {
-                            check = true;
-                            nomeStazioneCambio = fermate; //la aggiungo solo se poi effettivamente rispetta check
-                            noPass = false;
-                            inMezzo.add(linea);
-                            inMezzoNomi.add(fermate);
-                            ev = lineaTemp;
-                        } else {
-                            if (!noPass) {
-                                check = true;
-                                nomeStazioneCambio = fermate; //la aggiungo solo se poi effettivamente rispetta check
-                                inMezzo.add(linea);
-                                inMezzoNomi.add(fermate);
-                                ev = lineaTemp;
-                                ciSonPassato = true;
-                            } else {
-                                noPass = false;
-                                if (stopping) {
-                                    for (int j = 0; j < cambiInizialiLinee.size(); j++) {
-                                        String[] parole = cambiInizialiLinee.get(j).split("-");
-                                        for (String parola : parole) {
-                                            if (parola.equals(success)) {
-                                                contatore++;
-                                                nomeStazioneCambio = cambiIniziali.get(j);
-                                            }
-                                        }
-                                    }
-                                    if (contatore == cambiInizialiLinee.size()) {
-                                        nomeStazioneCambio = "";
-                                    } else {
-                                        sequenzeNodiCruciali.add(nomeStazioneCambio);
-                                        sequenzediCambiamento.add(success);
-                                    }
-                                    contatore = 0;
-                                    cambiIniziali.clear();
-                                    cambiInizialiLinee.clear();
-                                }
-                                lineaTemp = linea;
-
-
-                            }
-                        }
-
-                    } else {
-                        lineaTemp = linea;
-                    }
-                } else {
-                    lineaTemp = linea;
-                    countBin = countBin + 1;
-
-                }
-            }
-            percorsiConFermate.add(fermate); //linea che consente di stampare i percorsi con fermate (non toccare)
-            linee.add(linea);
-        }//end for
-
-        removeDuplicate(cambi, 0);
-
-        for(int j=cambi.size()-1;j>=0;j--)
-        {
-            logger.info("Cambio {} ", cambi.get(j));
-            sequenzeNodiCruciali.add(cambi.get(j));
         }
-        cambiLineeMetropolitane = sequenzeNodiCruciali.size();
-        logger.info("Cambi linee metropolitane in CityLifeController.java {}", cambiLineeMetropolitane);
 
-        removeDuplicate(sequenzediCambiamento, 0);
-        removeChangeLines(sequenzediCambiamento);
+        removeDuplicate(stato.cambi, 0);
+
+        for(int j=stato.cambi.size()-1;j>=0;j--)
+        {
+            logger.info("Cambio {} ", stato.cambi.get(j));
+            stato.sequenzeNodiCruciali.add(stato.cambi.get(j));
+        }
+        stato.cambiLineeMetropolitane = stato.sequenzeNodiCruciali.size();
+        logger.info("Cambi linee metropolitane in CityLifeController.java {}", stato.cambiLineeMetropolitane);
+
+        removeDuplicate(stato.sequenzeDiCambiamento, 0);
+        removeChangeLines(stato.sequenzeDiCambiamento);
 
 
         CityLifeBean c = new CityLifeBean();
-        c.setLinee(linee);
-        c.setNumeroCambi(cambiLineeMetropolitane);
-        c.setSequenzeDiCambiamento(sequenzediCambiamento);
-        c.setSequenzeNodiCruciali(sequenzeNodiCruciali);
-        c.setPercorsiConNomi(percorsiConFermate);
+        c.setLinee(stato.linee);
+        c.setNumeroCambi(stato.cambiLineeMetropolitane);
+        c.setSequenzeDiCambiamento(stato.sequenzeDiCambiamento);
+        c.setSequenzeNodiCruciali(stato.sequenzeNodiCruciali);
+        c.setPercorsiConNomi(stato.percorsiConFermate);
         c.setNumeroStazioniTotali(matriceAdiacenza[0].length);
-        c.setSequenzeNodiCruciali(sequenzeNodiCruciali);
+        c.setSequenzeNodiCruciali(stato.sequenzeNodiCruciali);
 
         return c;
     }
@@ -467,4 +255,238 @@ public class CityLifeController
 
         return percorsiCodifica;
     }
+
+    private void gestisciCambiIniziali(String linea, StatoPercorso statoPercorso, int i, String fermate)
+    {
+        if (linea.contains("-") && i == 0) {
+            statoPercorso.controllo = true;
+            statoPercorso.cambiIniziali.add(fermate);
+            statoPercorso.cambiInizialiLinee.add(linea);
+            statoPercorso.uno = true;
+            return;
+        }
+
+        if (linea.contains("-") && i == 1) {
+            statoPercorso.noPass = true;
+            statoPercorso.cambiIniziali.add(fermate);
+            statoPercorso.cambiInizialiLinee.add(linea);
+            statoPercorso.stopping = false;
+
+            if (statoPercorso.uno) {
+                statoPercorso.ancora = true;
+            }
+            return;
+        }
+
+        if (!statoPercorso.lineaTemp.equals(linea) && i == 1) {
+            statoPercorso.noPass = true;
+        }
+        if ((!statoPercorso.stopping) && (statoPercorso.ancora)) {
+            if (i > 1) {
+                if ((linea.contains("-"))) {
+                    statoPercorso.stopping = false;
+                    statoPercorso.noPass = true;
+                    statoPercorso.cambiIniziali.add(fermate);
+                    statoPercorso.cambiInizialiLinee.add(linea);
+                    statoPercorso.ancora = true;
+                } else {
+                    statoPercorso.stopping = true;
+                    statoPercorso.success = linea;
+                    statoPercorso.noPass = true;
+                }
+            }
+        }
+    }
+    private void gestisciLogicaCambiPassoInduttivo(String linea, StatoPercorso statoPercorso, int i, String fermate)
+    {
+        if (statoPercorso.check) {
+            if (!statoPercorso.lineaTemp.equals(linea)) {
+                if (linea.contains("-")) {
+                    statoPercorso.quantoCiPasso = statoPercorso.quantoCiPasso + 1;
+
+                    statoPercorso.inMezzo.add(linea);
+                    statoPercorso.inMezzoNomi.add(fermate);
+                    statoPercorso.check = true;
+                    statoPercorso.ciSonPassato = true;
+
+                    if (i == statoPercorso.percorsiCodifica.size() - 1) {
+                        for (int k = 0; k < statoPercorso.inMezzo.size(); k++) {
+                            String[] appoggio = statoPercorso.inMezzo.get(k).split("-");
+                            for (String parola : appoggio) {
+                                if (!parola.equals(statoPercorso.ev)) {
+                                    statoPercorso.conta = statoPercorso.conta + 1;
+                                    if (statoPercorso.conta == appoggio.length) {
+                                        statoPercorso.cambiLineeMetropolitane = statoPercorso.cambiLineeMetropolitane + 1;
+                                        statoPercorso.sequenzeNodiCruciali.add(statoPercorso.inMezzoNomi.get(k - 1));
+                                        statoPercorso.sequenzeDiCambiamento.add(statoPercorso.ev);
+                                        for (int index = 0; index < statoPercorso.inMezzo.size() - 1; index++)
+                                        {
+                                            String[] parolina = statoPercorso.inMezzo.get(index).split("-");
+                                            for (String p : parolina)
+                                            {
+                                                if (!p.equals(statoPercorso.ev))
+                                                {
+                                                    String par = p;
+                                                    String[] parolina2 = statoPercorso.inMezzo.get(index + 1).split("-");
+                                                    for (String g : parolina2)
+                                                    {
+                                                        if (par.equals(g)) {
+                                                            statoPercorso.sequenzeDiCambiamento.add(par);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    statoPercorso.conta = 0;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    statoPercorso.cambiLineeMetropolitane = statoPercorso.cambiLineeMetropolitane + 1;
+                    statoPercorso.sequenzeDiCambiamento.add(statoPercorso.lineaTemp);
+                    statoPercorso.successivo = linea;
+                    statoPercorso.daNonRipetere = linea;
+                    if (statoPercorso.quantoCiPasso == 0)
+                        statoPercorso.sequenzeNodiCruciali.add(statoPercorso.nomeStazioneCambio);
+                    else {
+
+                        for (int j = 0; j < statoPercorso.inMezzo.size() - 1; j++) {
+                            if (statoPercorso.inMezzo.get(j).equals(statoPercorso.inMezzo.get(j + 1))) {
+                                statoPercorso.count = statoPercorso.count + 1;
+                            }
+                        }
+                        if (statoPercorso.count == statoPercorso.inMezzo.size() - 1) {
+                            statoPercorso.count = 0;
+                            statoPercorso.sequenzeNodiCruciali.add(statoPercorso.inMezzoNomi.get(statoPercorso.inMezzoNomi.size() - 1));
+                        }
+                        else
+                        {
+
+                            while (!(statoPercorso.daRaggiungere.equals(statoPercorso.ev)))
+                            {
+                                for (int j = 0; j < statoPercorso.inMezzo.size(); j++)
+                                {
+                                    if (statoPercorso.inMezzo.get(j).contains(linea))
+                                    {
+                                        statoPercorso.temp = statoPercorso.inMezzo.get(j);
+                                        statoPercorso.nomeCambio.add(statoPercorso.inMezzoNomi.get(j)); //nome_cambio ho tutto
+                                        statoPercorso.listaAppoggio.add(statoPercorso.temp);
+                                        statoPercorso.inMezzo.set(j, "");
+                                        statoPercorso.inMezzoNomi.set(j, "");
+
+                                    }
+                                }
+                                for (int l = 0; l < statoPercorso.listaAppoggio.size(); l++) {
+                                    statoPercorso.checkino = 0;
+
+
+                                    String[] parole = statoPercorso.listaAppoggio.get(l).split("-");
+                                    for (String parola : parole) {
+                                        if (!(parola.equals(statoPercorso.daNonRipetere))) //se parola != linea
+                                        {
+                                            statoPercorso.daRaggiungere = parola;
+                                            if (!(statoPercorso.daRaggiungere.equals(statoPercorso.ev))) {
+                                                linea = statoPercorso.daRaggiungere;
+                                                statoPercorso.sequenzeDiCambiamento.add(linea);
+                                                if (statoPercorso.checkino == 0) {
+                                                    statoPercorso.cambiLineeMetropolitane = statoPercorso.cambiLineeMetropolitane + 1;
+                                                    statoPercorso.cambi.add(statoPercorso.nomeCambio.get(l));
+                                                }
+                                                statoPercorso.checkino++;
+                                            } else {
+                                                statoPercorso.cambi.add(statoPercorso.nomeCambio.get(l));
+                                                l = 1000;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                                statoPercorso.listaAppoggio.clear();
+                                statoPercorso.nomeCambio.clear();
+                            }
+                        }
+
+                    }
+                    statoPercorso.inMezzo.clear();
+                    statoPercorso.inMezzoNomi.clear();
+                    statoPercorso.check = false;
+                    statoPercorso.lineaTemp = statoPercorso.daNonRipetere;
+                    statoPercorso.quantoCiPasso = 0;
+                    statoPercorso.sequenzeDiCambiamento.add(statoPercorso.successivo);
+
+                }
+            } else {
+
+                statoPercorso.check = false;
+                statoPercorso.lineaTemp = linea;
+
+                if (statoPercorso.ciSonPassato) {
+                    statoPercorso.inMezzo.clear();
+                    statoPercorso.inMezzoNomi.clear();
+                    statoPercorso.check = false;
+                    statoPercorso.lineaTemp = linea;
+                    statoPercorso.ciSonPassato = false;
+                }
+            }
+        } else {
+            if (statoPercorso.countBin != 0) {
+                if (!statoPercorso.lineaTemp.equals(linea)) {
+
+                    if ((i == 1) && (!statoPercorso.controllo)) {
+                        statoPercorso.check = true;
+                        statoPercorso.nomeStazioneCambio = fermate; //la aggiungo solo se poi effettivamente rispetta check
+                        statoPercorso.noPass = false;
+                        statoPercorso.inMezzo.add(linea);
+                        statoPercorso.inMezzoNomi.add(fermate);
+                        statoPercorso.ev = statoPercorso.lineaTemp;
+                    } else {
+                        if (!statoPercorso.noPass) {
+                            statoPercorso.check = true;
+                            statoPercorso.nomeStazioneCambio = fermate; //la aggiungo solo se poi effettivamente rispetta check
+                            statoPercorso.inMezzo.add(linea);
+                            statoPercorso.inMezzoNomi.add(fermate);
+                            statoPercorso.ev = statoPercorso.lineaTemp;
+                            statoPercorso.ciSonPassato = true;
+                        } else {
+                            statoPercorso.noPass = false;
+                            if (statoPercorso.stopping) {
+                                for (int j = 0; j < statoPercorso.cambiInizialiLinee.size(); j++) {
+                                    String[] parole = statoPercorso.cambiInizialiLinee.get(j).split("-");
+                                    for (String parola : parole) {
+                                        if (parola.equals(statoPercorso.success)) {
+                                            statoPercorso.contatore++;
+                                            statoPercorso.nomeStazioneCambio = statoPercorso.cambiIniziali.get(j);
+                                        }
+                                    }
+                                }
+                                if (statoPercorso.contatore == statoPercorso.cambiInizialiLinee.size()) {
+                                    statoPercorso.nomeStazioneCambio = "";
+                                } else {
+                                    statoPercorso.sequenzeNodiCruciali.add(statoPercorso.nomeStazioneCambio);
+                                    statoPercorso.sequenzeDiCambiamento.add(statoPercorso.success);
+                                }
+                                statoPercorso.contatore = 0;
+                                statoPercorso.cambiIniziali.clear();
+                                statoPercorso.cambiInizialiLinee.clear();
+                            }
+                            statoPercorso.lineaTemp = linea;
+                        }
+                    }
+
+                } else {
+                    statoPercorso.lineaTemp = linea;
+                }
+            } else {
+                statoPercorso.lineaTemp = linea;
+                statoPercorso.countBin = statoPercorso.countBin + 1;
+            }
+        }
+        statoPercorso.percorsiConFermate.add(fermate); //linea che consente di stampare i percorsi con fermate (non toccare)
+        statoPercorso.linee.add(linea);
+
+    }
+
 }
