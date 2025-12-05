@@ -299,83 +299,16 @@ public class CityLifeController
     }
     private void gestisciLogicaCambiPassoInduttivo(String linea, StatoPercorso statoPercorso, int i, String fermate)
     {
-        if (statoPercorso.check) {
-            if (!statoPercorso.lineaTemp.equals(linea))
-            {
-                if (linea.contains("-"))
-                {
-                    fermataCambio(statoPercorso, linea, fermate);
-                    if (i == statoPercorso.percorsiCodifica.size() - 1) {
-                        cambiamentometropolitano(statoPercorso);
-                    }
-                }
-                else
-                {
-                    fermataNocambio(statoPercorso, linea, fermate);
-                }
-            }
-            else
-            {
-                resetting(statoPercorso, linea);
-            }
+        if (statoPercorso.check)
+        {
+            path1(statoPercorso,linea,fermate,i);
         }
         else
         {
-            if (statoPercorso.countBin != 0) {
-                if (!statoPercorso.lineaTemp.equals(linea)) {
-
-                    if ((i == 1) && (!statoPercorso.controllo)) {
-                        statoPercorso.check = true;
-                        statoPercorso.nomeStazioneCambio = fermate; //la aggiungo solo se poi effettivamente rispetta check
-                        statoPercorso.noPass = false;
-                        statoPercorso.inMezzo.add(linea);
-                        statoPercorso.inMezzoNomi.add(fermate);
-                        statoPercorso.ev = statoPercorso.lineaTemp;
-                    } else {
-                        if (!statoPercorso.noPass) {
-                            statoPercorso.check = true;
-                            statoPercorso.nomeStazioneCambio = fermate; //la aggiungo solo se poi effettivamente rispetta check
-                            statoPercorso.inMezzo.add(linea);
-                            statoPercorso.inMezzoNomi.add(fermate);
-                            statoPercorso.ev = statoPercorso.lineaTemp;
-                            statoPercorso.ciSonPassato = true;
-                        } else {
-                            statoPercorso.noPass = false;
-                            if (statoPercorso.stopping) {
-                                for (int j = 0; j < statoPercorso.cambiInizialiLinee.size(); j++) {
-                                    String[] parole = statoPercorso.cambiInizialiLinee.get(j).split("-");
-                                    for (String parola : parole) {
-                                        if (parola.equals(statoPercorso.success)) {
-                                            statoPercorso.contatore++;
-                                            statoPercorso.nomeStazioneCambio = statoPercorso.cambiIniziali.get(j);
-                                        }
-                                    }
-                                }
-                                if (statoPercorso.contatore == statoPercorso.cambiInizialiLinee.size()) {
-                                    statoPercorso.nomeStazioneCambio = "";
-                                } else {
-                                    statoPercorso.sequenzeNodiCruciali.add(statoPercorso.nomeStazioneCambio);
-                                    statoPercorso.sequenzeDiCambiamento.add(statoPercorso.success);
-                                }
-                                statoPercorso.contatore = 0;
-                                statoPercorso.cambiIniziali.clear();
-                                statoPercorso.cambiInizialiLinee.clear();
-                            }
-                            statoPercorso.lineaTemp = linea;
-                        }
-                    }
-
-                } else {
-                    statoPercorso.lineaTemp = linea;
-                }
-            } else {
-                statoPercorso.lineaTemp = linea;
-                statoPercorso.countBin = statoPercorso.countBin + 1;
-            }
+            path2(statoPercorso,linea,fermate,i);
         }
         statoPercorso.percorsiConFermate.add(fermate); //linea che consente di stampare i percorsi con fermate (non toccare)
         statoPercorso.linee.add(linea);
-
     }
     private void cambiamentometropolitano(StatoPercorso statoPercorso)
     {
@@ -510,6 +443,82 @@ public class CityLifeController
             statoPercorso.ciSonPassato = false;
         }
 
+    }
+    private void path1(StatoPercorso statoPercorso, String linea, String fermate, int i)
+    {
+        if (!statoPercorso.lineaTemp.equals(linea))
+        {
+            if (linea.contains("-"))
+            {
+                fermataCambio(statoPercorso, linea, fermate);
+                if (i == statoPercorso.percorsiCodifica.size() - 1) {
+                    cambiamentometropolitano(statoPercorso);
+                }
+            }
+            else
+            {
+                fermataNocambio(statoPercorso, linea, fermate);
+            }
+        }
+        else
+        {
+            resetting(statoPercorso, linea);
+        }
+
+    }
+    private void path2(StatoPercorso statoPercorso, String linea, String fermate, int i)
+    {
+        if (statoPercorso.countBin != 0) {
+            if (!statoPercorso.lineaTemp.equals(linea)) {
+
+                if ((i == 1) && (!statoPercorso.controllo)) {
+                    statoPercorso.check = true;
+                    statoPercorso.nomeStazioneCambio = fermate; //la aggiungo solo se poi effettivamente rispetta check
+                    statoPercorso.noPass = false;
+                    statoPercorso.inMezzo.add(linea);
+                    statoPercorso.inMezzoNomi.add(fermate);
+                    statoPercorso.ev = statoPercorso.lineaTemp;
+                } else {
+                    if (!statoPercorso.noPass) {
+                        statoPercorso.check = true;
+                        statoPercorso.nomeStazioneCambio = fermate; //la aggiungo solo se poi effettivamente rispetta check
+                        statoPercorso.inMezzo.add(linea);
+                        statoPercorso.inMezzoNomi.add(fermate);
+                        statoPercorso.ev = statoPercorso.lineaTemp;
+                        statoPercorso.ciSonPassato = true;
+                    } else {
+                        statoPercorso.noPass = false;
+                        if (statoPercorso.stopping) {
+                            for (int j = 0; j < statoPercorso.cambiInizialiLinee.size(); j++) {
+                                String[] parole = statoPercorso.cambiInizialiLinee.get(j).split("-");
+                                for (String parola : parole) {
+                                    if (parola.equals(statoPercorso.success)) {
+                                        statoPercorso.contatore++;
+                                        statoPercorso.nomeStazioneCambio = statoPercorso.cambiIniziali.get(j);
+                                    }
+                                }
+                            }
+                            if (statoPercorso.contatore == statoPercorso.cambiInizialiLinee.size()) {
+                                statoPercorso.nomeStazioneCambio = "";
+                            } else {
+                                statoPercorso.sequenzeNodiCruciali.add(statoPercorso.nomeStazioneCambio);
+                                statoPercorso.sequenzeDiCambiamento.add(statoPercorso.success);
+                            }
+                            statoPercorso.contatore = 0;
+                            statoPercorso.cambiIniziali.clear();
+                            statoPercorso.cambiInizialiLinee.clear();
+                        }
+                        statoPercorso.lineaTemp = linea;
+                    }
+                }
+
+            } else {
+                statoPercorso.lineaTemp = linea;
+            }
+        } else {
+            statoPercorso.lineaTemp = linea;
+            statoPercorso.countBin = statoPercorso.countBin + 1;
+        }
     }
 
 }
