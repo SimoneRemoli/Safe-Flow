@@ -206,6 +206,34 @@ public class CityLifeController
 
         }
     }
+    private void rilassaAdiacenti(int nodoPartenza, int[][] matriceAdiacenza, int[] know, int[] cost, int[] precedente)
+    {
+        int[] adiacentiVector = trovaAdj(nodoPartenza, matriceAdiacenza);
+
+        for (int i = 0; i < adiacentiVector.length; i++) {
+            rilassaNodo(adiacentiVector[i], nodoPartenza, matriceAdiacenza, know, cost, precedente);
+        }
+    }
+
+    private void rilassaNodo(int adjTemp, int nodoPartenza, int[][] matriceAdiacenza, int[] know, int[] cost, int[] precedente)
+    {
+        if (adjTemp == -1) {
+            return;
+        }
+
+        if (know[adjTemp] != -1) {
+            return;
+        }
+
+        int nuovoCosto = cost[nodoPartenza] + matriceAdiacenza[nodoPartenza][adjTemp];
+
+        if (cost[adjTemp] > nuovoCosto) {
+            cost[adjTemp] = nuovoCosto;
+            precedente[adjTemp] = nodoPartenza;
+        }
+    }
+
+
     public List<Integer> dijkstra(int partenza, int arrivo) throws FuoriRangeExceptionRemoli, UnreacheableNodeExceptionRemoli {
         if (partenza < 0 || partenza >= matriceAdiacenza.length)
             throw new FuoriRangeExceptionRemoli("ID partenza fuori range: " + partenza, FuoriRangeExceptionRemoli.Severity.CRITICAL );
@@ -230,24 +258,13 @@ public class CityLifeController
         cost[nodoPartenza] = 0;
         Arrays.fill(precedente, -1);
 
-        while(this.checkfill(know,matriceAdiacenza.length))
-        {
-            adiacentiVector = this.trovaAdj(nodoPartenza, matriceAdiacenza);
-            for(int i=0;i<adiacentiVector.length;i++)
-            {
-                if(adiacentiVector[i]!=-1)
-                {
-                    adjTemp = adiacentiVector[i];
-                    if (know[adjTemp] == -1 && cost[adjTemp] > cost[nodoPartenza] + matriceAdiacenza[nodoPartenza][adjTemp])
-                    {
-                        cost[adjTemp] = cost[nodoPartenza] + matriceAdiacenza[nodoPartenza][adjTemp];
-                        precedente[adjTemp] = nodoPartenza;
-                    }
-                }
-            }
-            nodoPartenza = this.nodoCostoMinore(cost,know);
+        while (checkfill(know, matriceAdiacenza.length)) {
+
+            rilassaAdiacenti(nodoPartenza, matriceAdiacenza, know, cost, precedente);
+            nodoPartenza = nodoCostoMinore(cost, know);
             know[nodoPartenza] = 1;
         }
+
         if (cost[nodoArrivo] == 1000 || precedente[nodoArrivo] == -1) {
             throw new UnreacheableNodeExceptionRemoli(
                     "Il percorso verso la stazione selezionata non è disponibile.",
