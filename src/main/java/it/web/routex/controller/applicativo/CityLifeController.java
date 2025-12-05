@@ -263,25 +263,8 @@ public class CityLifeController
 
     private void gestisciCambiIniziali(String linea, StatoPercorso statoPercorso, int i, String fermate)
     {
-        if (linea.contains("-") && i == 0) {
-            statoPercorso.controllo = true;
-            statoPercorso.cambiIniziali.add(fermate);
-            statoPercorso.cambiInizialiLinee.add(linea);
-            statoPercorso.uno = true;
-            return;
-        }
-
-        if (linea.contains("-") && i == 1) {
-            statoPercorso.noPass = true;
-            statoPercorso.cambiIniziali.add(fermate);
-            statoPercorso.cambiInizialiLinee.add(linea);
-            statoPercorso.stopping = false;
-
-            if (statoPercorso.uno) {
-                statoPercorso.ancora = true;
-            }
-            return;
-        }
+        checkFirstStation(statoPercorso, linea, fermate, i);
+        checkSecondStation(statoPercorso, linea, fermate, i);
 
         if (!statoPercorso.lineaTemp.equals(linea) && i == 1) {
             statoPercorso.noPass = true;
@@ -523,6 +506,30 @@ public class CityLifeController
         } else {
             statoPercorso.lineaTemp = linea;
             statoPercorso.countBin = statoPercorso.countBin + 1;
+        }
+    }
+    private void checkFirstStation(StatoPercorso statoPercorso, String linea, String fermate, int i)
+    {
+        if (linea.contains("-") && i == 0) {
+            statoPercorso.controllo = true;
+            statoPercorso.cambiIniziali.add(fermate);
+            statoPercorso.cambiInizialiLinee.add(linea);
+            statoPercorso.uno = true;
+            return;
+        }
+    }
+    private void checkSecondStation(StatoPercorso statoPercorso, String linea, String fermate, int i)
+    {
+        if (linea.contains("-") && i == 1) {
+            statoPercorso.noPass = true;
+            statoPercorso.cambiIniziali.add(fermate);
+            statoPercorso.cambiInizialiLinee.add(linea);
+            statoPercorso.stopping = false;
+
+            if (statoPercorso.uno) {
+                statoPercorso.ancora = true;
+            }
+            return;
         }
     }
 
