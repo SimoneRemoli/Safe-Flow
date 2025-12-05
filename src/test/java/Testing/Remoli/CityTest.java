@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * ------------------------------------------------------------
  */
 
-public class CityTest {
+class CityTest {
 
     private static final ResourceBundle RB = ResourceBundle.getBundle("configurations/testpaths");
     static Stream<String> prezzoTotaleProvider() {

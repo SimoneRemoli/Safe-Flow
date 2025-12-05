@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 
 
-public class PagamentoPaypalTest {
+class PagamentoPaypalTest {
 
     private static final ResourceBundle RB = ResourceBundle.getBundle("configurations/testpaths");
 

@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * ------------------------------------------------------------
  */
 
-public class PagamentoMastercardTest
+class PagamentoMastercardTest
 {
     private static final ResourceBundle RB = ResourceBundle.getBundle("configurations/testpaths");
     static Stream<String> Permission(){

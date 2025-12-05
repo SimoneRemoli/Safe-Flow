@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *  Description: Test di integrazione per la classe PathController.
  * ------------------------------------------------------------
  */
-public class PercorsoTest
+class PercorsoTest
 {
     private static final ResourceBundle RB = ResourceBundle.getBundle("configurations/testpaths");
 
@@ -51,11 +51,6 @@ public class PercorsoTest
     }
     @ParameterizedTest
     @MethodSource("validPathsProvider")
-    /*
-    Chiamo il metodo validPathsProvider();
-    Prendo ogni valore dello stream
-    e invoco TestPath(String) con uno alla volta.
-     */
     void TestPath(String strings) throws Exception {
 
         String[] parts = strings.split(":");
@@ -75,9 +70,6 @@ public class PercorsoTest
         {
             path.run(parts[0], parts[1], parts[2]);
         });
-
-
-        //path.run(parts[0], parts[1], parts[2]);
     }
     @ParameterizedTest
     @MethodSource("pathCFProvider")
