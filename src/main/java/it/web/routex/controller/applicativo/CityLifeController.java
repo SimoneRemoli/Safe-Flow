@@ -322,31 +322,36 @@ public class CityLifeController
             for (String parola : appoggio) {
                 if (!parola.equals(statoPercorso.ev)) {
                     statoPercorso.conta = statoPercorso.conta + 1;
-                    if (statoPercorso.conta == appoggio.length) {
-                        statoPercorso.cambiLineeMetropolitane = statoPercorso.cambiLineeMetropolitane + 1;
-                        statoPercorso.sequenzeNodiCruciali.add(statoPercorso.inMezzoNomi.get(k - 1));
-                        statoPercorso.sequenzeDiCambiamento.add(statoPercorso.ev);
-                        for (int index = 0; index < statoPercorso.inMezzo.size() - 1; index++)
-                        {
-                            String[] parolina = statoPercorso.inMezzo.get(index).split("-");
-                            for (String p : parolina)
-                            {
-                                if (!p.equals(statoPercorso.ev))
-                                {
-                                    String par = p;
-                                    String[] parolina2 = statoPercorso.inMezzo.get(index + 1).split("-");
-                                    for (String g : parolina2)
-                                    {
-                                        if (par.equals(g)) {
-                                            statoPercorso.sequenzeDiCambiamento.add(par);
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                    if (statoPercorso.conta == appoggio.length)
+                    {
+                        effettuaCambio(statoPercorso, k);
                     }
                 } else {
                     statoPercorso.conta = 0;
+                }
+            }
+        }
+    }
+    private void effettuaCambio(StatoPercorso statoPercorso, int k)
+    {
+        statoPercorso.cambiLineeMetropolitane = statoPercorso.cambiLineeMetropolitane + 1;
+        statoPercorso.sequenzeNodiCruciali.add(statoPercorso.inMezzoNomi.get(k - 1));
+        statoPercorso.sequenzeDiCambiamento.add(statoPercorso.ev);
+        for (int index = 0; index < statoPercorso.inMezzo.size() - 1; index++)
+        {
+            String[] parolina = statoPercorso.inMezzo.get(index).split("-");
+            for (String p : parolina)
+            {
+                if (!p.equals(statoPercorso.ev))
+                {
+                    String par = p;
+                    String[] parolina2 = statoPercorso.inMezzo.get(index + 1).split("-");
+                    for (String g : parolina2)
+                    {
+                        if (par.equals(g)) {
+                            statoPercorso.sequenzeDiCambiamento.add(par);
+                        }
+                    }
                 }
             }
         }
