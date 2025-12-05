@@ -100,10 +100,15 @@ public class CityLifeController
 
         removeDuplicate(stato.cambi, 0);
 
-        for(int j=stato.cambi.size()-1;j>=0;j--)
-        {
-            logger.info("Cambio {} ", stato.cambi.get(j));
-            stato.sequenzeNodiCruciali.add(stato.cambi.get(j));
+        if (stato.cambi != null && !stato.cambi.isEmpty()) {
+
+            for (int j = stato.cambi.size() - 1; j >= 0; j--) {
+                String cambio = stato.cambi.get(j);
+
+                logger.info("Cambio {}", cambio);
+                stato.sequenzeNodiCruciali.add(cambio);
+            }
+
         }
         stato.cambiLineeMetropolitane = stato.sequenzeNodiCruciali.size();
         logger.info("Cambi linee metropolitane in CityLifeController.java {}", stato.cambiLineeMetropolitane);
