@@ -11,7 +11,7 @@ public class PersistenceMode {
     private TypesOfPersistenceLayer tipo;
     private static class Container
     {
-        public final static PersistenceMode instance = new PersistenceMode();
+        public static final PersistenceMode instance = new PersistenceMode();
     }
     protected PersistenceMode()
     {

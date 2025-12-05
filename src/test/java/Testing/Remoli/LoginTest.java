@@ -47,6 +47,6 @@ class LoginTest
         credenziali.setPassword(parts[1]);
         LoginController loginController = new LoginController(credenziali);
         UtenteBeanGenerico ut = loginController.autenticaUtente();
-        assertTrue(ut != null);
+        assertNotNull(ut);
     }
 }
