@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *  Description: Test della generazione del codice del ticket
  * ------------------------------------------------------------
  */
-public class TicketTest {
+class TicketTest {
     private static final ResourceBundle RB = ResourceBundle.getBundle("configurations/testpaths");
     static Stream<String> ticketCFProvider() {
         return Stream.of(RB.getString("ticketCF").split(":"));
