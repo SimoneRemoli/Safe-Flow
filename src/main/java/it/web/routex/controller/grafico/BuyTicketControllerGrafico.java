@@ -103,7 +103,6 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
                 forwardingConferma(request, response);
 
             } catch (DAOExceptionRemoli e) {
-                e.printStackTrace();
                 request.setAttribute(ERRORE, "Errore durante l'elaborazione dell'acquisto: " + e.getMessage());
                 try {
                     request.getRequestDispatcher(PAGE_ERROR).forward(request, response);

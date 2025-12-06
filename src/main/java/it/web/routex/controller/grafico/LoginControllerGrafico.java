@@ -49,7 +49,7 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
             }
             aut.setEmail(login.email());
             aut.setPassword(login.password());
-            logger.info("Bean di autenticazione creato con email: NotCheckedEmail={}, NotCheckedPassword={}", login.email(), login.password());
+            logger.info("Bean di autenticazione creato con email: NotCheckedEmail={}, SecurePassword={}", login.email(), login.password());
 
         return aut;
     }
@@ -71,7 +71,6 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
                 default -> safeRedirect(response, "erroreLogin.jsp");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             try {
                 response.sendRedirect("erroreLogin.jsp");
             }catch(Exception ex){
@@ -94,7 +93,6 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
     private void gestisciErroreLogin(HttpServletRequest request, HttpServletResponse response, DAOExceptionRemoli ex)
     {
                 try {
-                    ex.printStackTrace();
                     request.setAttribute(ATTR_MESSAGGIO_ERRORE, "Errore nella connessione al DB [500 internal error]");
                     request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
                     logger.error("Errore DAO durante il login: message={}", ex.getMessage());
@@ -135,7 +133,6 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
                 gestisciErroreLogin(request, response, ex);
 
             } catch (LoginNotFoundRemoli ex) {
-                ex.printStackTrace();
                 request.setAttribute(ATTR_MESSAGGIO_ERRORE, ex.getMessage());
                 try {
                     request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
