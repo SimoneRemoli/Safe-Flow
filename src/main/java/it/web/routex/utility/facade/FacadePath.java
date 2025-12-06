@@ -6,9 +6,7 @@ import it.web.routex.controller.applicativo.CityLifeController;
 import it.web.routex.exception.FuoriRangeExceptionRemoli;
 import it.web.routex.exception.UnreacheableNodeExceptionRemoli;
 import it.web.routex.utility.factory.CityLifeFactory;
-
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class FacadePath

@@ -80,8 +80,8 @@ public class Route {
                 List<String> lista = (List<String>) tempList;
                 return String.join(", ", lista);
             }
-        } else if (obj instanceof String) {
-            return (String) obj;
+        } else if (obj instanceof String string) {
+            return string;
         }
         return "";
     }

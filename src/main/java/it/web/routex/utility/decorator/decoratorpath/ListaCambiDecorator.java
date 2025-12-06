@@ -13,8 +13,8 @@ public class ListaCambiDecorator extends Decorator
     public RouteBean update(RouteBean rb, Route r)
     {
         rb = super.update(rb, r);
-        int numero_cambi = r.getnCambi();
-        if(numero_cambi == 0) rb.setListaCambi("Diretto");
+        int numeroCambi = r.getnCambi();
+        if(numeroCambi == 0) rb.setListaCambi("Diretto");
         return  rb;
     }
 }
