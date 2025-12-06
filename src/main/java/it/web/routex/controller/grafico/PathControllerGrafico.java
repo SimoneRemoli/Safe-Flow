@@ -25,29 +25,30 @@ public class PathControllerGrafico extends LoggedHttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     {
-        try {
+
             RouteRecord route;
             final HttpSession session = request.getSession(false);
             if (session == null) {
-                response.sendRedirect("login.jsp");
-                return;
+                try {
+                    response.sendRedirect("login.jsp");
+                    return;
+                }catch(Exception e){
+                    logger.info("Errore nel forwarding.");
+                }
             }
 
             final Credentials cred = Credentials.getInstanceSingleton();
 
-            try {
-                route = RouteInputExtractor.from(request);
-            } catch (InvalidRouteInputExceptionRemoli e)
-            {
-                logger.error("Errore nell'input del percorso {}", e.getMessage());
-                request.getRequestDispatcher("search.jsp").forward(request, response);
-                return;
-            }
+            route = estrattorePercorso(request, response);
             String status = UserStatusResolver.resolve(cred);
 
             if(!RouteValidator.isValid(route))
             {
-                response.sendRedirect("datiPercorsoAssenti.jsp");
+                try {
+                    response.sendRedirect("datiPercorsoAssenti.jsp");
+                }catch(Exception e){
+                    logger.info("Errore nel forwarding.",e);
+                }
                 return;
             }
 
@@ -61,7 +62,11 @@ public class PathControllerGrafico extends LoggedHttpServlet {
                      FuoriRangeExceptionRemoli | DAOExceptionRemoli | SQLException e) {
                 logger.error("Errore processamento dati percorso {}", e.toString());
                 request.setAttribute("stazioniNonValide", true);
-                request.getRequestDispatcher("search.jsp").forward(request, response);
+                try {
+                    request.getRequestDispatcher("search.jsp").forward(request, response);
+                }catch(Exception ex){
+                    logger.info("Errore nel forwarding, ex");
+                }
             }
 
             RouteDecoratorService.decorate(dto, request);
@@ -78,14 +83,30 @@ public class PathControllerGrafico extends LoggedHttpServlet {
 
             //inoltro la richiesta al jsp
             RequestDispatcher dispatcher = request.getRequestDispatcher("PathNOREG.jsp");
-            dispatcher.forward(request, response);
-
+            try {
+                dispatcher.forward(request, response);
+            }catch(Exception e){
+                logger.info("Errore nel forwarding.@, ex");
+            }
             //  logica per calcolare il percorso o qualsiasi altra logica
             String result = "Route from " + route.start() + " to " + route.end() + " in " + route.city();
             logger.info(result);
 
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+
+    }
+    private RouteRecord estrattorePercorso(HttpServletRequest request, HttpServletResponse response)
+    {
+        try {
+            return RouteInputExtractor.from(request);
+        } catch (InvalidRouteInputExceptionRemoli e)
+        {
+            logger.error("Errore nell'input del percorso {}", e.getMessage());
+            try {
+                request.getRequestDispatcher("search.jsp").forward(request, response);
+            }catch(Exception ex){
+                logger.error("Errore nel forwarding.",ex);
+            }
+            return null;
         }
     }
 }
