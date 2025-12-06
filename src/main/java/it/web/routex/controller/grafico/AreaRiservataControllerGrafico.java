@@ -8,7 +8,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.List;
 import it.web.routex.exception.PathNotFoundExceptionRemoli;
 import it.web.routex.exception.DAOExceptionRemoli;
@@ -38,7 +37,7 @@ public class AreaRiservataControllerGrafico extends LoggedHttpServlet
                 // Se non sei loggato o cf è null, reindirizza a login
                 redirectToLogin(response);
             } catch (PathNotFoundExceptionRemoli remoli) {
-                logger.error("Errore PathNotFoundExceptionRemoli. Messaggio={} Cf={} CodiceErrore={} Dettagli={}.", remoli.getMessage(), remoli.getCodiceFiscaleUtente(), remoli.getCodice_di_errore(), remoli.getDetails());
+                logger.error("Errore PathNotFoundExceptionRemoli. Messaggio={} Cf={} CodiceErrore={} Dettagli={}.", remoli.getMessage(), remoli.getCodiceFiscaleUtente(), remoli.getCodiceDiErrore(), remoli.getDetails());
                 request.setAttribute("errore", remoli.getMessage());
                 try {
                     request.getRequestDispatcher("/error.jsp").forward(request, response);

@@ -13,7 +13,7 @@ public class PathNotFoundExceptionRemoli extends Exception {
         this.details = details;
     }
 
-    public int getCodice_di_errore() {
+    public int getCodiceDiErrore() {
         return codiceDiErrore;
     }
 

@@ -33,8 +33,8 @@ public class Route {
 
             if (objListaCambi instanceof List) {
                 listaCambiList = (List<String>) objListaCambi;
-            } else if (objListaCambi instanceof String) {
-                listaCambiList.add((String) objListaCambi);
+            } else if (objListaCambi instanceof String string) {
+                listaCambiList.add(string);
             }
             this.listaCambi = String.join(", ", listaCambiList);
 
@@ -43,9 +43,10 @@ public class Route {
             List<String> stazInterList = new ArrayList<>();
             if (objStazInterscambio instanceof List) {
                 stazInterList = (List<String>) objStazInterscambio;
-            } else if (objStazInterscambio instanceof String) {
-                stazInterList.add((String) objStazInterscambio);
+            } else if (objStazInterscambio instanceof String string) {
+                stazInterList.add(string);
             }
+
             this.stazInterscambio = String.join(", ", stazInterList);
 
             this.partenza = (String) request.getAttribute("inizio");

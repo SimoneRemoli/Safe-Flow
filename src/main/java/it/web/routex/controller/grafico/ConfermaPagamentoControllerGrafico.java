@@ -41,13 +41,11 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
 
         impostaPersistenza(paymentRecord);
 
-        RegistrazionePagamentoController controllerPagamento =
-                creaControllerPagamento(paymentRecord, request, response, cred);
+        RegistrazionePagamentoController controllerPagamento = creaControllerPagamento(paymentRecord, request, response, cred);
 
         if (controllerPagamento == null) return;
 
-        List<String> codiciBiglietti = eseguiPagamento(
-                controllerPagamento, request, response);
+        List<String> codiciBiglietti = eseguiPagamento(controllerPagamento, request, response);
 
         if (codiciBiglietti == null) return;
 
@@ -224,14 +222,4 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
             logger.error(FORWARDING, ex);
         }
     }
-
-
-
-
-
-
-
-
-
-
 }

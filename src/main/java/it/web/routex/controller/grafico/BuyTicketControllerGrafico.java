@@ -12,7 +12,6 @@ import it.web.routex.exception.InvalidPriceCalculationExceptionRemoli;
 import it.web.routex.exception.InvalidCityDataExceptionRemoli;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-import java.io.IOException;
 import java.util.List;
 
 /**

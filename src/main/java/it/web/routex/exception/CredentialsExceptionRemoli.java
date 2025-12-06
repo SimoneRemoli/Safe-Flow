@@ -2,7 +2,7 @@ package it.web.routex.exception;
 
 public class CredentialsExceptionRemoli extends Exception {
 
-    String details;
+    final String details;
 
     public CredentialsExceptionRemoli(String message,String details) {
         super(message);
