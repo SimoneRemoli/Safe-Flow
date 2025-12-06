@@ -35,7 +35,7 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
     {
         String s = ERRORE;
         String pageErr = PAGE_ERROR;
-        try {
+
             try {
                 // Recupero delle città tramite il controller applicativo
                 CityController cityController = new CityController();
@@ -44,23 +44,26 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
                 // Passo la lista alla view
                 request.setAttribute("cities", cities);
 
-                // Mostro la pagina JSP
-                request.getRequestDispatcher("buyTicket.jsp").forward(request, response);
-                logger.info("Visualizzata la pagina di acquisto biglietti con size={} città disponibili.", cities.size());
+                forwardToBuyTicket(request, response, cities.size());
 
             } catch (DAOExceptionRemoli e) {
                 e.printStackTrace();
                 request.setAttribute(s, "Errore nel caricamento delle città: " + e.getMessage());
-                request.getRequestDispatcher(pageErr).forward(request, response);
-                logger.error("Errore nella presentazione della view il caricamento delle città: {}", e.toString());
+                try {
+                    request.getRequestDispatcher(pageErr).forward(request, response);
+                }catch(Exception a) {
+                    logger.error("Errore nella presentazione della view il caricamento delle città: {}", a.toString());
+                }
             } catch (InvalidCityDataExceptionRemoli e) {
                 request.setAttribute(s, e.getUserMessage());
-                request.getRequestDispatcher(pageErr).forward(request, response);
-                logger.error("Errore nei dati delle città: {}", e.toString());
+                try {
+                    request.getRequestDispatcher(pageErr).forward(request, response);
+                    logger.error("Errore nei dati delle città: {}", e.toString());
+                }catch(Exception a) {
+                    logger.error("errore nel forwarding");
+                }
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
     /**
@@ -116,4 +119,16 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
             throw new RuntimeException(e);
         }
     }
+    private void forwardToBuyTicket(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    int size) {
+        try {
+            request.getRequestDispatcher("buyTicket.jsp").forward(request, response);
+            logger.info("Visualizzata la pagina di acquisto biglietti con size={} città disponibili.", size);
+        } catch (Exception e) {
+            logger.error("Errore nella visualizzazione della pagina di acquisto biglietti.", e);
+            throw new RuntimeException("Errore durante il forward a buyTicket.jsp", e);
+        }
+    }
+
 }
