@@ -80,14 +80,7 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
                 return;
             }
 
-            try {
-                buyTicket = BuyTicketExtractor.from(request);
-            } catch (InvalidBuyTicketInputExceptionRemoli e) {
-                logger.error("Errore di validazione input nell'acquisto biglietti: {}", e.toString());
-                request.setAttribute(ERRORE, e.getUserMessage());
-                request.getRequestDispatcher(PAGE_ERROR).forward(request, response);
-                return;
-            }
+            buyTicket = estraiBuyTicket(request, response);
 
             logger.info("Elaborazione richiesta acquisto biglietti per città='{}', quantità={}", buyTicket.city(), buyTicket.quantity());
 
@@ -130,5 +123,19 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
             throw new RuntimeException("Errore durante il forward a buyTicket.jsp", e);
         }
     }
-
+    private BuyTicketRecord estraiBuyTicket(HttpServletRequest request, HttpServletResponse response)
+    {
+        try {
+            return BuyTicketExtractor.from(request);
+        } catch (InvalidBuyTicketInputExceptionRemoli e) {
+            logger.error("Errore di validazione input nell'acquisto biglietti: {}", e.toString());
+            request.setAttribute(ERRORE, e.getUserMessage());
+            try {
+                request.getRequestDispatcher(PAGE_ERROR).forward(request, response);
+            }catch(Exception a) {
+                logger.error("Errore durante il forward alla pagina di errore", a);
+            }
+            throw new RuntimeException("Input non valido per acquisto biglietti", e);
+        }
+    }
 }
