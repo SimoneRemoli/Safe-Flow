@@ -130,7 +130,10 @@ public class CityLifeController
     }
 
 
-    protected void caricaMatriceDaClasspath(String resourcePath) {
+    protected void caricaMatriceDaClasspath(String resourcePath)
+    {
+        final Logger logger = LoggerFactory.getLogger(getClass());
+
         try (
                 InputStream inputStream = getClass().getResourceAsStream(resourcePath);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))
@@ -144,9 +147,9 @@ public class CityLifeController
                 }
                 row++;
             }
+            logger.error("Matrice caricata correttamente da classpath");
         } catch (IOException | NumberFormatException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Errore nel caricamento della matrice da classpath", e);
+            logger.error("Errore nel caricamento della matrice da classpath");
         }
     }
 
@@ -365,7 +368,7 @@ public class CityLifeController
         statoPercorso.check = true;
         statoPercorso.ciSonPassato = true;
     }
-    private void fermataNocambio(StatoPercorso statoPercorso, String linea, String fermate)
+    private void fermataNocambio(StatoPercorso statoPercorso, String linea)
     {
         statoPercorso.cambiLineeMetropolitane = statoPercorso.cambiLineeMetropolitane + 1;
         statoPercorso.sequenzeDiCambiamento.add(statoPercorso.lineaTemp);
@@ -478,7 +481,7 @@ public class CityLifeController
             }
             else
             {
-                fermataNocambio(statoPercorso, linea, fermate);
+                fermataNocambio(statoPercorso, linea);
             }
         }
         else
