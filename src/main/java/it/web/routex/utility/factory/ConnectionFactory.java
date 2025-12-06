@@ -37,7 +37,7 @@ public class ConnectionFactory {
             currentPass = properties.getProperty("LOGIN_PASS");
 
         } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException("Errore durante il caricamento delle impostazioni DB: " + e.getMessage());
+            throw new ConfigurationException("Errore durante il caricamento delle impostazioni DB: " + e.getMessage());
         }
     }
 
@@ -57,7 +57,7 @@ public class ConnectionFactory {
         final Logger logger = LoggerFactory.getLogger(ConnectionFactory.class);
         try (InputStream input = ConnectionFactory.class.getClassLoader().getResourceAsStream("db.properties")) {
             if (input == null)
-                throw new RuntimeException("Impossibile trovare il file db.properties nel classpath!");
+                throw new ConfigurationException("Impossibile trovare il file db.properties nel classpath!");
 
             Properties properties = new Properties();
             properties.load(input);
