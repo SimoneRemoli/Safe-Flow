@@ -65,7 +65,7 @@ public class ConnectionFactory {
             currentPass = properties.getProperty(ruolo.name() + "_PASS");
 
             // Log diagnostico
-            logger.info("[ConnectionFactory] Cambio ruolo a {}", ruolo, " (user: {}", currentUser, " )");
+            logger.info("[ConnectionFactory] Cambio ruolo a  {} ! (user: {}).",ruolo, currentUser);
         } catch (IOException e) {
             throw new SQLException("Errore durante il cambio di ruolo: " + e.getMessage());
         }
