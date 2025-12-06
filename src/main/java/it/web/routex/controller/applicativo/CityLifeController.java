@@ -418,25 +418,25 @@ public class CityLifeController
             for (int l = 0; l < statoPercorso.listaAppoggio.size(); l++)
             {
                 statoPercorso.checkino = 0;
-
-
                 String[] parole = statoPercorso.listaAppoggio.get(l).split("-");
-                parola(statoPercorso, parole, linea, l);
+                if(parola(statoPercorso, parole, l))
+                    break;
             }
             statoPercorso.listaAppoggio.clear();
             statoPercorso.nomeCambio.clear();
         }
 
     }
-    private void parola(StatoPercorso statoPercorso, String[] parole, String linea, int l)
+    private boolean parola(StatoPercorso statoPercorso, String[] parole, int l)
     {
         for (String parola : parole) {
             if (!(parola.equals(statoPercorso.daNonRipetere))) //se parola != linea
             {
                 statoPercorso.daRaggiungere = parola;
                 if (!(statoPercorso.daRaggiungere.equals(statoPercorso.ev))) {
-                    linea = statoPercorso.daRaggiungere;
-                    statoPercorso.sequenzeDiCambiamento.add(linea);
+                    String lineaCorrente = statoPercorso.daRaggiungere;
+
+                    statoPercorso.sequenzeDiCambiamento.add(lineaCorrente);
                     if (statoPercorso.checkino == 0) {
                         statoPercorso.cambiLineeMetropolitane = statoPercorso.cambiLineeMetropolitane + 1;
                         statoPercorso.cambi.add(statoPercorso.nomeCambio.get(l));
@@ -444,11 +444,11 @@ public class CityLifeController
                     statoPercorso.checkino++;
                 } else {
                     statoPercorso.cambi.add(statoPercorso.nomeCambio.get(l));
-                    l = 1000;
-                    break;
+                    return true;
                 }
             }
         }
+        return false;
 
     }
     private void resetting(StatoPercorso statoPercorso, String linea)
