@@ -88,7 +88,7 @@ class PagamentoPaypalTest {
         int quantita = Integer.parseInt(p[9]);
         String city = p[10];
 
-        ConnectionFactory.CambioDiRuolo(Ruolo.TRAVELER);
+        ConnectionFactory.cambioDiRuolo(Ruolo.TRAVELER);
 
         Credentials cred = new Credentials();
         cred.setNome(nome);
@@ -116,7 +116,7 @@ class PagamentoPaypalTest {
     @MethodSource("noUserProvider")
     void C_NoUserLoggedPayment(String s) throws Exception {
 
-        ConnectionFactory.CambioDiRuolo(Ruolo.TRAVELER);
+        ConnectionFactory.cambioDiRuolo(Ruolo.TRAVELER);
 
         String[] p = s.split(":");
 

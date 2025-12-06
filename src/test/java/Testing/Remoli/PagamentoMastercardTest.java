@@ -57,7 +57,7 @@ class PagamentoMastercardTest
 
         String[] p = s.split(":");
 
-        ConnectionFactory.CambioDiRuolo(Ruolo.TRAVELER);
+        ConnectionFactory.cambioDiRuolo(Ruolo.TRAVELER);
 
         Credentials cred = new Credentials();
         cred.setNome(p[0]);
@@ -81,7 +81,7 @@ class PagamentoMastercardTest
     @MethodSource("noUserProvider")
     void NoUserLoggedPayment(String s) throws Exception {
 
-        ConnectionFactory.CambioDiRuolo(Ruolo.TRAVELER);
+        ConnectionFactory.cambioDiRuolo(Ruolo.TRAVELER);
 
         String[] p = s.split(":");
 

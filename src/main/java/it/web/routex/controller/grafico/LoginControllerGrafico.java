@@ -61,7 +61,7 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
     {
         try {
             // Imposta la connessione corretta in base al ruolo
-            ConnectionFactory.CambioDiRuolo(utente.getRuolo());
+            ConnectionFactory.cambioDiRuolo(utente.getRuolo());
 
             switch (utente.getRuolo().toString().toUpperCase()) {
                 case "TRAVELER" -> safeRedirect(response, "index.jsp");
