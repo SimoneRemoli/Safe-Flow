@@ -1,4 +1,5 @@
 package it.web.routex.utility.configloader;
+import it.web.routex.exception.ConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.InputStream;
@@ -24,14 +25,14 @@ public final class ConfigLoader {
 
             if (is == null) {
                 logger.error("File path.properties non trovato nel classpath!");
-                throw new RuntimeException("Impossibile trovare path.properties nel classpath");
+                throw new ConfigurationException("Impossibile trovare path.properties nel classpath");
             }
 
             props.load(is);
             logger.info("File path.properties caricato correttamente.");
 
         } catch (IOException e) {
-            throw new RuntimeException("Errore durante il caricamento path.properties", e);
+            throw new ConfigurationException("Errore durante il caricamento path.properties", e);
         }
     }
 
