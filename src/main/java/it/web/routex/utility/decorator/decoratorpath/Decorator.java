@@ -6,7 +6,7 @@ import it.web.routex.model.domain.Route;
 public abstract class Decorator implements Component {
     protected Component component;
 
-    public Decorator(Component component) {
+    protected Decorator(Component component) {
         this.component= component;
     }
 

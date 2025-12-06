@@ -7,6 +7,7 @@ public class CheckCambiamentiDecorator extends Decorator
     {
         super(component);
     }
+    @Override
     public List<String> getChanges(List<String> sequenzeChange)
     {
         List<String> array = super.getChanges(sequenzeChange);

@@ -35,7 +35,7 @@ public final class PaypalExtractor {
                     InvalidCardInputExceptionRemoli.Severity.MEDIUM
             );
         }
-        if (!email.matches("^[\\w._%+-]+@[\\w.-]+\\.[A-Za-z]{2,}$")) {
+        if (!email.matches("^[\\w.%+-]+@[\\w.-]+\\.[A-Za-z]{2,}$")) {
             throw new InvalidCardInputExceptionRemoli(
                     "L'email PayPal inserita non è valida.",
                     "Formato email non corretto: " + email,
