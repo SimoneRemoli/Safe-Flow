@@ -1,4 +1,5 @@
 package it.web.routex.model.domain;
+import it.web.routex.exception.InvalidRouteException;
 import it.web.routex.utility.singleton.Credentials;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,8 +23,7 @@ public class Route {
 
 
     @SuppressWarnings("unchecked")
-    public Route(HttpServletRequest request)
-    {
+    public Route(HttpServletRequest request) throws InvalidRouteException {
         Credentials cred = Credentials.getInstanceSingleton();
 
         try {
@@ -59,8 +59,10 @@ public class Route {
             this.percTerrenoUtilizzato = (Double) request.getAttribute("suolometropolitano");
             this.utente = cred.getCodiceFiscale();
 
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (NullPointerException | ClassCastException e) {
+            throw new InvalidRouteException(
+                    "Errore nei dati della richiesta per la creazione della Route", e
+            );
         }
     }
 

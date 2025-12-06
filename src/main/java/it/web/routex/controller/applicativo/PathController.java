@@ -1,19 +1,16 @@
 package it.web.routex.controller.applicativo;
 import it.web.routex.bean.InformazioniPercorsoBean;
 import it.web.routex.bean.RoutingRequestBean;
+import it.web.routex.exception.*;
 import it.web.routex.model.dao.RestituisciIdStazioniPartenzaArrivoDAO;
 import it.web.routex.model.dao.RouteDAO;
 import it.web.routex.model.domain.Route;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import it.web.routex.utility.facade.FacadePath;
-import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.utility.singleton.Credentials;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
-import it.web.routex.exception.CFIsNullRemoli;
-import it.web.routex.exception.FuoriRangeExceptionRemoli;
-import it.web.routex.exception.UnreacheableNodeExceptionRemoli;
 
 
 public class PathController
@@ -66,6 +63,8 @@ public class PathController
         catch (DAOExceptionRemoli e)
         {
             logger.error("Errore nel salvataggio del percorso. {}", e.toString());
+        } catch (InvalidRouteException e) {
+            logger.error("Errore nella conversione dei dati nel percorso {}", e);
         }
     }
 }
