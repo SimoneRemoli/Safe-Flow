@@ -64,7 +64,7 @@ public class PathController
         {
             logger.error("Errore nel salvataggio del percorso. {}", e.toString());
         } catch (InvalidRouteException e) {
-            logger.error("Errore nella conversione dei dati nel percorso {}", e);
+            logger.error("Errore nella conversione dei dati nel percorso. {}", e.toString());
         }
     }
 }
