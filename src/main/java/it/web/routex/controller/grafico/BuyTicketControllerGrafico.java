@@ -130,7 +130,6 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
             logger.info("Visualizzata la pagina di acquisto biglietti con size={} città disponibili.", size);
         } catch (Exception e) {
             logger.error("Errore nella visualizzazione della pagina di acquisto biglietti.", e);
-            throw new RuntimeException("Errore durante il forward a buyTicket.jsp", e);
         }
     }
     private BuyTicketRecord estraiBuyTicket(HttpServletRequest request, HttpServletResponse response)
