@@ -7,6 +7,9 @@ import it.web.routex.model.domain.Naples;
 import it.web.routex.model.domain.Rome;
 
 public class CityLifeFactory {
+    private CityLifeFactory() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static CityLifeController createCity(String city) throws IllegalArgumentException {
         switch (city.toLowerCase()) {

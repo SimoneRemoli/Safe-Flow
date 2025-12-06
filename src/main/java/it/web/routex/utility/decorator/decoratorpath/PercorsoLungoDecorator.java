@@ -9,6 +9,7 @@ public class PercorsoLungoDecorator extends Decorator
         super(component);
     }
 
+    @Override
     public RouteBean update(RouteBean rb, Route r)
     {
         rb = super.update(rb,r);
