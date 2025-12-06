@@ -47,7 +47,6 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
                 forwardToBuyTicket(request, response, cities.size());
 
             } catch (DAOExceptionRemoli e) {
-                e.printStackTrace();
                 request.setAttribute(s, "Errore nel caricamento delle città: " + e.getMessage());
                 try {
                     request.getRequestDispatcher(pageErr).forward(request, response);
