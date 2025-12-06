@@ -14,7 +14,7 @@ public class Credentials {
     private Ruolo ruolo;
 
     private static class LazyCointainer{
-        public final static Credentials sigletonInstance = new Credentials();
+        public static final Credentials sigletonInstance = new Credentials();
     }
 
     public static final  Credentials getInstanceSingleton() {
