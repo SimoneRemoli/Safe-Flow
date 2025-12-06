@@ -21,6 +21,8 @@ import java.sql.SQLException;
 
 @WebServlet("/PathControllerGrafico")
 public class PathControllerGrafico extends LoggedHttpServlet {
+    private static final String FORWARDING = "Errore nel forwarding";
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -33,7 +35,7 @@ public class PathControllerGrafico extends LoggedHttpServlet {
                     response.sendRedirect("login.jsp");
                     return;
                 }catch(Exception e){
-                    logger.info("Errore nel forwarding.");
+                    logger.info(FORWARDING,e);
                 }
             }
 
@@ -47,7 +49,7 @@ public class PathControllerGrafico extends LoggedHttpServlet {
                 try {
                     response.sendRedirect("datiPercorsoAssenti.jsp");
                 }catch(Exception e){
-                    logger.info("Errore nel forwarding.",e);
+                    logger.info(FORWARDING,e);
                 }
                 return;
             }
@@ -65,7 +67,7 @@ public class PathControllerGrafico extends LoggedHttpServlet {
                 try {
                     request.getRequestDispatcher("search.jsp").forward(request, response);
                 }catch(Exception ex){
-                    logger.info("Errore nel forwarding, ex");
+                    logger.info(FORWARDING,ex);
                 }
             }
 
@@ -90,7 +92,7 @@ public class PathControllerGrafico extends LoggedHttpServlet {
             try {
                 dispatcher.forward(request, response);
             }catch(Exception e){
-                logger.info("Errore nel forwarding.@, ex");
+                logger.info(FORWARDING, e);
             }
             //  logica per calcolare il percorso o qualsiasi altra logica
             String result = "Route from " + route.start() + " to " + route.end() + " in " + route.city();
@@ -108,7 +110,7 @@ public class PathControllerGrafico extends LoggedHttpServlet {
             try {
                 request.getRequestDispatcher("search.jsp").forward(request, response);
             }catch(Exception ex){
-                logger.error("Errore nel forwarding.",ex);
+                logger.error(FORWARDING,ex);
             }
             return null;
         }

@@ -43,7 +43,7 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
                 try {
                     request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
                 }catch(Exception ex){
-                    logger.error(FORWARDING,e);
+                    logger.error(FORWARDING,ex);
                 }
                 logger.error("Errore di validazione input login: {}", e.toString());
             }
