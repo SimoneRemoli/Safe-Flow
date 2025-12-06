@@ -49,7 +49,11 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
             }
             aut.setEmail(login.email());
             aut.setPassword(login.password());
-            logger.info("Bean di autenticazione creato con email: NotCheckedEmail={}, SecurePassword={}", login.email(), login.password());
+        logger.info(
+                "Bean di autenticazione creato con email: {}, password presente={}",
+                login.email(),
+                login.password() != null
+        );
 
         return aut;
     }
