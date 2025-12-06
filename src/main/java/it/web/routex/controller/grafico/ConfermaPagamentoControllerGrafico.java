@@ -27,136 +27,32 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
     private static final String ATTR_MESSAGGIO_ERRORE = "messaggioErrore";
     private static final String PAGE_ERRORE_PAGAMENTO = "/errorePagamento.jsp";
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    {
-        List<String> codiciBiglietti;
-            final HttpSession session = request.getSession(false);
-            if (session == null)
-            {
-                try {
-                    response.sendRedirect("login.jsp");
-                }catch(IOException e){
-                    logger.error("Errore durante il redirect", e);
-                }
-                return;
-            }
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 
-            PaymentRecord paymentRecord;
-            final Credentials cred = Credentials.getInstanceSingleton();
-            logger.info("[PROCESSAMENTO PAGAMENTO] Utente loggato: nome={}, cognome={}, ruolo={}", cred.getNome(), cred.getCognome(), cred.getRuolo());
+        HttpSession session = request.getSession(false);
+        if (!verificaSessione(session, response)) return;
 
-            paymentRecord = estraiPagamento(request,response);
+        Credentials cred = Credentials.getInstanceSingleton();
+        logUtente(cred);
 
-            TypesOfPersistenceLayer persistenceLayer = paymentRecord.persistenceLayer();
-            logger.info("Tipo di persistenza scelto {}", persistenceLayer);
-            PersistenceMode.getSingletonInstance().setTipo(persistenceLayer);
-            RegistrazionePagamentoController controllerPagamento = null;
-            String messaggio = "";
-            MastercardRecord master = null;
-            PaypalRecord pay;
+        PaymentRecord paymentRecord = estraiPagamento(request, response);
+        if (paymentRecord == null) return;
 
-            switch (paymentRecord.method().toLowerCase())
-            {
-                case "mastercard" -> {
-                    try {
-                        master = MastercardExtractor.from(request);
-                    }catch(InvalidCardInputExceptionRemoli ex)
-                    {
-                        logger.error("Errore nei dati Mastercard {}", ex.toString());
-                        request.setAttribute(ATTR_MESSAGGIO_ERRORE, ex.getUserMessage());
-                        try {
-                            request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO).forward(request, response);
-                            return;
-                        }catch(Exception e){
-                            logger.error("Errore nel forwarding",e);
+        impostaPersistenza(paymentRecord);
 
-                        }
-                    }
-                    controllerPagamento = new PagamentoMastercard(master.numero_carta(), master.scadenza(), master.cvv(), cred, paymentRecord.total(), paymentRecord.quantity(), paymentRecord.city());
-                    messaggio = "Pagamento con Mastercard completato (" + master.numero_carta() + ").";
-                }
-                case "paypal" -> {
-                    try {
-                        pay = PaypalExtractor.from(request);
-                    } catch (InvalidCardInputExceptionRemoli e) {
-                        logger.error("Errore nei dati Paypal {}", e.toString());
-                        request.setAttribute(ATTR_MESSAGGIO_ERRORE, e.getUserMessage());
-                        try {
-                            request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO).forward(request, response);
-                        }catch(Exception a){
-                            logger.error("Errore nel forwarding",a);
-                        }
-                        return;
-                    }
-                    controllerPagamento = new PagamentoPaypal(pay.email_paypal(), pay.codice_transazione(), cred, paymentRecord.total(), paymentRecord.quantity(), paymentRecord.city());
-                    messaggio = "Pagamento con PayPal completato per " + pay.email_paypal() + ".";
-                }
-                default -> {
-                    try {
-                        response.sendRedirect("errorePagamento.jsp");
-                        return;
-                    }catch(Exception r) {
-                        logger.error("Errore nel forwarding",r);
+        RegistrazionePagamentoController controllerPagamento =
+                creaControllerPagamento(paymentRecord, request, response, cred);
 
-                    }
-                }
-            }
-            try {
-                codiciBiglietti = controllerPagamento.run();
-            } catch (PaymentValidationExceptionRemoli remoli) {
-                request.setAttribute(ATTR_MESSAGGIO_ERRORE, remoli.getMessage());
-                try {
-                    request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO).forward(request, response);
-                }catch(Exception e){
-                    logger.error("Errore nel forwarding",e);
-                }
-                logger.error("Errore PaymentValidationExceptionRemoli : {}", remoli.toString());
-                return;
-            } catch (DAOExceptionRemoli remoli) {
-                logger.error("Errore Errore DAOExceptionRemoli : {}", remoli.toString());
-                request.setAttribute(ATTR_MESSAGGIO_ERRORE, remoli.getMessage());
-                try {
-                    request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO).forward(request, response);
-                }catch(Exception e){
-                    logger.error("Errore nel forwarding",e);
-                }
-                return;
-            } catch (CredentialsExceptionRemoli remoli) {
-                logger.error("Errore CredentialsExceptionRemoli : {}", remoli.toString());
-                request.setAttribute(ATTR_MESSAGGIO_ERRORE, remoli.getMessage());
-                try {
-                    request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO).forward(request, response);
-                }catch(Exception e){
-                    logger.error("Errore nel forwarding",e);
-                }
-                return;
-            } catch (Exception e) {
-                request.setAttribute(ATTR_MESSAGGIO_ERRORE, e.getMessage());
-                try {
-                    request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO).forward(request, response);
-                } catch (Exception ex) {
-                    logger.error("Errore nel forwarding",ex);
-                }
-                logger.error("Errore conferma pagamento.", e);
-                return;
-            }
+        if (controllerPagamento == null) return;
 
-            // Passaggio dati alla view di successo
-            request.setAttribute("city", paymentRecord.city());
-            request.setAttribute("quantity", String.valueOf(paymentRecord.quantity()));
-            request.setAttribute("totale", paymentRecord.total());
-            request.setAttribute("metodo", paymentRecord.method());
-            request.setAttribute("messaggio", messaggio);
-            request.setAttribute("codiciBiglietti", codiciBiglietti);
-            logger.info("Pagamento confermato con successo. City={}, Quantity={}, Total={}, Method={}, MessageCheck={}, TicketCode={}", paymentRecord.city(), paymentRecord.quantity(), paymentRecord.total(), paymentRecord.method(), messaggio, codiciBiglietti );
+        List<String> codiciBiglietti = eseguiPagamento(
+                controllerPagamento, request, response);
 
-            try {
-                request.getRequestDispatcher("/successoPagamento.jsp").forward(request, response);
-            }catch(Exception e){
-                logger.error("Errore nel forwarding",e);
-            }
+        if (codiciBiglietti == null) return;
 
+        mostraSuccesso(request, response, paymentRecord, codiciBiglietti);
     }
+
     private PaymentRecord estraiPagamento(HttpServletRequest request, HttpServletResponse response)
     {
         try{
@@ -172,4 +68,170 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
             return null;
         }
     }
+    private boolean verificaSessione(HttpSession session, HttpServletResponse response) {
+        if (session == null) {
+            try {
+                response.sendRedirect("login.jsp");
+            } catch (IOException e) {
+                logger.error("Errore durante il redirect", e);
+            }
+            return false;
+        }
+        return true;
+    }
+    private void logUtente(Credentials cred) {
+        logger.info("[PROCESSAMENTO PAGAMENTO] Utente loggato: nome={}, cognome={}, ruolo={}",
+                cred.getNome(), cred.getCognome(), cred.getRuolo());
+    }
+    private void impostaPersistenza(PaymentRecord paymentRecord) {
+        TypesOfPersistenceLayer persistenceLayer = paymentRecord.persistenceLayer();
+        logger.info("Tipo di persistenza scelto {}", persistenceLayer);
+        PersistenceMode.getSingletonInstance().setTipo(persistenceLayer);
+    }
+    private RegistrazionePagamentoController creaControllerPagamento(
+            PaymentRecord paymentRecord,
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Credentials cred) {
+
+        String metodo = paymentRecord.method().toLowerCase();
+
+        return switch (metodo) {
+            case "mastercard" -> creaPagamentoMastercard(paymentRecord, request, response, cred);
+            case "paypal"     -> creaPagamentoPaypal(paymentRecord, request, response, cred);
+            default           -> gestisciMetodoNonValido(response);
+        };
+    }
+    private RegistrazionePagamentoController creaPagamentoMastercard(
+            PaymentRecord paymentRecord,
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Credentials cred) {
+
+        try {
+            MastercardRecord master = MastercardExtractor.from(request);
+            return new PagamentoMastercard(
+                    master.numero_carta(),
+                    master.scadenza(),
+                    master.cvv(),
+                    cred,
+                    paymentRecord.total(),
+                    paymentRecord.quantity(),
+                    paymentRecord.city()
+            );
+        } catch (InvalidCardInputExceptionRemoli e) {
+            gestisciErroreInput(request, response, e.getUserMessage(), "Errore nei dati Mastercard", e);
+            return null;
+        }
+    }
+    private RegistrazionePagamentoController creaPagamentoPaypal(
+            PaymentRecord paymentRecord,
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Credentials cred) {
+
+        try {
+            PaypalRecord pay = PaypalExtractor.from(request);
+            return new PagamentoPaypal(
+                    pay.email_paypal(),
+                    pay.codice_transazione(),
+                    cred,
+                    paymentRecord.total(),
+                    paymentRecord.quantity(),
+                    paymentRecord.city()
+            );
+        } catch (InvalidCardInputExceptionRemoli e) {
+            gestisciErroreInput(request, response, e.getUserMessage(), "Errore nei dati Paypal", e);
+            return null;
+        }
+    }
+    private RegistrazionePagamentoController gestisciMetodoNonValido(HttpServletResponse response) {
+        try {
+            response.sendRedirect("errorePagamento.jsp");
+        } catch (IOException e) {
+            logger.error("Errore nel redirect metodo non valido", e);
+        }
+        return null;
+    }
+    private List<String> eseguiPagamento(
+            RegistrazionePagamentoController controllerPagamento,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+
+        try {
+            return controllerPagamento.run();
+
+        } catch (PaymentValidationExceptionRemoli | DAOExceptionRemoli | CredentialsExceptionRemoli e) {
+
+            request.setAttribute(ATTR_MESSAGGIO_ERRORE, e.getMessage());
+            try {
+                request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO)
+                        .forward(request, response);
+            } catch (Exception ex) {
+                logger.error("Errore nel forwarding", ex);
+            }
+
+            logger.error("Errore durante il pagamento", e);
+            return null;
+
+        } catch (Exception e) {
+            request.setAttribute(ATTR_MESSAGGIO_ERRORE, e.getMessage());
+            try {
+                request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO)
+                        .forward(request, response);
+            } catch (Exception ex) {
+                logger.error("Errore nel forwarding", ex);
+            }
+
+            logger.error("Errore generico conferma pagamento", e);
+            return null;
+        }
+    }
+    private void mostraSuccesso(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            PaymentRecord paymentRecord,
+            List<String> codiciBiglietti) {
+
+        request.setAttribute("city", paymentRecord.city());
+        request.setAttribute("quantity", String.valueOf(paymentRecord.quantity()));
+        request.setAttribute("totale", paymentRecord.total());
+        request.setAttribute("metodo", paymentRecord.method());
+        request.setAttribute("messaggio", "Pagamento completato");
+        request.setAttribute("codiciBiglietti", codiciBiglietti);
+
+        try {
+            request.getRequestDispatcher("/successoPagamento.jsp")
+                    .forward(request, response);
+        } catch (Exception e) {
+            logger.error("Errore nel forwarding", e);
+        }
+    }
+    private void gestisciErroreInput(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            String messaggio,
+            String log,
+            Exception e) {
+
+        logger.error(log, e);
+        request.setAttribute(ATTR_MESSAGGIO_ERRORE, messaggio);
+
+        try {
+            request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO)
+                    .forward(request, response);
+        } catch (Exception ex) {
+            logger.error("Errore nel forwarding", ex);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 }
