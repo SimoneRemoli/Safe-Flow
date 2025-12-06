@@ -40,7 +40,7 @@ public class PathController
         route.setEndId(codeFinishStation);
         return new FacadePath().compute(route);
     }
-    public void saveRoute(Credentials cred, HttpServletRequest request) {
+    public boolean saveRoute(Credentials cred, HttpServletRequest request) {
 
         final Logger logger = LoggerFactory.getLogger(getClass());
         String cf = cred.getCodiceFiscale();
@@ -50,6 +50,7 @@ public class PathController
                 Route info = new Route(request);
                 RouteDAO saveRoute = new RouteDAO();
                 saveRoute.save(info); //uso route per salvare il percorso. Poi RouteBean è diverso, non ha utente
+                return true;
             } else {
                 throw new CFIsNullRemoli("Devi effettuare il login per salvare il percorso.",
                         "CF nullo: richiesta di salvataggio senza autenticazione.",
@@ -66,5 +67,6 @@ public class PathController
         } catch (InvalidRouteException e) {
             logger.error("Errore nella conversione dei dati nel percorso. {}", e.toString());
         }
+        return false;
     }
 }

@@ -77,11 +77,15 @@ public class PathControllerGrafico extends LoggedHttpServlet {
 
 
             PathController pathCtrl = new PathController();
-            pathCtrl.saveRoute(cred, request);
-            logger.info("Percorso salvato correttamente per l'utente {} {} {} relativo alla città {}.", cred.getNome(), cred.getCognome(), cred.getRuolo(), route.city());
+            Boolean salvato = pathCtrl.saveRoute(cred, request);
+            if(salvato)
+                logger.info("Percorso salvato correttamente per l'utente {} {} {} relativo alla città {}.", cred.getNome(), cred.getCognome(), cred.getRuolo(), route.city());
+            else
+                logger.info("Percorso non salvato per l'utente {} {} {} relativo alla città {}.", cred.getNome(), cred.getCognome(), cred.getRuolo(), route.city());
 
 
-            //inoltro la richiesta al jsp
+
+        //inoltro la richiesta al jsp
             RequestDispatcher dispatcher = request.getRequestDispatcher("PathNOREG.jsp");
             try {
                 dispatcher.forward(request, response);

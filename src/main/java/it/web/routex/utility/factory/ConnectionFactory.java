@@ -1,5 +1,6 @@
 package it.web.routex.utility.factory;
 
+import it.web.routex.exception.ConfigurationException;
 import it.web.routex.model.domain.Ruolo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,7 @@ public class ConnectionFactory {
     static {
         try (InputStream input = ConnectionFactory.class.getClassLoader().getResourceAsStream("db.properties")) {
             if (input == null)
-                throw new RuntimeException("Impossibile trovare il file db.properties nel classpath!");
+                throw new ConfigurationException("Impossibile trovare il file db.properties nel classpath!");
 
             Class.forName("com.mysql.cj.jdbc.Driver");
 
