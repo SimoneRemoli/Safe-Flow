@@ -26,6 +26,7 @@ import it.web.routex.exception.InvalidCardInputExceptionRemoli;
 public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
     private static final String ATTR_MESSAGGIO_ERRORE = "messaggioErrore";
     private static final String PAGE_ERRORE_PAGAMENTO = "/errorePagamento.jsp";
+    private static final String FORWARDING = "Errore nel forwarding";
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 
@@ -168,7 +169,7 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
                 request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO)
                         .forward(request, response);
             } catch (Exception ex) {
-                logger.error("Errore nel forwarding", ex);
+                logger.error(FORWARDING, ex);
             }
 
             logger.error("Errore durante il pagamento", e);
@@ -180,7 +181,7 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
                 request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO)
                         .forward(request, response);
             } catch (Exception ex) {
-                logger.error("Errore nel forwarding", ex);
+                logger.error(FORWARDING, ex);
             }
 
             logger.error("Errore generico conferma pagamento", e);
@@ -204,7 +205,7 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
             request.getRequestDispatcher("/successoPagamento.jsp")
                     .forward(request, response);
         } catch (Exception e) {
-            logger.error("Errore nel forwarding", e);
+            logger.error(FORWARDING, e);
         }
     }
     private void gestisciErroreInput(
@@ -221,7 +222,7 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
             request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO)
                     .forward(request, response);
         } catch (Exception ex) {
-            logger.error("Errore nel forwarding", ex);
+            logger.error(FORWARDING, ex);
         }
     }
 
