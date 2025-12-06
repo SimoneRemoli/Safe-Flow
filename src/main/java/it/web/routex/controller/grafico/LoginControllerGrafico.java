@@ -56,33 +56,17 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
      * Gestisce il reindirizzamento in base al ruolo dell’utente autenticato.
      */
     private void gestisciReindirizzamento(UtenteBeanGenerico utente, HttpServletResponse response)
-             {
+    {
         try {
             // Imposta la connessione corretta in base al ruolo
             ConnectionFactory.Cambio_Di_Ruolo(utente.getRuolo());
 
             switch (utente.getRuolo().toString().toUpperCase()) {
-                case "TRAVELER" -> {
-                    try {
-                        response.sendRedirect("index.jsp");
-                    }catch(Exception e){
-                        logger.error("Errore nel forwarding",e);
-                    }
-                }
-                case "WORKER", "ADMIN" -> {
-                    try {
-                        response.sendRedirect("dashboardWorker.jsp");
-                    }catch(Exception e){
-                        logger.error("Errore nel forwarding",e);
-                    }
-                }
-                default -> {
-                    try {
-                        response.sendRedirect("erroreLogin.jsp");
-                    }catch(Exception e){
-                        logger.error("Errore nel forwarding",e);
-                    }
-                }
+                case "TRAVELER" -> safeRedirect(response, "index.jsp");
+
+                case "WORKER", "ADMIN" -> safeRedirect(response, "dashboardWorker.jsp");
+
+                default -> safeRedirect(response, "erroreLogin.jsp");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -93,6 +77,14 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
             }
         }
     }
+    private void safeRedirect(HttpServletResponse response, String pagina) {
+        try {
+            response.sendRedirect(pagina);
+        } catch (IOException e) {
+            logger.error("Errore nel redirect verso {}", pagina, e);
+        }
+    }
+
 
     /**
      * Gestisce eventuali errori di login (DAO o credenziali errate).
