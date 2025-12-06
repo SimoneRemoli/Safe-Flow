@@ -128,7 +128,7 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
         try {
             return BuyTicketExtractor.from(request);
         } catch (InvalidBuyTicketInputExceptionRemoli e) {
-            logger.error("Errore di validazione input nell'acquisto biglietti: {}", e.toString());
+            logger.error("Errore di validazione input nell'acquisto biglietti", e);
             request.setAttribute(ERRORE, e.getUserMessage());
             try {
                 request.getRequestDispatcher(PAGE_ERROR).forward(request, response);
