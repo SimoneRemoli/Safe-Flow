@@ -52,7 +52,7 @@ public class ConnectionFactory {
      * 🔹 Cambia ruolo (utente DB) aggiornando le credenziali per le connessioni future.
      *     Non chiude connessioni usate da altri thread.
      */
-    public static void Cambio_Di_Ruolo(Ruolo ruolo) throws SQLException
+    public static void CambioDiRuolo(Ruolo ruolo) throws SQLException
     {
         final Logger logger = LoggerFactory.getLogger(ConnectionFactory.class);
         try (InputStream input = ConnectionFactory.class.getClassLoader().getResourceAsStream("db.properties")) {

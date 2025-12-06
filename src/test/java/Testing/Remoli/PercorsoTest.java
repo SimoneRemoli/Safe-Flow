@@ -75,7 +75,7 @@ class PercorsoTest
     @MethodSource("pathCFProvider")
     void CheckListaPercorsi(String codiceFiscale) throws Exception {
 
-        ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
+        ConnectionFactory.CambioDiRuolo(Ruolo.TRAVELER);
         AreaRiservata reserved = new AreaRiservata();
         List<RouteBean> listaPercorsi = reserved.runPath(codiceFiscale);
         assertTrue(listaPercorsi.size() > 0);

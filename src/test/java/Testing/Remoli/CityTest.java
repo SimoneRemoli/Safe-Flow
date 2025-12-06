@@ -41,7 +41,7 @@ class CityTest {
     @MethodSource("prezzoTotaleProvider")
     void TestPrezzoTotale(String s) throws Exception {
 
-        ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
+        ConnectionFactory.CambioDiRuolo(Ruolo.TRAVELER);
 
         String[] parts = s.split(":");
         String city = parts[0];
@@ -56,7 +56,7 @@ class CityTest {
     @Test
     void OttieniCity() throws InvalidCityDataExceptionRemoli, SQLException, DAOExceptionRemoli {
 
-        ConnectionFactory.Cambio_Di_Ruolo(Ruolo.TRAVELER);
+        ConnectionFactory.CambioDiRuolo(Ruolo.TRAVELER);
         CityController cityController = new CityController();
         List<CityBean> city = cityController.getAllCities();
         assertTrue(city.size() > 0);

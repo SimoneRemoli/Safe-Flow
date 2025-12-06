@@ -79,7 +79,7 @@ public class PathControllerGrafico extends LoggedHttpServlet {
 
 
             PathController pathCtrl = new PathController();
-            Boolean salvato = pathCtrl.saveRoute(cred, request);
+            boolean salvato = pathCtrl.saveRoute(cred, request);
             if(salvato)
                 logger.info("Percorso salvato correttamente per l'utente {} {} {} relativo alla città {}.", cred.getNome(), cred.getCognome(), cred.getRuolo(), route.city());
             else

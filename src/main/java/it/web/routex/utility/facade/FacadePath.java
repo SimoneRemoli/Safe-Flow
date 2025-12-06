@@ -33,7 +33,7 @@ public class FacadePath
         numeroStazioniUsate = cityLife.getPercorsiConNomi().size();
         minutaggio = numeroStazioniUsate * 2.5;
         app = (double) numeroStazioniUsate / cityLife.getNumeroStazioniTotali();
-        percentualeStazioniUsate = (double) app * 100.0;
+        percentualeStazioniUsate = app * 100.0;
         trasferimento.setCityLife(cityLife);
         trasferimento.setMinutaggio(minutaggio);
         trasferimento.setNumeroStazioniUsate(numeroStazioniUsate);
