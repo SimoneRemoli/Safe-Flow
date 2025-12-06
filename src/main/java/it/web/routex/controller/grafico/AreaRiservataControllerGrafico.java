@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 import it.web.routex.exception.PathNotFoundExceptionRemoli;
 import it.web.routex.exception.DAOExceptionRemoli;
@@ -35,11 +36,7 @@ public class AreaRiservataControllerGrafico extends LoggedHttpServlet
                     }
                 }
                 // Se non sei loggato o cf è null, reindirizza a login
-                try {
-                    response.sendRedirect("/login.jsp");
-                }catch(Exception e) {
-                    logger.error("Errore durante il forward alla pagina di login", e);
-                }
+                redirectToLogin(response);
             } catch (PathNotFoundExceptionRemoli remoli) {
                 logger.error("Errore PathNotFoundExceptionRemoli. Messaggio={} Cf={} CodiceErrore={} Dettagli={}.", remoli.getMessage(), remoli.getCodiceFiscaleUtente(), remoli.getCodice_di_errore(), remoli.getDetails());
                 request.setAttribute("errore", remoli.getMessage());
@@ -66,5 +63,13 @@ public class AreaRiservataControllerGrafico extends LoggedHttpServlet
             logger.error("Errore durante il forward alla pagina dell'area riservata", e);
         }
     }
+    private void redirectToLogin(HttpServletResponse response) {
+        try {
+            response.sendRedirect("/login.jsp");
+        } catch (Exception e) {
+            logger.error("Errore durante il redirect alla pagina di login", e);
+        }
+    }
+
 
 }
