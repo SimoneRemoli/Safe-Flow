@@ -166,14 +166,13 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
 
             request.setAttribute(ATTR_MESSAGGIO_ERRORE, e.getMessage());
             try {
-                request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO)
-                        .forward(request, response);
+                request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO).forward(request, response);
             } catch (Exception ex) {
                 logger.error(FORWARDING, ex);
             }
 
             logger.error("Errore durante il pagamento", e);
-            return null;
+            return Collections.emptyList();
 
         } catch (Exception e) {
             request.setAttribute(ATTR_MESSAGGIO_ERRORE, e.getMessage());
@@ -185,7 +184,7 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
             }
 
             logger.error("Errore generico conferma pagamento", e);
-            return null;
+            return Collections.emptyList();
         }
     }
     private void mostraSuccesso(
