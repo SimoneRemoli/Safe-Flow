@@ -30,17 +30,13 @@ public class AreaRiservataControllerGrafico extends LoggedHttpServlet
                         List<TicketBean> tickets = reserved.runTicket(cf);
                         request.setAttribute("listaPercorsi", listaPercorsi);
                         request.setAttribute("tickets", tickets);
-                        try {
-                            request.getRequestDispatcher("areaRiservata.jsp").forward(request, response);
-                        }catch(Exception e) {
-                            logger.error("Errore durante il forward alla pagina dell'areariservata", e);
-                        }
+                        forwardAreaRiservata(request, response);
                         return;
                     }
                 }
                 // Se non sei loggato o cf è null, reindirizza a login
                 try {
-                    response.sendRedirect("login.jsp");
+                    response.sendRedirect("/login.jsp");
                 }catch(Exception e) {
                     logger.error("Errore durante il forward alla pagina di login", e);
                 }
@@ -48,7 +44,7 @@ public class AreaRiservataControllerGrafico extends LoggedHttpServlet
                 logger.error("Errore PathNotFoundExceptionRemoli. Messaggio={} Cf={} CodiceErrore={} Dettagli={}.", remoli.getMessage(), remoli.getCodiceFiscaleUtente(), remoli.getCodice_di_errore(), remoli.getDetails());
                 request.setAttribute("errore", remoli.getMessage());
                 try {
-                    request.getRequestDispatcher("error.jsp").forward(request, response);
+                    request.getRequestDispatcher("/error.jsp").forward(request, response);
                 }catch(Exception e) {
                     logger.error("Errore durante il forward alla pagina di errore", e);
                 }
@@ -56,11 +52,19 @@ public class AreaRiservataControllerGrafico extends LoggedHttpServlet
                 logger.error("Errore DAOExceptionRemoli. Messaggio={} Causa{}", remoli.getMessage(), remoli.getCause());
                 request.setAttribute("errore", remoli.getMessage());
                 try {
-                    request.getRequestDispatcher("error.jsp").forward(request, response);
+                    request.getRequestDispatcher("/error.jsp").forward(request, response);
                 }catch(Exception e) {
                     logger.error("Errore durante il forward alla pagina di errore", e);
                 }
             }
 
     }
+    private void forwardAreaRiservata(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            request.getRequestDispatcher("/areaRiservata.jsp").forward(request, response);
+        } catch (Exception e) {
+            logger.error("Errore durante il forward alla pagina dell'area riservata", e);
+        }
+    }
+
 }
