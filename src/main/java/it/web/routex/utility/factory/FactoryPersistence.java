@@ -6,6 +6,10 @@ import it.web.routex.model.domain.TypesOfPersistenceLayer;
 import it.web.routex.utility.singleton.PersistenceMode;
 public class FactoryPersistence {
 
+    private FactoryPersistence() {
+        throw new UnsupportedOperationException("Classe di utility - non istanziabile");
+    }
+
     public static TicketDAOLayer createTicketDAO() {
 
         TypesOfPersistenceLayer typesPer = PersistenceMode.getSingletonInstance().getTipo();

@@ -1,6 +1,8 @@
 package it.web.routex.utility.factory;
 
 import it.web.routex.model.domain.Ruolo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +16,10 @@ public class ConnectionFactory {
     private static String connectionUrl;
     private static String currentUser;
     private static String currentPass;
+    private ConnectionFactory() {
+        throw new UnsupportedOperationException("Classe di utility - non istanziabile");
+    }
+
 
     static {
         try (InputStream input = ConnectionFactory.class.getClassLoader().getResourceAsStream("db.properties")) {
@@ -45,7 +51,9 @@ public class ConnectionFactory {
      * 🔹 Cambia ruolo (utente DB) aggiornando le credenziali per le connessioni future.
      *     Non chiude connessioni usate da altri thread.
      */
-    public static void Cambio_Di_Ruolo(Ruolo ruolo) throws SQLException {
+    public static void Cambio_Di_Ruolo(Ruolo ruolo) throws SQLException
+    {
+        final Logger logger = LoggerFactory.getLogger(ConnectionFactory.class);
         try (InputStream input = ConnectionFactory.class.getClassLoader().getResourceAsStream("db.properties")) {
             if (input == null)
                 throw new RuntimeException("Impossibile trovare il file db.properties nel classpath!");
@@ -57,7 +65,7 @@ public class ConnectionFactory {
             currentPass = properties.getProperty(ruolo.name() + "_PASS");
 
             // Log diagnostico
-            System.out.println("[ConnectionFactory] Cambio ruolo a " + ruolo + " (user: " + currentUser + ")");
+            logger.info("[ConnectionFactory] Cambio ruolo a {}", ruolo, " (user: {}", currentUser, " )");
         } catch (IOException e) {
             throw new SQLException("Errore durante il cambio di ruolo: " + e.getMessage());
         }
