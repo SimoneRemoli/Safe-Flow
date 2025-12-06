@@ -26,16 +26,18 @@ public class FacadePath
     private InformazioniPercorsoBean settingProcess(CityLifeBean cityLife)
     {
         int numeroStazioniUsate = 0;
-        Double minutaggio = 0.0, percentuale_stazioni_usate = 0.0, app = 0.0;
+        Double minutaggio = 0.0;
+        Double percentualeStazioniUsate = 0.0;
+        Double app = 0.0;
         InformazioniPercorsoBean trasferimento = new InformazioniPercorsoBean();
         numeroStazioniUsate = cityLife.getPercorsiConNomi().size();
         minutaggio = numeroStazioniUsate * 2.5;
         app = (double) numeroStazioniUsate / cityLife.getNumeroStazioniTotali();
-        percentuale_stazioni_usate = (double) app * 100.0;
+        percentualeStazioniUsate = (double) app * 100.0;
         trasferimento.setCityLife(cityLife);
         trasferimento.setMinutaggio(minutaggio);
         trasferimento.setNumeroStazioniUsate(numeroStazioniUsate);
-        trasferimento.setPercentualeStazioniUsate(percentuale_stazioni_usate);
+        trasferimento.setPercentualeStazioniUsate(percentualeStazioniUsate);
         return trasferimento;
     }
 }
