@@ -28,6 +28,8 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
 
     private static final String ATTR_MESSAGGIO_ERRORE = "messaggioErrore";
     private static final String PAGE_ERRORE_LOGIN = "/erroreLogin.jsp";
+    private static final String FORWARDING = "Errore nel forwarding";
+
 
 
     private AutenticazioneBean creaBeanAutenticazione(HttpServletRequest request, HttpServletResponse response) {
@@ -41,7 +43,7 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
                 try {
                     request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
                 }catch(Exception ex){
-                    logger.error("Errore nel forwarding",e);
+                    logger.error(FORWARDING,e);
                 }
                 logger.error("Errore di validazione input login: {}", e.toString());
             }
@@ -73,7 +75,7 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
             try {
                 response.sendRedirect("erroreLogin.jsp");
             }catch(Exception ex){
-                logger.error("Errore nel forwarding",ex);
+                logger.error(FORWARDING,ex);
             }
         }
     }
@@ -138,7 +140,7 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
                 try {
                     request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
                 }catch(Exception e){
-                    logger.error("Errore nel forwarding",e);
+                    logger.error(FORWARDING,e);
                 }
                 logger.error("Tentativo di login fallito: email={}, Maskedpassw={}, message={}", ex.getEmail(), ex.getMaskedPassword(), ex.getMessage());
             }
