@@ -44,7 +44,7 @@ public final class LoginExtractor {
                     InvalidLoginInputExceptionRemoli.Severity.MEDIUM
             );
 
-        if (!email.matches("^[\\w._%+-]+@[\\w.-]+\\.[A-Za-z]{2,}$")) {
+        if (!email.matches("^[\\w.%+-]+@[\\w.-]+\\.[A-Za-z]{2,}$")) {
             throw new InvalidLoginInputExceptionRemoli(
                     "Ok che l'utente è scemo, ma non così tanto. Inserisci una email valida.",
                     "Regex email non rispettata: " + email,

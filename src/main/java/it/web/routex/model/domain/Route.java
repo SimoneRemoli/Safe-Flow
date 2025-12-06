@@ -57,7 +57,6 @@ public class Route {
             this.tempoDiArrivo = (Double) request.getAttribute("minutaggio");
             this.nStazioniCitta = (int) request.getAttribute("stazionitotali");
             this.percTerrenoUtilizzato = (Double) request.getAttribute("suolometropolitano");
-            //this.utente = (String) request.getAttribute("codiceFiscale");
             this.utente = cred.getCodiceFiscale();
 
         } catch (Exception e) {
