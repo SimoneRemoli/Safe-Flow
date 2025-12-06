@@ -1,4 +1,5 @@
 package it.web.routex.controller.applicativo;
+import it.web.routex.exception.PagamentoException;
 import it.web.routex.model.dao.PaypalDAO;
 import it.web.routex.model.dao.TicketDAOLayer;
 import it.web.routex.exception.DAOExceptionRemoli;
@@ -40,9 +41,8 @@ public class PagamentoPaypal extends RegistrazionePagamentoController
             registraPagamentoPermanente(codiciBiglietti);
         }
         else {
-            throw new RuntimeException();
+            throw new PagamentoException("Pagamento fallito: dati non validi o circuito non disponibile.");
         }
-
         return codiciBiglietti;
     }
 
