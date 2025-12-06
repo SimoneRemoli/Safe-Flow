@@ -30,8 +30,6 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     {
         List<String> codiciBiglietti;
-
-
             final HttpSession session = request.getSession(false);
             if (session == null)
             {

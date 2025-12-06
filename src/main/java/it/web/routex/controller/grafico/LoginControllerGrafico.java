@@ -33,20 +33,22 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
     private AutenticazioneBean creaBeanAutenticazione(HttpServletRequest request, HttpServletResponse response) {
         AutenticazioneBean aut = new AutenticazioneBean();
         LoginRecord login = null;
-        try {
+
             try {
                 login = LoginExtractor.from(request);
             } catch (InvalidLoginInputExceptionRemoli e) {
                 request.setAttribute(ATTR_MESSAGGIO_ERRORE, e.getUserMessage());
-                request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
+                try {
+                    request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
+                }catch(Exception ex){
+                    logger.error("Errore nel forwarding",e);
+                }
                 logger.error("Errore di validazione input login: {}", e.toString());
             }
             aut.setEmail(login.email());
             aut.setPassword(login.password());
             logger.info("Bean di autenticazione creato con email: NotCheckedEmail={}, NotCheckedPassword={}", login.email(), login.password());
-        }catch(Exception e){
-            throw new RuntimeException(e);
-        }
+
         return aut;
     }
 
@@ -54,19 +56,41 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
      * Gestisce il reindirizzamento in base al ruolo dell’utente autenticato.
      */
     private void gestisciReindirizzamento(UtenteBeanGenerico utente, HttpServletResponse response)
-            throws IOException {
+             {
         try {
             // Imposta la connessione corretta in base al ruolo
             ConnectionFactory.Cambio_Di_Ruolo(utente.getRuolo());
 
             switch (utente.getRuolo().toString().toUpperCase()) {
-                case "TRAVELER" -> response.sendRedirect("index.jsp");
-                case "WORKER", "ADMIN" -> response.sendRedirect("dashboardWorker.jsp");
-                default -> response.sendRedirect("erroreLogin.jsp");
+                case "TRAVELER" -> {
+                    try {
+                        response.sendRedirect("index.jsp");
+                    }catch(Exception e){
+                        logger.error("Errore nel forwarding",e);
+                    }
+                }
+                case "WORKER", "ADMIN" -> {
+                    try {
+                        response.sendRedirect("dashboardWorker.jsp");
+                    }catch(Exception e){
+                        logger.error("Errore nel forwarding",e);
+                    }
+                }
+                default -> {
+                    try {
+                        response.sendRedirect("erroreLogin.jsp");
+                    }catch(Exception e){
+                        logger.error("Errore nel forwarding",e);
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendRedirect("erroreLogin.jsp");
+            try {
+                response.sendRedirect("erroreLogin.jsp");
+            }catch(Exception ex){
+                logger.error("Errore nel forwarding",ex);
+            }
         }
     }
 
@@ -91,7 +115,7 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        try {
+
             try {
                 //  Crea una nuova sessione e imposta il timeout
                 HttpSession session = request.getSession(true);
@@ -119,12 +143,14 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
             } catch (LoginNotFoundRemoli ex) {
                 ex.printStackTrace();
                 request.setAttribute(ATTR_MESSAGGIO_ERRORE, ex.getMessage());
-                request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
+                try {
+                    request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
+                }catch(Exception e){
+                    logger.error("Errore nel forwarding",e);
+                }
                 logger.error("Tentativo di login fallito: email={}, Maskedpassw={}, message={}", ex.getEmail(), ex.getMaskedPassword(), ex.getMessage());
             }
-        }catch(Exception e){
-            throw new RuntimeException(e);
-        }
+
 
     }
 }
