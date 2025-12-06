@@ -135,7 +135,7 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
             }catch(Exception a) {
                 logger.error("Errore durante il forward alla pagina di errore", a);
             }
-            throw new RuntimeException("Input non valido per acquisto biglietti", e);
+            return null;
         }
     }
 }
