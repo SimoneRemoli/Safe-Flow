@@ -12,6 +12,7 @@ import it.web.routex.exception.InvalidPriceCalculationExceptionRemoli;
 import it.web.routex.exception.InvalidCityDataExceptionRemoli;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -72,11 +73,15 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        try {
+
             BuyTicketRecord buyTicket;
             final HttpSession session = request.getSession(false);
             if (session == null) {
-                response.sendRedirect("login.jsp");
+                try {
+                    response.sendRedirect("login.jsp");
+                }catch(Exception e){
+                    logger.error("Errore durante il redirect", e);
+                }
                 return;
             }
 
@@ -96,21 +101,26 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
                 request.setAttribute("quantity", String.valueOf(buyTicket.quantity()));
                 request.setAttribute("prezzo", prezzo.getPrezzoTotale());
                 // Mostro la pagina di conferma
-                request.getRequestDispatcher("/confermaPagamento.jsp").forward(request, response);
+                forwardingConferma(request, response);
 
             } catch (DAOExceptionRemoli e) {
                 e.printStackTrace();
                 request.setAttribute(ERRORE, "Errore durante l'elaborazione dell'acquisto: " + e.getMessage());
-                request.getRequestDispatcher(PAGE_ERROR).forward(request, response);
+                try {
+                    request.getRequestDispatcher(PAGE_ERROR).forward(request, response);
+                }catch(Exception a){
+                    logger.error("Errore nel forwarding",e);
+                }
                 logger.error("Errore nella DAO {}. ", e.getMessage());
             } catch (InvalidPriceCalculationExceptionRemoli e) {
                 logger.error("Errore nei dati inseriti: {}", e.toString());
                 request.setAttribute(ERRORE, e.getUserMessage());
-                request.getRequestDispatcher(PAGE_ERROR).forward(request, response);
+                try {
+                    request.getRequestDispatcher(PAGE_ERROR).forward(request, response);
+                }catch(Exception a) {
+                    logger.error("Errore nel forwarding",e);
+                }
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
     private void forwardToBuyTicket(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -136,6 +146,14 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
                 logger.error("Errore durante il forward alla pagina di errore", a);
             }
             return null;
+        }
+    }
+    private void forwardingConferma(HttpServletRequest request, HttpServletResponse response)
+    {
+        try {
+            request.getRequestDispatcher("/confermaPagamento.jsp").forward(request, response);
+        }catch(Exception e){
+            logger.error("Errore durante il redirect alla pagina di conferma pagamento",e);
         }
     }
 }
