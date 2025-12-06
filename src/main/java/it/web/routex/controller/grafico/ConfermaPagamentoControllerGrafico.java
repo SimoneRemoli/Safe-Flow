@@ -110,7 +110,7 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
             } catch (Exception e) {
                 request.setAttribute(ATTR_MESSAGGIO_ERRORE, e.getMessage());
                 request.getRequestDispatcher(PAGE_ERRORE_PAGAMENTO).forward(request, response);
-                logger.error("Errore CredentialsExceptionRemoli", e);
+                logger.error("Errore conferma pagamento.", e);
                 return;
             }
 

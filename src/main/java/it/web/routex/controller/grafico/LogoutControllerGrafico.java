@@ -1,8 +1,6 @@
 package it.web.routex.controller.grafico;
-
 import it.web.routex.model.domain.LoggedHttpServlet;
 import it.web.routex.utility.singleton.Credentials;
-
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

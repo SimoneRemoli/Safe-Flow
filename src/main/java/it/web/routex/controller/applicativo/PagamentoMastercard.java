@@ -1,5 +1,6 @@
 package it.web.routex.controller.applicativo;
 
+import it.web.routex.exception.PagamentoException;
 import it.web.routex.model.dao.MastercardDAO;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.CredentialsExceptionRemoli;
@@ -40,11 +41,9 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
             registraPagamentoPermanente(codiciBiglietti);
         }
         else {
-            throw new RuntimeException();
+            throw new PagamentoException("Pagamento fallito: dati non validi o circuito non disponibile.");
         }
-
         return codiciBiglietti;
-
     }
     public PagamentoMastercard(String numeroCarta, String scadenza, String cvv, Credentials cred
     ,double tot, int quantita, String citta )
