@@ -147,7 +147,7 @@
                 <%
                     } else {
                 %>
-                    <a href="index.jsp">Home</a>
+                    <a href="indexLogged.jsp">Home</a>
                     <a href="logout">Logout</a>
                 <%
                     }

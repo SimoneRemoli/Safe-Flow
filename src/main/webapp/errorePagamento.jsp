@@ -75,7 +75,7 @@
 
     <div class="links">
         <a href="buyTicket" class="retry-btn">Riprova pagamento</a>
-        <a href="index.jsp" class="home-btn">Torna alla Home</a>
+        <a href="indexLogged.jsp" class="home-btn">Torna alla Home</a>
     </div>
 </div>
 

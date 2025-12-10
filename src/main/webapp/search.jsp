@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -205,37 +206,7 @@
           visibility: visible;
           transition-delay: 0s; /* nessun delay */
         }
-
-
-
     </style>
-    <script>
-        function validateForm() {
-            const city = document.getElementById('citySelect').value.trim();
-            const startStation = document.getElementById('startSearchBox').value.trim();
-            const endStation = document.getElementById('endSearchBox').value.trim();
-            const submitBtn = document.getElementById('submitBtn');
-
-            if (city !== "" && startStation !== "" && endStation !== "") {
-                submitBtn.disabled = false;
-                submitBtn.removeAttribute('title');
-            } else {
-                submitBtn.disabled = true;
-                submitBtn.setAttribute('title', 'Sono presenti dei campi vuoti');
-            }
-        }
-
-
-        // Inizializza lo stato del bottone appena la pagina è caricata
-        window.onload = function() {
-            validateForm();
-
-            <% if (request.getAttribute("stazioniNonValide") != null) { %>
-                alert("La stazione di partenza e/o arrivo non esiste per la città selezionata.");
-            <% } %>
-        }
-
-    </script>
 <body>
 
 
@@ -258,7 +229,7 @@
         } else {
     %>
         <div class="button-container-right">
-            <a href="index.jsp">Home</a>
+            <a href="indexLogged.jsp">Home</a>
             <a href="logout" class="logout-link">Logout</a>
             <a href="areaRiservata" method="get">Area riservata</a>
         </div>
@@ -271,32 +242,33 @@
             <h2>RouteX - Find Your Metro Route</h2>
             <form action="PathControllerGrafico" method="post" name="select">
 
-                <select name="city" id="citySelect" onchange="validateForm(); updateStationsAndMap()">
-                    <option value="" disabled selected>Select a city</option>
-                    <option value="Rome">Rome</option>
-                    <option value="Naples">Naples</option>
-                    <option value="Athens">Athens</option>
-                    <option value="Budapest">Budapest</option>
-                </select>
+               <select id="citySelect" name="city" class="form-select" required onchange="updateStationsAndMap()">
+                <option value="" disabled selected>-- Choose a city --</option>
+                <%
+                    List<it.web.routex.bean.CityBean> cities = (List<it.web.routex.bean.CityBean>) request.getAttribute("cities2");
+                    if (cities != null && !cities.isEmpty()) {
+                       for (it.web.routex.bean.CityBean c : cities) {
+                %>
+                    <option value="<%= c.getName() %>"><%= c.getName() %></option>
+                <%
+                   }
+                } else {
+                %>
+                <option disabled>(No cities available)</option>
+                <%
+                }
+                %>
 
-                <br>
-                    <% if (session.getAttribute("cf") == null) { %>
-                        <div class="checkboxContainer">
-                            <input type="checkbox" name="disabledTraveler" value="yes" id="disabledTravelerCheckbox">
-                            <label for="disabledTravelerCheckbox">I am a disabled traveler</label>
-                        </div>
-                    <% } %>
+               </select>
+
+
                 <br><br><br>
 
-                <input type="text" name="startStation" id="startSearchBox" class="searchBox" placeholder="Search start station..."
-                       onkeyup="validateForm(); searchStation('startSearchBox', 'startSearchResults')">
-                <div id="startSearchResults" class="searchResults"></div>
+                <input type="text" name="startStation" id="startSearchBox" class="searchBox" placeholder="Search start station...">
 
-                <input type="text" name="endStation" id="endSearchBox" class="searchBox" placeholder="Search end station..."
-                       onkeyup="validateForm(); searchStation('endSearchBox', 'endSearchResults')">
-                <div id="endSearchResults" class="searchResults"></div>
+                <input type="text" name="endStation" id="endSearchBox" class="searchBox" placeholder="Search end station...">
 
-                <button type="submit" id="submitBtn" disabled data-tooltip="Sono presenti dei campi vuoti">
+                <button type="submit" id="submitBtn">
                   Find Route
                 </button>
 
@@ -361,39 +333,6 @@
                         "Kossuth Lajos Ter", "Battyhany Ter", "Szell Kalman Ter", "Deli Palyaudvar", "Astoria"]
         };
 
-        function searchStation(inputId, resultsId) {
-                    let input = document.getElementById(inputId).value.toLowerCase();
-                    let resultsDiv = document.getElementById(resultsId);
-                    resultsDiv.innerHTML = ""; // Pulisce i risultati precedenti
-
-                    if (input.length < 1) {
-                        resultsDiv.style.display = "none";
-                        return;
-                    }
-
-                    let selectedCity = document.getElementById("citySelect").value;
-
-                    let suggestions = cityStations[selectedCity].filter(station => station.toLowerCase().includes(input));
-
-                    if (suggestions.length > 0) {
-                        resultsDiv.style.display = "block"; // Mostra i risultati
-                    } else {
-                        resultsDiv.style.display = "none"; // Nasconde se non ci sono risultati
-                    }
-
-                    suggestions.forEach(station => {
-                        let div = document.createElement("div");
-                        div.classList.add("resultItem");
-                        div.textContent = station;
-
-                        div.onclick = function () {
-                            document.getElementById(inputId).value = station;
-                            resultsDiv.style.display = "none"; // Nasconde i suggerimenti dopo la selezione
-                        };
-
-                        resultsDiv.appendChild(div);
-                    });
-                }
 
         function updateStationsAndMap() {
             const citySelect = document.getElementById('citySelect');

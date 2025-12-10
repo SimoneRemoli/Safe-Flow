@@ -106,7 +106,7 @@
             </div>
 
             <div class="mt-4">
-                <a href="index.jsp" class="btn-home">
+                <a href="indexLogged.jsp" class="btn-home">
                     <i class="fas fa-home"></i> Torna alla Home
                 </a>
             </div>

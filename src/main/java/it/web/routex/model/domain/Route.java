@@ -1,8 +1,11 @@
 package it.web.routex.model.domain;
+import it.web.routex.bean.InformazioniPercorsoBean;
 import it.web.routex.exception.InvalidRouteException;
+import it.web.routex.model.record.RouteRecord;
+import it.web.routex.utility.decorator.decoratorchange.BaseComponent;
+import it.web.routex.utility.decorator.decoratorchange.CheckCambiamentiDecorator;
+import it.web.routex.utility.decorator.decoratorchange.Component;
 import it.web.routex.utility.singleton.Credentials;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,13 +25,15 @@ public class Route {
     private String utente;
 
 
-    @SuppressWarnings("unchecked")
-    public Route(HttpServletRequest request) throws InvalidRouteException {
+    public Route(InformazioniPercorsoBean dto, RouteRecord route, String status) throws InvalidRouteException {
+
         Credentials cred = Credentials.getInstanceSingleton();
+        Component c = new CheckCambiamentiDecorator(new BaseComponent());
+
 
         try {
             // Conversione sicura di listacambi
-            Object objListaCambi = request.getAttribute("listacambi");
+            Object objListaCambi = c.getChanges(dto.getCityLife().getSequenzeDiCambiamento());
             List<String> listaCambiList = new ArrayList<>();
 
             if (objListaCambi instanceof List) {
@@ -39,7 +44,7 @@ public class Route {
             this.listaCambi = String.join(", ", listaCambiList);
 
             // Conversione sicura di nodicruciali
-            Object objStazInterscambio = request.getAttribute("nodicruciali");
+            Object objStazInterscambio = c.getChanges(dto.getCityLife().getSequenzeNodiCruciali());
             List<String> stazInterList = new ArrayList<>();
             if (objStazInterscambio instanceof List) {
                 stazInterList = (List<String>) objStazInterscambio;
@@ -48,16 +53,15 @@ public class Route {
             }
 
             this.stazInterscambio = String.join(", ", stazInterList);
-
-            this.partenza = (String) request.getAttribute("inizio");
-            this.arrivo = (String) request.getAttribute("fine");
-            this.citta = (String) request.getAttribute("city");
-            this.tipoViaggiatore = (String) request.getAttribute("status");
-            this.nCambi = (int) request.getAttribute("numero_cambi");
-            this.nStazAttraversate = (int) request.getAttribute("numero");
-            this.tempoDiArrivo = (Double) request.getAttribute("minutaggio");
-            this.nStazioniCitta = (int) request.getAttribute("stazionitotali");
-            this.percTerrenoUtilizzato = (Double) request.getAttribute("suolometropolitano");
+            this.partenza = route.start();
+            this.arrivo =  route.end();
+            this.citta =  route.city();
+            this.tipoViaggiatore = status;
+            this.nCambi = dto.getCityLife().getNumeroCambi();
+            this.nStazAttraversate = dto.getNumeroStazioniUsate();
+            this.tempoDiArrivo = dto.getMinutaggio();
+            this.nStazioniCitta = dto.getCityLife().getNumeroStazioniTotali();
+            this.percTerrenoUtilizzato = dto.getPercentualeStazioniUsate();
             this.utente = cred.getCodiceFiscale();
 
         } catch (NullPointerException | ClassCastException e) {
@@ -67,23 +71,8 @@ public class Route {
         }
     }
 
-
     public Route() {
 
-    }
-
-    @SuppressWarnings("unchecked")
-    public static String convertListObjectToString(Object obj) {
-        if (obj instanceof List) {
-            List<?> tempList = (List<?>) obj;
-            if (!tempList.isEmpty() && tempList.get(0) instanceof String) {
-                List<String> lista = (List<String>) tempList;
-                return String.join(", ", lista);
-            }
-        } else if (obj instanceof String string) {
-            return string;
-        }
-        return "";
     }
 
     public String getPartenza() {

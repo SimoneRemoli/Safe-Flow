@@ -1,5 +1,7 @@
 package it.web.routex.controller.grafico;
 import it.web.routex.model.domain.LoggedHttpServlet;
+import it.web.routex.model.domain.Ruolo;
+import it.web.routex.utility.factory.ConnectionFactory;
 import it.web.routex.utility.singleton.Credentials;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +26,8 @@ public class LogoutControllerGrafico extends LoggedHttpServlet {
             // 3. Torna alla home / login
             response.sendRedirect("index.jsp");
             logger.info("Logout avvenuto correttamente");
+            ConnectionFactory.cambioDiRuolo(Ruolo.LOGIN);
+
 
         } catch (Exception e) {
             logger.error("Logout non avvenuto correttamente", e);

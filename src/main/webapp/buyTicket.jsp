@@ -101,7 +101,7 @@
     <div class="main-container">
         <div class="right-content">
             <div class="button-container">
-                <a href="index.jsp">Home</a>
+                <a href="indexLogged.jsp">Home</a>
                 <a href="logout">Logout</a>
             </div>
 

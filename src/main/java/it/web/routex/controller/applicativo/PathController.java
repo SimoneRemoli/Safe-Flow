@@ -5,11 +5,11 @@ import it.web.routex.exception.*;
 import it.web.routex.model.dao.RestituisciIdStazioniPartenzaArrivoDAO;
 import it.web.routex.model.dao.RouteDAO;
 import it.web.routex.model.domain.Route;
+import it.web.routex.model.record.RouteRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import it.web.routex.utility.facade.FacadePath;
 import it.web.routex.utility.singleton.Credentials;
-import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 
 
@@ -40,14 +40,14 @@ public class PathController
         route.setEndId(codeFinishStation);
         return new FacadePath().compute(route);
     }
-    public boolean saveRoute(Credentials cred, HttpServletRequest request) {
+    public boolean saveRoute(Credentials cred, InformazioniPercorsoBean dto, RouteRecord route, String status) {
 
         final Logger logger = LoggerFactory.getLogger(getClass());
         String cf = cred.getCodiceFiscale();
         try {
 
             if (cf != null) {
-                Route info = new Route(request);
+                Route info = new Route(dto,route,status);
                 RouteDAO saveRoute = new RouteDAO();
                 saveRoute.save(info); //uso route per salvare il percorso. Poi RouteBean è diverso, non ha utente
                 return true;

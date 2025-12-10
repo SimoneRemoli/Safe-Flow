@@ -1220,9 +1220,12 @@ DELIMITER ;
 
 CREATE User IF NOT EXISTS 'login_User'@'%' IDENTIFIED BY 'login_pass';
 
-GRANT USAGE ON *.* TO `login_User`@`localhost`;
-GRANT EXECUTE ON PROCEDURE `RouteX_Update`.`GetFermataById` TO `login_User`@`localhost`;
-GRANT EXECUTE ON PROCEDURE `RouteX_Update`.`login_User` TO `login_User`@`localhost`;
+GRANT USAGE ON *.* TO `login_User`@`%`;
+GRANT EXECUTE ON PROCEDURE `RouteX_Update`.`GetFermataById` TO `login_User`@`%`;
+GRANT EXECUTE ON PROCEDURE `RouteX_Update`.`login_User` TO `login_User`@`%`;
+GRANT EXECUTE ON PROCEDURE `RouteX_Update`.`RestituisciStazioni` TO `login_User`@`%`;
+GRANT EXECUTE ON PROCEDURE `Routex_Update`.`getallcity` TO `login_User`@`%`
+
 
 CREATE User IF NOT EXISTS 'traveler'@'%' IDENTIFIED BY 'traveler';
 

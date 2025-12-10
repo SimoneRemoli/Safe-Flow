@@ -36,19 +36,19 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
         AutenticazioneBean aut = new AutenticazioneBean();
         LoginRecord login = null;
 
+        try {
+            login = LoginExtractor.from(request);
+        } catch (InvalidLoginInputExceptionRemoli e) {
+            request.setAttribute(ATTR_MESSAGGIO_ERRORE, e.getUserMessage());
             try {
-                login = LoginExtractor.from(request);
-            } catch (InvalidLoginInputExceptionRemoli e) {
-                request.setAttribute(ATTR_MESSAGGIO_ERRORE, e.getUserMessage());
-                try {
-                    request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
-                }catch(Exception ex){
-                    logger.error(FORWARDING,ex);
-                }
-                logger.error("Errore di validazione input login: {}", e.toString());
+                request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
+            }catch(Exception ex){
+                logger.error(FORWARDING,ex);
             }
-            aut.setEmail(login.email());
-            aut.setPassword(login.password());
+            logger.error("Errore di validazione input login: {}", e.toString());
+        }
+        aut.setEmail(login.email());
+        aut.setPassword(login.password());
         logger.info(
                 "Bean di autenticazione creato con email: {}, password presente={}",
                 login.email(),
@@ -68,7 +68,7 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
             ConnectionFactory.cambioDiRuolo(utente.getRuolo());
 
             switch (utente.getRuolo().toString().toUpperCase()) {
-                case "TRAVELER" -> safeRedirect(response, "index.jsp");
+                case "TRAVELER" -> safeRedirect(response, "indexLogged.jsp");
 
                 case "WORKER", "ADMIN" -> safeRedirect(response, "dashboardWorker.jsp");
 
@@ -96,13 +96,13 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
      */
     private void gestisciErroreLogin(HttpServletRequest request, HttpServletResponse response, DAOExceptionRemoli ex)
     {
-                try {
-                    request.setAttribute(ATTR_MESSAGGIO_ERRORE, "Errore nella connessione al DB [500 internal error]");
-                    request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
-                    logger.error("Errore DAO durante il login: message={}", ex.getMessage());
-                }catch(Exception e) {
-                    logger.error("Errore generico non catturato: message={}", e.getMessage());
-                }
+        try {
+            request.setAttribute(ATTR_MESSAGGIO_ERRORE, "Errore nella connessione al DB [500 internal error]");
+            request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
+            logger.error("Errore DAO durante il login: message={}", ex.getMessage());
+        }catch(Exception e) {
+            logger.error("Errore generico non catturato: message={}", e.getMessage());
+        }
     }
 
     /**
@@ -112,39 +112,39 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 
+        try {
+            //  Crea una nuova sessione e imposta il timeout
+            HttpSession session = request.getSession(true);
+            session.setMaxInactiveInterval(180); // 3 minuti di inattività
+
+            //  Costruisce il bean con i dati del form
+            AutenticazioneBean credenziali = creaBeanAutenticazione(request,response);
+
+            //  Delegazione al controller applicativo
+            LoginController loginController = new LoginController(credenziali);
+            UtenteBeanGenerico utente = loginController.autenticaUtente();
+
+            session.setAttribute("nome", utente.getNome());
+            session.setAttribute("cognome", utente.getCognome());
+            session.setAttribute("ruolo", utente.getRuolo());
+
+            logger.info("Utente perfettamente autenticato: nome={}, cognome={}, ruolo={}", utente.getNome(), utente.getCognome(), utente.getRuolo());
+
+            //  Reindirizzamento in base al ruolo
+            gestisciReindirizzamento(utente, response);
+
+        } catch (DAOExceptionRemoli ex) {
+            gestisciErroreLogin(request, response, ex);
+
+        } catch (LoginNotFoundRemoli ex) {
+            request.setAttribute(ATTR_MESSAGGIO_ERRORE, ex.getMessage());
             try {
-                //  Crea una nuova sessione e imposta il timeout
-                HttpSession session = request.getSession(true);
-                session.setMaxInactiveInterval(180); // 3 minuti di inattività
-
-                //  Costruisce il bean con i dati del form
-                AutenticazioneBean credenziali = creaBeanAutenticazione(request,response);
-
-                //  Delegazione al controller applicativo
-                LoginController loginController = new LoginController(credenziali);
-                UtenteBeanGenerico utente = loginController.autenticaUtente();
-
-                session.setAttribute("nome", utente.getNome());
-                session.setAttribute("cognome", utente.getCognome());
-                session.setAttribute("ruolo", utente.getRuolo());
-
-                logger.info("Utente perfettamente autenticato: nome={}, cognome={}, ruolo={}", utente.getNome(), utente.getCognome(), utente.getRuolo());
-
-                //  Reindirizzamento in base al ruolo
-                gestisciReindirizzamento(utente, response);
-
-            } catch (DAOExceptionRemoli ex) {
-                gestisciErroreLogin(request, response, ex);
-
-            } catch (LoginNotFoundRemoli ex) {
-                request.setAttribute(ATTR_MESSAGGIO_ERRORE, ex.getMessage());
-                try {
-                    request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
-                }catch(Exception e){
-                    logger.error(FORWARDING,e);
-                }
-                logger.error("Tentativo di login fallito: email={}, Maskedpassw={}, message={}", ex.getEmail(), ex.getMaskedPassword(), ex.getMessage());
+                request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
+            }catch(Exception e){
+                logger.error(FORWARDING,e);
             }
+            logger.error("Tentativo di login fallito: email={}, Maskedpassw={}, message={}", ex.getEmail(), ex.getMaskedPassword(), ex.getMessage());
+        }
 
 
     }

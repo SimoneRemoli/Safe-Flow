@@ -1,0 +1,153 @@
+package it.web.routex.boundary.cli.controller.grafico;
+import it.web.routex.boundary.cli.LoggedCLI;
+import it.web.routex.boundary.cli.extractor.MastercardExtractorCLI;
+import it.web.routex.boundary.cli.extractor.PagamentoExtractorCLI;
+import it.web.routex.boundary.cli.extractor.PaypalExtractorCLI;
+import it.web.routex.boundary.cli.view.ErroreLoginCLI;
+import it.web.routex.boundary.cli.view.GenericErrorCLI;
+import it.web.routex.boundary.cli.view.SuccessoPagamentoCLI;
+import it.web.routex.controller.applicativo.PagamentoMastercard;
+import it.web.routex.controller.applicativo.PagamentoPaypal;
+import it.web.routex.controller.applicativo.RegistrazionePagamentoController;
+import it.web.routex.model.record.MastercardRecord;
+import it.web.routex.model.record.PaymentRecord;
+import it.web.routex.model.domain.TypesOfPersistenceLayer;
+import it.web.routex.model.record.PaypalRecord;
+import it.web.routex.utility.singleton.Credentials;
+import it.web.routex.exception.PaymentValidationExceptionRemoli;
+import it.web.routex.exception.CredentialsExceptionRemoli;
+import it.web.routex.exception.DAOExceptionRemoli;
+import it.web.routex.utility.singleton.PersistenceMode;
+import java.util.*;
+import it.web.routex.exception.InvalidPaymentInputExceptionRemoli;
+import it.web.routex.exception.InvalidCardInputExceptionRemoli;
+
+public class ConfermaPagamentoControllerGraficoCLI extends LoggedCLI {
+
+    public void doPost(String city, String quantity, String prezzo, String metodo, String persistenza) {
+
+        Credentials cred = Credentials.getInstanceSingleton();
+        logUtente(cred);
+
+
+        PaymentRecord paymentRecord = estraiPagamento(city, quantity, prezzo, metodo, persistenza);
+        if (paymentRecord == null) return;
+
+        impostaPersistenza(paymentRecord);
+
+        RegistrazionePagamentoController controllerPagamento = creaControllerPagamento(paymentRecord,cred);
+
+        if (controllerPagamento == null) return;
+
+        List<String> codiciBiglietti = eseguiPagamento(controllerPagamento);
+
+        if (codiciBiglietti == null) return;
+
+        mostraSuccesso(paymentRecord, codiciBiglietti);
+    }
+
+    private PaymentRecord estraiPagamento(String city, String quantity, String price, String metodo, String persistenza)
+    {
+        try{
+            return PagamentoExtractorCLI.from(city, quantity, price, metodo, persistenza);
+        }catch(InvalidPaymentInputExceptionRemoli e) {
+            GenericErrorCLI.mostraErrore("Errore nell'input del pagamento"+ e.getUserMessage());
+            return null;
+        }
+    }
+
+    private void logUtente(Credentials cred) {
+        logger.info("[PROCESSAMENTO PAGAMENTO] Utente loggato: nome={}, cognome={}, ruolo={}",
+                cred.getNome(), cred.getCognome(), cred.getRuolo());
+    }
+    private void impostaPersistenza(PaymentRecord paymentRecord) {
+        TypesOfPersistenceLayer persistenceLayer = paymentRecord.persistenceLayer();
+        logger.info("Tipo di persistenza scelto {}", persistenceLayer);
+        PersistenceMode.getSingletonInstance().setTipo(persistenceLayer);
+    }
+    private RegistrazionePagamentoController creaControllerPagamento(PaymentRecord paymentRecord, Credentials cred) {
+
+        String metodo = paymentRecord.method().toLowerCase();
+
+        return switch (metodo) {
+            case "mastercard" -> creaPagamentoMastercard(paymentRecord, cred);
+            case "paypal"     -> creaPagamentoPaypal(paymentRecord, cred);
+            default           -> gestisciMetodoNonValido();
+        };
+    }
+    private RegistrazionePagamentoController creaPagamentoMastercard(PaymentRecord paymentRecord, Credentials cred) {
+
+        try {
+            MastercardRecord master = MastercardExtractorCLI.from();
+            return new PagamentoMastercard(
+                    master.numero_carta(),
+                    master.scadenza(),
+                    master.cvv(),
+                    cred,
+                    paymentRecord.total(),
+                    paymentRecord.quantity(),
+                    paymentRecord.city()
+            );
+        } catch (InvalidCardInputExceptionRemoli e) {
+            gestisciErroreInput(e.getUserMessage(), "Errore nei dati Mastercard", e);
+            return null;
+        }
+    }
+    private RegistrazionePagamentoController creaPagamentoPaypal(PaymentRecord paymentRecord, Credentials cred) {
+
+        try {
+            PaypalRecord pay = PaypalExtractorCLI.from();
+            return new PagamentoPaypal(
+                    pay.email_paypal(),
+                    pay.codice_transazione(),
+                    cred,
+                    paymentRecord.total(),
+                    paymentRecord.quantity(),
+                    paymentRecord.city()
+            );
+        } catch (InvalidCardInputExceptionRemoli e) {
+            gestisciErroreInput(e.getUserMessage(), "Errore nei dati Paypal", e);
+            return null;
+        }
+    }
+    private RegistrazionePagamentoController gestisciMetodoNonValido() {
+
+        ErroreLoginCLI.mostraErrore("Errore, non è stato scelto un metodo opportuno di pagamento");
+        return null;
+    }
+    private List<String> eseguiPagamento(RegistrazionePagamentoController controllerPagamento) {
+
+        try {
+            return controllerPagamento.run();
+
+        } catch (PaymentValidationExceptionRemoli | DAOExceptionRemoli | CredentialsExceptionRemoli e) {
+
+            GenericErrorCLI.mostraErrore(e.getMessage());
+            logger.error("Errore durante il pagamento", e);
+            return Collections.emptyList();
+
+        } catch (Exception e) {
+
+            GenericErrorCLI.mostraErrore("Errore generico conferma pagamento"+e.getMessage());
+            logger.error("Errore generico conferma pagamento", e);
+            return Collections.emptyList();
+        }
+    }
+    private void mostraSuccesso(PaymentRecord paymentRecord, List<String> codiciBiglietti) {
+
+        SuccessoPagamentoCLI.setCity(paymentRecord.city());
+        SuccessoPagamentoCLI.setQuantity(String.valueOf(paymentRecord.quantity()));
+        SuccessoPagamentoCLI.setTotale(paymentRecord.total());
+        SuccessoPagamentoCLI.setMetodo(paymentRecord.method());
+        SuccessoPagamentoCLI.setMessaggio("Pagamento completato");
+        SuccessoPagamentoCLI.setCodiciBiglietti(codiciBiglietti);
+        SuccessoPagamentoCLI.stampa();
+
+    }
+    private void gestisciErroreInput(String messaggio, String log, Exception e) {
+
+        ErroreLoginCLI.mostraErrore(messaggio);
+        logger.error(log, e);
+
+    }
+}

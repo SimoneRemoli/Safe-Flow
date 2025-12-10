@@ -96,7 +96,7 @@
             margin-bottom: 20px;
         }
 
-        .welcome-button {
+        .welcome-button, .buy-button {
             background-color: #007bff;
             color: white;
             border: none;
@@ -108,7 +108,7 @@
             margin-top: 10px;
         }
 
-        .welcome-button:hover {
+        .welcome-button:hover, .buy-button:hover {
             background-color: #0056b3;
         }
 
@@ -174,19 +174,25 @@
 
     <div class="right-content">
 
-        <!-- ✅ SOLO REGISTER E LOGIN -->
+        <!-- ✅ BOTTONI POST-LOGIN -->
         <div class="button-container">
-            <a href="register.jsp">Register</a>
-            <a href="login.jsp">Login</a>
+            <a href="indexLogged.jsp">Home</a>
+            <a href="areaRiservata">Area Riservata</a>
+            <a href="logout" class="logout-link">Logout</a>
         </div>
 
         <div class="welcome-container">
             <img src="images/logo-no-background.png" alt="Logo">
             <h1>Welcome to RouteX!</h1>
 
-            <!-- ✅ Start Exploring sempre disponibile -->
+            <!-- ✅ Start Exploring SEMPRE PRESENTE -->
             <form action="PathControllerGrafico" method="get">
                 <button class="welcome-button" type="submit">Start Exploring</button>
+            </form>
+
+            <!-- ✅ Buy Ticket SEMPRE PRESENTE -->
+            <form action="buyTicket" method="get">
+                <button class="buy-button" type="submit">Buy Ticket</button>
             </form>
 
         </div>

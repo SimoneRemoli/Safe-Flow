@@ -4,7 +4,8 @@ public enum Ruolo
 {
     WORKER(1),
     ADMIN(2),
-    TRAVELER(3);
+    TRAVELER(3),
+    LOGIN(4);
 
     private final int id;
 
