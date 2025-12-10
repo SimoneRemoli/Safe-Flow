@@ -32,7 +32,7 @@ public class PaypalDAO
                     found.setCodice(rs.getString("codice_transazione"));
                     return found;
                 } else {
-                    throw new PaymentValidationExceptionRemoli("Nessun pagamento trovato per la carta indicata.", PaymentMethod.PAYPAL, "MastercardDAO.java ha fallito");
+                    throw new PaymentValidationExceptionRemoli("Nessun pagamento trovato per i dati Paypal inseriti.", PaymentMethod.PAYPAL, "MastercardDAO.java ha fallito");
                 }
             }
         } catch (SQLException e) {
