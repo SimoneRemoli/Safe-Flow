@@ -19,13 +19,21 @@ public class IndexLoggedCLI{
             String scelta = scanner.nextLine();
 
             switch (scelta) {
-                case "1" -> StartExploringCLI.mostraExploring();
-                case "2" -> BuyTicketCLI.MostraBuyTicket();
-                case "3" -> AreaRiservataCLI.areaRiservata();
-                case "4" -> LogoutCLI.logoutUser();
+                case "1" -> {
+                    StartExploringCLI.mostraExploring();
+                }
+                case "2" -> {
+                    BuyTicketCLI.MostraBuyTicket();
+                }
+                case "3" -> {
+                    AreaRiservataCLI.areaRiservata();
+                }
+                case "4" -> {
+                    LogoutCLI.logoutUser();
+                    return;
+                }
                 default -> System.out.println("❌ Scelta non valida.");
             }
         }
     }
-
 }

@@ -31,6 +31,7 @@ public class LoginControllerGraficoCLI extends LoggedCLI {
 
         gestisciReindirizzamento(utente);
 
+
         } catch (DAOExceptionRemoli ex) {
             gestisciErroreLogin(ex);
 
@@ -85,12 +86,12 @@ public class LoginControllerGraficoCLI extends LoggedCLI {
 
                 case HOME:
                     new IndexLoggedCLI().mostraMenu();
-                    break;
+                    return;
 
 
                 case ERRORE_LOGIN:
                     ErroreLoginCLI.mostraErrore("Errore di autenticazione.");
-                    break;
+                    return;
 
 
                 default:

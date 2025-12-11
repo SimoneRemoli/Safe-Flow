@@ -26,6 +26,7 @@ public class HomePrincipaleCLI {
                 case "2" -> {
                     LoginViewCLI login = new LoginViewCLI();
                     login.mostraLogin();
+                    return;
                 }
                 case "3" -> {
                     return;
