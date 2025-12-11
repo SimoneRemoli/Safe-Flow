@@ -84,8 +84,6 @@ public class BuyTicketControllerGraficoCLI extends LoggedCLI
         ConfermaPagamentoCLI.stampa();
     }
 
-
-
     private void forwardToBuyTicket(List<CityBean> cities) {
         try {
             BuyTicketCLI.MostraAcquisto(cities);
