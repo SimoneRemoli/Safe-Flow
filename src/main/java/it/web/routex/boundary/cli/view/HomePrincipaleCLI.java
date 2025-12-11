@@ -5,7 +5,6 @@ import java.util.Scanner;
 public class HomePrincipaleCLI {
     private final Scanner scanner = new Scanner(System.in);
 
-
     public void home()
     {
         while (true) {
@@ -22,7 +21,7 @@ public class HomePrincipaleCLI {
             switch(scelta)
             {
                 case "1" -> {
-                    System.out.println("TO DO");
+                    StartExploringCLI.mostraExploring();
                 }
                 case "2" -> {
                     LoginViewCLI login = new LoginViewCLI();
@@ -31,7 +30,6 @@ public class HomePrincipaleCLI {
                 case "3" -> {
                     return;
                 }
-
             }
         }
     }
