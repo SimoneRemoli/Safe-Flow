@@ -110,7 +110,7 @@
                 <form action="buyTicket" method="post">
                     <div class="mb-3">
                         <label for="city" class="form-label">Select City</label>
-                        <select id="city" name="city" class="form-select" required>
+                        <select id="city" name="city" class="form-select">
                             <option value="" disabled selected>-- Choose a city --</option>
                             <%
                                 List<it.web.routex.bean.CityBean> cities = (List<it.web.routex.bean.CityBean>) request.getAttribute("cities");
@@ -130,14 +130,10 @@
                         </select>
                     </div>
 
-
-
                     <div class="mb-3">
                         <label for="quantity" class="form-label">Number of Tickets</label>
-                        <input type="number" id="quantity" name="quantity" class="form-control" value="1">
+                        <input type="text" id="quantity" name="quantity" class="form-control" value="1">
                     </div>
-
-
 
                     <button type="submit" class="btn-submit">Confirm</button>
                 </form>

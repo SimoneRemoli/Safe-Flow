@@ -8,6 +8,5 @@ public class LogoutCLI
     {
         LogoutControllerGraficoCLI l = new LogoutControllerGraficoCLI();
         l.doGet();
-
     }
 }

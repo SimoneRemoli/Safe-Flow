@@ -45,15 +45,13 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
         }
         return codiciBiglietti;
     }
-    public PagamentoMastercard(String numeroCarta, String scadenza, String cvv, Credentials cred
-    ,double tot, int quantita, String citta )
+    public PagamentoMastercard(String numeroCarta, String scadenza, String cvv, Credentials cred,double tot, int quantita, String citta )
     {
         super(tot, quantita, citta, cred);
         this.numeroCarta = numeroCarta;
         this.scadenza = scadenza;
         this.cvv = cvv;
     }
-
 
     private void registraPagamentoPermanente(List<String> codiciBiglietti) throws CredentialsExceptionRemoli {
         final Logger logger = LoggerFactory.getLogger(getClass());
@@ -63,8 +61,6 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
         TicketDAOLayer daoLayer = FactoryPersistence.createTicketDAO();
         daoLayer.salvataggio(credenziali, codiciBiglietti, "Mastercard", city);
         logger.info("Traveler {} {} {} {} ha effettuato un pagamento di {} euro con la Mastercard", credenziali.getNome(), credenziali.getCodiceFiscale(), credenziali.getCognome(), credenziali.getDisabile(), totale);
-
-
     }
 }
 

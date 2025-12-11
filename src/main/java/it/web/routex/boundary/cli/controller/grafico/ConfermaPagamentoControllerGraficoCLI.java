@@ -146,7 +146,7 @@ public class ConfermaPagamentoControllerGraficoCLI extends LoggedCLI {
     }
     private void gestisciErroreInput(String messaggio, String log, Exception e) {
 
-        ErroreLoginCLI.mostraErrore(messaggio);
+        GenericErrorCLI.mostraErrore(messaggio);
         logger.error(log, e);
 
     }

@@ -3,7 +3,6 @@ package it.web.routex.boundary.cli.extractor;
 
 import it.web.routex.model.record.BuyTicketRecord;
 
-import javax.servlet.http.HttpServletRequest;
 import it.web.routex.exception.InvalidBuyTicketInputExceptionRemoli;
 
 
@@ -22,20 +21,6 @@ public final class BuyTicketExtractorCLI {
 
         String rawCity = cityy;
         String rawQuantity = quantityy;
-
-        if (rawCity == null)
-            throw new InvalidBuyTicketInputExceptionRemoli(
-                    "Campo mancante: città.",
-                    "Parametro 'city' è null nel request.",
-                    InvalidBuyTicketInputExceptionRemoli.Severity.LOW
-            );
-
-        if (rawQuantity == null)
-            throw new InvalidBuyTicketInputExceptionRemoli(
-                    "Campo mancante: quantità.",
-                    "Parametro 'quantity' è null nel request.",
-                    InvalidBuyTicketInputExceptionRemoli.Severity.LOW
-            );
 
         String city = sanitize(rawCity);
         String quantity = sanitize(rawQuantity);

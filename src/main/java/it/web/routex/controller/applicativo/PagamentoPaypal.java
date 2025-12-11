@@ -46,8 +46,7 @@ public class PagamentoPaypal extends RegistrazionePagamentoController
         return codiciBiglietti;
     }
 
-    public PagamentoPaypal(String email, String codiceTransazione, Credentials cred
-            ,double tot, int quantita, String citta)
+    public PagamentoPaypal(String email, String codiceTransazione, Credentials cred,double tot, int quantita, String citta)
     {
         super(tot, quantita, citta, cred);
         this.email = email;

@@ -22,20 +22,35 @@ public final class LoginExtractor {
         // PARAMETRI NULL
         if (rawEmail == null)
             throw new InvalidLoginInputExceptionRemoli(
-                    "Il campo email è obbligatorio.",
-                    "Parametro 'Email' è null.",
+                    "Il campo email non è stato inviato dal form.",
+                    "Parametro 'Email' null dal form.",
                     InvalidLoginInputExceptionRemoli.Severity.LOW
             );
 
         if (rawPassword == null)
             throw new InvalidLoginInputExceptionRemoli(
-                    "Il campo password è obbligatorio.",
-                    "Parametro 'Password' è null.",
+                    "Il campo password non è stato inviato dal form.",
+                    "Parametro 'Password' null dal form.",
                     InvalidLoginInputExceptionRemoli.Severity.LOW
             );
 
         String email = sanitize(rawEmail);
         String password = sanitize(rawPassword);
+
+        if (email.isBlank() && password.isBlank())
+            throw new InvalidLoginInputExceptionRemoli(
+                    "Email e password mancanti.",
+                    "Email = null, password = null.",
+                    InvalidLoginInputExceptionRemoli.Severity.MEDIUM
+            );
+
+        if(password.isBlank() && !email.matches("^[\\w.%+-]+@[\\w.-]+\\.[A-Za-z]{2,}$") )
+            throw new InvalidLoginInputExceptionRemoli(
+                    "Campo 'password' vuoto e email non conforme allo standard.",
+                    "Email = non conforme, password = null.",
+                    InvalidLoginInputExceptionRemoli.Severity.MEDIUM
+            );
+
 
         if (email.isBlank())
             throw new InvalidLoginInputExceptionRemoli(

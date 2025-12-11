@@ -3,55 +3,53 @@ package it.web.routex.boundary.cli.extractor;
 import it.web.routex.exception.InvalidLoginInputExceptionRemoli;
 import it.web.routex.model.record.LoginRecord;
 
+
 public class LoginExtractorCLI {
 
     private static String sanitize(String s) {
         return (s == null) ? null : s.trim();
     }
 
-    public static LoginRecord from(String email, String password) throws InvalidLoginInputExceptionRemoli {
+    public static LoginRecord from(String emaill, String passwordd) throws InvalidLoginInputExceptionRemoli {
 
-        String rawEmail = email;
-        String rawPassword = password;
+        String email = sanitize(emaill);
+        String password = sanitize(passwordd);
 
-        // PARAMETRI NULL
-        if (rawEmail == null)
+        if (email.isBlank() && password.isBlank())
             throw new InvalidLoginInputExceptionRemoli(
-                    "Il campo email è obbligatorio.",
-                    "Parametro 'Email' è null.",
-                    InvalidLoginInputExceptionRemoli.Severity.LOW
+                    "Email e password mancanti.",
+                    "Email = null, password = null.",
+                    InvalidLoginInputExceptionRemoli.Severity.MEDIUM
             );
 
-        if (rawPassword == null)
+        if(password.isBlank() && !email.matches("^[\\w.%+-]+@[\\w.-]+\\.[A-Za-z]{2,}$") )
             throw new InvalidLoginInputExceptionRemoli(
-                    "Il campo password è obbligatorio.",
-                    "Parametro 'Password' è null.",
-                    InvalidLoginInputExceptionRemoli.Severity.LOW
+                    "Campo 'password' vuoto e email non conforme allo standard.",
+                    "Email = non conforme, password = null.",
+                    InvalidLoginInputExceptionRemoli.Severity.MEDIUM
             );
 
-        String emailOk = sanitize(rawEmail);
-        String passwordOk = sanitize(rawPassword);
 
-        if (emailOk.isBlank())
+        if (email.isBlank())
             throw new InvalidLoginInputExceptionRemoli(
                     "Come pensi di autenticarti senza email? Io boh",
                     "Email è blank dopo sanitizzazione.",
                     InvalidLoginInputExceptionRemoli.Severity.MEDIUM
             );
 
-        if (!emailOk.matches("^[\\w.%+-]+@[\\w.-]+\\.[A-Za-z]{2,}$")) {
+        if (!email.matches("^[\\w.%+-]+@[\\w.-]+\\.[A-Za-z]{2,}$")) {
             throw new InvalidLoginInputExceptionRemoli(
                     "Ok che l'utente è scemo, ma non così tanto. Inserisci una email valida.",
                     "Regex email non rispettata: " + email,
                     InvalidLoginInputExceptionRemoli.Severity.MEDIUM
             );
         }
-        if (passwordOk.isBlank())
+        if (password.isBlank())
             throw new InvalidLoginInputExceptionRemoli(
                     "Secondo te, la password può essere vuota? Sei uno scemo!",
                     "Password blank dopo sanitizzazione.",
                     InvalidLoginInputExceptionRemoli.Severity.MEDIUM
             );
-        return new LoginRecord(emailOk, passwordOk);
+        return new LoginRecord(email, password);
     }
 }

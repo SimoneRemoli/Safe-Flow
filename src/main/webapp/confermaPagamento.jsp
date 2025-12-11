@@ -100,13 +100,13 @@
                 <div class="payment-section">
                     <label><strong>Seleziona il metodo di pagamento:</strong></label><br>
                     <div class="form-check form-check-inline mt-2">
-                        <input class="form-check-input" type="radio" name="metodoPagamento" id="mastercard" value="mastercard" onclick="mostraCampiPagamento()" required>
+                        <input class="form-check-input" type="radio" name="metodoPagamento" id="mastercard" value="mastercard" onclick="mostraCampiPagamento()">
                         <label class="form-check-label" for="mastercard">
                             <i class="fab fa-cc-mastercard text-danger"></i> Mastercard
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="metodoPagamento" id="paypal" value="paypal" onclick="mostraCampiPagamento()" required>
+                        <input class="form-check-input" type="radio" name="metodoPagamento" id="paypal" value="paypal" onclick="mostraCampiPagamento()">
                         <label class="form-check-label" for="paypal">
                             <i class="fab fa-paypal text-primary"></i> PayPal
                         </label>
@@ -125,7 +125,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="cvv" class="form-label">CVV</label>
-                        <input type="password" class="form-control" id="cvv" name="cvv" maxlength="3" pattern="[0-9]{3}" placeholder="***">
+                        <input type="password" class="form-control" id="cvv" name="cvv">
                     </div>
                 </div>
 
@@ -133,11 +133,11 @@
                 <div id="paypal-details" class="payment-details">
                     <div class="mb-3">
                         <label for="emailPaypal" class="form-label">Email PayPal</label>
-                        <input type="email" class="form-control" id="emailPaypal" name="emailPaypal" placeholder="esempio@email.com">
+                        <input type="text" cla ss="form-control" id="emailPaypal" name="emailPaypal">
                     </div>
                     <div class="mb-3">
                         <label for="codiceTransazione" class="form-label">Codice Transazione</label>
-                        <input type="text" class="form-control" id="codiceTransazione" name="codiceTransazione" placeholder="Inserisci codice PayPal">
+                        <input type="text" class="form-control" id="codiceTransazione" name="codiceTransazione">
                     </div>
                 </div>
 
@@ -178,10 +178,6 @@
         </div>
     </div>
 
-    <script>
-        // Nasconde i campi all’inizio
-        document.getElementById('paypal-details').style.display = 'none';
-        document.getElementById('mastercard-details').style.display = 'none';
-    </script>
+
 </body>
 </html>

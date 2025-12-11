@@ -14,8 +14,7 @@ public final class PagamentoExtractor {
         throw new AssertionError("Classe di estrazione dati, non si creano new");
     }
 
-    public static PaymentRecord from(HttpServletRequest request)
-            throws InvalidPaymentInputExceptionRemoli {
+    public static PaymentRecord from(HttpServletRequest request) throws InvalidPaymentInputExceptionRemoli {
 
         String city = request.getParameter("city");
         String quantityParam = request.getParameter("quantity");
