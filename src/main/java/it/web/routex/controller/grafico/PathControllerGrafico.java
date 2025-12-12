@@ -150,11 +150,7 @@ public class PathControllerGrafico extends LoggedHttpServlet {
         } catch (InvalidRouteInputExceptionRemoli e)
         {
             logger.error("Errore nell'input del percorso {}", e.getMessage());
-            try {
-                request.getRequestDispatcher("search.jsp").forward(request, response);
-            }catch(Exception ex){
-                logger.error(FORWARDING,ex);
-            }
+            doGet(request, response);
             return null;
         }
     }
