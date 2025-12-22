@@ -6,9 +6,6 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 
 public abstract class CityModel {
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-
     protected int[][] matriceAdiacenza;
 
     protected CityModel(int size, String resourcePath) {
@@ -18,10 +15,6 @@ public abstract class CityModel {
 
     public int[][] getMatriceAdiacenza() {
         return matriceAdiacenza;
-    }
-
-    public int getNumeroStazioni() {
-        return matriceAdiacenza.length;
     }
 
     protected void caricaMatriceDaClasspath(String resourcePath)

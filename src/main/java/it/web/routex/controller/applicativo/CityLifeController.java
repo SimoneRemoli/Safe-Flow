@@ -2,7 +2,6 @@ package it.web.routex.controller.applicativo;
 import it.web.routex.bean.CityLifeBean;
 import it.web.routex.bean.FermataRecordBean;
 import it.web.routex.model.dao.FermataDAO;
-import java.io.*;
 import java.sql.SQLException;
 import java.util.*;
 
