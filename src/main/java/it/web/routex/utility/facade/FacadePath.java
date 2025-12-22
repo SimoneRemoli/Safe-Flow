@@ -5,6 +5,7 @@ import it.web.routex.bean.RoutingRequestBean;
 import it.web.routex.controller.applicativo.CityLifeController;
 import it.web.routex.exception.FuoriRangeExceptionRemoli;
 import it.web.routex.exception.UnreacheableNodeExceptionRemoli;
+import it.web.routex.model.domain.CityModel;
 import it.web.routex.utility.factory.CityLifeFactory;
 import java.sql.SQLException;
 import java.util.List;
@@ -16,7 +17,8 @@ public class FacadePath
         return settingProcess(cityLife);
     }
     private CityLifeBean routingProcess (RoutingRequestBean route) throws IllegalArgumentException, FuoriRangeExceptionRemoli, UnreacheableNodeExceptionRemoli, SQLException {
-        CityLifeController controller = CityLifeFactory.createCity(route.getCity());
+        CityModel modelcity = CityLifeFactory.createCity(route.getCity());
+        CityLifeController controller = new CityLifeController(modelcity);
         List<Integer> path = controller.dijkstra(
                 route.getStartId(),
                 route.getEndId()

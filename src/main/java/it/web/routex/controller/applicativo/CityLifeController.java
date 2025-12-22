@@ -8,12 +8,17 @@ import java.util.*;
 
 import it.web.routex.exception.FuoriRangeExceptionRemoli;
 import it.web.routex.exception.UnreacheableNodeExceptionRemoli;
+import it.web.routex.model.domain.CityModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CityLifeController
 {
-    protected int[][] matriceAdiacenza; //le classi figlie possono specializzare la loro matrice di adiacenza
+    private final CityModel citylife;
+
+    public CityLifeController(CityModel city) {
+        this.citylife = city;
+    }
 
     private static class StatoPercorso {
         // boolean
@@ -123,34 +128,12 @@ public class CityLifeController
         c.setSequenzeDiCambiamento(stato.sequenzeDiCambiamento);
         c.setSequenzeNodiCruciali(stato.sequenzeNodiCruciali);
         c.setPercorsiConNomi(stato.percorsiConFermate);
-        c.setNumeroStazioniTotali(matriceAdiacenza[0].length);
+        c.setNumeroStazioniTotali(citylife.getMatriceAdiacenza().length);
         c.setSequenzeNodiCruciali(stato.sequenzeNodiCruciali);
 
+
+
         return c;
-    }
-
-
-    protected void caricaMatriceDaClasspath(String resourcePath)
-    {
-        final Logger logger = LoggerFactory.getLogger(getClass());
-
-        try (
-                InputStream inputStream = getClass().getResourceAsStream(resourcePath);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))
-        ) {
-            String line;
-            int row = 0;
-            while ((line = reader.readLine()) != null && row < 76) {
-                String[] values = line.split(",");
-                for (int col = 0; col < values.length && col < 76; col++) {
-                    matriceAdiacenza[row][col] = Integer.parseInt(values[col].trim());
-                }
-                row++;
-            }
-            logger.error("Matrice caricata correttamente da classpath");
-        } catch (IOException | NumberFormatException e) {
-            logger.error("Errore nel caricamento della matrice da classpath");
-        }
     }
 
     private boolean checkfill(int[]a, int dim)
@@ -238,19 +221,19 @@ public class CityLifeController
 
 
     public List<Integer> dijkstra(int partenza, int arrivo) throws FuoriRangeExceptionRemoli, UnreacheableNodeExceptionRemoli {
-        if (partenza < 0 || partenza >= matriceAdiacenza.length)
+        if (partenza < 0 || partenza >= citylife.getMatriceAdiacenza().length)
             throw new FuoriRangeExceptionRemoli("ID partenza fuori range: " + partenza, FuoriRangeExceptionRemoli.Severity.CRITICAL );
 
-        if (arrivo < 0 || arrivo >= matriceAdiacenza.length)
+        if (arrivo < 0 || arrivo >= citylife.getMatriceAdiacenza().length)
             throw new FuoriRangeExceptionRemoli("ID arrivo fuori range: " + arrivo, FuoriRangeExceptionRemoli.Severity.CRITICAL);
 
 
         ArrayList<Integer> percorsiCodifica = new ArrayList<Integer>();
         int nodoPartenza = partenza;
         int nodoArrivo = arrivo;
-        int [] know = new int[matriceAdiacenza.length];
-        int [] cost = new int[matriceAdiacenza.length];
-        int[] precedente = new int[matriceAdiacenza.length];
+        int [] know = new int[citylife.getMatriceAdiacenza().length];
+        int [] cost = new int[citylife.getMatriceAdiacenza().length];
+        int[] precedente = new int[citylife.getMatriceAdiacenza().length];
 
 
         Arrays.fill(cost, 1000);
@@ -259,9 +242,9 @@ public class CityLifeController
         cost[nodoPartenza] = 0;
         Arrays.fill(precedente, -1);
 
-        while (checkfill(know, matriceAdiacenza.length)) {
+        while (checkfill(know, citylife.getMatriceAdiacenza().length)) {
 
-            rilassaAdiacenti(nodoPartenza, matriceAdiacenza, know, cost, precedente);
+            rilassaAdiacenti(nodoPartenza, citylife.getMatriceAdiacenza(), know, cost, precedente);
             nodoPartenza = nodoCostoMinore(cost, know);
             know[nodoPartenza] = 1;
         }
@@ -273,7 +256,7 @@ public class CityLifeController
                     UnreacheableNodeExceptionRemoli.Severity.CRITICAL
             );
         }
-        for (int i = 0; i < matriceAdiacenza.length; i++)
+        for (int i = 0; i < citylife.getMatriceAdiacenza().length; i++)
             if(i==nodoArrivo) this.stampaPercorso(i, precedente, percorsiCodifica);
 
         return percorsiCodifica;
