@@ -68,9 +68,12 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
             ConnectionFactory.cambioDiRuolo(utente.getRuolo());
 
             switch (utente.getRuolo().toString().toUpperCase()) {
+
                 case "TRAVELER" -> safeRedirect(response, "indexLogged.jsp");
 
-                case "WORKER", "ADMIN" -> safeRedirect(response, "dashboardWorker.jsp");
+                case "WORKER" -> safeRedirect(response, "dashboardWorker.jsp");
+
+                case "ADMIN" -> safeRedirect(response, "indexAdmin.jsp");
 
                 default -> safeRedirect(response, "erroreLogin.jsp");
             }
