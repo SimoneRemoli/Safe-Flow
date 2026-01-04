@@ -10,7 +10,7 @@ import java.util.List;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.PathNotFoundExceptionRemoli;
 import it.web.routex.utility.factory.ConnectionFactory;
-import it.web.routex.domain.Route;
+import it.web.routex.model.Route;
 
 public class RouteDAO {
     public void save(Route route) throws DAOExceptionRemoli {

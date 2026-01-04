@@ -7,7 +7,7 @@ import java.util.*;
 
 import it.web.routex.exception.FuoriRangeExceptionRemoli;
 import it.web.routex.exception.UnreacheableNodeExceptionRemoli;
-import it.web.routex.domain.CityModel;
+import it.web.routex.model.CityModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

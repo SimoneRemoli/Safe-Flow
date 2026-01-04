@@ -1,7 +1,7 @@
 package it.web.routex.utility.decorator.decoratorpath;
 
 import it.web.routex.bean.RouteBean;
-import it.web.routex.domain.Route;
+import it.web.routex.model.Route;
 
 
 public class BaseComponent implements Component

@@ -30,9 +30,9 @@ public class PathControllerGrafico extends LoggedHttpServlet {
                                     int size) {
         try {
             request.getRequestDispatcher("search.jsp").forward(request, response);
-            logger.info("Visualizzata la pagina di acquisto biglietti con size={} città disponibili.", size);
+            logger.info("Forwarding Effettuato a search.jsp");
         } catch (Exception e) {
-            logger.error("Errore nella visualizzazione della pagina di acquisto biglietti.", e);
+            logger.error("Errore nel forwarding a search.jsp", e);
         }
     }
 

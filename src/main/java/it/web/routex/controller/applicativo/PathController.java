@@ -4,40 +4,50 @@ import it.web.routex.bean.RoutingRequestBean;
 import it.web.routex.exception.*;
 import it.web.routex.dao.RestituisciIdStazioniPartenzaArrivoDAO;
 import it.web.routex.dao.RouteDAO;
-import it.web.routex.domain.Route;
+import it.web.routex.model.Route;
+import it.web.routex.model.Station;
 import it.web.routex.record.RouteRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import it.web.routex.utility.facade.FacadePath;
 import it.web.routex.utility.singleton.Credentials;
 import java.sql.SQLException;
+import java.util.List;
 
 
 public class PathController
 {
-    public InformazioniPercorsoBean run(String startStation, String endStation, String city) throws IllegalArgumentException, FuoriRangeExceptionRemoli, UnreacheableNodeExceptionRemoli, SQLException, DAOExceptionRemoli {
+    public InformazioniPercorsoBean run(String startStation, String endStation, String city) throws IllegalArgumentException, FuoriRangeExceptionRemoli, UnreacheableNodeExceptionRemoli, SQLException, DAOExceptionRemoli
+    {
         RestituisciIdStazioniPartenzaArrivoDAO dao = new RestituisciIdStazioniPartenzaArrivoDAO();
-        dao.restituisciIdStazioni(startStation, endStation, city);
+        List<Station> stations = dao.restituisciIdStazioni(startStation, endStation, city);
 
-        final Logger logger = LoggerFactory.getLogger(getClass());
-
-
-        int codeStartStation=9999;
-        int codeFinishStation=9999;
-
-        codeStartStation = dao.getStazioneDiPartenza();
-        codeFinishStation = dao.getStazioneDiArrivo();
-
-        if (codeFinishStation == 9999 || codeStartStation == 9999) {
-            throw new DAOExceptionRemoli("Stazioni non trovate nella città selezionata.");
+        if (stations.size() != 2) {
+            throw new DAOExceptionRemoli(
+                    "Numero di stazioni restituito non valido: " + stations.size()
+            );
         }
 
-        logger.info("Stazioni trovate. Id stazione di partenza = {} e stazione di arrivo = {}", codeStartStation, codeFinishStation);
+        final Logger logger = LoggerFactory.getLogger(getClass());
+        Station partenza = stations.get(0);
+        Station arrivo   = stations.get(1);
+
+        try {
+            partenza.validate();
+            arrivo.validate();
+        } catch (IllegalStateException e) {
+            throw new DAOExceptionRemoli(
+                    "Stazioni non valide nella città selezionata: " + city,
+                    e
+            );
+        }
+
+        logger.info("Stazioni trovate. Id stazione di partenza = {} e stazione di arrivo = {}", partenza.getId(), arrivo.getId());
 
         RoutingRequestBean route = new RoutingRequestBean();
         route.setCity(city);
-        route.setStartId(codeStartStation);
-        route.setEndId(codeFinishStation);
+        route.setStartId(partenza.getId());
+        route.setEndId(arrivo.getId());
         return new FacadePath().compute(route);
     }
     public boolean saveRoute(Credentials cred, InformazioniPercorsoBean dto, RouteRecord route, String status) {

@@ -1,29 +1,21 @@
 package it.web.routex.dao;
 
+import it.web.routex.model.Station;
 import it.web.routex.utility.factory.ConnectionFactory;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class RestituisciIdStazioniPartenzaArrivoDAO {
-
-    private int stazioneDiPartenza;
-    private int stazioneDiArrivo;
-
-    public int getStazioneDiPartenza() {
-        return stazioneDiPartenza;
-    }
-
-    public int getStazioneDiArrivo() {
-        return stazioneDiArrivo;
-    }
-
-    public void restituisciIdStazioni(String startStation, String endStation, String city) throws SQLException {
+public class RestituisciIdStazioniPartenzaArrivoDAO
+{
+    public List<Station> restituisciIdStazioni(String startStation, String endStation, String city) throws SQLException
+    {
         String procedure = "{CALL RouteX_Update.RestituisciStazioni(?,?,?)}";
-        boolean partenzaTrovata = false;
-        boolean arrivoTrovata = false;
+        List<Station> stations = new ArrayList<>();
 
         try (Connection conn = ConnectionFactory.getConnection();
-             CallableStatement cs = conn.prepareCall(procedure)) {
-
+             CallableStatement cs = conn.prepareCall(procedure))
+        {
             cs.setString(1, startStation);
             cs.setString(2, endStation);
             cs.setString(3, city);
@@ -36,13 +28,11 @@ public class RestituisciIdStazioniPartenzaArrivoDAO {
                     resultIndex++;
                     if (rs != null) {
                         if (resultIndex == 1 && rs.next()) {
-                            this.stazioneDiPartenza = rs.getInt("id");
-                            partenzaTrovata = true;
+                            stations.add(new Station(rs.getInt("id")));
                         }
 
                         if (resultIndex == 2 && rs.next()) {
-                            this.stazioneDiArrivo = rs.getInt("id");
-                            arrivoTrovata = true;
+                            stations.add(new Station(rs.getInt("id")));
                         }
                     }
                 }
@@ -52,21 +42,6 @@ public class RestituisciIdStazioniPartenzaArrivoDAO {
         } catch (SQLException e) {
             throw new SQLException("Errore durante l'esecuzione della stored procedure RestituisciStazioni", e);
         }
-        if (!partenzaTrovata) {
-            this.stazioneDiPartenza = 9999; // Valore di default se non trovata
-        }
-        if (!arrivoTrovata) {
-            this.stazioneDiArrivo = 9999; // Valore di default se non trovata
-        }
+        return stations;
     }
 }
-
-
-
-/* su RouteX DB - Remoto
-+------+----------+----------+-------+
-| id   | nome     | disabile | linea |
-+------+----------+----------+-------+
-|    0 | Rebibbia | no       | B     |
-+------+----------+----------+-------+
- */

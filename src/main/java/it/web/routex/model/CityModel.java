@@ -1,4 +1,4 @@
-package it.web.routex.domain;
+package it.web.routex.model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

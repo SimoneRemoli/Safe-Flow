@@ -1,4 +1,4 @@
-package it.web.routex.domain;
+package it.web.routex.model;
 import it.web.routex.bean.InformazioniPercorsoBean;
 import it.web.routex.exception.InvalidRouteException;
 import it.web.routex.record.RouteRecord;

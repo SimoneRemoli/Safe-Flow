@@ -1,4 +1,4 @@
-package it.web.routex.domain;
+package it.web.routex.model;
 
 
 public class Rome extends CityModel {

@@ -4,10 +4,11 @@ import it.web.routex.bean.RouteBean;
 import it.web.routex.bean.TicketBean;
 import it.web.routex.dao.RouteDAO;
 import it.web.routex.dao.TicketDAOLayer;
-import it.web.routex.domain.Route;
+import it.web.routex.model.Route;
 import java.util.ArrayList;
 import java.util.List;
 import it.web.routex.exception.DAOExceptionRemoli;
+import it.web.routex.exception.InvalidTicketExceptionRemoli;
 import it.web.routex.exception.PathNotFoundExceptionRemoli;
 import it.web.routex.model.Ticket;
 import it.web.routex.utility.decorator.decoratorpath.*;
@@ -24,13 +25,28 @@ public class AreaRiservata
         List<TicketBean> beans = new ArrayList<>();
 
         for (Ticket t : tickets) {
-            TicketBean b = new TicketBean();
-            b.setCodice(t.getCodice());
-            b.setCitta(t.getCitta());
-            b.setDataAcquisto(t.getDataAcquisto().toString());
-            beans.add(b);
-        }
+            try {
+                // VALIDAZIONE FORTE DI DOMINIO
+                t.validate();
 
+                TicketBean b = new TicketBean();
+                b.setCodice(t.getCodice());
+                b.setCitta(t.getCitta());
+                b.setDataAcquisto(t.getDataAcquisto().toString());
+
+                beans.add(b);
+
+            } catch (InvalidTicketExceptionRemoli e) {
+
+                // scelta progettuale
+                throw new PathNotFoundExceptionRemoli(
+                        "Sono stati trovati ticket non validi associati all’utente.",
+                        cf,
+                        500,
+                        "Errore dominio Ticket: " + e.getMessage()
+                );
+            }
+        }
         return beans;
     }
 

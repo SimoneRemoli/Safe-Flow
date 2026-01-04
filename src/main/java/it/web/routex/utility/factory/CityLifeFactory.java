@@ -1,5 +1,5 @@
 package it.web.routex.utility.factory;
-import it.web.routex.domain.*;
+import it.web.routex.model.*;
 
 public class CityLifeFactory {
     private CityLifeFactory() {
