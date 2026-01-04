@@ -18,17 +18,7 @@ RouteX is a powerful metro route finder that allows users to search for stations
 <table align="center"> <tr> <td align="center"> <a href="https://github.com/SimoneRemoli"> <img src="https://avatars.githubusercontent.com/u/118252611?v=4" width="100px;" alt=""/><br /> <sub><b>Simone Remoli</b></sub> </a> </td> <td align="center"> <a href="https://github.com/iPalateee"> <img src="https://avatars.githubusercontent.com/u/75428846?v=4" width="100px;" alt=""/><br /> <sub><b>iPalateee</b></sub> </a> </td>  </tr> </table>
 <hr/>
 
-<p align="center"> Demo screen </p>
 
-<img width="1440" alt="Screenshot 2025-02-05 alle 19 33 01" src="https://github.com/user-attachments/assets/58e4fbb6-5a56-4d78-bc34-14e8753381e6" />
-<hr/>
-<img width="1440" alt="Screenshot 2025-02-06 alle 09 49 35" src="https://github.com/user-attachments/assets/222c70a8-cd5d-48a4-9749-0d6bcf4eb5a5" />
-<hr/>
-<img width="1440" alt="Screenshot 2025-02-06 alle 09 51 03" src="https://github.com/user-attachments/assets/fa638b91-e3fc-4c8a-889e-19aed82ff0a7" />
-<hr/>
-<img width="1440" alt="Screenshot 2025-02-06 alle 09 51 48" src="https://github.com/user-attachments/assets/7e2a5362-7a3a-4649-b40a-5f1c067960f5" />
-<hr/>
-<img width="1440" alt="Screenshot 2025-02-06 alle 09 54 45" src="https://github.com/user-attachments/assets/9e93ddf6-65cb-43ea-90fc-dd50fe9d2022" />
 
 ## Key Features
 - **Interactive visualization** of metro lines and stations.
