@@ -1,13 +1,13 @@
 package it.web.routex.controller.applicativo;
 import it.web.routex.bean.CityLifeBean;
 import it.web.routex.bean.FermataRecordBean;
-import it.web.routex.model.dao.FermataDAO;
+import it.web.routex.dao.FermataDAO;
 import java.sql.SQLException;
 import java.util.*;
 
 import it.web.routex.exception.FuoriRangeExceptionRemoli;
 import it.web.routex.exception.UnreacheableNodeExceptionRemoli;
-import it.web.routex.model.domain.CityModel;
+import it.web.routex.domain.CityModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -121,7 +121,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="scadenza" class="form-label">Data di scadenza</label>
-                        <input type="text" class="form-control" id="scadenza" name="scadenza" min="<%= java.time.LocalDate.now() %>">
+                        <input type="text" class="form-control" id="scadenza" name="scadenza">
                     </div>
                     <div class="mb-3">
                         <label for="cvv" class="form-label">CVV</label>

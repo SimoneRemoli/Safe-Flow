@@ -1,8 +1,8 @@
 package Testing.Remoli;
-import it.web.routex.model.dao.TicketDAODB;
-import it.web.routex.model.dao.TicketDAOFile;
-import it.web.routex.model.dao.TicketDAOLayer;
-import it.web.routex.model.domain.TypesOfPersistenceLayer;
+import it.web.routex.dao.TicketDAODB;
+import it.web.routex.dao.TicketDAOFile;
+import it.web.routex.dao.TicketDAOLayer;
+import it.web.routex.enumerator.TypesOfPersistenceLayer;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;

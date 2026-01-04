@@ -2,8 +2,8 @@ package it.web.routex.controller.applicativo;
 
 import it.web.routex.bean.CityBean;
 import it.web.routex.bean.PrezzoTotaleBean;
-import it.web.routex.model.dao.CityDAO;
-import it.web.routex.model.domain.City;
+import it.web.routex.dao.CityDAO;
+import it.web.routex.model.City;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.InvalidPriceCalculationExceptionRemoli;
 import it.web.routex.exception.InvalidCityDataExceptionRemoli;
@@ -45,14 +45,15 @@ public class CityController {
         }
 
         for (City c : cities) {
-            if (c == null || c.getName() == null || c.getName().isBlank()) {
+            if (c == null || !c.isValid()) {
                 throw new InvalidCityDataExceptionRemoli(
                         "Sono stati trovati dati città non validi.",
-                        "Elemento città nullo o con nome vuoto.",
+                        "Oggetto City non valido secondo il dominio.",
                         InvalidCityDataExceptionRemoli.Severity.HIGH
                 );
             }
         }
+
 
         // === COSTRUZIONE BEAN ===
         List<CityBean> cityBeans = new ArrayList<>();
@@ -95,7 +96,7 @@ public class CityController {
         List<City> cities = new CityDAO().listCities();
         for (City a : cities) {
             if (a.getName().equalsIgnoreCase(city)) {
-                double totale = calculate(a.getCostoBiglietto(), quantity);
+                double totale = a.calcolaPrezzoTotale(quantity);
                 return new PrezzoTotaleBean(totale);
             }
         }
@@ -105,12 +106,5 @@ public class CityController {
                 "Nessuna corrispondenza in CityDAO.ListCities() per la city='" + city + "'",
                 InvalidPriceCalculationExceptionRemoli.Severity.HIGH
         );
-    }
-
-    /**
-     * Calcola il prezzo totale in base al costo unitario e alla quantità.
-     */
-    private double calculate(double costo, int qty) {
-        return qty * costo;
     }
 }

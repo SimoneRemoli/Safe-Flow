@@ -1,7 +1,8 @@
 package Testing.Remoli;
 
+import it.web.routex.bean.PaymentResultBean;
 import it.web.routex.controller.applicativo.PagamentoPaypal;
-import it.web.routex.model.domain.Ruolo;
+import it.web.routex.enumerator.Ruolo;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -107,8 +108,10 @@ class PagamentoPaypalTest {
                 quantita,
                 city
         );
+        PaymentResultBean result = pagamento.run();
 
-        assertEquals(4, pagamento.run().size());
+        assertEquals(4, result.getTicketCodes().size());
+
     }
 
 

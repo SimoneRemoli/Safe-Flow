@@ -1,8 +1,8 @@
 package it.web.routex.utility.factory;
-import it.web.routex.model.dao.TicketDAODB;
-import it.web.routex.model.dao.TicketDAOFile;
-import it.web.routex.model.dao.TicketDAOLayer;
-import it.web.routex.model.domain.TypesOfPersistenceLayer;
+import it.web.routex.dao.TicketDAODB;
+import it.web.routex.dao.TicketDAOFile;
+import it.web.routex.dao.TicketDAOLayer;
+import it.web.routex.enumerator.TypesOfPersistenceLayer;
 import it.web.routex.utility.singleton.PersistenceMode;
 public class FactoryPersistence {
 

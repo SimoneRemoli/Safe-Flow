@@ -1,7 +1,8 @@
 package Testing.Remoli;
 
+import it.web.routex.bean.PaymentResultBean;
 import it.web.routex.controller.applicativo.PagamentoMastercard;
-import it.web.routex.model.domain.Ruolo;
+import it.web.routex.enumerator.Ruolo;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -75,7 +76,9 @@ class PagamentoMastercardTest
                 p[11]
         );
 
-        assertEquals(2, pagamento.run().size());
+        PaymentResultBean result = pagamento.run();
+
+        assertEquals(2, result.getTicketCodes().size());
     }
     @ParameterizedTest
     @MethodSource("noUserProvider")

@@ -185,9 +185,6 @@
                     <button class="welcome-button" type="submit">Send Communication</button>
                 </form>
                 <br>
-                <form action="viewMaps" method="post">
-                    <button class="welcome-button" type="submit">View Maps</button>
-                </form>
                 <br>
                 <form action="PathInfoRAS" method="get">
                     <button class="welcome-button" type="submit">View Reports And Statistics</button>

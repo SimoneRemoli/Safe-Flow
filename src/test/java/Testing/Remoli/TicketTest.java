@@ -2,8 +2,8 @@ package Testing.Remoli;
 
 import it.web.routex.bean.TicketBean;
 import it.web.routex.controller.applicativo.AreaRiservata;
-import it.web.routex.model.domain.Ruolo;
-import it.web.routex.model.domain.TypesOfPersistenceLayer;
+import it.web.routex.enumerator.Ruolo;
+import it.web.routex.enumerator.TypesOfPersistenceLayer;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;

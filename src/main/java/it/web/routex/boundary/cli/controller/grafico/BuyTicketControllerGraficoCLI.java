@@ -12,7 +12,7 @@ import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.InvalidBuyTicketInputExceptionRemoli;
 import it.web.routex.exception.InvalidCityDataExceptionRemoli;
 import it.web.routex.exception.InvalidPriceCalculationExceptionRemoli;
-import it.web.routex.model.record.BuyTicketRecord;
+import it.web.routex.record.BuyTicketRecord;
 
 import java.util.List;
 

@@ -3,7 +3,7 @@ package Testing.Remoli;
 import it.web.routex.bean.CityBean;
 import it.web.routex.bean.PrezzoTotaleBean;
 import it.web.routex.controller.applicativo.CityController;
-import it.web.routex.model.domain.Ruolo;
+import it.web.routex.enumerator.Ruolo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;

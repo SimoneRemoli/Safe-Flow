@@ -87,9 +87,7 @@
                 <strong>Metodo di pagamento:</strong> <%= metodo %><br>
             </p>
 
-            <% if (messaggio != null) { %>
-                <div class="alert alert-info"><%= messaggio %></div>
-            <% } %>
+            <div class="alert alert-info"><%= messaggio %></div>
 
             <hr>
             <h4>QR Code biglietti</h4>
@@ -97,7 +95,7 @@
 
             <p class="text-muted mt-3">Scannerizza il QR Code per visualizzare i codici univoci dei tuoi biglietti.</p>
 
-            <!-- (Facoltativo) Mostra i codici a schermo -->
+            <!-- Mostra i codici a schermo -->
             <div class="ticket-list">
                 <% if (codiciBiglietti != null) {
                     for (String codice : codiciBiglietti) { %>

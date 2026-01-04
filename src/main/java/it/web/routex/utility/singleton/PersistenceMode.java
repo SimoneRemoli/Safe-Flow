@@ -1,6 +1,6 @@
 package it.web.routex.utility.singleton;
 
-import it.web.routex.model.domain.TypesOfPersistenceLayer;
+import it.web.routex.enumerator.TypesOfPersistenceLayer;
 /**
  * Singleton che gestisce la modalità di persistenza utilizzata dal sistema.
  * Implementazione thread-safe tramite inner static holder.

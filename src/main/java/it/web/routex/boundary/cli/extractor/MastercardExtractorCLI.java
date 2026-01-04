@@ -1,10 +1,8 @@
 package it.web.routex.boundary.cli.extractor;
 
-import javax.servlet.http.HttpServletRequest;
-
 import it.web.routex.boundary.cli.view.MastercardCLI;
 import it.web.routex.exception.InvalidCardInputExceptionRemoli;
-import it.web.routex.model.record.MastercardRecord;
+import it.web.routex.record.MastercardRecord;
 
 import java.time.LocalDate;
 

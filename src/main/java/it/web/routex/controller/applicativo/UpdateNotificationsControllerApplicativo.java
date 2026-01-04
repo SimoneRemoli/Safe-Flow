@@ -3,7 +3,7 @@ package it.web.routex.controller.applicativo;
 
 import it.web.routex.bean.MessageBean;
 import it.web.routex.exception.DAOExceptionRemoli;
-import it.web.routex.model.dao.SendCommunicationDAO;
+import it.web.routex.dao.SendCommunicationDAO;
 
 import java.sql.Timestamp;
 

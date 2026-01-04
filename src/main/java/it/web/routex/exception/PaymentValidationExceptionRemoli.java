@@ -1,6 +1,6 @@
 package it.web.routex.exception;
 
-import it.web.routex.model.domain.PaymentMethod;
+import it.web.routex.enumerator.PaymentMethod;
 
 public class PaymentValidationExceptionRemoli extends Exception
 {

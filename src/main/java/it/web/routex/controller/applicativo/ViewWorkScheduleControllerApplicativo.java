@@ -4,7 +4,7 @@ package it.web.routex.controller.applicativo;
 import it.web.routex.bean.WorkerScheduleBean;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.LoginNotFoundRemoli;
-import it.web.routex.model.dao.WorkerScheduleDAO;
+import it.web.routex.dao.WorkerScheduleDAO;
 
 public class ViewWorkScheduleControllerApplicativo {
 

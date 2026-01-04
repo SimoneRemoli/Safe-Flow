@@ -1,12 +1,11 @@
 package it.web.routex.controller.applicativo;
-
-import it.web.routex.exception.PagamentoException;
-import it.web.routex.model.dao.MastercardDAO;
+import it.web.routex.bean.PaymentResultBean;
+import it.web.routex.dao.MastercardDAO;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.CredentialsExceptionRemoli;
 import it.web.routex.exception.PaymentValidationExceptionRemoli;
-import it.web.routex.model.dao.TicketDAOLayer;
-import it.web.routex.model.domain.Mastercard;
+import it.web.routex.dao.TicketDAOLayer;
+import it.web.routex.model.Mastercard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import it.web.routex.utility.decorator.decoratorticket.BaseTicketCode;
@@ -24,26 +23,31 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
     String scadenza;
     String cvv;
 
-    public List<String> run() throws DAOExceptionRemoli, PaymentValidationExceptionRemoli, CredentialsExceptionRemoli {
+    public PaymentResultBean run() throws DAOExceptionRemoli, PaymentValidationExceptionRemoli, CredentialsExceptionRemoli {
 
         final List<String> codiciBiglietti;
         Mastercard mastercard = new MastercardDAO().getPaymentMastercard(numeroCarta, scadenza, cvv);
-        if (mastercard != null)
-        {
-            Component gen = new TimestampDecorator(new CittaDecorator(new BaseTicketCode(), city));
+        mastercard.validate();
 
-            codiciBiglietti = new ArrayList<>();
+        Component gen = new TimestampDecorator(new CittaDecorator(new BaseTicketCode(), city));
 
-            for (int i = 0; i < quantitativo; i++) {
-                codiciBiglietti.add(gen.genera());
-            }
+        codiciBiglietti = new ArrayList<>();
 
-            registraPagamentoPermanente(codiciBiglietti);
+        for (int i = 0; i < quantitativo; i++) {
+            codiciBiglietti.add(gen.genera());
         }
-        else {
-            throw new PagamentoException("Pagamento fallito: dati non validi o circuito non disponibile.");
-        }
-        return codiciBiglietti;
+
+        registraPagamentoPermanente(codiciBiglietti, mastercard);
+
+        return new PaymentResultBean(
+                city,
+                quantitativo,
+                totale,
+                mastercard.getMethod().getDisplayName(),
+                codiciBiglietti
+        );
+
+        //return codiciBiglietti;
     }
     public PagamentoMastercard(String numeroCarta, String scadenza, String cvv, Credentials cred,double tot, int quantita, String citta )
     {
@@ -53,14 +57,14 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
         this.cvv = cvv;
     }
 
-    private void registraPagamentoPermanente(List<String> codiciBiglietti) throws CredentialsExceptionRemoli {
+    private void registraPagamentoPermanente(List<String> codiciBiglietti, Mastercard mastercard) throws CredentialsExceptionRemoli {
         final Logger logger = LoggerFactory.getLogger(getClass());
         if (credenziali == null) {
             throw new CredentialsExceptionRemoli("Nessun utente loggato associato al pagamento.", "Errore nel PagamentoMastercard.java");
         }
         TicketDAOLayer daoLayer = FactoryPersistence.createTicketDAO();
-        daoLayer.salvataggio(credenziali, codiciBiglietti, "Mastercard", city);
-        logger.info("Traveler {} {} {} {} ha effettuato un pagamento di {} euro con la Mastercard", credenziali.getNome(), credenziali.getCodiceFiscale(), credenziali.getCognome(), credenziali.getDisabile(), totale);
+        daoLayer.salvataggio(credenziali, codiciBiglietti, mastercard.getMethod().getDisplayName(), city);
+        logger.info("Traveler {} {} {} {} ha effettuato un pagamento di {} euro con la Mastercard {}", credenziali.getNome(), credenziali.getCodiceFiscale(), credenziali.getCognome(), credenziali.getDisabile(), totale,  mastercard.maskedNumber());
     }
 }
 

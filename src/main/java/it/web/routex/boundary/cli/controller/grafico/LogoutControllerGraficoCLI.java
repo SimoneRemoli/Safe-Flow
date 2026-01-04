@@ -2,7 +2,7 @@ package it.web.routex.boundary.cli.controller.grafico;
 import it.web.routex.boundary.cli.LoggedCLI;
 import it.web.routex.boundary.cli.view.GenericErrorCLI;
 import it.web.routex.boundary.cli.view.HomePrincipaleCLI;
-import it.web.routex.model.domain.Ruolo;
+import it.web.routex.enumerator.Ruolo;
 import it.web.routex.utility.factory.ConnectionFactory;
 import it.web.routex.utility.singleton.Credentials;
 

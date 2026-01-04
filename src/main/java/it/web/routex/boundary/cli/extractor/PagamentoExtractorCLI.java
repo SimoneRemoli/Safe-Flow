@@ -1,10 +1,8 @@
 package it.web.routex.boundary.cli.extractor;
 
 
-import it.web.routex.model.domain.TypesOfPersistenceLayer;
-import it.web.routex.model.record.PaymentRecord;
-
-import javax.servlet.http.HttpServletRequest;
+import it.web.routex.enumerator.TypesOfPersistenceLayer;
+import it.web.routex.record.PaymentRecord;
 
 import it.web.routex.exception.InvalidPaymentInputExceptionRemoli;
 

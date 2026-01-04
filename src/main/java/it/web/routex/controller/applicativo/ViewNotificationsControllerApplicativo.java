@@ -4,7 +4,7 @@ package it.web.routex.controller.applicativo;
 import it.web.routex.bean.MessageBean;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.PathNotFoundExceptionRemoli;
-import it.web.routex.model.dao.GetCommunicationsDAO;
+import it.web.routex.dao.GetCommunicationsDAO;
 import java.util.List;
 
 public class ViewNotificationsControllerApplicativo

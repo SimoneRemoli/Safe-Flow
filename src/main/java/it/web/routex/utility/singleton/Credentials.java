@@ -1,5 +1,5 @@
 package it.web.routex.utility.singleton;
-import it.web.routex.model.domain.Ruolo;
+import it.web.routex.enumerator.Ruolo;
 import java.sql.Date;
 
 public class Credentials {

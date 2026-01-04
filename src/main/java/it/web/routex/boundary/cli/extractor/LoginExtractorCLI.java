@@ -1,7 +1,7 @@
 package it.web.routex.boundary.cli.extractor;
 
 import it.web.routex.exception.InvalidLoginInputExceptionRemoli;
-import it.web.routex.model.record.LoginRecord;
+import it.web.routex.record.LoginRecord;
 
 
 public class LoginExtractorCLI {

@@ -2,23 +2,39 @@ package it.web.routex.controller.applicativo;
 
 import it.web.routex.bean.RouteBean;
 import it.web.routex.bean.TicketBean;
-import it.web.routex.model.dao.RouteDAO;
-import it.web.routex.model.dao.TicketDAOLayer;
-import it.web.routex.model.domain.Route;
+import it.web.routex.dao.RouteDAO;
+import it.web.routex.dao.TicketDAOLayer;
+import it.web.routex.domain.Route;
 import java.util.ArrayList;
 import java.util.List;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.PathNotFoundExceptionRemoli;
+import it.web.routex.model.Ticket;
 import it.web.routex.utility.decorator.decoratorpath.*;
 import it.web.routex.utility.factory.FactoryPersistence;
 
 public class AreaRiservata
 {
-    public List<TicketBean> runTicket(String cf) throws DAOExceptionRemoli, PathNotFoundExceptionRemoli {
-        TicketDAOLayer daolayer = FactoryPersistence.createTicketDAO();
-        return daolayer.getTicketByCF(cf);
+    public List<TicketBean> runTicket(String cf)
+            throws DAOExceptionRemoli, PathNotFoundExceptionRemoli {
 
+        TicketDAOLayer dao = FactoryPersistence.createTicketDAO();
+        List<Ticket> tickets = dao.getTicketByCF(cf);
+
+        List<TicketBean> beans = new ArrayList<>();
+
+        for (Ticket t : tickets) {
+            TicketBean b = new TicketBean();
+            b.setCodice(t.getCodice());
+            b.setCitta(t.getCitta());
+            b.setDataAcquisto(t.getDataAcquisto().toString());
+            beans.add(b);
+        }
+
+        return beans;
     }
+
+
     public List<RouteBean> runPath(String cf) throws PathNotFoundExceptionRemoli, DAOExceptionRemoli {
         RouteDAO routeDAO = new RouteDAO();
         // Ottieni la lista di percorsi dal DAO

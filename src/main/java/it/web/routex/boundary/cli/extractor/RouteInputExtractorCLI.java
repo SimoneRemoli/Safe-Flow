@@ -1,7 +1,7 @@
 package it.web.routex.boundary.cli.extractor;
 
 import it.web.routex.exception.InvalidRouteInputExceptionRemoli;
-import it.web.routex.model.record.RouteRecord;
+import it.web.routex.record.RouteRecord;
 
 
 public final class RouteInputExtractorCLI

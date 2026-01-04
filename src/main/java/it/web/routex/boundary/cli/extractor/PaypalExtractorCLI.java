@@ -1,7 +1,7 @@
 package it.web.routex.boundary.cli.extractor;
 
 import it.web.routex.boundary.cli.view.PaypalCLI;
-import it.web.routex.model.record.PaypalRecord;
+import it.web.routex.record.PaypalRecord;
 import it.web.routex.exception.InvalidCardInputExceptionRemoli;
 
 public final class PaypalExtractorCLI {

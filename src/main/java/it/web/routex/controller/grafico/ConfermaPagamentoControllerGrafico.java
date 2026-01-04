@@ -1,15 +1,16 @@
 package it.web.routex.controller.grafico;
+import it.web.routex.bean.PaymentResultBean;
 import it.web.routex.controller.applicativo.PagamentoMastercard;
 import it.web.routex.controller.applicativo.PagamentoPaypal;
 import it.web.routex.controller.applicativo.RegistrazionePagamentoController;
-import it.web.routex.model.domain.LoggedHttpServlet;
-import it.web.routex.model.extractor.MastercardExtractor;
-import it.web.routex.model.extractor.PagamentoExtractor;
-import it.web.routex.model.extractor.PaypalExtractor;
-import it.web.routex.model.record.MastercardRecord;
-import it.web.routex.model.record.PaymentRecord;
-import it.web.routex.model.domain.TypesOfPersistenceLayer;
-import it.web.routex.model.record.PaypalRecord;
+import it.web.routex.domain.LoggedHttpServlet;
+import it.web.routex.extractor.MastercardExtractor;
+import it.web.routex.extractor.PagamentoExtractor;
+import it.web.routex.extractor.PaypalExtractor;
+import it.web.routex.record.MastercardRecord;
+import it.web.routex.record.PaymentRecord;
+import it.web.routex.enumerator.TypesOfPersistenceLayer;
+import it.web.routex.record.PaypalRecord;
 import it.web.routex.utility.singleton.Credentials;
 import it.web.routex.exception.PaymentValidationExceptionRemoli;
 import it.web.routex.exception.CredentialsExceptionRemoli;
@@ -18,7 +19,6 @@ import it.web.routex.utility.singleton.PersistenceMode;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.util.*;
 import it.web.routex.exception.InvalidPaymentInputExceptionRemoli;
 import it.web.routex.exception.InvalidCardInputExceptionRemoli;
 
@@ -45,11 +45,11 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
 
         if (controllerPagamento == null) return;
 
-        List<String> codiciBiglietti = eseguiPagamento(controllerPagamento, request, response);
+        PaymentResultBean result = eseguiPagamento(controllerPagamento, request, response);
 
-        if (codiciBiglietti == null) return;
+        if (result == null) return;
 
-        mostraSuccesso(request, response, paymentRecord, codiciBiglietti);
+        mostraSuccesso(request, response, result);
     }
 
     private PaymentRecord estraiPagamento(HttpServletRequest request, HttpServletResponse response)
@@ -152,7 +152,7 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
         }
         return null;
     }
-    private List<String> eseguiPagamento(
+    private PaymentResultBean eseguiPagamento(
             RegistrazionePagamentoController controllerPagamento,
             HttpServletRequest request,
             HttpServletResponse response) {
@@ -170,7 +170,7 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
             }
 
             logger.error("Errore durante il pagamento", e);
-            return Collections.emptyList();
+            return null;
 
         } catch (Exception e) {
             request.setAttribute(ATTR_MESSAGGIO_ERRORE, e.getMessage());
@@ -182,21 +182,20 @@ public class ConfermaPagamentoControllerGrafico extends LoggedHttpServlet {
             }
 
             logger.error("Errore generico conferma pagamento", e);
-            return Collections.emptyList();
+            return null;
         }
     }
     private void mostraSuccesso(
             HttpServletRequest request,
             HttpServletResponse response,
-            PaymentRecord paymentRecord,
-            List<String> codiciBiglietti) {
+            PaymentResultBean pay) {
 
-        request.setAttribute("city", paymentRecord.city());
-        request.setAttribute("quantity", String.valueOf(paymentRecord.quantity()));
-        request.setAttribute("totale", paymentRecord.total());
-        request.setAttribute("metodo", paymentRecord.method());
+        request.setAttribute("city", pay.getCity());
+        request.setAttribute("quantity", String.valueOf(pay.getQuantity()));
+        request.setAttribute("totale", pay.getTotal());
+        request.setAttribute("metodo", pay.getPaymentMethod());
         request.setAttribute("messaggio", "Pagamento completato");
-        request.setAttribute("codiciBiglietti", codiciBiglietti);
+        request.setAttribute("codiciBiglietti", pay.getTicketCodes());
 
         try {
             request.getRequestDispatcher("/successoPagamento.jsp")

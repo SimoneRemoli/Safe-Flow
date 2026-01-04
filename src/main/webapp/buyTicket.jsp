@@ -132,7 +132,7 @@
 
                     <div class="mb-3">
                         <label for="quantity" class="form-label">Number of Tickets</label>
-                        <input type="text" id="quantity" name="quantity" class="form-control" value="1">
+                        <input type="text" id="quantity" name="quantity" class="form-control">
                     </div>
 
                     <button type="submit" class="btn-submit">Confirm</button>

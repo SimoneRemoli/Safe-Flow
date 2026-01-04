@@ -1,7 +1,7 @@
 package it.web.routex.utility.factory;
 
 import it.web.routex.exception.ConfigurationException;
-import it.web.routex.model.domain.Ruolo;
+import it.web.routex.enumerator.Ruolo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

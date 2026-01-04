@@ -1,6 +1,6 @@
 package it.web.routex.controller.applicativo;
 
-import it.web.routex.model.domain.CredentialsDTO;
+import it.web.routex.domain.CredentialsDTO;
 import it.web.routex.utility.factory.RegisterFactory;
 
 public class RegistrazioneControllerApplicativo {

@@ -1,4 +1,5 @@
 package it.web.routex.boundary.cli.controller.grafico;
+import it.web.routex.bean.PaymentResultBean;
 import it.web.routex.boundary.cli.LoggedCLI;
 import it.web.routex.boundary.cli.extractor.MastercardExtractorCLI;
 import it.web.routex.boundary.cli.extractor.PagamentoExtractorCLI;
@@ -9,16 +10,15 @@ import it.web.routex.boundary.cli.view.SuccessoPagamentoCLI;
 import it.web.routex.controller.applicativo.PagamentoMastercard;
 import it.web.routex.controller.applicativo.PagamentoPaypal;
 import it.web.routex.controller.applicativo.RegistrazionePagamentoController;
-import it.web.routex.model.record.MastercardRecord;
-import it.web.routex.model.record.PaymentRecord;
-import it.web.routex.model.domain.TypesOfPersistenceLayer;
-import it.web.routex.model.record.PaypalRecord;
+import it.web.routex.record.MastercardRecord;
+import it.web.routex.record.PaymentRecord;
+import it.web.routex.enumerator.TypesOfPersistenceLayer;
+import it.web.routex.record.PaypalRecord;
 import it.web.routex.utility.singleton.Credentials;
 import it.web.routex.exception.PaymentValidationExceptionRemoli;
 import it.web.routex.exception.CredentialsExceptionRemoli;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.utility.singleton.PersistenceMode;
-import java.util.*;
 import it.web.routex.exception.InvalidPaymentInputExceptionRemoli;
 import it.web.routex.exception.InvalidCardInputExceptionRemoli;
 
@@ -39,11 +39,11 @@ public class ConfermaPagamentoControllerGraficoCLI extends LoggedCLI {
 
         if (controllerPagamento == null) return;
 
-        List<String> codiciBiglietti = eseguiPagamento(controllerPagamento);
+        PaymentResultBean result = eseguiPagamento(controllerPagamento);
 
-        if (codiciBiglietti == null) return;
+        if (result == null) return;
 
-        mostraSuccesso(paymentRecord, codiciBiglietti);
+        mostraSuccesso(result);
     }
 
     private PaymentRecord estraiPagamento(String city, String quantity, String price, String metodo, String persistenza)
@@ -115,7 +115,7 @@ public class ConfermaPagamentoControllerGraficoCLI extends LoggedCLI {
         ErroreLoginCLI.mostraErrore("Errore, non è stato scelto un metodo opportuno di pagamento");
         return null;
     }
-    private List<String> eseguiPagamento(RegistrazionePagamentoController controllerPagamento) {
+    private PaymentResultBean eseguiPagamento(RegistrazionePagamentoController controllerPagamento) {
 
         try {
             return controllerPagamento.run();
@@ -124,23 +124,23 @@ public class ConfermaPagamentoControllerGraficoCLI extends LoggedCLI {
 
             GenericErrorCLI.mostraErrore(e.getMessage());
             logger.error("Errore durante il pagamento", e);
-            return Collections.emptyList();
+            return null;
 
         } catch (Exception e) {
 
             GenericErrorCLI.mostraErrore("Errore generico conferma pagamento"+e.getMessage());
             logger.error("Errore generico conferma pagamento", e);
-            return Collections.emptyList();
+            return null;
         }
     }
-    private void mostraSuccesso(PaymentRecord paymentRecord, List<String> codiciBiglietti) {
+    private void mostraSuccesso(PaymentResultBean pay) {
 
-        SuccessoPagamentoCLI.setCity(paymentRecord.city());
-        SuccessoPagamentoCLI.setQuantity(String.valueOf(paymentRecord.quantity()));
-        SuccessoPagamentoCLI.setTotale(paymentRecord.total());
-        SuccessoPagamentoCLI.setMetodo(paymentRecord.method());
+        SuccessoPagamentoCLI.setCity(pay.getCity());
+        SuccessoPagamentoCLI.setQuantity(String.valueOf(pay.getQuantity()));
+        SuccessoPagamentoCLI.setTotale(pay.getTotal());
+        SuccessoPagamentoCLI.setMetodo(pay.getPaymentMethod());
         SuccessoPagamentoCLI.setMessaggio("Pagamento completato");
-        SuccessoPagamentoCLI.setCodiciBiglietti(codiciBiglietti);
+        SuccessoPagamentoCLI.setCodiciBiglietti( pay.getTicketCodes());
         SuccessoPagamentoCLI.stampa();
 
     }

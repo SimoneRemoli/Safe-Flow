@@ -4,7 +4,7 @@ import it.web.routex.bean.InformazioniPercorsoBean;
 import it.web.routex.bean.RouteBean;
 import it.web.routex.controller.applicativo.AreaRiservata;
 import it.web.routex.controller.applicativo.PathController;
-import it.web.routex.model.domain.Ruolo;
+import it.web.routex.enumerator.Ruolo;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;

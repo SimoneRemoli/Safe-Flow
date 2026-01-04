@@ -1,5 +1,5 @@
 package it.web.routex.bean;
-import it.web.routex.model.domain.Ruolo;
+import it.web.routex.enumerator.Ruolo;
 
 public class UtenteBeanGenerico
 {

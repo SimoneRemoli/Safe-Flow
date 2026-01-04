@@ -5,7 +5,7 @@ import it.web.routex.bean.RoutingRequestBean;
 import it.web.routex.controller.applicativo.CityLifeController;
 import it.web.routex.exception.FuoriRangeExceptionRemoli;
 import it.web.routex.exception.UnreacheableNodeExceptionRemoli;
-import it.web.routex.model.domain.CityModel;
+import it.web.routex.domain.CityModel;
 import it.web.routex.utility.factory.CityLifeFactory;
 import java.sql.SQLException;
 import java.util.List;

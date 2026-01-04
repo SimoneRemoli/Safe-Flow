@@ -2,10 +2,9 @@ package it.web.routex.controller.grafico;
 
 
 import it.web.routex.bean.UtenteBeanGenerico;
-import it.web.routex.controller.applicativo.LoginController;
 import it.web.routex.controller.applicativo.RegistrazioneControllerApplicativo;
-import it.web.routex.model.domain.CredentialsDTO;
-import it.web.routex.model.domain.Ruolo;
+import it.web.routex.domain.CredentialsDTO;
+import it.web.routex.enumerator.Ruolo;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

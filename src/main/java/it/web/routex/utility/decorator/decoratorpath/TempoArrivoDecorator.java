@@ -1,7 +1,7 @@
 package it.web.routex.utility.decorator.decoratorpath;
 
 import it.web.routex.bean.RouteBean;
-import it.web.routex.model.domain.Route;
+import it.web.routex.domain.Route;
 
 public class TempoArrivoDecorator extends Decorator
 {

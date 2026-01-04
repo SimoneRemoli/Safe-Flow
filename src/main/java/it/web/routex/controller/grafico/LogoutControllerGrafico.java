@@ -1,6 +1,6 @@
 package it.web.routex.controller.grafico;
-import it.web.routex.model.domain.LoggedHttpServlet;
-import it.web.routex.model.domain.Ruolo;
+import it.web.routex.domain.LoggedHttpServlet;
+import it.web.routex.enumerator.Ruolo;
 import it.web.routex.utility.factory.ConnectionFactory;
 import it.web.routex.utility.singleton.Credentials;
 import javax.servlet.annotation.WebServlet;

@@ -11,9 +11,9 @@ import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.FuoriRangeExceptionRemoli;
 import it.web.routex.exception.InvalidRouteInputExceptionRemoli;
 import it.web.routex.exception.UnreacheableNodeExceptionRemoli;
-import it.web.routex.model.domain.RouteValidator;
-import it.web.routex.model.domain.UserStatusResolver;
-import it.web.routex.model.record.RouteRecord;
+import it.web.routex.domain.RouteValidator;
+import it.web.routex.domain.UserStatusResolver;
+import it.web.routex.record.RouteRecord;
 import it.web.routex.utility.singleton.Credentials;
 import java.sql.SQLException;
 

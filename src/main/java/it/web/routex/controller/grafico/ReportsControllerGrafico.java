@@ -3,7 +3,7 @@ package it.web.routex.controller.grafico;
 
 import it.web.routex.bean.PathInfoBean;
 import it.web.routex.exception.DAOExceptionRemoli;
-import it.web.routex.model.dao.PathInfoDAO;
+import it.web.routex.dao.PathInfoDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

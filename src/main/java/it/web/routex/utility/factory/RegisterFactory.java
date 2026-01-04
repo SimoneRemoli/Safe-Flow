@@ -2,10 +2,10 @@ package it.web.routex.utility.factory;
 
 
 import it.web.routex.exception.DAOExceptionRemoli;
-import it.web.routex.model.dao.RegisterAllUsersDAO;
-import it.web.routex.model.dao.RegistrazioneLavoratoreDAO;
-import it.web.routex.model.dao.RegistrazioneUtenteDAO;
-import it.web.routex.model.domain.CredentialsDTO;
+import it.web.routex.dao.RegisterAllUsersDAO;
+import it.web.routex.dao.RegistrazioneLavoratoreDAO;
+import it.web.routex.dao.RegistrazioneUtenteDAO;
+import it.web.routex.domain.CredentialsDTO;
 
 public class RegisterFactory {
     public static void create(CredentialsDTO cred) throws DAOExceptionRemoli {

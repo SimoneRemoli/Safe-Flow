@@ -11,7 +11,7 @@ import it.web.routex.controller.applicativo.LoginController;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.InvalidLoginInputExceptionRemoli;
 import it.web.routex.exception.LoginNotFoundRemoli;
-import it.web.routex.model.record.LoginRecord;
+import it.web.routex.record.LoginRecord;
 import it.web.routex.utility.factory.ConnectionFactory;
 import java.sql.SQLException;
 
