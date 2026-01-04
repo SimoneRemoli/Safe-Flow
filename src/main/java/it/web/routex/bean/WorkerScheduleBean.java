@@ -1,26 +1,32 @@
 package it.web.routex.bean;
 
-import java.io.Serializable;
-
-public class WorkerScheduleBean implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class WorkerScheduleBean {
 
     private String codiceFiscale;
     private Integer oraInizio;
     private Integer oraFine;
     private String luogoDiLavoro;
+    private int durataTurno;
 
     // Costruttore vuoto
-    public WorkerScheduleBean(Integer oraInizio, Integer oraFine, String luogoDiLavoro) {
+    public WorkerScheduleBean(Integer oraInizio, Integer oraFine, String luogoDiLavoro, int durataTurno) {
         this.oraInizio = oraInizio;
         this.oraFine = oraFine;
         this.luogoDiLavoro = luogoDiLavoro;
+        this.durataTurno = durataTurno;
     }
 
     // Getter e Setter
     public String getCodiceFiscale() {
         return codiceFiscale;
+    }
+
+    public int getDurataTurno() {
+        return durataTurno;
+    }
+
+    public void setDurataTurno(int durataTurno) {
+        this.durataTurno = durataTurno;
     }
 
     public void setCodiceFiscale(String codiceFiscale) {

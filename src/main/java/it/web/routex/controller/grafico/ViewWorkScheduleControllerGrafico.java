@@ -2,53 +2,73 @@ package it.web.routex.controller.grafico;
 import it.web.routex.bean.UtenteBeanGenerico;
 import it.web.routex.bean.WorkerScheduleBean;
 import it.web.routex.controller.applicativo.ViewWorkScheduleControllerApplicativo;
+import it.web.routex.domain.LoggedHttpServlet;
+import it.web.routex.exception.BrondiException;
+import it.web.routex.exception.DAOExceptionRemoli;
+import it.web.routex.exception.LoginNotFoundRemoli;
 import it.web.routex.utility.singleton.Credentials;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import javax.servlet.ServletException; // Import necessario per il forward
-
 @WebServlet("/viewWorkSchedule")
-public class ViewWorkScheduleControllerGrafico extends HttpServlet {
+public class ViewWorkScheduleControllerGrafico extends LoggedHttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         try {
             HttpSession session = request.getSession(false);
             if (session == null) {
-                response.sendRedirect("index.jsp");
+                redirectToLogin(response);
                 return;
             }
 
             Credentials cred = Credentials.getInstanceSingleton();
-            System.out.println(cred.getCodiceFiscale()+cred.getNome()+cred.getRuolo());
-
-            if (cred == null) {
-                response.sendRedirect("index.jsp");
+            if (cred == null || cred.getCodiceFiscale() == null) {
+                redirectToLogin(response);
                 return;
             }
 
-
             ViewWorkScheduleControllerApplicativo service = new ViewWorkScheduleControllerApplicativo();
+
             WorkerScheduleBean schedule = service.getSchedule(cred.getCodiceFiscale());
 
-            // 1. Usa request.setAttribute (non session)
-            // Questo rende il dato disponibile SOLO per questa visualizzazione
-            //request.setAttribute("workerSchedule", schedule);
-            request.getSession().setAttribute("workerSchedule", schedule);
-            /*
-             * if null
-             * errore
-             * else dashboard*/
-            // Se non sei loggato o cf è null, reindirizza a login
-            response.sendRedirect(request.getContextPath() + "/dashboardWorker.jsp");
-            // 2. Usa forward (non sendRedirect)
-            // Questo passa il controllo alla JSP mantenendo i dati nella request
-            //request.getRequestDispatcher("dashboardWorker.jsp").forward(request, response);
+            request.setAttribute("workerSchedule", schedule);
+            request.getRequestDispatcher("/workSchedule.jsp").forward(request, response);
 
+        } catch (BrondiException e) {
+            logger.error(
+                    "Errore Brondi. Messaggio={} CodiceErrore={} Dettagli={}",
+                    e.getMessage(),
+                    e.getCodiceDiErrore(),
+                    e.getDetails()
+            );
+
+            forwardError(request, response, e.getMessage());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            logger.error("Errore generico", e);
+            forwardError(request, response, "Errore imprevisto");
+        }
+    }
+
+    private void forwardError(HttpServletRequest request,
+                              HttpServletResponse response,
+                              String message) {
+        try {
+            request.setAttribute("errore", message);
+            request.getRequestDispatcher("/error.jsp")
+                    .forward(request, response);
+        } catch (Exception e) {
+            logger.error("Errore durante il forward alla pagina di errore", e);
+        }
+    }
+
+    private void redirectToLogin(HttpServletResponse response) {
+        try {
+            response.sendRedirect("/login.jsp");
+        } catch (Exception e) {
+            logger.error("Errore redirect login", e);
         }
     }
 }

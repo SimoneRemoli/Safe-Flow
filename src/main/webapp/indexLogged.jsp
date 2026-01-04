@@ -174,7 +174,7 @@
 
     <div class="right-content">
 
-        <!-- ✅ BOTTONI POST-LOGIN -->
+        <!--  BOTTONI POST-LOGIN -->
         <div class="button-container">
             <a href="indexLogged.jsp">Home</a>
             <a href="areaRiservata">Area Riservata</a>
@@ -185,12 +185,12 @@
             <img src="images/logo-no-background.png" alt="Logo">
             <h1>Welcome to RouteX!</h1>
 
-            <!-- ✅ Start Exploring SEMPRE PRESENTE -->
+
             <form action="PathControllerGrafico" method="get">
                 <button class="welcome-button" type="submit">Start Exploring</button>
             </form>
 
-            <!-- ✅ Buy Ticket SEMPRE PRESENTE -->
+
             <form action="buyTicket" method="get">
                 <button class="buy-button" type="submit">Buy Ticket</button>
             </form>

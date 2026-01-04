@@ -3,6 +3,7 @@ package it.web.routex.dao;
 import it.web.routex.bean.WorkerScheduleBean;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.LoginNotFoundRemoli;
+import it.web.routex.model.WorkerSchedule;
 import it.web.routex.utility.factory.ConnectionFactory;
 
 import java.sql.CallableStatement;
@@ -12,7 +13,7 @@ import java.sql.SQLException;
 
 public class WorkerScheduleDAO {
 
-    public WorkerScheduleBean getWorkerSchedule(String codiceFiscale)
+    public WorkerSchedule getWorkerSchedule(String codiceFiscale)
             throws DAOExceptionRemoli, LoginNotFoundRemoli {
 
         String sp = "{ CALL RouteX_Update.viewWorkSchedule(?) }";
@@ -22,28 +23,26 @@ public class WorkerScheduleDAO {
 
             cs.setString(1, codiceFiscale);
 
-            try (ResultSet rs = cs.executeQuery()) {
+            try (ResultSet rs = cs.executeQuery())
+            {
 
                 if (!rs.next()) {
                     throw new DAOExceptionRemoli("Errore.");
                 }
 
-                Integer oraInizio = rs.getObject("oraInizio", Integer.class);
-                Integer oraFine   = rs.getObject("oraFine", Integer.class);
-                String luogoDiLavoro = rs.getString("luogoDiLavoro");
+                int oraInizio = rs.getInt("oraInizio");
+                int oraFine   = rs.getInt("oraFine");
+                String luogo  = rs.getString("luogoDiLavoro");
 
-                // --- Creo e ritorno il DTO ---
-                WorkerScheduleBean cred = new WorkerScheduleBean(
+                return new WorkerSchedule(
                         oraInizio,
                         oraFine,
-                        luogoDiLavoro
+                        luogo
                 );
-
-                return cred;
             }
 
         } catch (SQLException e) {
-            throw new DAOExceptionRemoli("Errore durante il login: " + e.getMessage(), e);
+            throw new DAOExceptionRemoli("Errore durante la chiamata a viewWorkSchedule: " + e.getMessage(), e);
         }
     }
 }
