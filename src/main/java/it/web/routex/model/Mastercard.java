@@ -1,4 +1,15 @@
 package it.web.routex.model;
+/**
+ * Rappresenta il modello di dominio per il pagamento tramite Mastercard.
+ *
+ * Questa classe incapsula i dati e la logica di business associati a una carta
+ * di pagamento Mastercard, occupandosi della validazione dei dati inseriti
+ * e dell’esposizione del metodo di pagamento utilizzato.
+ *
+ * In quanto Model, non contiene alcuna logica di presentazione né di accesso
+ * ai dati persistenti, ma definisce esclusivamente il comportamento e le
+ * regole di dominio legate al concetto di pagamento Mastercard.
+ */
 
 import it.web.routex.interfaces.Payment;
 import it.web.routex.enumerator.PaymentMethod;
