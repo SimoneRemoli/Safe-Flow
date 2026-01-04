@@ -1,8 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="it.web.routex.bean.WorkerScheduleBean" %>
 
 <%
-    WorkerScheduleBean schedule = (WorkerScheduleBean) request.getAttribute("workerSchedule");
+    Integer oraInizio = (Integer) request.getAttribute("oraInizio");
+    Integer oraFine = (Integer) request.getAttribute("oraFine");
+    String luogoDiLavoro = (String) request.getAttribute("luogoDiLavoro");
+    Integer durataTurno = (Integer) request.getAttribute("durataTurno");
 %>
 
 <!DOCTYPE html>
@@ -43,50 +45,40 @@
             Orario di lavoro
         </h4>
 
-        <% if (schedule != null) { %>
-
-            <div class="mb-3">
-                <div class="label">Ora di inizio</div>
-                <div class="fs-5">
-                    <%= schedule.getOraInizio() %>:00
-                </div>
+        <div class="mb-3">
+            <div class="label">Ora di inizio</div>
+            <div class="fs-5">
+                <%= oraInizio %>:00
             </div>
+        </div>
 
-            <div class="mb-3">
-                <div class="label">Ora di fine</div>
-                <div class="fs-5">
-                    <%= schedule.getOraFine() %>:00
-                </div>
+        <div class="mb-3">
+            <div class="label">Ora di fine</div>
+            <div class="fs-5">
+                <%= oraFine %>:00
             </div>
+        </div>
 
-            <div class="mb-3">
-                <div class="label">Luogo di lavoro</div>
-                <div class="fs-5">
-                    <%= schedule.getLuogoDiLavoro() %>
-                </div>
+        <div class="mb-3">
+            <div class="label">Luogo di lavoro</div>
+            <div class="fs-5">
+                <%= luogoDiLavoro %>
             </div>
+        </div>
 
-            <div class="mb-4">
-                <div class="label">Durata turno</div>
-                <div class="fs-5">
-                    <%= schedule.getDurataTurno() %> ore
-                </div>
+        <div class="mb-4">
+            <div class="label">Durata turno</div>
+            <div class="fs-5">
+                <%= durataTurno %> ore
             </div>
+        </div>
 
-            <div class="text-center">
-                <a href="<%= request.getContextPath() %>/dashboardWorker.jsp"
-                   class="btn btn-primary">
-                    Torna alla dashboard
-                </a>
-            </div>
-
-        <% } else { %>
-
-            <div class="alert alert-danger text-center">
-                Impossibile recuperare l'orario di lavoro.
-            </div>
-
-        <% } %>
+        <div class="text-center">
+            <a href="<%= request.getContextPath() %>/dashboardWorker.jsp"
+               class="btn btn-primary">
+                Torna alla dashboard
+            </a>
+        </div>
 
     </div>
 </div>

@@ -1,17 +1,12 @@
 package it.web.routex.controller.grafico;
-import it.web.routex.bean.UtenteBeanGenerico;
 import it.web.routex.bean.WorkerScheduleBean;
 import it.web.routex.controller.applicativo.ViewWorkScheduleControllerApplicativo;
 import it.web.routex.domain.LoggedHttpServlet;
 import it.web.routex.exception.BrondiException;
-import it.web.routex.exception.DAOExceptionRemoli;
-import it.web.routex.exception.LoginNotFoundRemoli;
 import it.web.routex.utility.singleton.Credentials;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-import java.io.IOException;
-import javax.servlet.ServletException; // Import necessario per il forward
 @WebServlet("/viewWorkSchedule")
 public class ViewWorkScheduleControllerGrafico extends LoggedHttpServlet {
 
@@ -34,7 +29,11 @@ public class ViewWorkScheduleControllerGrafico extends LoggedHttpServlet {
 
             WorkerScheduleBean schedule = service.getSchedule(cred.getCodiceFiscale());
 
-            request.setAttribute("workerSchedule", schedule);
+            request.setAttribute("oraInizio", schedule.getOraInizio());
+            request.setAttribute("oraFine", schedule.getOraFine());
+            request.setAttribute("luogoDiLavoro", schedule.getLuogoDiLavoro());
+            request.setAttribute("durataTurno", schedule.getDurataTurno());
+
             request.getRequestDispatcher("/workSchedule.jsp").forward(request, response);
 
         } catch (BrondiException e) {

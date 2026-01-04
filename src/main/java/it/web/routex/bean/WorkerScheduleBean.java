@@ -2,7 +2,6 @@ package it.web.routex.bean;
 
 public class WorkerScheduleBean {
 
-    private String codiceFiscale;
     private Integer oraInizio;
     private Integer oraFine;
     private String luogoDiLavoro;
@@ -16,21 +15,12 @@ public class WorkerScheduleBean {
         this.durataTurno = durataTurno;
     }
 
-    // Getter e Setter
-    public String getCodiceFiscale() {
-        return codiceFiscale;
-    }
-
     public int getDurataTurno() {
         return durataTurno;
     }
 
     public void setDurataTurno(int durataTurno) {
         this.durataTurno = durataTurno;
-    }
-
-    public void setCodiceFiscale(String codiceFiscale) {
-        this.codiceFiscale = codiceFiscale;
     }
 
     public Integer getOraInizio() {
