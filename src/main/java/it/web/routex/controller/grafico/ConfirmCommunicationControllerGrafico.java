@@ -1,25 +1,21 @@
 package it.web.routex.controller.grafico;
 
-
 import it.web.routex.bean.MessageBean;
 import it.web.routex.controller.applicativo.ConfirmCommunicationControllerApplicativo;
 import it.web.routex.exception.BrondiInvalidCommunicationInputException;
 import it.web.routex.extractor.CommunicationInputExtractor;
 import it.web.routex.record.CommunicationInput;
-
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @WebServlet("/confirmCommunication")
 public class ConfirmCommunicationControllerGrafico extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    {
         try {
             //Estrazione + validazione input
             CommunicationInput input = CommunicationInputExtractor.extract(request);
@@ -47,7 +43,11 @@ public class ConfirmCommunicationControllerGrafico extends HttpServlet {
 
             // ERRORE DI INPUT (BOUNDARY)
             request.setAttribute("errore", e.getMessage());
-            request.getRequestDispatcher("/adminError.jsp").forward(request, response);
+            try {
+                request.getRequestDispatcher("/adminError.jsp").forward(request, response);
+            }catch(Exception d){
+                throw new RuntimeException(d.getMessage());
+            }
 
         } catch (Exception e) {
             // ERRORE TECNICO / APPLICATIVO
@@ -55,7 +55,11 @@ public class ConfirmCommunicationControllerGrafico extends HttpServlet {
                     "errore",
                     "Errore durante l'invio della comunicazione."
             );
+            try {
             request.getRequestDispatcher("/adminError.jsp").forward(request, response);
+            }catch(Exception d){
+                throw new RuntimeException(d.getMessage());
+            }
         }
     }
 }

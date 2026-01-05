@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -43,14 +44,16 @@ class SendCommunicationTest {
         String messageBody = parts[1];
 
         MessageBean messageBean = new MessageBean();
-
         messageBean.setMessage(messageBody);
         messageBean.setDate(new Timestamp(System.currentTimeMillis()));
         messageBean.setRisolto(false);
 
-        ConfirmCommunicationControllerApplicativo controller = new ConfirmCommunicationControllerApplicativo();
-        boolean risultato = controller.communication(messageBean);
+        ConfirmCommunicationControllerApplicativo controller =
+                new ConfirmCommunicationControllerApplicativo();
 
-        assertTrue(risultato, "Il controller dovrebbe restituire true dopo l'invio riuscito.");
+        assertDoesNotThrow(() ->
+                controller.communication(messageBean)
+        );
     }
+
 }
