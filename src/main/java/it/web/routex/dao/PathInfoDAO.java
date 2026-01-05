@@ -1,42 +1,42 @@
 package it.web.routex.dao;
 
-import it.web.routex.bean.PathInfoBean;
 import it.web.routex.exception.DAOExceptionRemoli;
+import it.web.routex.model.Route;
 import it.web.routex.utility.factory.ConnectionFactory;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PathInfoDAO {
 
-    public List<PathInfoBean> getAllPathInfo() throws DAOExceptionRemoli {
-        List<PathInfoBean> resultList = new ArrayList<>();
+    public List<Route> getAllPathInfo() throws DAOExceptionRemoli {
+
+        List<Route> resultList = new ArrayList<>();
 
         try (Connection conn = ConnectionFactory.getConnection()) {
-            CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.getAllPathInfo() }");
 
-            boolean hasResult = cs.execute();
+            CallableStatement cs =
+                    conn.prepareCall("{ CALL RouteX_Update.getAllPathInfo() }");
 
-            if (hasResult) {
+            if (cs.execute()) {
                 try (ResultSet rs = cs.getResultSet()) {
                     while (rs.next()) {
-                        PathInfoBean info = new PathInfoBean();
-                        info.setStartStation(rs.getString("StartStation"));
-                        info.setEndStation(rs.getString("EndStation"));
-                        info.setCity(rs.getString("City"));
-                        info.setTipoViaggiatore(rs.getString("TipoViaggiatore"));
-                        info.setNCambi(rs.getInt("NCambi"));
-                        info.setListaCambi(rs.getString("ListaCambi"));
-                        info.setStazioneDiInterscambio(rs.getString("StazioneDiInterscambio"));
-                        info.setNStazioniAttraversate(rs.getInt("NStazioniAttraversate"));
-                        info.setTempoDiArrivo(rs.getDouble("TempoDiArrivo"));
-                        info.setNStazioniCitta(rs.getInt("NStazioniCitta"));
-                        info.setPercTerrenoUtilizzato(rs.getDouble("PercTerrenoUtilizzato"));
-                        info.setUtente(rs.getString("Utente"));
+
+                        Route info = new Route(
+                                rs.getString("StartStation"),
+                                rs.getString("EndStation"),
+                                rs.getString("City"),
+                                rs.getString("TipoViaggiatore"),
+                                rs.getInt("NCambi"),
+                                rs.getString("ListaCambi"),
+                                rs.getString("StazioneDiInterscambio"),
+                                rs.getInt("NStazioniAttraversate"),
+                                rs.getDouble("TempoDiArrivo"),
+                                rs.getInt("NStazioniCitta"),
+                                rs.getDouble("PercTerrenoUtilizzato"),
+                                rs.getString("Utente")
+                        );
 
                         resultList.add(info);
                     }
@@ -44,7 +44,10 @@ public class PathInfoDAO {
             }
 
         } catch (SQLException e) {
-            throw new DAOExceptionRemoli("Errore nel recupero dei dati PathInfo: " + e.getMessage());
+            throw new DAOExceptionRemoli(
+                    "Errore nel recupero delle statistiche PathInfo",
+                    e
+            );
         }
 
         return resultList;

@@ -24,6 +24,36 @@ public class Route {
     private Double percTerrenoUtilizzato;
     private String utente;
 
+    public Route(
+            String startStation,
+            String endStation,
+            String city,
+            String tipoViaggiatore,
+            int nCambi,
+            String listaCambi,
+            String stazioneDiInterscambio,
+            int nStazioniAttraversate,
+            double tempoDiArrivo,
+            int nStazioniCitta,
+            double percTerrenoUtilizzato,
+            String utente
+    ) {
+        this.partenza = startStation;
+        this.arrivo = endStation;
+        this.citta = city;
+        this.tipoViaggiatore = tipoViaggiatore;
+        this.nCambi = nCambi;
+        this.listaCambi = listaCambi;
+        this.stazInterscambio = stazioneDiInterscambio;
+        this.nStazAttraversate = nStazioniAttraversate;
+        this.tempoDiArrivo = tempoDiArrivo;
+        this.nStazioniCitta = nStazioniCitta;
+        this.percTerrenoUtilizzato = percTerrenoUtilizzato;
+        this.utente = utente;
+    }
+
+
+
 
     public Route(InformazioniPercorsoBean dto, RouteRecord route, String status) throws InvalidRouteException {
 
@@ -171,3 +201,5 @@ public class Route {
         this.utente = utente;
     }
 }
+
+
