@@ -1,10 +1,12 @@
 package Testing.Brondi;
 
+import it.web.routex.bean.MessageBean;
 import it.web.routex.controller.applicativo.UpdateNotificationsControllerApplicativo;
 import it.web.routex.enumerator.Ruolo;
 import it.web.routex.utility.factory.ConnectionFactory;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Timestamp;
 import java.util.ResourceBundle;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -13,48 +15,49 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
  * ------------------------------------------------------------
  * Test Class : <UpdateNotificationsTest>
  * Author     : Lorenzo Brondi
- * Description: Test dell'aggiornamento stato notifiche (segnale come risolte).
+ * Description: Test dell'aggiornamento stato notifiche.
  * ------------------------------------------------------------
  */
 class UpdateNotificationsTest {
 
-    private static final ResourceBundle RB = ResourceBundle.getBundle("configurations/testpaths");
+    private static final ResourceBundle RB =
+            ResourceBundle.getBundle("configurations/testpaths");
 
     @Test
-    void TestAggiornaNotifiche() {
+    void TestAggiornaNotifica() {
 
-        // 1. Setup Ruolo (Admin è colui che risolve le notifiche)
+        // 1. Setup Ruolo
         try {
             ConnectionFactory.cambioDiRuolo(Ruolo.ADMIN);
         } catch (Exception e) {
-            try { ConnectionFactory.cambioDiRuolo(Ruolo.TRAVELER); } catch (Exception ignored) {}
+            try {
+                ConnectionFactory.cambioDiRuolo(Ruolo.TRAVELER);
+            } catch (Exception ignored) {}
         }
 
-        // 2. Preparazione Dati
-        // Il controller si aspetta il formato: "timestamp|messaggio"
-        // Generiamo un timestamp attuale per simulare un dato valido
-        long timestamp = System.currentTimeMillis();
-        String messageBody = RB.getString("msgDaRisolvere");
+        // 2. Creazione Bean (come fa il controller grafico)
+        MessageBean bean = new MessageBean(
+                RB.getString("msgDaRisolvere"),
+                new Timestamp(System.currentTimeMillis())
+        );
 
-        // Costruiamo la stringa combinata
-        String inputCombinato = timestamp + "|" + messageBody;
-
-        // Creiamo l'array che il controller si aspetta
-        String[] inputArr = new String[] { inputCombinato };
-
-        // 3. Esecuzione
+        // 3. Controller applicativo
         UpdateNotificationsControllerApplicativo controller = new UpdateNotificationsControllerApplicativo();
 
         // 4. Verifica
-        // Verifichiamo che l'operazione non lanci eccezioni (es. NumberFormatException o DAOException)
-        assertDoesNotThrow(() -> controller.aggiornaStatoNotifiche(inputArr));
+        assertDoesNotThrow(() ->
+                controller.aggiornaStatoNotifica(bean)
+        );
     }
 
     @Test
-    void TestInputNull() {
-        // Test per verificare che il controller gestisca array nulli senza crashare
-        UpdateNotificationsControllerApplicativo controller = new UpdateNotificationsControllerApplicativo();
+    void TestBeanNull() {
 
-        assertDoesNotThrow(() -> controller.aggiornaStatoNotifiche(null));
+        UpdateNotificationsControllerApplicativo controller =
+                new UpdateNotificationsControllerApplicativo();
+
+        assertDoesNotThrow(() ->
+                controller.aggiornaStatoNotifica(null)
+        );
     }
 }

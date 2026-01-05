@@ -1,43 +1,47 @@
 package it.web.routex.dao;
 
-import it.web.routex.bean.MessageBean;
 import it.web.routex.exception.DAOExceptionRemoli;
+import it.web.routex.model.Notification;
 import it.web.routex.utility.factory.ConnectionFactory;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GetCommunicationsDAO {
-    public List<MessageBean> getMessages() throws DAOExceptionRemoli {
-        List<MessageBean> resultList = new ArrayList<>();
 
-        try (Connection conn = ConnectionFactory.getConnection()) {
-            CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.getMessages() }");
+    public List<Notification> getMessages() throws DAOExceptionRemoli {
 
-            boolean hasResult = cs.execute();
+        List<Notification> result = new ArrayList<>();
 
-            if (hasResult) {
+        try (Connection conn = ConnectionFactory.getConnection();
+             CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.getMessages() }")) {
+
+            if (cs.execute()) {
                 try (ResultSet rs = cs.getResultSet()) {
                     while (rs.next()) {
-                        MessageBean info = new MessageBean();
-
-                        info.setMessage(rs.getString("testo"));
-                        info.setDate(rs.getTimestamp("data"));
-                        info.setRisolto(rs.getBoolean("risolto"));
-
-                        resultList.add(info);
+                        Notification notification = new Notification(
+                                rs.getString("testo"),
+                                rs.getTimestamp("data"),
+                                rs.getBoolean("risolto")
+                        );
+                        result.add(notification);
                     }
                 }
             }
 
+            if (result.isEmpty()) {
+                throw new DAOExceptionRemoli("Nessuna notifica presente nel sistema");
+            }
+
         } catch (SQLException e) {
-            throw new DAOExceptionRemoli("Errore nel recupero dei messaggi: " + e.getMessage());
+            throw new DAOExceptionRemoli(
+                    "Errore nel recupero delle notifiche",
+                    e
+            );
         }
 
-        return resultList;
+        return result;
     }
+
 }

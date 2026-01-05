@@ -7,8 +7,6 @@ import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.LoginNotFoundRemoli;
 import it.web.routex.model.WorkerSchedule;
 
-import java.time.LocalTime;
-
 public class ViewWorkScheduleControllerApplicativo {
 
     public WorkerScheduleBean getSchedule(String cf) throws BrondiException {
@@ -28,8 +26,6 @@ public class ViewWorkScheduleControllerApplicativo {
                 );
             }
 
-
-
             int durata = model.durataTurno();
 
             //  Creo SOLO ORA la Bean di trasporto
@@ -40,7 +36,7 @@ public class ViewWorkScheduleControllerApplicativo {
                     durata
             );
 
-        } catch (DAOExceptionRemoli | LoginNotFoundRemoli e) {
+        } catch (DAOExceptionRemoli e) {
             throw new BrondiException(
                     "Errore durante il recupero dell'orario di lavoro",
                     "BRONDI_002",

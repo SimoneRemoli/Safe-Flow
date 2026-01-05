@@ -26,7 +26,6 @@ public class ViewWorkScheduleControllerGrafico extends LoggedHttpServlet {
             }
 
             ViewWorkScheduleControllerApplicativo service = new ViewWorkScheduleControllerApplicativo();
-
             WorkerScheduleBean schedule = service.getSchedule(cred.getCodiceFiscale());
 
             request.setAttribute("oraInizio", schedule.getOraInizio());

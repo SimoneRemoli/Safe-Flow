@@ -1,6 +1,7 @@
 package it.web.routex.dao;
 import it.web.routex.bean.MessageBean;
 import it.web.routex.exception.DAOExceptionRemoli;
+import it.web.routex.model.Notification;
 import it.web.routex.utility.factory.ConnectionFactory;
 
 import java.sql.CallableStatement;
@@ -24,20 +25,23 @@ public class SendCommunicationDAO {
         }
     }
 
-    public void solvedMessage(MessageBean m) throws DAOExceptionRemoli {
+    public void solvedNotification(Notification n) throws DAOExceptionRemoli {
 
         try (Connection conn = ConnectionFactory.getConnection()) {
 
             CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.spSolvedMessage(?, ?, ?) }");
 
-            cs.setString(1, m.getMessage());
-            cs.setTimestamp(2, m.getDate());
-            cs.setBoolean(3, m.getRisolto());
+            cs.setString(1, n.getMessage());
+            cs.setTimestamp(2, n.getDate());
+            cs.setBoolean(3, n.isRisolto());
 
             cs.execute();
 
         } catch (Exception e) {
-            throw new DAOExceptionRemoli("Errore durante l'aggiornamento del messaggio: " + e.getMessage());
+            throw new DAOExceptionRemoli(
+                    "Errore durante l'aggiornamento della notifica",
+                    e
+            );
         }
     }
 }

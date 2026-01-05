@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 
 public class MessageBean
 {
-    //private final int identificativo;
     private String message;
     private Timestamp date;
     private Boolean risolto;

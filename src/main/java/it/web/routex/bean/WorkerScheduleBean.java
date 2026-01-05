@@ -18,11 +18,6 @@ public class WorkerScheduleBean {
     public int getDurataTurno() {
         return durataTurno;
     }
-
-    public void setDurataTurno(int durataTurno) {
-        this.durataTurno = durataTurno;
-    }
-
     public Integer getOraInizio() {
         return oraInizio;
     }
@@ -42,9 +37,4 @@ public class WorkerScheduleBean {
     public String getLuogoDiLavoro() {
         return luogoDiLavoro;
     }
-
-    public void setLuogoDiLavoro(String luogoDiLavoro) {
-        this.luogoDiLavoro = luogoDiLavoro;
-    }
-
 }

@@ -1,152 +1,144 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.util.List" %>
+<%@ page import="it.web.routex.bean.MessageBean" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+
+<%
+    List<MessageBean> notifiche =(List<MessageBean>) request.getAttribute("notifiche");
+
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+%>
 
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>RouteX - Notifiche</title>
+    <title>RouteX • Notifiche</title>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/lib/bootstrap/dist/css/bootstrap.css">
-
-    <!-- FontAwesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/lib/bootstrap/dist/css/bootstrap.css">
 
     <style>
-        body { background-color: #f8f9fa; color: #212529; font-family: "Segoe UI", sans-serif; }
-        .main-container { display: flex; width: 100%; min-height: 100vh; }
-        .right-content { flex: 1; padding: 40px; background-color: #ffffff; }
-        .button-container { display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 20px; }
-        .button-container a { background-color: #007bff; color: white; padding: 10px 15px; font-size: 16px; border-radius: 10px; text-decoration: none; transition: background-color 0.3s ease; }
-        .button-container a:hover { background-color: #0056b3; }
-        .table-responsive { background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 30px; }
-        table.dataTable thead { background-color: #e9ecef; color: #212529; }
-        table.dataTable tbody tr:nth-child(even) { background-color: #f1f1f1; }
-        .dataTables_wrapper .dataTables_paginate { display: flex !important; justify-content: center; margin-top: 15px; }
-        .dataTables_wrapper .dataTables_paginate a,
-        .dataTables_wrapper .dataTables_paginate span { color: #212529 !important; background-color: #e2e6ea !important; border: 1px solid #ced4da !important; padding: 6px 12px; margin: 0 3px; border-radius: 5px; text-decoration: none; font-weight: bold; }
-        .dataTables_wrapper .dataTables_paginate .current { background-color: #007bff !important; color: white !important; }
-        .dataTables_wrapper .dataTables_paginate a:hover { background-color: #0056b3 !important; color: white !important; }
-        .dataTables_wrapper .dataTables_filter input { background-color: #ffffff; border: 1px solid #ced4da; color: #212529; padding: 5px; border-radius: 4px; }
-        .metro-logos { position: fixed; right: 20px; bottom: 20px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
-        .metro-logos i { font-size: 40px; color: #6c757d; }
+        body {
+            background: linear-gradient(135deg, #eef2f7, #f8f9fa);
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        .page-container {
+            max-width: 1100px;
+            margin: 60px auto;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-title {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .card-custom {
+            background-color: #ffffff;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        table thead {
+            background-color: #f1f3f5;
+        }
+
+        table th {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .checkbox-custom {
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            border-radius: 10px;
+        }
+
+        .btn-success {
+            border-radius: 10px;
+            padding: 8px 22px;
+        }
+
+        .action-buttons a {
+            margin-left: 8px;
+        }
     </style>
 </head>
 
 <body>
-<div class="main-container">
-    <div class="right-content">
 
-        <!-- LOGIN / HOME -->
-        <div class="button-container">
-            <a href="dashboardWorker.jsp">Home</a>
-            <a href="logout">Logout</a>
-            <a href="addCommunicationWorker.jsp">Aggiungi una segnalazione</a>
+<div class="page-container">
+
+    <!-- HEADER -->
+    <div class="page-header">
+        <h2 class="page-title"> Notifiche di sistema</h2>
+
+        <div class="action-buttons">
+            <a href="dashboardWorker.jsp" class="btn btn-primary">Home</a>
+            <a href="logout" class="btn btn-outline-danger">Logout</a>
         </div>
+    </div>
 
-        <!-- TABELLA NOTIFICHE -->
-        <div class="table-responsive">
-            <h3>Lista Notifiche</h3>
+    <!-- CARD -->
+    <div class="card-custom">
 
-            <form action="updateNotifications" method="post">
+        <form action="updateNotifications" method="post">
 
-                <table id="GridNotifications" class="display table table-striped">
+            <div class="table-responsive">
+                <table class="table table-striped align-middle">
                     <thead>
                     <tr>
-                        <th>Messaggio</th>
-                        <th>Data</th>
-                        <th>Risolta</th>
+                        <th style="width: 55%">Messaggio</th>
+                        <th style="width: 25%">Data</th>
+                        <th style="width: 20%" class="text-center">Risolta</th>
                     </tr>
                     </thead>
                     <tbody>
 
-                    <c:forEach var="r" items="${notifiche}">
+                    <%
+                            for (MessageBean m : notifiche) {
+                    %>
                         <tr>
-                            <td>${r.message}</td>
-                            <td>
-                                <fmt:formatDate value="${r.date}" pattern="dd/MM/yyyy HH:mm"/>
-                            </td>
+                            <td><%= m.getMessage() %></td>
+                            <td><%= sdf.format(m.getDate()) %></td>
                             <td class="text-center">
-                                <input type="checkbox"
-                                       name="risolte"
-                                       value="${r.date.time}|${fn:escapeXml(r.message)}"
-                                       <c:if test="${r.risolto}">checked</c:if> />
+                                <input type="checkbox" class="checkbox-custom" name="risolte" value="<%= m.getDate().getTime() + "|" + m.getMessage() %>" />
                             </td>
                         </tr>
-                    </c:forEach>
+                    <%
+                            }
+                    %>
 
                     </tbody>
                 </table>
+            </div>
 
-                <button type="submit" class="btn btn-success mt-3">
+            <div class="text-end mt-4">
+                <button type="submit" class="btn btn-success">
                     Salva modifiche
                 </button>
+            </div>
 
-            </form>
-        </div>
+        </form>
     </div>
 </div>
-
-<!-- Icone metro -->
-<div class="metro-logos">
-    <i class="fas fa-subway"></i>
-    <i class="fas fa-train"></i>
-    <i class="fas fa-bus"></i>
-    <i class="fas fa-map-marker-alt"></i>
-</div>
-
-<!-- jQuery + DataTables -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-<script>
-    $(document).ready(function () {
-        $('#GridNotifications').DataTable({
-            pageLength: 10,
-            lengthChange: false,
-            language: {
-                paginate: { previous: "Precedente", next: "Successiva" },
-                info: "Pagina _PAGE_ di _PAGES_",
-                search: "Cerca:",
-                zeroRecords: "Nessuna notifica trovata.",
-                emptyTable: "Nessuna notifica trovata."
-            }
-        });
-    });
-
-
-</script>
-<c:if test="${not empty sessionScope.solved}">
-    <script>
-        window.onload = function () {
-            alert("${fn:escapeXml(sessionScope.solved)}");
-        };
-    </script>
-
-    <c:remove var="solved" scope="session"/>
-</c:if>
-
-<%
-    String msg = (String) session.getAttribute("alertMessage");
-    if (msg != null && !msg.isEmpty()) {
-%>
-
-    <script>
-        window.onload = function() {
-            alert("<%= msg %>");
-        };
-    </script>
-
-<%
-    session.removeAttribute("alertMessage");
-    }
-%>
 
 </body>
 </html>

@@ -225,54 +225,7 @@ body {
     <i class="fas fa-map-marker-alt" style="font-size: 50px; color: white;"></i>
 </div>
 
-<!-- Modal scheda work schedule -->
-<c:if test="${not empty sessionScope.workerSchedule}">
 
-    <div class="modal-scheda" id="workScheduleModal">
-        <span class="modal-close" id="closeModal">&times;</span>
-        <h5>Orario Lavoro</h5>
-        <table class="table table-sm table-bordered">
-            <thead class="table-light">
-                <tr>
-                    <th>Ora Inizio</th>
-                    <th>Ora Fine</th>
-                    <th>Luogo Di Lavoro</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>${sessionScope.workerSchedule.oraInizio}</td>
-                    <td>${sessionScope.workerSchedule.oraFine}</td>
-                    <td>${sessionScope.workerSchedule.luogoDiLavoro}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <c:remove var="workerSchedule" scope="session" />
-
-</c:if>
-
-<script>
-    // Codice modificato per esecuzione immediata
-    (function() {
-        const modal = document.getElementById("workScheduleModal");
-
-        // Se il modal esiste (quindi il c:if ha funzionato), mostralo
-        if(modal) {
-            modal.style.display = "block";
-            console.log("Modal trovato e aperto"); // Debug in console browser (F12)
-        } else {
-            console.log("Modal non presente nell'HTML (c:if false o errore)");
-        }
-
-        const closeBtn = document.getElementById("closeModal");
-        if(closeBtn){
-            closeBtn.onclick = () => modal.style.display = "none";
-            window.onclick = (event) => { if(event.target === modal) modal.style.display = "none"; };
-        }
-    })();
-</script>
 
 </body>
 </html>

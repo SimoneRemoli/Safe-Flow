@@ -13,6 +13,7 @@ package it.web.routex.model;
  * In questo modo, i controller applicativi possono delegare al dominio
  * la responsabilità della coerenza dei dati, evitando l’uso di valori
  * sentinella o controlli tecnici distribuiti nel codice.
+ * @author Simone Remoli
  */
 public class Station {
 
