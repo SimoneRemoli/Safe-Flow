@@ -13,14 +13,10 @@ public class ConfirmCommunicationControllerApplicativo {
         try {
             SendCommunicationDAO sendCommunication = new SendCommunicationDAO();
             sendCommunication.sendMessage(message);
-            System.out.println("\nMessaggio inviato.\n");
             return true;
 
         } catch (Exception e) {
-            // catch generico per sicurezza
-            System.err.println("Errore nell'invio del messaggio: " + e.getMessage());
             throw new DAOExceptionRemoli("Errore nella communication()", e);
         }
     }
-
 }

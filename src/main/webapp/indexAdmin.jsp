@@ -181,7 +181,7 @@
                 <img src="images/logo-no-background.png" alt="Logo">
                 <h1>RouteX - Admin Homepage</h1>
 
-                <form action="sendCommunication.jsp" method="post">
+                <form action="sendCommunicationn.jsp" method="post">
                     <button class="welcome-button" type="submit">Send Communication</button>
                 </form>
                 <br>

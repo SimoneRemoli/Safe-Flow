@@ -3,6 +3,9 @@ package it.web.routex.controller.grafico;
 
 import it.web.routex.bean.MessageBean;
 import it.web.routex.controller.applicativo.ConfirmCommunicationControllerApplicativo;
+import it.web.routex.exception.BrondiInvalidCommunicationInputException;
+import it.web.routex.extractor.CommunicationInputExtractor;
+import it.web.routex.record.CommunicationInput;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,33 +13,49 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Timestamp;
 
 @WebServlet("/confirmCommunication")
 public class ConfirmCommunicationControllerGrafico extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        String testo = request.getParameter("message");
-
-        MessageBean mess = new MessageBean();
-        mess.setMessage(testo);
-        mess.setDate(new Timestamp(System.currentTimeMillis()));
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
+            //Estrazione + validazione input
+            CommunicationInput input = CommunicationInputExtractor.extract(request);
+
+            // Bean di trasporto
+            MessageBean mess = new MessageBean();
+            mess.setMessage(input.message());
+            mess.setDate(input.date());
+
+            // Chiamata applicativa
             ConfirmCommunicationControllerApplicativo service = new ConfirmCommunicationControllerApplicativo();
+
             service.communication(mess);
 
-            request.getSession().setAttribute("alertMessage", "Comunicazione inviata con successo!");
+            // Successo
+            request.setAttribute("successTitle", "Comunicazione inviata");
+            request.setAttribute(
+                    "successMessage",
+                    "La comunicazione è stata correttamente inviata a tutti i lavoratori del sistema."
+            );
+
+            request.getRequestDispatcher("/successCommunication.jsp").forward(request, response);
+
+        } catch (BrondiInvalidCommunicationInputException e) {
+
+            // ERRORE DI INPUT (BOUNDARY)
+            request.setAttribute("errore", e.getMessage());
+            request.getRequestDispatcher("/adminError.jsp").forward(request, response);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            request.getSession().setAttribute("alertMessage", "Errore nell'invio della comunicazione.");
+            // ERRORE TECNICO / APPLICATIVO
+            request.setAttribute(
+                    "errore",
+                    "Errore durante l'invio della comunicazione."
+            );
+            request.getRequestDispatcher("/adminError.jsp").forward(request, response);
         }
-
-        response.sendRedirect(request.getContextPath() + "/indexAdmin.jsp");
     }
-
 }
