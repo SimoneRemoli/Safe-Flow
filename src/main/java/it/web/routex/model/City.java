@@ -51,5 +51,8 @@ public class City {
         return costoBiglietto * quantita;
     }
 
+    public long getNumeroStazioni() {
+        return numeroStazioni;
+    }
 
 }

@@ -1,11 +1,14 @@
 package it.web.routex.controller.applicativo;
 import it.web.routex.bean.PaymentResultBean;
-import it.web.routex.dao.MastercardDAO;
+import it.web.routex.dao.LayerPersistenza;
+import it.web.routex.dao.LayerPersistenzaDemo;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.CredentialsExceptionRemoli;
 import it.web.routex.exception.PaymentValidationExceptionRemoli;
 import it.web.routex.dao.TicketDAOLayer;
 import it.web.routex.model.Mastercard;
+import it.web.routex.utility.factory.FactoryLayerPersistenza;
+import it.web.routex.utility.singleton.ApplicationModeManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import it.web.routex.utility.decorator.decoratorticket.BaseTicketCode;
@@ -26,8 +29,12 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
     public PaymentResultBean run() throws DAOExceptionRemoli, PaymentValidationExceptionRemoli, CredentialsExceptionRemoli {
 
         final List<String> codiciBiglietti;
-        Mastercard mastercard = new MastercardDAO().getPaymentMastercard(numeroCarta, scadenza, cvv);
+        /*Mastercard mastercard = new MastercardDAO().getPaymentMastercard(numeroCarta, scadenza, cvv);
         mastercard.validate();
+         */
+
+        LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
+        Mastercard mastercard = layer.getPaymentMastercard(numeroCarta, scadenza, cvv);
 
         Component gen = new TimestampDecorator(new CittaDecorator(new BaseTicketCode(), city));
 
@@ -62,9 +69,19 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
         if (credenziali == null) {
             throw new CredentialsExceptionRemoli("Nessun utente loggato associato al pagamento.", "Errore nel PagamentoMastercard.java");
         }
-        TicketDAOLayer daoLayer = FactoryPersistence.createTicketDAO();
-        daoLayer.salvataggio(credenziali, codiciBiglietti, mastercard.getMethod().getDisplayName(), city);
-        logger.info("Traveler {} {} {} {} ha effettuato un pagamento di {} euro con la Mastercard {}", credenziali.getNome(), credenziali.getCodiceFiscale(), credenziali.getCognome(), credenziali.getDisabile(), totale,  mastercard.maskedNumber());
+
+        if(ApplicationModeManager.getSingletonInstance().getMode().toString().equals("DEMO")){
+            logger.info("Modalità DEMO: il pagamento non viene salvato in persistenza.");
+
+            LayerPersistenzaDemo layer = new LayerPersistenzaDemo();
+            layer.salvataggio(credenziali, codiciBiglietti, mastercard.getMethod().getDisplayName(), city);
+
+        }
+        else {
+            TicketDAOLayer daoLayer = FactoryPersistence.createTicketDAO();
+            daoLayer.salvataggio(credenziali, codiciBiglietti, mastercard.getMethod().getDisplayName(), city);
+            logger.info("Traveler {} {} {} {} ha effettuato un pagamento di {} euro con la Mastercard {}", credenziali.getNome(), credenziali.getCodiceFiscale(), credenziali.getCognome(), credenziali.getDisabile(), totale, mastercard.maskedNumber());
+        }
     }
 }
 

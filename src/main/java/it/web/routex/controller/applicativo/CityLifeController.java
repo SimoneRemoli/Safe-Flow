@@ -1,13 +1,15 @@
 package it.web.routex.controller.applicativo;
 import it.web.routex.bean.CityLifeBean;
 import it.web.routex.bean.FermataRecordBean;
-import it.web.routex.dao.FermataDAO;
+
 import java.sql.SQLException;
 import java.util.*;
 
+import it.web.routex.dao.LayerPersistenza;
 import it.web.routex.exception.FuoriRangeExceptionRemoli;
 import it.web.routex.exception.UnreacheableNodeExceptionRemoli;
 import it.web.routex.model.CityModel;
+import it.web.routex.utility.factory.FactoryLayerPersistenza;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -89,8 +91,11 @@ public class CityLifeController
     public CityLifeBean calcolaPercorso(List<Integer> ids, String city) throws SQLException {
         final Logger logger = LoggerFactory.getLogger(getClass());
         StatoPercorso stato = new StatoPercorso();
-        FermataDAO fermataDAO = new FermataDAO();
+        /*FermataDAO fermataDAO = new FermataDAO();
         List<FermataRecordBean> fermateTot = fermataDAO.getFermateByIds(ids, city);
+         */
+        LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
+        List<FermataRecordBean> fermateTot = layer.getFermateByIds(ids,city);
 
         for (int i = 0; i < fermateTot.size(); i++)
         {

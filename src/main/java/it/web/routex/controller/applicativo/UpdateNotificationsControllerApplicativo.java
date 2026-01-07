@@ -1,9 +1,10 @@
 package it.web.routex.controller.applicativo;
 
 import it.web.routex.bean.MessageBean;
-import it.web.routex.dao.SendCommunicationDAO;
+import it.web.routex.dao.LayerPersistenza;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.model.Notification;
+import it.web.routex.utility.factory.FactoryLayerPersistenza;
 
 public class UpdateNotificationsControllerApplicativo {
 
@@ -16,7 +17,11 @@ public class UpdateNotificationsControllerApplicativo {
                 true
         );
 
-        SendCommunicationDAO dao = new SendCommunicationDAO();
+        /*SendCommunicationDAO dao = new SendCommunicationDAO();
         dao.solvedNotification(notification);
+         */
+
+        LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
+        layer.solvedNotification(notification);
     }
 }

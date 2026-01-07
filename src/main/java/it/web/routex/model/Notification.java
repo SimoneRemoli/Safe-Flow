@@ -15,7 +15,7 @@ public class Notification {
 
     private final String message;
     private final Timestamp date;
-    private final boolean risolto;
+    private boolean risolto;
 
     public Notification(String message, Timestamp date, boolean risolto) {
         this.message = message;
@@ -33,5 +33,9 @@ public class Notification {
 
     public boolean isRisolto() {
         return risolto;
+    }
+    public void setRisolto(boolean ris)
+    {
+        this.risolto = ris;
     }
 }

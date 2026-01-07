@@ -1,9 +1,12 @@
 package it.web.routex.controller.applicativo;
 import it.web.routex.bean.PaymentResultBean;
-import it.web.routex.dao.PaypalDAO;
+import it.web.routex.dao.LayerPersistenza;
+import it.web.routex.dao.LayerPersistenzaDemo;
 import it.web.routex.dao.TicketDAOLayer;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.model.Paypal;
+import it.web.routex.utility.factory.FactoryLayerPersistenza;
+import it.web.routex.utility.singleton.ApplicationModeManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import it.web.routex.utility.decorator.decoratorticket.BaseTicketCode;
@@ -24,8 +27,15 @@ public class PagamentoPaypal extends RegistrazionePagamentoController
     public PaymentResultBean run() throws DAOExceptionRemoli, PaymentValidationExceptionRemoli, CredentialsExceptionRemoli
     {
         final List<String> codiciBiglietti;
-        Paypal p = new PaypalDAO().getPaymentPaypal(email, codice);
+
+        /*Paypal p = new PaypalDAO().getPaymentPaypal(email, codice);
         p.validate();
+         */
+
+        LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
+        Paypal p = layer.getPaymentPaypal(email,codice);
+
+
 
 
         Component gen = new TimestampDecorator(new CittaDecorator(new BaseTicketCode(), city));
@@ -62,8 +72,19 @@ public class PagamentoPaypal extends RegistrazionePagamentoController
         if (credenziali == null) {
             throw new CredentialsExceptionRemoli("Nessun utente loggato associato al pagamento.", "Errore nel PagamentoPaypal.java");
         }
-        TicketDAOLayer daoLayerJDBC = FactoryPersistence.createTicketDAO();
-        daoLayerJDBC.salvataggio(credenziali, codiciBiglietti, paypal.getMethod().getDisplayName(), city);
-        logger.info("Traveler {} {} {} {} ha effettuato un pagamento di {} euro con Paypal {}", credenziali.getNome(), credenziali.getCodiceFiscale(), credenziali.getCognome(), credenziali.getDisabile(), totale, paypal.maskedAccount());
+
+        if(ApplicationModeManager.getSingletonInstance().getMode().toString().equals("DEMO")){
+            logger.info("Modalità DEMO: il pagamento non viene salvato in persistenza.");
+
+            LayerPersistenzaDemo layer = new LayerPersistenzaDemo();
+            layer.salvataggio(credenziali, codiciBiglietti, paypal.getMethod().getDisplayName(), city);
+
+        }
+        else
+        {
+            TicketDAOLayer daoLayerJDBC = FactoryPersistence.createTicketDAO();
+            daoLayerJDBC.salvataggio(credenziali, codiciBiglietti, paypal.getMethod().getDisplayName(), city);
+            logger.info("Traveler {} {} {} {} ha effettuato un pagamento di {} euro con Paypal {}", credenziali.getNome(), credenziali.getCodiceFiscale(), credenziali.getCognome(), credenziali.getDisabile(), totale, paypal.maskedAccount());
+        }
     }
 }

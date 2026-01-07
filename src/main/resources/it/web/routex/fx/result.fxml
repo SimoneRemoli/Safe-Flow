@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="it.web.routex.fx.ResultFXController">
+
+    <!-- =======================
+         HEADER
+         ======================= -->
+    <top>
+        <Label text="Route Result"
+               BorderPane.alignment="CENTER"
+               style="-fx-font-size: 24px;
+                      -fx-font-weight: bold;
+                      -fx-padding: 20;" />
+    </top>
+
+    <!-- =======================
+         SIDEBAR (percorsi)
+         ======================= -->
+    <left>
+        <VBox spacing="10"
+              prefWidth="280"
+              style="-fx-background-color: #0078d7;">
+            <padding>
+                <Insets top="20" bottom="20" left="15" right="15"/>
+            </padding>
+
+            <Label text="Best route"
+                   style="-fx-text-fill: white;
+                          -fx-font-size: 18px;
+                          -fx-font-weight: bold;" />
+
+            <ListView fx:id="routeStepsList"
+                      VBox.vgrow="ALWAYS"/>
+        </VBox>
+    </left>
+
+    <!-- =======================
+         CONTENUTO PRINCIPALE
+         ======================= -->
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="true">
+            <content>
+                <VBox spacing="15">
+                    <padding>
+                        <Insets top="20" bottom="20" left="30" right="30"/>
+                    </padding>
+
+                    <GridPane hgap="15" vgap="10">
+                        <Label text="Start Station:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <Label fx:id="startLabel" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                        <Label text="End Station:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <Label fx:id="endLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                        <Label text="City:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <Label fx:id="cityLabel" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                        <Label text="Traveler type:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                        <Label fx:id="statusLabel" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                        <Label text="Line changes:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                        <Label fx:id="changesLabel" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+                        <Label text="Stations traversed:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                        <Label fx:id="stationsLabel" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+                        <Label text="Arrival time:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+                        <Label fx:id="timeLabel" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+
+                        <Label text="Total stations:" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+                        <Label fx:id="totalStationsLabel" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+
+                        <Label text="Metro land usage:" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
+                        <Label fx:id="soilLabel" GridPane.rowIndex="8" GridPane.columnIndex="1"/>
+                    </GridPane>
+
+                    <Label text="Line changes list:" style="-fx-font-weight: bold;"/>
+                    <ListView fx:id="changesList"/>
+
+                    <Label text="Interchange stations:" style="-fx-font-weight: bold;"/>
+                    <ListView fx:id="interchangeList"/>
+
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+
+    <!-- =======================
+         FOOTER
+         ======================= -->
+    <bottom>
+        <HBox spacing="10"
+              alignment="CENTER"
+              BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="15"/>
+            </padding>
+
+            <Button text="Back"
+                    onAction="#onBack"/>
+
+            <Button text="Home"
+                    onAction="#onHome"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

@@ -1,21 +1,24 @@
 package it.web.routex.controller.applicativo;
 
 import it.web.routex.bean.WorkerScheduleBean;
-import it.web.routex.dao.WorkerScheduleDAO;
+import it.web.routex.dao.LayerPersistenza;
 import it.web.routex.exception.BrondiException;
 import it.web.routex.exception.DAOExceptionRemoli;
-import it.web.routex.exception.LoginNotFoundRemoli;
 import it.web.routex.model.WorkerSchedule;
+import it.web.routex.utility.factory.FactoryLayerPersistenza;
 
 public class ViewWorkScheduleControllerApplicativo {
 
     public WorkerScheduleBean getSchedule(String cf) throws BrondiException {
 
-        WorkerScheduleDAO dao = new WorkerScheduleDAO();
+        //WorkerScheduleDAO dao = new WorkerScheduleDAO();
 
         try {
             //Recupero MODEL
-            WorkerSchedule model = dao.getWorkerSchedule(cf);
+
+            LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
+            WorkerSchedule model = layer.getWorkerSchedule(cf);
+            //WorkerSchedule model = dao.getWorkerSchedule(cf);
 
             //logica applicativa
             if (!model.isValid()) {
@@ -38,7 +41,7 @@ public class ViewWorkScheduleControllerApplicativo {
 
         } catch (DAOExceptionRemoli e) {
             throw new BrondiException(
-                    "Errore durante il recupero dell'orario di lavoro",
+                    "Il Worker non possiede orari di lavoro assegnati.",
                     "BRONDI_002",
                     e.getMessage()
             );

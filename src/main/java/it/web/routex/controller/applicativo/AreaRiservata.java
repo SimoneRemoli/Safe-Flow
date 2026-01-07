@@ -2,7 +2,8 @@ package it.web.routex.controller.applicativo;
 
 import it.web.routex.bean.RouteBean;
 import it.web.routex.bean.TicketBean;
-import it.web.routex.dao.RouteDAO;
+import it.web.routex.dao.LayerPersistenza;
+import it.web.routex.dao.LayerPersistenzaDemo;
 import it.web.routex.dao.TicketDAOLayer;
 import it.web.routex.model.Route;
 import java.util.ArrayList;
@@ -12,15 +13,28 @@ import it.web.routex.exception.InvalidTicketExceptionRemoli;
 import it.web.routex.exception.PathNotFoundExceptionRemoli;
 import it.web.routex.model.Ticket;
 import it.web.routex.utility.decorator.decoratorpath.*;
+import it.web.routex.utility.factory.FactoryLayerPersistenza;
 import it.web.routex.utility.factory.FactoryPersistence;
+import it.web.routex.utility.singleton.ApplicationModeManager;
 
 public class AreaRiservata
 {
     public List<TicketBean> runTicket(String cf)
             throws DAOExceptionRemoli, PathNotFoundExceptionRemoli {
 
-        TicketDAOLayer dao = FactoryPersistence.createTicketDAO();
-        List<Ticket> tickets = dao.getTicketByCF(cf);
+        List<Ticket> tickets = null;
+
+        if(ApplicationModeManager.getSingletonInstance().getMode().toString().equals("DEMO")){
+
+            LayerPersistenzaDemo layer = new LayerPersistenzaDemo();
+            tickets = layer.getTicketByCFDemo(cf);
+
+        }
+        else {
+
+            TicketDAOLayer dao = FactoryPersistence.createTicketDAO();
+            tickets = dao.getTicketByCF(cf);
+        }
 
         List<TicketBean> beans = new ArrayList<>();
 
@@ -52,9 +66,14 @@ public class AreaRiservata
 
 
     public List<RouteBean> runPath(String cf) throws PathNotFoundExceptionRemoli, DAOExceptionRemoli {
-        RouteDAO routeDAO = new RouteDAO();
+        //RouteDAO routeDAO = new RouteDAO();
         // Ottieni la lista di percorsi dal DAO
-        List<Route> listaPercorsi = routeDAO.getData(cf);
+
+
+        LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
+        List<Route> listaPercorsi = layer.getData(cf);
+
+        //List<Route> listaPercorsi = routeDAO.getData(cf);
         List<RouteBean> listaPercorsiBean = new ArrayList<>();
 
         Component component = new TempoArrivoDecorator(new PercorsoLungoDecorator(new ListaCambiDecorator(new BaseComponent()))); //in più

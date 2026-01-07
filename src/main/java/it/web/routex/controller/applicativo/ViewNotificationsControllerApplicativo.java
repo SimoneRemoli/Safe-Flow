@@ -1,11 +1,12 @@
 package it.web.routex.controller.applicativo;
 
 import it.web.routex.bean.MessageBean;
-import it.web.routex.dao.GetCommunicationsDAO;
+import it.web.routex.dao.LayerPersistenza;
 import it.web.routex.exception.BrondiException;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.BrondiNoNotificationsWarningException;
 import it.web.routex.model.Notification;
+import it.web.routex.utility.factory.FactoryLayerPersistenza;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +16,14 @@ public class ViewNotificationsControllerApplicativo {
     public List<MessageBean> messages()
             throws BrondiException, BrondiNoNotificationsWarningException {
 
-        GetCommunicationsDAO dao = new GetCommunicationsDAO();
         List<MessageBean> result = new ArrayList<>();
 
-        try {
-            List<Notification> notifications = dao.getMessages();
+        LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
 
+
+        try {
+            //List<Notification> notifications = dao.getMessages();
+            List<Notification> notifications=layer.getMessages();
             // LOGICA DI BUSINESS: solo NON risolte
             for (Notification n : notifications) {
                 if (!n.isRisolto()) {

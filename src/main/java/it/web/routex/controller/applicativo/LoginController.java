@@ -2,7 +2,8 @@ package it.web.routex.controller.applicativo;
 
 import it.web.routex.bean.AutenticazioneBean;
 import it.web.routex.bean.UtenteBeanGenerico;
-import it.web.routex.dao.LoginProcedureDAO;
+import it.web.routex.dao.LayerPersistenza;
+import it.web.routex.utility.factory.FactoryLayerPersistenza;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import it.web.routex.utility.singleton.Credentials;
@@ -31,8 +32,11 @@ public class LoginController {
         final Logger logger = LoggerFactory.getLogger(getClass());
 
         // Chiamata al DAO
-        LoginProcedureDAO loginDAO = new LoginProcedureDAO();
-        loginDAO.login(autenticazione.getEmail(), autenticazione.getPassword());
+        LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
+        layer.login(autenticazione.getEmail(), autenticazione.getPassword());
+
+        //LoginProcedureDAO loginDAO = new LoginProcedureDAO();
+        //loginDAO.login(autenticazione.getEmail(), autenticazione.getPassword());
 
         // Ottieni l'istanza singleton delle credenziali
         Credentials sessionCred = Credentials.getInstanceSingleton();

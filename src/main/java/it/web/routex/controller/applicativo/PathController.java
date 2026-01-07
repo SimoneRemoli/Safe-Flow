@@ -1,12 +1,12 @@
 package it.web.routex.controller.applicativo;
 import it.web.routex.bean.InformazioniPercorsoBean;
 import it.web.routex.bean.RoutingRequestBean;
+import it.web.routex.dao.LayerPersistenza;
 import it.web.routex.exception.*;
-import it.web.routex.dao.RestituisciIdStazioniPartenzaArrivoDAO;
-import it.web.routex.dao.RouteDAO;
 import it.web.routex.model.Route;
 import it.web.routex.model.Station;
 import it.web.routex.record.RouteRecord;
+import it.web.routex.utility.factory.FactoryLayerPersistenza;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import it.web.routex.utility.facade.FacadePath;
@@ -19,8 +19,11 @@ public class PathController
 {
     public InformazioniPercorsoBean run(String startStation, String endStation, String city) throws IllegalArgumentException, FuoriRangeExceptionRemoli, UnreacheableNodeExceptionRemoli, SQLException, DAOExceptionRemoli
     {
-        RestituisciIdStazioniPartenzaArrivoDAO dao = new RestituisciIdStazioniPartenzaArrivoDAO();
+        /*RestituisciIdStazioniPartenzaArrivoDAO dao = new RestituisciIdStazioniPartenzaArrivoDAO();
         List<Station> stations = dao.restituisciIdStazioni(startStation, endStation, city);
+         */
+        LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
+        List<Station> stations = layer.restituisciIdStazioni(startStation, endStation, city);
 
         if (stations.size() != 2) {
             throw new DAOExceptionRemoli(
@@ -58,8 +61,10 @@ public class PathController
 
             if (cf != null) {
                 Route info = new Route(dto,route,status);
-                RouteDAO saveRoute = new RouteDAO();
-                saveRoute.save(info); //uso route per salvare il percorso. Poi RouteBean è diverso, non ha utente
+                LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
+                layer.save(info);
+                //RouteDAO saveRoute = new RouteDAO();
+                //saveRoute.save(info); //uso route per salvare il percorso. Poi RouteBean è diverso, non ha utente
                 return true;
             } else {
                 throw new CFIsNullRemoli("Devi effettuare il login per salvare il percorso.",

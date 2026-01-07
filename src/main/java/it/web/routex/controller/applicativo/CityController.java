@@ -2,11 +2,12 @@ package it.web.routex.controller.applicativo;
 
 import it.web.routex.bean.CityBean;
 import it.web.routex.bean.PrezzoTotaleBean;
-import it.web.routex.dao.CityDAO;
+import it.web.routex.dao.LayerPersistenza;
 import it.web.routex.model.City;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.InvalidPriceCalculationExceptionRemoli;
 import it.web.routex.exception.InvalidCityDataExceptionRemoli;
+import it.web.routex.utility.factory.FactoryLayerPersistenza;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,12 @@ public class CityController {
      */
     public List<CityBean> getAllCities() throws InvalidCityDataExceptionRemoli, DAOExceptionRemoli {
 
-        CityDAO dao = new CityDAO();
+        /*CityDAO dao = new CityDAO();
         List<City> cities = dao.listCities();
+         */
+
+        LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
+        List<City> cities = layer.listCities();
 
         // === CONTROLLI DI VALIDAZIONE ===
 
@@ -93,7 +98,9 @@ public class CityController {
             );
         }
 
-        List<City> cities = new CityDAO().listCities();
+        /*List<City> cities = new CityDAO().listCities();*/
+        LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
+        List<City> cities=layer.listCities();
         for (City a : cities) {
             if (a.getName().equalsIgnoreCase(city)) {
                 double totale = a.calcolaPrezzoTotale(quantity);

@@ -61,4 +61,16 @@ public class Mastercard implements Payment
     public String maskedNumber() {
         return "**** **** **** " + numeroCarta.substring(12);
     }
+
+    public String getNumeroCarta() {
+        return numeroCarta;
+    }
+
+    public String getCvv() {
+        return cvv;
+    }
+
+    public String getDataScadenza() {
+        return dataScadenza;
+    }
 }
