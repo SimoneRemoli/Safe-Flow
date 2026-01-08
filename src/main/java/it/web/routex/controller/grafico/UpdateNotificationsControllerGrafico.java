@@ -6,7 +6,8 @@ import it.web.routex.exception.DAOExceptionRemoli;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-import java.sql.Timestamp;@WebServlet("/updateNotifications")
+import java.sql.Timestamp;
+@WebServlet("/updateNotifications")
 public class UpdateNotificationsControllerGrafico extends HttpServlet {
 
     @Override

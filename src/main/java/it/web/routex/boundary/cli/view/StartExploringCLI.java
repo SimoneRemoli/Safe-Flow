@@ -5,6 +5,10 @@ import java.util.Scanner;
 
 public class StartExploringCLI
 {
+    public static String city;
+    public static String stazionePartenza;
+    public static String stazioneArrivo;
+
     public static void mostraExploring() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("================================");
@@ -12,16 +16,16 @@ public class StartExploringCLI
         System.out.println("================================");
 
         System.out.print("Inserisci città: ");
-        String city = scanner.nextLine();
+        city = scanner.nextLine();
 
-        System.out.print("Inserisci stazione di partenza ");
-        String stazionePartenza = scanner.nextLine();
+        System.out.print("Inserisci stazione di partenza: ");
+        stazionePartenza = scanner.nextLine();
 
-        System.out.print("Inserisci stazione di arrivo ");
-        String stazioneArrivo = scanner.nextLine();
+        System.out.print("Inserisci stazione di arrivo: ");
+        stazioneArrivo = scanner.nextLine();
 
-        PathControllerGraficoCLI a = new PathControllerGraficoCLI();
-        a.post(city, stazionePartenza, stazioneArrivo);
+        PathControllerGraficoCLI p = new PathControllerGraficoCLI();
+        p.post();
 
     }
 }

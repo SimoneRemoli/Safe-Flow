@@ -2,34 +2,34 @@ package it.web.routex.boundary.cli.view;
 
 import java.util.Scanner;
 
-public class HomePrincipaleCLI {
+public class WorkerViewCLI {
+
     private final Scanner scanner = new Scanner(System.in);
 
-    public void home()
-    {
+    public void mostraDashboard() {
         while (true) {
             System.out.println("\n================================");
-            System.out.println("        ROUTEX - HOME CLI        ");
+            System.out.println("        ROUTEX - Worker Home CLI        ");
             System.out.println("================================");
-            System.out.println("1) Start Exploring");
-            System.out.println("2) Login");
-            System.out.println("3) Stop");
+            System.out.println("1) View Notifications");
+            System.out.println("2) View Work Schedule");
+            System.out.println("3) Logout");
             System.out.print("Seleziona un'opzione: ");
-
             String scelta = scanner.nextLine();
 
-            switch(scelta)
-            {
+            switch (scelta) {
                 case "1" -> {
-                    StartExploringCLI.mostraExploring();
+                    ViewNotificationsCLI.mostra();
                 }
                 case "2" -> {
-                    LoginViewCLI.mostraLogin();
-                    return;
+                    ViewWorkScheduleCLI.mostra();
                 }
                 case "3" -> {
+                    LogoutCLI.logoutUser();
                     return;
                 }
+                default -> System.out.println("❌ Scelta non valida.");
+
             }
         }
     }

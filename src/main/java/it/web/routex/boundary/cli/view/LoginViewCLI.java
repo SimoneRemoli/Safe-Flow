@@ -6,20 +6,23 @@ import java.util.Scanner;
 
 public class LoginViewCLI {
 
-    public void mostraLogin() {
+    public static String emailUtente;
+    public static String passwordUtente;
+
+    public static void mostraLogin() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("================================");
         System.out.println("        ROUTEX - LOGIN CLI        ");
         System.out.println("================================");
 
         System.out.print("Inserisci Email: ");
-        String email = scanner.nextLine();
+        emailUtente = scanner.nextLine();
 
         System.out.print("Inserisci Password: ");
-        String password = scanner.nextLine();
+        passwordUtente = scanner.nextLine();
 
         LoginControllerGraficoCLI login = new LoginControllerGraficoCLI();
-        login.post(email,password);
+        login.post();
 
     }
 }

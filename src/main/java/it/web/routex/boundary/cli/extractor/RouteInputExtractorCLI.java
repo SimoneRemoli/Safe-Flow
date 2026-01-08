@@ -1,5 +1,6 @@
 package it.web.routex.boundary.cli.extractor;
 
+import it.web.routex.boundary.cli.view.StartExploringCLI;
 import it.web.routex.exception.InvalidRouteInputExceptionRemoli;
 import it.web.routex.record.RouteRecord;
 
@@ -11,8 +12,11 @@ public final class RouteInputExtractorCLI
         throw new AssertionError("Classe di estrazione dati, non si creano new");
     }
 
-    public static RouteRecord from(String citta, String startStation, String endStation)
-            throws InvalidRouteInputExceptionRemoli {
+    public static RouteRecord from() throws InvalidRouteInputExceptionRemoli {
+
+        String citta = StartExploringCLI.city;
+        String startStation = StartExploringCLI.stazionePartenza;
+        String endStation = StartExploringCLI.stazioneArrivo;
 
         String city = sanitize(citta);
         String start = sanitize(startStation);

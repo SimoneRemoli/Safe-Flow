@@ -19,11 +19,11 @@ import java.sql.SQLException;
 
 public class PathControllerGraficoCLI extends LoggedCLI
 {
-    public void post(String citta, String stazionePartenza, String stazioneArrivo )
+    public void post()
     {
         final Credentials cred = Credentials.getInstanceSingleton();
 
-        RouteRecord route = estrattorePercorso(citta,stazionePartenza,stazioneArrivo);
+        RouteRecord route = estrattorePercorso();
         String status = UserStatusResolver.resolve(cred);
 
         if(!RouteValidator.isValid(route)) ErrorePath.mostraErrore();
@@ -43,7 +43,7 @@ public class PathControllerGraficoCLI extends LoggedCLI
         }
 
         RouteDecoratorServiceCLI.decorate(dto);
-        PathNOREGCLI path = new PathNOREGCLI(status,route.start(),route.end(), route.city());
+        new PathNOREGCLI(status,route.start(),route.end(), route.city());
 
         PathController pathCtrl = new PathController();
         boolean salvato = pathCtrl.saveRoute(cred,dto,route, status);
@@ -59,10 +59,10 @@ public class PathControllerGraficoCLI extends LoggedCLI
         String result = "[CLI]Route from " + route.start() + " to " + route.end() + " in " + route.city();
         logger.info(result);
     }
-    private RouteRecord estrattorePercorso(String citta, String stazionePartenza, String stazioneArrivo )
+    private RouteRecord estrattorePercorso()
     {
         try {
-            return RouteInputExtractorCLI.from(citta, stazionePartenza, stazioneArrivo);
+            return RouteInputExtractorCLI.from();
         } catch (InvalidRouteInputExceptionRemoli e)
         {
             logger.error("Errore nell'input del percorso {}", e.getMessage());

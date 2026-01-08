@@ -157,10 +157,4 @@ public final class PathNOREGCLI
 
         System.out.println("========================================\n");
     }
-
-
-
-
-
-
 }

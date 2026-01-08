@@ -5,8 +5,10 @@ import it.web.routex.bean.UtenteBeanGenerico;
 import it.web.routex.boundary.cli.CLIRoute;
 import it.web.routex.boundary.cli.LoggedCLI;
 import it.web.routex.boundary.cli.extractor.LoginExtractorCLI;
+import it.web.routex.boundary.cli.view.AdminViewCLI;
 import it.web.routex.boundary.cli.view.ErroreLoginCLI;
 import it.web.routex.boundary.cli.view.IndexLoggedCLI;
+import it.web.routex.boundary.cli.view.WorkerViewCLI;
 import it.web.routex.controller.applicativo.LoginController;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.InvalidLoginInputExceptionRemoli;
@@ -19,10 +21,10 @@ import java.sql.SQLException;
 public class LoginControllerGraficoCLI extends LoggedCLI {
 
 
-    public void post(String email, String password)
+    public void post()
     {
         try {
-        AutenticazioneBean credenziali = creaBeanAutenticazione(email,password);
+        AutenticazioneBean credenziali = creaBeanAutenticazione();
 
         //  Delegazione al controller applicativo
         LoginController loginController = new LoginController(credenziali);
@@ -42,12 +44,12 @@ public class LoginControllerGraficoCLI extends LoggedCLI {
 
 
     }
-    private AutenticazioneBean creaBeanAutenticazione(String email, String password) {
+    private AutenticazioneBean creaBeanAutenticazione() {
         AutenticazioneBean aut = new AutenticazioneBean();
         LoginRecord login = null;
 
         try {
-            login = LoginExtractorCLI.from(email,password);
+            login = LoginExtractorCLI.from();
         } catch (InvalidLoginInputExceptionRemoli e) {
             ErroreLoginCLI.mostraErrore(e.getUserMessage());
             logger.error("[CLI]Errore di validazione input login: {}", e.toString());
@@ -69,9 +71,11 @@ public class LoginControllerGraficoCLI extends LoggedCLI {
             ConnectionFactory.cambioDiRuolo(utente.getRuolo());
 
             switch (utente.getRuolo().toString().toUpperCase()) {
-                case "TRAVELER" -> safeRedirect(CLIRoute.HOME);
+                case "TRAVELER" -> safeRedirect(CLIRoute.TRAVELER_HOME);
 
-                case "WORKER", "ADMIN" -> safeRedirect(CLIRoute.ERRORE_LOGIN);
+                case "WORKER" -> safeRedirect(CLIRoute.WORKER_DASHBOARD);
+
+                case "ADMIN" -> safeRedirect(CLIRoute.ADMIN_HOME);
 
                 default -> safeRedirect(CLIRoute.ERRORE_LOGIN);
             }
@@ -84,10 +88,17 @@ public class LoginControllerGraficoCLI extends LoggedCLI {
         try {
             switch (route) {
 
-                case HOME:
+                case TRAVELER_HOME:
                     new IndexLoggedCLI().mostraMenu();
                     return;
 
+                case WORKER_DASHBOARD:
+                    new WorkerViewCLI().mostraDashboard();
+                    return;
+
+                case ADMIN_HOME:
+                    new AdminViewCLI().mostraHomeAdmin();
+                    return;
 
                 case ERRORE_LOGIN:
                     ErroreLoginCLI.mostraErrore("Errore di autenticazione.");

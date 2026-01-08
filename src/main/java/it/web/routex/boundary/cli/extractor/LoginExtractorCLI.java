@@ -1,5 +1,6 @@
 package it.web.routex.boundary.cli.extractor;
 
+import it.web.routex.boundary.cli.view.LoginViewCLI;
 import it.web.routex.exception.InvalidLoginInputExceptionRemoli;
 import it.web.routex.record.LoginRecord;
 
@@ -10,7 +11,10 @@ public class LoginExtractorCLI {
         return (s == null) ? null : s.trim();
     }
 
-    public static LoginRecord from(String emaill, String passwordd) throws InvalidLoginInputExceptionRemoli {
+    public static LoginRecord from() throws InvalidLoginInputExceptionRemoli {
+
+        String emaill = LoginViewCLI.emailUtente;
+        String passwordd = LoginViewCLI.passwordUtente;
 
         String email = sanitize(emaill);
         String password = sanitize(passwordd);

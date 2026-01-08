@@ -13,7 +13,7 @@ import java.io.IOException;
 public class SelectModeControllerGrafico extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 
         String modeParam = request.getParameter("mode");
 
@@ -23,6 +23,11 @@ public class SelectModeControllerGrafico extends HttpServlet {
         SelectModeControllerApplicativo a =  new SelectModeControllerApplicativo();
         a.selectMode(bean);
 
-        response.sendRedirect("index.jsp");
+        try{
+            response.sendRedirect("index.jsp");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

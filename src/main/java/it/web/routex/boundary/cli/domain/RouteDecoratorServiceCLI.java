@@ -11,7 +11,7 @@ public class RouteDecoratorServiceCLI {
     public static void decorate(InformazioniPercorsoBean dto)
     {
         Component c = new CheckCambiamentiDecorator(new BaseComponent());
-        PathNOREGCLI path = new PathNOREGCLI(dto.getCityLife().getPercorsiConNomi(),dto.getCityLife().getNumeroCambi(),
+        new PathNOREGCLI(dto.getCityLife().getPercorsiConNomi(),dto.getCityLife().getNumeroCambi(),
                 dto.getCityLife().getLinee(),dto.getNumeroStazioniUsate(),dto.getMinutaggio(),dto.getCityLife().getNumeroStazioniTotali(),
                 dto.getPercentualeStazioniUsate(),c.getChanges(dto.getCityLife().getSequenzeDiCambiamento()),c.getChanges(dto.getCityLife().getSequenzeNodiCruciali()));
 
