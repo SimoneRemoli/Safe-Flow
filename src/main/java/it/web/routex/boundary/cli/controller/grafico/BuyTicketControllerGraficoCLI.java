@@ -86,7 +86,7 @@ public class BuyTicketControllerGraficoCLI extends LoggedCLI
 
     private void forwardToBuyTicket(List<CityBean> cities) {
         try {
-            BuyTicketCLI.MostraAcquisto(cities);
+            BuyTicketCLI.mostraAcquisto(cities);
             logger.info("[CLI]Visualizzata la pagina di acquisto biglietti con size={} città disponibili.", cities.size());
         } catch (Exception e) {
             logger.error("[CLI]Errore nella visualizzazione della pagina di acquisto biglietti.", e);

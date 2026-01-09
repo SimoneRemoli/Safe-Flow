@@ -51,9 +51,7 @@ public final class ConfermaPagamentoCLI
 
         System.out.println("Vuoi confermare?(si/no) :");
         String scelta = scanner.nextLine();
-        switch (scelta)
-        {
-            case "si" -> {
+        if ("si".equals(scelta)) {
 
                 while(fine) {
                     System.out.println("* METODI DI PAGAMENTO DISPONIBILI *");
@@ -89,7 +87,7 @@ public final class ConfermaPagamentoCLI
                     System.out.print("CVV: ");
                     cvv = scanner.nextLine();
 
-                    MastercardCLI m = new MastercardCLI(numeroCarta, scadenza, cvv);
+                    new MastercardCLI(numeroCarta, scadenza, cvv);
                 }
                 if(metodoPagamento.equals("Paypal"))
                 {
@@ -98,7 +96,7 @@ public final class ConfermaPagamentoCLI
                     emailPaypal = scanner.nextLine();
                     System.out.println("Codice Transazione: ");
                     codiceTransazione = scanner.nextLine();
-                    PaypalCLI p = new PaypalCLI(emailPaypal, codiceTransazione);
+                    new PaypalCLI(emailPaypal, codiceTransazione);
                 }
 
                 while(end) {
@@ -124,11 +122,6 @@ public final class ConfermaPagamentoCLI
                 ConfermaPagamentoControllerGraficoCLI pay = new ConfermaPagamentoControllerGraficoCLI();
                 pay.doPost(getCity(), getQuantity(), String.valueOf(getPrezzoTotale()), metodoPagamento, persistenza);
 
-            }
-            case "no" -> {
-
-            }
         }
-
     }
 }

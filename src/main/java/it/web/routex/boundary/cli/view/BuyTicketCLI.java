@@ -7,12 +7,12 @@ import java.util.Scanner;
 
 public class BuyTicketCLI
 {
-    public static void MostraBuyTicket()
+    public static void mostraBuyTicket()
     {
         BuyTicketControllerGraficoCLI ctrgraphic = new BuyTicketControllerGraficoCLI();
         ctrgraphic.doGet();
     }
-    public static void MostraAcquisto(List<CityBean> cities)
+    public static void mostraAcquisto(List<CityBean> cities)
     {
         Scanner scanner = new Scanner(System.in);
         int accesso=-1;

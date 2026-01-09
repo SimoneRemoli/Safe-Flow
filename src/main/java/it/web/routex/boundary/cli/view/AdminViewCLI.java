@@ -18,12 +18,10 @@ public class AdminViewCLI
 
             String scelta = scanner.nextLine();
             switch (scelta) {
-                case "1" -> {
-                    SendCommunicationCLI.mostra();
-                }
-                case "2" -> {
-                    ViewReportsAndStatisticsCLI.mostra();
-                }
+                case "1" -> SendCommunicationCLI.mostra();
+
+                case "2" -> ViewReportsAndStatisticsCLI.mostra();
+
                 case "3" -> {
                     LogoutCLI.logoutUser();
                     return;

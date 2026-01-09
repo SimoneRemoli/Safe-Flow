@@ -23,7 +23,7 @@ public class IndexLoggedCLI{
                     StartExploringCLI.mostraExploring();
                 }
                 case "2" -> {
-                    BuyTicketCLI.MostraBuyTicket();
+                    BuyTicketCLI.mostraBuyTicket();
                 }
                 case "3" -> {
                     AreaRiservataCLI.areaRiservata();
