@@ -19,15 +19,6 @@ public final class PaypalCLI
         emailPaypal = p.getEmailPaypal();
         codiceTransazione = p.getCodiceTransazione();
     }
-
-    /*public PaypalCLI(String a, String b)
-    {
-        this.emailPaypal = a;
-        this.codiceTransazione = b;
-    }
-
-     */
-
     public static String getCodiceTransazione() {
         return codiceTransazione;
     }
