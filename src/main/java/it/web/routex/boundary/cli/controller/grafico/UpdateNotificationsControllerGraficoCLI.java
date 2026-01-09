@@ -37,7 +37,6 @@ public class UpdateNotificationsControllerGraficoCLI
 
             ViewNotificationsControllerGraficoCLI not = new ViewNotificationsControllerGraficoCLI();
             not.doGet();
-            return;
 
         } catch (DAOExceptionRemoli e) {
             GenericErrorCLI.mostraErrore("Impossibile aggiornare le notifiche. Riprovare più tardi.");

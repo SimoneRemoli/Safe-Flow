@@ -2,9 +2,9 @@ package it.web.routex.boundary.cli;
 
 import it.web.routex.boundary.cli.view.SelectModeCLI;
 
-public class main
+public class Main
 {
-    public static void main(String args[])
+    public static void main(String[] args)
     {
         SelectModeCLI selectMode = new SelectModeCLI();
         selectMode.choiceDemoFull();

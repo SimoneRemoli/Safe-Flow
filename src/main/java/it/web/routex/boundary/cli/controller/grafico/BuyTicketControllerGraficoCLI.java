@@ -58,7 +58,7 @@ public class BuyTicketControllerGraficoCLI extends LoggedCLI
             logger.info("Elaborazione prezzo: prezzo={}",prezzo.getPrezzoTotale());
 
 
-            ConfermaPagamentoCLI conf = new ConfermaPagamentoCLI(buyTicket.city(),String.valueOf(buyTicket.quantity()),prezzo.getPrezzoTotale() );
+            new ConfermaPagamentoCLI(buyTicket.city(),String.valueOf(buyTicket.quantity()),prezzo.getPrezzoTotale() );
             forwardingConferma();
 
         } catch (DAOExceptionRemoli e) {

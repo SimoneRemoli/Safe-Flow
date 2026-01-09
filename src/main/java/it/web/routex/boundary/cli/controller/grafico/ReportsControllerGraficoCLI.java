@@ -7,8 +7,6 @@ import it.web.routex.boundary.cli.view.ViewReportsAndStatisticsCLI;
 import it.web.routex.controller.applicativo.ReportsControllerApplicativo;
 import it.web.routex.exception.DAOExceptionRemoli;
 
-import java.io.IOException;
-
 public class ReportsControllerGraficoCLI extends LoggedCLI {
 
     public void doGet() {
