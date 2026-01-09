@@ -1,5 +1,5 @@
 package it.web.routex.boundary.cli.view;
-
+@SuppressWarnings("java:S106")
 public class ErroreLoginCLI
 {
     public static void mostraErrore(String messaggio) {

@@ -2,7 +2,7 @@ package it.web.routex.boundary.cli.view;
 import it.web.routex.boundary.cli.controller.grafico.PathControllerGraficoCLI;
 
 import java.util.Scanner;
-
+@SuppressWarnings("java:S106")
 public class StartExploringCLI
 {
     private static String city;

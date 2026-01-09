@@ -3,7 +3,7 @@ package it.web.routex.boundary.cli.view;
 import it.web.routex.boundary.cli.controller.grafico.ConfirmCommunicationControllerGraficoCLI;
 
 import java.util.Scanner;
-
+@SuppressWarnings("java:S106")
 public class SendCommunicationCLI
 {
     private static final Scanner scanner = new Scanner(System.in);

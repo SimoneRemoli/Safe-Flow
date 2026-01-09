@@ -3,7 +3,7 @@ package it.web.routex.boundary.cli.view;
 import it.web.routex.boundary.cli.controller.grafico.ConfermaPagamentoControllerGraficoCLI;
 
 import java.util.Scanner;
-
+@SuppressWarnings("java:S106")
 public final class ConfermaPagamentoCLI
 {
     private static String city;

@@ -4,7 +4,7 @@ import it.web.routex.boundary.cli.controller.grafico.SelectModeControllerGrafico
 
 import java.util.Scanner;
 
-
+@SuppressWarnings("java:S106")
 public class SelectModeCLI {
 
     private final Scanner scanner = new Scanner(System.in);

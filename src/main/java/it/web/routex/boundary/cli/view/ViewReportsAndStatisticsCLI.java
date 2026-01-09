@@ -3,7 +3,7 @@ package it.web.routex.boundary.cli.view;
 import it.web.routex.bean.PathInfoBean;
 import it.web.routex.bean.ReportsStatsBean;
 import it.web.routex.boundary.cli.controller.grafico.ReportsControllerGraficoCLI;
-
+@SuppressWarnings("java:S106")
 public class ViewReportsAndStatisticsCLI {
 
     public static void mostra()

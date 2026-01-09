@@ -1,7 +1,7 @@
 package it.web.routex.boundary.cli.view;
 
 import java.util.Scanner;
-
+@SuppressWarnings("java:S106")
 public class HomePrincipaleCLI {
     private final Scanner scanner = new Scanner(System.in);
 

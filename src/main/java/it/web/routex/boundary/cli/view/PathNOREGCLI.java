@@ -2,7 +2,7 @@ package it.web.routex.boundary.cli.view;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@SuppressWarnings("java:S106")
 public final class PathNOREGCLI
 {
     private static List<String> percorsiConNomi = new ArrayList<>();

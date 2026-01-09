@@ -6,7 +6,7 @@ import it.web.routex.boundary.cli.controller.grafico.AreaRiservataControllerGraf
 
 import java.util.ArrayList;
 import java.util.List;
-
+@SuppressWarnings("java:S106")
 public class AreaRiservataCLI
 {
     private static List<RouteBean> listaPercorsi = new ArrayList<>();

@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
+@SuppressWarnings("java:S106")
 public class ViewNotificationsCLI
 {
     private static String notificaRisolta;

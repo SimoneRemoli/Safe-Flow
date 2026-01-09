@@ -1,7 +1,7 @@
 package it.web.routex.boundary.cli.view;
 import it.web.routex.boundary.cli.controller.grafico.ViewWorkScheduleControllerGraficoCLI;
 
-
+@SuppressWarnings("java:S106")
 public class ViewWorkScheduleCLI
 {
     private static  Integer oraInizio;
