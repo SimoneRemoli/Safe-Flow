@@ -26,8 +26,7 @@ public class PathControllerGrafico extends LoggedHttpServlet {
     private static final String PAGE_ERROR = "error.jsp";
 
     private void forward(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    int size) {
+                                    HttpServletResponse response) {
         try {
             request.getRequestDispatcher("search.jsp").forward(request, response);
             logger.info("Forwarding Effettuato a search.jsp");
@@ -50,7 +49,7 @@ public class PathControllerGrafico extends LoggedHttpServlet {
             // Passo la lista alla view
             request.setAttribute("cities2", cities);
 
-            forward(request, response, cities.size());
+            forward(request, response);
 
         } catch (DAOExceptionRemoli e) {
             request.setAttribute(s, "Errore nel caricamento delle città: " + e.getMessage());

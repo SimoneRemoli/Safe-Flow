@@ -22,7 +22,6 @@ public class ViewNotificationsControllerApplicativo {
 
 
         try {
-            //List<Notification> notifications = dao.getMessages();
             List<Notification> notifications=layer.getMessages();
             // LOGICA DI BUSINESS: solo NON risolte
             for (Notification n : notifications) {

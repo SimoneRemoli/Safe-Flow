@@ -66,14 +66,9 @@ public class AreaRiservata
 
 
     public List<RouteBean> runPath(String cf) throws PathNotFoundExceptionRemoli, DAOExceptionRemoli {
-        //RouteDAO routeDAO = new RouteDAO();
-        // Ottieni la lista di percorsi dal DAO
-
-
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         List<Route> listaPercorsi = layer.getData(cf);
 
-        //List<Route> listaPercorsi = routeDAO.getData(cf);
         List<RouteBean> listaPercorsiBean = new ArrayList<>();
 
         Component component = new TempoArrivoDecorator(new PercorsoLungoDecorator(new ListaCambiDecorator(new BaseComponent()))); //in più

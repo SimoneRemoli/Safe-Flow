@@ -19,9 +19,6 @@ public class PathController
 {
     public InformazioniPercorsoBean run(String startStation, String endStation, String city) throws IllegalArgumentException, FuoriRangeExceptionRemoli, UnreacheableNodeExceptionRemoli, SQLException, DAOExceptionRemoli
     {
-        /*RestituisciIdStazioniPartenzaArrivoDAO dao = new RestituisciIdStazioniPartenzaArrivoDAO();
-        List<Station> stations = dao.restituisciIdStazioni(startStation, endStation, city);
-         */
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         List<Station> stations = layer.restituisciIdStazioni(startStation, endStation, city);
 
@@ -63,8 +60,7 @@ public class PathController
                 Route info = new Route(dto,route,status);
                 LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
                 layer.save(info);
-                //RouteDAO saveRoute = new RouteDAO();
-                //saveRoute.save(info); //uso route per salvare il percorso. Poi RouteBean è diverso, non ha utente
+                //uso route per salvare il percorso. Poi RouteBean è diverso, non ha utente
                 return true;
             } else {
                 throw new CFIsNullRemoli("Devi effettuare il login per salvare il percorso.",

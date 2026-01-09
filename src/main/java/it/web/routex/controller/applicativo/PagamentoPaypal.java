@@ -49,8 +49,6 @@ public class PagamentoPaypal extends RegistrazionePagamentoController
                 p.getMethod().getDisplayName(),
                 codiciBiglietti
         );
-
-        //return codiciBiglietti;
     }
 
     public PagamentoPaypal(String email, String codiceTransazione, Credentials cred,double tot, int quantita, String citta)

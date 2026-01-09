@@ -13,10 +13,6 @@ public class ReportsControllerApplicativo {
 
     public ReportsStatsBean recuperaStatistiche() throws DAOExceptionRemoli {
 
-        /*PathInfoDAO dao = new PathInfoDAO();
-        List<Route> models = dao.getAllPathInfo();
-         */
-
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         List<Route> models=layer.getAllPathInfo();
 

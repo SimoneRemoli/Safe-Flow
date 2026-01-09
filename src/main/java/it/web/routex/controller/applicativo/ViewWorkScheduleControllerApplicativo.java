@@ -11,14 +11,11 @@ public class ViewWorkScheduleControllerApplicativo {
 
     public WorkerScheduleBean getSchedule(String cf) throws BrondiException {
 
-        //WorkerScheduleDAO dao = new WorkerScheduleDAO();
-
         try {
             //Recupero MODEL
 
             LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
             WorkerSchedule model = layer.getWorkerSchedule(cf);
-            //WorkerSchedule model = dao.getWorkerSchedule(cf);
 
             //logica applicativa
             if (!model.isValid()) {

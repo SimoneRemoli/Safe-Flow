@@ -17,10 +17,6 @@ public class UpdateNotificationsControllerApplicativo {
                 true
         );
 
-        /*SendCommunicationDAO dao = new SendCommunicationDAO();
-        dao.solvedNotification(notification);
-         */
-
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         layer.solvedNotification(notification);
     }
