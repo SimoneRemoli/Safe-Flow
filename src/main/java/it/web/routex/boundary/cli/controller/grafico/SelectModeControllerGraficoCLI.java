@@ -4,7 +4,7 @@ import it.web.routex.bean.ApplicationModeBean;
 import it.web.routex.boundary.cli.view.HomePrincipaleCLI;
 import it.web.routex.boundary.cli.view.SelectModeCLI;
 import it.web.routex.controller.applicativo.SelectModeControllerApplicativo;
-
+@SuppressWarnings("java:S106")
 public class SelectModeControllerGraficoCLI {
 
     public static void doPost() {

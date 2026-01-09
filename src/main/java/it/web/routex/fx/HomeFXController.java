@@ -1,7 +1,7 @@
 package it.web.routex.fx;
 
 import javafx.fxml.FXML;
-
+@SuppressWarnings("java:S106")
 public class HomeFXController {
 
     @FXML
