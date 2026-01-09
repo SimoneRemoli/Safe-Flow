@@ -46,10 +46,7 @@ public class AreaRiservataControllerGraficoCLI extends LoggedCLI
         AreaRiservataCLI.showArea();
     }
     private void redirectToLogin() {
-
-        LoginViewCLI login = new LoginViewCLI();
-        login.mostraLogin();
-
+        LoginViewCLI.mostraLogin();
     }
 
 
