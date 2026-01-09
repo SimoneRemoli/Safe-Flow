@@ -14,6 +14,7 @@ import it.web.routex.exception.UnreacheableNodeExceptionRemoli;
 import it.web.routex.domain.RouteValidator;
 import it.web.routex.domain.UserStatusResolver;
 import it.web.routex.record.RouteRecord;
+import it.web.routex.utility.builder.PathNORegInitBuilder;
 import it.web.routex.utility.singleton.Credentials;
 import java.sql.SQLException;
 
@@ -42,7 +43,8 @@ public class PathControllerGraficoCLI extends LoggedCLI
         }
 
         RouteDecoratorServiceCLI.decorate(dto);
-        new PathNOREGCLI(status,route.start(),route.end(), route.city());
+
+        new PathNORegInitBuilder(status).start(route.start()).end(route.end()).city(route.city());
 
         PathController pathCtrl = new PathController();
         boolean salvato = pathCtrl.saveRoute(cred,dto,route, status);

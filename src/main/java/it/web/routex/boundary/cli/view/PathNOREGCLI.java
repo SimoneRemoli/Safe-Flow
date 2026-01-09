@@ -1,7 +1,6 @@
 package it.web.routex.boundary.cli.view;
-
+import it.web.routex.dao.PathInit;
 import it.web.routex.dao.PathNoRegData;
-
 import java.util.ArrayList;
 import java.util.List;
 @SuppressWarnings("java:S106")
@@ -77,6 +76,9 @@ public final class PathNOREGCLI
         return status;
     }
 
+    public static void from2(PathInit a) {
+        initialize(a);
+    }
 
     public static void from(PathNoRegData data) {
         init(data);
@@ -94,14 +96,13 @@ public final class PathNOREGCLI
         sequenzeNodiCruciali = path.getSequenzeNodiCruciali();
     }
 
-
-
-    public PathNOREGCLI(String status, String start, String end, String city)
+    public static void initialize(PathInit a)
     {
-        this.status = status;
-        this.start = start;
-        this.end = end;
-        this.city = city;
+        status = a.getStatus();
+        start = a.getStart();
+        end = a.getEnd();
+        city = a.getCity();
+
     }
     public static void stampa() {
 
