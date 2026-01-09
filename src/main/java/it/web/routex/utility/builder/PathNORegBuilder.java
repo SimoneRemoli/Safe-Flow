@@ -62,7 +62,7 @@ public class PathNORegBuilder
         return this;
     }
 
-    public PathNOREGCLI build() {
+    public void build() {
         PathNoRegData data = new PathNoRegData();
         data.setLinee(linee);
         data.setMinutaggio(minutaggio);
@@ -73,7 +73,7 @@ public class PathNORegBuilder
         data.setPercorsiConNomi(percorsiConNomi);
         data.setSequenzeDiCambiamento(sequenzeDiCambiamento);
         data.setSequenzeNodiCruciali(sequenzeNodiCruciali);
-        return PathNOREGCLI.from(data);
+        PathNOREGCLI.from(data);
 
     }
 

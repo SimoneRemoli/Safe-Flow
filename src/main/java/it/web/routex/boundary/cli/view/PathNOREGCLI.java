@@ -78,9 +78,22 @@ public final class PathNOREGCLI
     }
 
 
-    public static PathNOREGCLI from(PathNoRegData data) {
-        return new PathNOREGCLI(data);
+    public static void from(PathNoRegData data) {
+        init(data);
     }
+
+    public static void init(PathNoRegData path) {
+        percorsiConNomi = path.getPercorsiConNomi();
+        numeroCambi = path.getNumeroCambi();
+        linee = path.getLinee();
+        numeroStazioniUsate = path.getNumeroStazioniUsate();
+        minutaggio = path.getMinutaggio();
+        numeroStazioniTotali = path.getNumeroStazioniTotali();
+        percentualeStazioniUsate = path.getPercentualeStazioniUsate();
+        sequenzeDiCambiamento = path.getSequenzeDiCambiamento();
+        sequenzeNodiCruciali = path.getSequenzeNodiCruciali();
+    }
+
 
 
     private PathNOREGCLI(PathNoRegData path) {
