@@ -37,8 +37,7 @@ public class PathControllerGraficoCLI extends LoggedCLI
         } catch (IllegalArgumentException | UnreacheableNodeExceptionRemoli |
                  FuoriRangeExceptionRemoli | DAOExceptionRemoli | SQLException e) {
             logger.error("Errore processamento dati percorso {}", e.toString());
-            StartExploringCLI a = new StartExploringCLI();
-            a.mostraExploring();
+            StartExploringCLI.mostraExploring();
             return;
         }
 
@@ -66,8 +65,7 @@ public class PathControllerGraficoCLI extends LoggedCLI
         } catch (InvalidRouteInputExceptionRemoli e)
         {
             logger.error("Errore nell'input del percorso {}", e.getMessage());
-            StartExploringCLI a = new StartExploringCLI();
-            a.mostraExploring();
+            StartExploringCLI.mostraExploring();
             return null;
         }
     }
