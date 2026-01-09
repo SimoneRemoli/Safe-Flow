@@ -96,20 +96,6 @@ public final class PathNOREGCLI
 
 
 
-    private PathNOREGCLI(PathNoRegData path) {
-        percorsiConNomi = path.getPercorsiConNomi();
-        numeroCambi = path.getNumeroCambi();
-        linee = path.getLinee();
-        numeroStazioniUsate = path.getNumeroStazioniUsate();
-        minutaggio = path.getMinutaggio();
-        numeroStazioniTotali = path.getNumeroStazioniTotali();
-        percentualeStazioniUsate = path.getPercentualeStazioniUsate();
-        sequenzeDiCambiamento = path.getSequenzeDiCambiamento();
-        sequenzeNodiCruciali = path.getSequenzeNodiCruciali();
-
-    }
-
-
     public PathNOREGCLI(String status, String start, String end, String city)
     {
         this.status = status;
