@@ -4,10 +4,14 @@ import it.web.routex.boundary.cli.controller.grafico.ConfirmCommunicationControl
 
 import java.util.Scanner;
 @SuppressWarnings("java:S106")
-public class SendCommunicationCLI
+public final class SendCommunicationCLI
 {
     private static final Scanner scanner = new Scanner(System.in);
     private static String message;
+
+    private SendCommunicationCLI(){
+        //Prevent the init
+    }
     public static void mostra()
     {
         System.out.println("\n================================");

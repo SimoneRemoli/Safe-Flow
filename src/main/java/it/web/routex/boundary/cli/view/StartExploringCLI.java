@@ -3,11 +3,15 @@ import it.web.routex.boundary.cli.controller.grafico.PathControllerGraficoCLI;
 
 import java.util.Scanner;
 @SuppressWarnings("java:S106")
-public class StartExploringCLI
+public final class StartExploringCLI
 {
     private static String city;
     private static String stazionePartenza;
     private static String stazioneArrivo;
+
+    private StartExploringCLI(){
+        //Prevent the init
+    }
 
     public static void mostraExploring() {
         Scanner scanner = new Scanner(System.in);

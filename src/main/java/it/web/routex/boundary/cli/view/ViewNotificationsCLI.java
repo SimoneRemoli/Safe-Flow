@@ -9,10 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 @SuppressWarnings("java:S106")
-public class ViewNotificationsCLI
+public final class ViewNotificationsCLI
 {
     private static String notificaRisolta;
     private static List<String> risolte = new ArrayList<>();
+
+    private ViewNotificationsCLI(){
+        //Prevent the init
+    }
+
     public static void mostra()
     {
         ViewNotificationsControllerGraficoCLI not = new ViewNotificationsControllerGraficoCLI();

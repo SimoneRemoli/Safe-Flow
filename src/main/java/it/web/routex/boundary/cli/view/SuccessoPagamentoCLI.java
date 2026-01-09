@@ -5,13 +5,16 @@ import java.util.List;
 @SuppressWarnings("java:S106")
 public final class SuccessoPagamentoCLI{
 
-
     private static String city;
     private static String quantity;
     private static double totale;
     private static String metodo;
     private static String messaggio;
     private static List<String> codiciBiglietti = new ArrayList<>();
+
+    private SuccessoPagamentoCLI(){
+        //Prevent the init
+    }
 
     public static void setCity(String city) {
         SuccessoPagamentoCLI.city = city;
