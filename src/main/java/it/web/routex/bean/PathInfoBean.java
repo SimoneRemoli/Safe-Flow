@@ -1,11 +1,19 @@
 package it.web.routex.bean;
 
 public class PathInfoBean {
-    private String startStation, endStation, city, tipoViaggiatore, listaCambi, stazioneDiInterscambio, utente;
-    private int nCambi, nStazioniAttraversate, nStazioniCitta;
-    private double tempoDiArrivo, percTerrenoUtilizzato;
+    private String startStation;
+    private String endStation;
+    private String city;
+    private String tipoViaggiatore;
+    private String listaCambi;
+    private String stazioneDiInterscambio;
+    private String utente;
+    private int nCambi;
+    private int nStazioniAttraversate;
+    private int nStazioniCitta;
+    private double tempoDiArrivo;
+    private double percTerrenoUtilizzato;
 
-    // --- getter e setter ---
     public String getStartStation() { return startStation; }
     public void setStartStation(String startStation) { this.startStation = startStation; }
 
