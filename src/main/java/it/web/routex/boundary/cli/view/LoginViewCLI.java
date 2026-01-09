@@ -3,7 +3,7 @@ package it.web.routex.boundary.cli.view;
 import it.web.routex.boundary.cli.controller.grafico.LoginControllerGraficoCLI;
 
 import java.util.Scanner;
-
+@SuppressWarnings("java:S106")
 public class LoginViewCLI {
 
     private static String emailUtente;
@@ -15,6 +15,7 @@ public class LoginViewCLI {
         System.out.println("================================");
         System.out.println("        ROUTEX - LOGIN CLI        ");
         System.out.println("================================");
+
 
         System.out.print("Inserisci Email: ");
         emailUtente = scanner.nextLine();
