@@ -5,14 +5,14 @@ import java.util.List;
 
 public final class PathNOREGCLI
 {
-    static private List<String> percorsiConNomi = new ArrayList<>();
-    static private int numeroCambi;
-    static private List<String> linee = new ArrayList<>();
-    static private List<String> sequenzeDiCambiamento = new ArrayList<>();
-    static private int numeroStazioniUsate;
+    private static List<String> percorsiConNomi = new ArrayList<>();
+    private static int numeroCambi;
+    private static List<String> linee = new ArrayList<>();
+    private static List<String> sequenzeDiCambiamento = new ArrayList<>();
+    private static int numeroStazioniUsate;
     static double minutaggio;
-    static private List<String> sequenzeNodiCruciali = new ArrayList<>();
-    static private int numeroStazioniTotali;
+    private static List<String> sequenzeNodiCruciali = new ArrayList<>();
+    private static int numeroStazioniTotali;
     static double percentualeStazioniUsate;
     static String status;
     static String start;

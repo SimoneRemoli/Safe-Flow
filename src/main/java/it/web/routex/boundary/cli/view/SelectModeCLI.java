@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class SelectModeCLI {
 
     private final Scanner scanner = new Scanner(System.in);
-    public static String scelta = "";
+    private static String scelta = "";
     private String mode = "";
 
     public void choiceDemoFull() {
@@ -22,5 +22,9 @@ public class SelectModeCLI {
         mode = scanner.nextLine();
         scelta = mode.toUpperCase();
         SelectModeControllerGraficoCLI.doPost();
+    }
+
+    public static String getScelta() {
+        return scelta;
     }
 }

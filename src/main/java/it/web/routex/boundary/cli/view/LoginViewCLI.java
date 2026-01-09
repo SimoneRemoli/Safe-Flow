@@ -6,8 +6,9 @@ import java.util.Scanner;
 
 public class LoginViewCLI {
 
-    public static String emailUtente;
-    public static String passwordUtente;
+    private static String emailUtente;
+    private static String passwordUtente;
+
 
     public static void mostraLogin() {
         Scanner scanner = new Scanner(System.in);
@@ -25,4 +26,12 @@ public class LoginViewCLI {
         login.post();
 
     }
+    public static String getEmailUtente() {
+        return emailUtente;
+    }
+
+    public static String getPasswordUtente() {
+        return passwordUtente;
+    }
+
 }

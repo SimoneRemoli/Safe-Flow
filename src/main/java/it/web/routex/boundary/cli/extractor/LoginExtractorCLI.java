@@ -13,8 +13,8 @@ public class LoginExtractorCLI {
 
     public static LoginRecord from() throws InvalidLoginInputExceptionRemoli {
 
-        String emaill = LoginViewCLI.emailUtente;
-        String passwordd = LoginViewCLI.passwordUtente;
+        String emaill = LoginViewCLI.getEmailUtente();
+        String passwordd = LoginViewCLI.getPasswordUtente();
 
         String email = sanitize(emaill);
         String password = sanitize(passwordd);

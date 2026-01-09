@@ -9,7 +9,7 @@ public class SelectModeControllerGraficoCLI {
 
     public static void doPost() {
 
-        String mode = SelectModeCLI.scelta;
+        String mode = SelectModeCLI.getScelta();
 
         if(mode.isEmpty() || (!mode.equals("DEMO") && !mode.equals("FULL"))) {
             System.out.println("Modalità non valida. Per favore, scegli tra DEMO e FULL.");
