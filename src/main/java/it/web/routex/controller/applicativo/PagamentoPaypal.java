@@ -76,7 +76,17 @@ public class PagamentoPaypal extends RegistrazionePagamentoController
         {
             TicketDAOLayer daoLayerJDBC = FactoryPersistence.createTicketDAO();
             daoLayerJDBC.salvataggio(credenziali, codiciBiglietti, paypal.getMethod().getDisplayName(), city);
-            logger.info("Traveler {} {} {} {} ha effettuato un pagamento di {} euro con Paypal {}", credenziali.getNome(), credenziali.getCodiceFiscale(), credenziali.getCognome(), credenziali.getDisabile(), totale, paypal.maskedAccount());
+            if (logger.isInfoEnabled()) {
+                logger.info(
+                        "Traveler {} {} {} {} ha effettuato un pagamento di {} euro con Paypal {}",
+                        credenziali.getNome(),
+                        credenziali.getCodiceFiscale(),
+                        credenziali.getCognome(),
+                        credenziali.getDisabile(),
+                        totale,
+                        paypal.maskedAccount()
+                );
+            }
         }
     }
 }

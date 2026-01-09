@@ -2,12 +2,17 @@ package it.web.routex.boundary.cli.view;
 import it.web.routex.boundary.cli.controller.grafico.ViewWorkScheduleControllerGraficoCLI;
 
 @SuppressWarnings("java:S106")
-public class ViewWorkScheduleCLI
+public final class ViewWorkScheduleCLI
 {
     private static  Integer oraInizio;
     private static  Integer oraFine;
     private static String luogoDiLavoro;
     private static int durataTurno;
+
+    private ViewWorkScheduleCLI(){
+        //Prevent the init
+    }
+
     public static void mostra()
     {
         ViewWorkScheduleControllerGraficoCLI not = new ViewWorkScheduleControllerGraficoCLI();
