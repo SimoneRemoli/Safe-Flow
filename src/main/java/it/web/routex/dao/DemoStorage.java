@@ -1,7 +1,6 @@
 package it.web.routex.dao;
 import it.web.routex.enumerator.Ruolo;
 import it.web.routex.model.*;
-import it.web.routex.record.PaymentRecord;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,15 +11,15 @@ import java.util.List;
  */
 public final class DemoStorage {
 
-    public static List<Route> routes = new ArrayList<>();
-    public static List<Notification> notifications = new ArrayList<>();
-    public static List<City> cities = new ArrayList<>();
-    public static List<User> users = new ArrayList<>();
-    public static List<Mastercard> mastercards = new ArrayList<>();
-    public static List<Paypal> paypals = new ArrayList<>();
-    public static List<Fermate> fermate = new ArrayList<>();
-    public static List<WorkerScheduleRecord> workerSchedules = new ArrayList<>();
-    public static List<PaymentReg> payments = new ArrayList<>();
+    private static List<Route> routes = new ArrayList<>();
+    private static List<Notification> notifications = new ArrayList<>();
+    private static List<City> cities = new ArrayList<>();
+    private static List<User> users = new ArrayList<>();
+    private static List<Mastercard> mastercards = new ArrayList<>();
+    private static List<Paypal> paypals = new ArrayList<>();
+    private static List<Fermate> fermate = new ArrayList<>();
+    private static List<WorkerScheduleRecord> workerSchedules = new ArrayList<>();
+    private static List<PaymentReg> payments = new ArrayList<>();
 
     static {
 
@@ -191,4 +190,40 @@ public final class DemoStorage {
     }
 
     private DemoStorage() {}
+
+    public static List<City> getCities() {
+        return cities;
+    }
+
+    public static List<Fermate> getFermate() {
+        return fermate;
+    }
+
+    public static List<Mastercard> getMastercards() {
+        return mastercards;
+    }
+
+    public static List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public static List<PaymentReg> getPayments() {
+        return payments;
+    }
+
+    public static List<Paypal> getPaypals() {
+        return paypals;
+    }
+
+    public static List<Route> getRoutes() {
+        return routes;
+    }
+
+    public static List<User> getUsers() {
+        return users;
+    }
+
+    public static List<WorkerScheduleRecord> getWorkerSchedules() {
+        return workerSchedules;
+    }
 }

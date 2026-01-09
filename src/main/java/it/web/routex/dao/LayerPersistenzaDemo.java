@@ -16,7 +16,7 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
     @Override
     public void login(String email, String password) throws DAOExceptionRemoli, LoginNotFoundRemoli
     {
-        for (User u : DemoStorage.users) {
+        for (User u : DemoStorage.getUsers()) {
             if (u.getEmail().equals(email) && u.getPassword().equals(password))
             {
                 Credentials cred = Credentials.getInstanceSingleton();
@@ -40,7 +40,7 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
             throws DAOExceptionRemoli, PaymentValidationExceptionRemoli {
 
         try {
-            for (Mastercard m : DemoStorage.mastercards) {
+            for (Mastercard m : DemoStorage.getMastercards()) {
 
                 if (m.getNumeroCarta().equals(nC) && m.getDataScadenza().equals(sc) && m.getCvv().equals(cvv)) {
 
@@ -76,7 +76,7 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
             throws DAOExceptionRemoli, PaymentValidationExceptionRemoli {
 
         try {
-            for (Paypal p : DemoStorage.paypals) {
+            for (Paypal p : DemoStorage.getPaypals()) {
 
                 if (p.getEmail().equals(email) && p.getCodice().equals(codice))
                 {
@@ -111,7 +111,7 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
 
         try {
             // equivalente di rs.isBeforeFirst()
-            if (DemoStorage.cities.isEmpty()) {
+            if (DemoStorage.getCities().isEmpty()) {
                 throw new DAOExceptionRemoli(
                         "Il database non ha restituito nessuna città. "
                                 + "Possibile errore nella stored procedure o nel caricamento dati."
@@ -120,7 +120,7 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
 
             List<City> informazioni = new ArrayList<>();
 
-            for (City c : DemoStorage.cities) {
+            for (City c : DemoStorage.getCities()) {
                 informazioni.add(new City(c.getName(), c.getCostoBiglietto(), c.getNumeroStazioni()));
             }
 
@@ -146,7 +146,7 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
             // Simulazione della chiamata ripetuta alla stored procedure
             for (int id : ids) {
 
-                for(Fermate f : DemoStorage.fermate)
+                for(Fermate f : DemoStorage.getFermate())
                 {
                     if(id == f.getId())
                     {
@@ -176,7 +176,7 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
             Integer endId = null;
 
             // simulazione della stored procedure
-            for (Fermate f : DemoStorage.fermate) {
+            for (Fermate f : DemoStorage.getFermate()) {
 
                 if (startId == null && f.getNome().equalsIgnoreCase(startStation)) {
                     startId = f.getId();
@@ -215,7 +215,7 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
 
         try {
             // simulazione del ResultSet
-            for (Notification n : DemoStorage.notifications) {
+            for (Notification n : DemoStorage.getNotifications()) {
 
                 Notification copy = new Notification(n.getMessage(), n.getDate(), n.isRisolto());
 
@@ -266,7 +266,7 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
                     route.getUtente()
             );
 
-            DemoStorage.routes.add(copy);
+            DemoStorage.getRoutes().add(copy);
 
         } catch (DAOExceptionRemoli e) {
             throw e;
@@ -284,7 +284,7 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
             throws DAOExceptionRemoli {
 
         try {
-            for (WorkerScheduleRecord r : DemoStorage.workerSchedules) {
+            for (WorkerScheduleRecord r : DemoStorage.getWorkerSchedules()) {
 
                 // equivale a: WHERE p.Codice_Fiscale = ?
                 if (r.getCodiceFiscale().equals(codiceFiscale)) {
@@ -327,7 +327,7 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
                     n.isRisolto()
             );
 
-            DemoStorage.notifications.add(copy);
+            DemoStorage.getNotifications().add(copy);
 
         } catch (DAOExceptionRemoli e) {
             throw e;
@@ -353,7 +353,7 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
 
             boolean updated = false;
 
-            for (Notification stored : DemoStorage.notifications) {
+            for (Notification stored : DemoStorage.getNotifications()) {
 
                 // criterio di matching: stesso messaggio + stessa data
                 if (stored.getMessage().equals(n.getMessage()) && stored.getDate().equals(n.getDate())) {
@@ -389,7 +389,7 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
         List<Route> resultList = new ArrayList<>();
 
         try {
-            for (Route r : DemoStorage.routes) {
+            for (Route r : DemoStorage.getRoutes()) {
 
                 // simulazione ResultSet -> nuova riga
                 Route copy = new Route(
@@ -443,7 +443,7 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
                     city
             );
 
-            DemoStorage.payments.add(record);
+            DemoStorage.getPayments().add(record);
 
         } catch (CredentialsExceptionRemoli e) {
             throw e;
@@ -460,7 +460,7 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
         try {
             List<Ticket> result = new ArrayList<>();
 
-            for (PaymentReg p : DemoStorage.payments) {
+            for (PaymentReg p : DemoStorage.getPayments()) {
 
                 if (p.getCodiceFiscale().equals(cf)) {
 
@@ -506,7 +506,7 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
         try {
             List<Route> result = new ArrayList<>();
 
-            for (Route r : DemoStorage.routes) {
+            for (Route r : DemoStorage.getRoutes()) {
 
                 if (r.getUtente() != null && r.getUtente().equals(cf)) {
 
