@@ -1,6 +1,7 @@
 package it.web.routex.dao;
 import it.web.routex.enumerator.Ruolo;
 import it.web.routex.model.*;
+import it.web.routex.utility.builder.UserBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,38 +27,44 @@ public final class DemoStorage {
 
         cities.add(new City("Rome", 1.50, 76));
 
-        users.add(new User(
-                "RSSMRA80A01H501U",
-                "Mario",
-                "Rossi",
-                java.sql.Date.valueOf("1980-01-01"),
-                false,
-                Ruolo.TRAVELER,
-                "demo@routex.it",
-                "demo"
-        ));
+        users.add(
+                new UserBuilder("RSSMRA80A01H501U")
+                        .nome("Mario")
+                        .cognome("Rossi")
+                        .dataDiNascita(java.sql.Date.valueOf("1980-01-01"))
+                        .disabile(false)
+                        .ruolo(Ruolo.TRAVELER)
+                        .email("demo@routex.it")
+                        .password("demo")
+                        .build()
+        );
 
-        users.add(new User(
-                "RSSSAL",
-                "Lucia",
-                "Mercolano",
-                java.sql.Date.valueOf("1980-01-01"),
-                false,
-                Ruolo.ADMIN,
-                "lucia@gmail.com",
-                "mammi"
-        ));
 
-        users.add(new User(
-                "BNCLGI90B22F205X",
-                "Luigi",
-                "Bianchi",
-                java.sql.Date.valueOf("1990-02-22"),
-                false,
-                Ruolo.WORKER,
-                "worker@routex.it",
-                "worker"
-        ));
+        users.add(
+                new UserBuilder("RSSSAL")
+                        .nome("Lucia")
+                        .cognome("Mercolano")
+                        .dataDiNascita(java.sql.Date.valueOf("1980-01-01"))
+                        .disabile(false)
+                        .ruolo(Ruolo.ADMIN)
+                        .email("lucia@gmail.com")
+                        .password("mammi")
+                        .build()
+        );
+
+
+        users.add(
+                new UserBuilder("BNCLGI90B22F205X")
+                        .nome("Luigi")
+                        .cognome("Bianchi")
+                        .dataDiNascita(java.sql.Date.valueOf("1990-02-22"))
+                        .disabile(false)
+                        .ruolo(Ruolo.WORKER)
+                        .email("worker@routex.it")
+                        .password("worker")
+                        .build()
+        );
+
 
         notifications.add(new Notification(
                 "Manutenzione programmata linea A",

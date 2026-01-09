@@ -18,23 +18,15 @@ public class User {
     private String email;
     private String password;
 
-    public User(String codiceFiscale,
-                String nome,
-                String cognome,
-                Date dataDiNascita,
-                boolean disabile,
-                Ruolo ruolo,
-                String email,
-                String password) {
-
-        this.codiceFiscale = codiceFiscale;
-        this.nome = nome;
-        this.cognome = cognome;
-        this.dataDiNascita = dataDiNascita;
-        this.disabile = disabile;
-        this.ruolo = ruolo;
-        this.email = email;
-        this.password = password;
+    public User(UserData data) {
+        this.codiceFiscale = data.getCodiceFiscale();
+        this.nome = data.getNome();
+        this.cognome = data.getCognome();
+        this.dataDiNascita = data.getDataDiNascita();
+        this.disabile = data.getDisabile();
+        this.ruolo = data.getRuolo();
+        this.email = data.getEmail();
+        this.password = data.getPassword();
     }
 
 
