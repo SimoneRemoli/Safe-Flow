@@ -57,8 +57,7 @@ public class BuyTicketControllerGraficoCLI extends LoggedCLI
             PrezzoTotaleBean prezzo = cityController.ottieniPrezzoTotale(buyTicket.city(), buyTicket.quantity());
             logger.info("Elaborazione prezzo: prezzo={}",prezzo.getPrezzoTotale());
 
-
-            new ConfermaPagamentoCLI(buyTicket.city(),String.valueOf(buyTicket.quantity()),prezzo.getPrezzoTotale() );
+            ConfermaPagamentoCLI.init(buyTicket.city(),String.valueOf(buyTicket.quantity()),prezzo.getPrezzoTotale());
             forwardingConferma();
 
         } catch (DAOExceptionRemoli e) {

@@ -1,6 +1,4 @@
 package it.web.routex.boundary.cli.extractor;
-
-
 import it.web.routex.boundary.cli.view.ConfermaPagamentoCLI;
 import it.web.routex.enumerator.TypesOfPersistenceLayer;
 import it.web.routex.record.PaymentRecord;

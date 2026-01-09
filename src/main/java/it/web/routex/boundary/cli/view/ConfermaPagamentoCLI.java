@@ -12,11 +12,12 @@ public final class ConfermaPagamentoCLI
     private static String metodoPagamento;
     private static String persistenza;
 
-    public ConfermaPagamentoCLI(String city, String quantity, double prezzoTotale)
-    {
-        this.city = city;
-        this.quantity = quantity;
-        this.prezzoTotale = prezzoTotale;
+    private ConfermaPagamentoCLI() {}
+
+    public static void init(String c, String q, double p) {
+        city = c;
+        quantity = q;
+        prezzoTotale = p;
     }
 
     public static String getCity() {
