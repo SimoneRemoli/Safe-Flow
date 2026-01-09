@@ -138,7 +138,6 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
         List<FermataRecordBean> fermateAll = new ArrayList<>();
 
         try {
-            // Simulazione della chiamata ripetuta alla stored procedure
             for (int id : ids) {
 
                 for(Fermate f : DemoStorage.getFermate())
@@ -292,7 +291,6 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
                 }
             }
 
-            // equivale a: if (!rs.next())
             throw new DAOExceptionRemoli("Errore.");
 
         } catch (DAOExceptionRemoli e) {
@@ -428,7 +426,7 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
             String bigliettiConcatenati = String.join(",", codiciBiglietti);
 
             // simulazione INSERT SavePayment
-            PaymentReg record = new PaymentReg(
+            PaymentReg records = new PaymentReg(
                     cred.getCodiceFiscale(),
                     cred.getNome(),
                     cred.getCognome(),
@@ -438,7 +436,7 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
                     city
             );
 
-            DemoStorage.getPayments().add(record);
+            DemoStorage.getPayments().add(records);
 
         } catch (CredentialsExceptionRemoli e) {
             throw e;
