@@ -1,8 +1,5 @@
 package it.web.routex.utility.builder;
-
-import it.web.routex.boundary.cli.view.PathNOREGCLI;
 import it.web.routex.boundary.cli.view.PaypalCLI;
-import it.web.routex.dao.PathNoRegData;
 import it.web.routex.dao.PaypalData;
 
 public class PayPalBuilder
