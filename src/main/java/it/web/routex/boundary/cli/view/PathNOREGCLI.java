@@ -77,8 +77,13 @@ public final class PathNOREGCLI
         return status;
     }
 
-    public static void init(PathNoRegData path)
-    {
+
+    public static PathNOREGCLI from(PathNoRegData data) {
+        return new PathNOREGCLI(data);
+    }
+
+
+    private PathNOREGCLI(PathNoRegData path) {
         percorsiConNomi = path.getPercorsiConNomi();
         numeroCambi = path.getNumeroCambi();
         linee = path.getLinee();
@@ -88,23 +93,6 @@ public final class PathNOREGCLI
         percentualeStazioniUsate = path.getPercentualeStazioniUsate();
         sequenzeDiCambiamento = path.getSequenzeDiCambiamento();
         sequenzeNodiCruciali = path.getSequenzeNodiCruciali();
-    }
-
-    public static PathNOREGCLI from(PathNoRegData data) {
-        return new PathNOREGCLI(data);
-    }
-
-
-    private PathNOREGCLI(PathNoRegData path) {
-        this.percorsiConNomi = path.getPercorsiConNomi();
-        this.numeroCambi = path.getNumeroCambi();
-        this.linee = path.getLinee();
-        this.numeroStazioniUsate = path.getNumeroStazioniUsate();
-        this.minutaggio = path.getMinutaggio();
-        this.numeroStazioniTotali = path.getNumeroStazioniTotali();
-        this.percentualeStazioniUsate = path.getPercentualeStazioniUsate();
-        this.sequenzeDiCambiamento = path.getSequenzeDiCambiamento();
-        this.sequenzeNodiCruciali = path.getSequenzeNodiCruciali();
 
     }
 
