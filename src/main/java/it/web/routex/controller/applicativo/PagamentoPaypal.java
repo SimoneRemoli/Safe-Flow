@@ -28,15 +28,9 @@ public class PagamentoPaypal extends RegistrazionePagamentoController
     {
         final List<String> codiciBiglietti;
 
-        /*Paypal p = new PaypalDAO().getPaymentPaypal(email, codice);
-        p.validate();
-         */
-
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         Paypal p = layer.getPaymentPaypal(email,codice);
-
-
-
+        p.validate();
 
         Component gen = new TimestampDecorator(new CittaDecorator(new BaseTicketCode(), city));
 

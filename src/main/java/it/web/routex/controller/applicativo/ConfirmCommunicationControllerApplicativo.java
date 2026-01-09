@@ -17,10 +17,6 @@ public class ConfirmCommunicationControllerApplicativo {
                 false   // nuova comunicazione = non risolta
         );
 
-        /*SendCommunicationDAO dao = new SendCommunicationDAO();
-        dao.sendMessage(notification);
-         */
-
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         layer.sendMessage(notification);
     }

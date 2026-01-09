@@ -34,10 +34,7 @@ public class LoginController {
         // Chiamata al DAO
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         layer.login(autenticazione.getEmail(), autenticazione.getPassword());
-
-        //LoginProcedureDAO loginDAO = new LoginProcedureDAO();
-        //loginDAO.login(autenticazione.getEmail(), autenticazione.getPassword());
-
+        
         // Ottieni l'istanza singleton delle credenziali
         Credentials sessionCred = Credentials.getInstanceSingleton();
 

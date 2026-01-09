@@ -29,12 +29,10 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
     public PaymentResultBean run() throws DAOExceptionRemoli, PaymentValidationExceptionRemoli, CredentialsExceptionRemoli {
 
         final List<String> codiciBiglietti;
-        /*Mastercard mastercard = new MastercardDAO().getPaymentMastercard(numeroCarta, scadenza, cvv);
-        mastercard.validate();
-         */
 
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         Mastercard mastercard = layer.getPaymentMastercard(numeroCarta, scadenza, cvv);
+        mastercard.validate();
 
         Component gen = new TimestampDecorator(new CittaDecorator(new BaseTicketCode(), city));
 
@@ -53,8 +51,6 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
                 mastercard.getMethod().getDisplayName(),
                 codiciBiglietti
         );
-
-        //return codiciBiglietti;
     }
     public PagamentoMastercard(String numeroCarta, String scadenza, String cvv, Credentials cred,double tot, int quantita, String citta )
     {
@@ -80,7 +76,16 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
         else {
             TicketDAOLayer daoLayer = FactoryPersistence.createTicketDAO();
             daoLayer.salvataggio(credenziali, codiciBiglietti, mastercard.getMethod().getDisplayName(), city);
-            logger.info("Traveler {} {} {} {} ha effettuato un pagamento di {} euro con la Mastercard {}", credenziali.getNome(), credenziali.getCodiceFiscale(), credenziali.getCognome(), credenziali.getDisabile(), totale, mastercard.maskedNumber());
+            if (logger.isInfoEnabled()) {
+                logger.info(
+                        "Traveler {} {} {} ha effettuato un pagamento di {} euro con la Mastercard {}",
+                        credenziali.getNome(),
+                        credenziali.getCodiceFiscale(),
+                        credenziali.getCognome(),
+                        totale,
+                        mastercard.maskedNumber()
+                );
+            }
         }
     }
 }

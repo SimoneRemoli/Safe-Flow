@@ -24,10 +24,6 @@ public class CityController {
      */
     public List<CityBean> getAllCities() throws InvalidCityDataExceptionRemoli, DAOExceptionRemoli {
 
-        /*CityDAO dao = new CityDAO();
-        List<City> cities = dao.listCities();
-         */
-
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         List<City> cities = layer.listCities();
 
@@ -98,7 +94,6 @@ public class CityController {
             );
         }
 
-        /*List<City> cities = new CityDAO().listCities();*/
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         List<City> cities=layer.listCities();
         for (City a : cities) {

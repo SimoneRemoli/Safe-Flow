@@ -91,9 +91,7 @@ public class CityLifeController
     public CityLifeBean calcolaPercorso(List<Integer> ids, String city) throws SQLException {
         final Logger logger = LoggerFactory.getLogger(getClass());
         StatoPercorso stato = new StatoPercorso();
-        /*FermataDAO fermataDAO = new FermataDAO();
-        List<FermataRecordBean> fermateTot = fermataDAO.getFermateByIds(ids, city);
-         */
+
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         List<FermataRecordBean> fermateTot = layer.getFermateByIds(ids,city);
 
