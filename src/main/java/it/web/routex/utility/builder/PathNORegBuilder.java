@@ -73,7 +73,7 @@ public class PathNORegBuilder
         data.setPercorsiConNomi(percorsiConNomi);
         data.setSequenzeDiCambiamento(sequenzeDiCambiamento);
         data.setSequenzeNodiCruciali(sequenzeNodiCruciali);
-        return new PathNOREGCLI(data);
+        return PathNOREGCLI.from(data);
 
     }
 

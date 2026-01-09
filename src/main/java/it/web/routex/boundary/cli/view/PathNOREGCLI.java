@@ -21,6 +21,10 @@ public final class PathNOREGCLI
     static String end;
     static String city;
 
+    private PathNOREGCLI(){
+        //Prevent the instantiation
+    }
+
     public static double getMinutaggio() {
         return minutaggio;
     }
@@ -73,8 +77,25 @@ public final class PathNOREGCLI
         return status;
     }
 
+    public static void init(PathNoRegData path)
+    {
+        percorsiConNomi = path.getPercorsiConNomi();
+        numeroCambi = path.getNumeroCambi();
+        linee = path.getLinee();
+        numeroStazioniUsate = path.getNumeroStazioniUsate();
+        minutaggio = path.getMinutaggio();
+        numeroStazioniTotali = path.getNumeroStazioniTotali();
+        percentualeStazioniUsate = path.getPercentualeStazioniUsate();
+        sequenzeDiCambiamento = path.getSequenzeDiCambiamento();
+        sequenzeNodiCruciali = path.getSequenzeNodiCruciali();
+    }
 
-    public PathNOREGCLI(PathNoRegData path) {
+    public static PathNOREGCLI from(PathNoRegData data) {
+        return new PathNOREGCLI(data);
+    }
+
+
+    private PathNOREGCLI(PathNoRegData path) {
         this.percorsiConNomi = path.getPercorsiConNomi();
         this.numeroCambi = path.getNumeroCambi();
         this.linee = path.getLinee();
@@ -86,6 +107,8 @@ public final class PathNOREGCLI
         this.sequenzeNodiCruciali = path.getSequenzeNodiCruciali();
 
     }
+
+
     public PathNOREGCLI(String status, String start, String end, String city)
     {
         this.status = status;
