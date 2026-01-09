@@ -2,16 +2,16 @@ package it.web.routex.controller.grafico;
 
 import it.web.routex.bean.MessageBean;
 import it.web.routex.controller.applicativo.ConfirmCommunicationControllerApplicativo;
+import it.web.routex.domain.LoggedHttpServlet;
 import it.web.routex.exception.BrondiInvalidCommunicationInputException;
 import it.web.routex.extractor.CommunicationInputExtractor;
 import it.web.routex.record.CommunicationInput;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/confirmCommunication")
-public class ConfirmCommunicationControllerGrafico extends HttpServlet {
+public class ConfirmCommunicationControllerGrafico extends LoggedHttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -46,7 +46,7 @@ public class ConfirmCommunicationControllerGrafico extends HttpServlet {
             try {
                 request.getRequestDispatcher("/adminError.jsp").forward(request, response);
             }catch(Exception d){
-                throw new RuntimeException(d.getMessage());
+                logger.error("Errore specifico nel forwarding verso adminError.jsp : {} ", e.getMessage());
             }
 
         } catch (Exception e) {
@@ -58,7 +58,8 @@ public class ConfirmCommunicationControllerGrafico extends HttpServlet {
             try {
             request.getRequestDispatcher("/adminError.jsp").forward(request, response);
             }catch(Exception d){
-                throw new RuntimeException(d.getMessage());
+                logger.error("Errore generico nel forwarding verso adminError.jsp : {} ", e.getMessage());
+
             }
         }
     }

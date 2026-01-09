@@ -18,12 +18,10 @@ public class WorkerViewCLI {
             String scelta = scanner.nextLine();
 
             switch (scelta) {
-                case "1" -> {
-                    ViewNotificationsCLI.mostra();
-                }
-                case "2" -> {
-                    ViewWorkScheduleCLI.mostra();
-                }
+                case "1" -> ViewNotificationsCLI.mostra();
+
+                case "2" -> ViewWorkScheduleCLI.mostra();
+
                 case "3" -> {
                     LogoutCLI.logoutUser();
                     return;
