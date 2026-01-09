@@ -6,6 +6,7 @@ import it.web.routex.enumerator.Ruolo;
 import it.web.routex.utility.factory.ConnectionFactory;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ResourceBundle;
 
@@ -24,16 +25,11 @@ class UpdateNotificationsTest {
             ResourceBundle.getBundle("configurations/testpaths");
 
     @Test
-    void TestAggiornaNotifica() {
+    void TestAggiornaNotifica() throws SQLException {
 
         // 1. Setup Ruolo
-        try {
-            ConnectionFactory.cambioDiRuolo(Ruolo.ADMIN);
-        } catch (Exception e) {
-            try {
-                ConnectionFactory.cambioDiRuolo(Ruolo.TRAVELER);
-            } catch (Exception ignored) {}
-        }
+        ConnectionFactory.cambioDiRuolo(Ruolo.ADMIN);
+
 
         // 2. Creazione Bean (come fa il controller grafico)
         MessageBean bean = new MessageBean(
