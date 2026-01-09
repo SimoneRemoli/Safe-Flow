@@ -61,7 +61,6 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
         } catch (PaymentValidationExceptionRemoli e) {
             throw e; // stesso comportamento della FULL
         } catch (Exception e) {
-            //equivalente concettuale del catch(SQLException)
             throw new DAOExceptionRemoli(
                     "Errore interno alla connessione: " + e.getMessage()
             );
@@ -88,7 +87,6 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
                 }
             }
 
-            // equivalente a rs.next() == false
             throw new PaymentValidationExceptionRemoli(
                     "Nessun pagamento trovato per i dati Paypal inseriti.",
                     PaymentMethod.PAYPAL,
@@ -109,7 +107,6 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
     public List<City> listCities() throws DAOExceptionRemoli {
 
         try {
-            // equivalente di rs.isBeforeFirst()
             if (DemoStorage.getCities().isEmpty()) {
                 throw new DAOExceptionRemoli(
                         "Il database non ha restituito nessuna città. "
@@ -128,7 +125,6 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
         } catch (DAOExceptionRemoli e) {
             throw e; // stesso comportamento della FULL
         } catch (Exception e) {
-            // 🔁 equivalente del catch(SQLException)
             throw new DAOExceptionRemoli(
                     "Errore nella comunicazione con il database: " + e.getMessage()
             );
