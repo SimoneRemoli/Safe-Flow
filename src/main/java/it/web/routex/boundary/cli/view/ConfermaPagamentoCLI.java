@@ -96,7 +96,7 @@ public final class ConfermaPagamentoCLI
                     System.out.print("CVV: ");
                     cvv = scanner.nextLine();
 
-                    new MastercardCLI(numeroCarta, scadenza, cvv);
+                    MastercardCLI.init(numeroCarta, scadenza, cvv);
                 }
                 if(metodoPagamento.equals("Paypal"))
                 {

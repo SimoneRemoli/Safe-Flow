@@ -6,11 +6,11 @@ public final class MastercardCLI
     private static String scadenza;
     private static String cvv;
 
-    public MastercardCLI(String a, String b, String c)
+    public static void init(String a, String b, String c)
     {
-        this.numeroCarta = a;
-        this.scadenza = b;
-        this.cvv = c;
+        numeroCarta = a;
+        scadenza = b;
+        cvv = c;
     }
 
     public static String getCvv() {

@@ -4,10 +4,14 @@ import it.web.routex.boundary.cli.controller.grafico.LoginControllerGraficoCLI;
 
 import java.util.Scanner;
 @SuppressWarnings("java:S106")
-public class LoginViewCLI {
+public final class LoginViewCLI {
 
     private static String emailUtente;
     private static String passwordUtente;
+
+    private LoginViewCLI(){
+        // Prevent instantiation
+    }
 
 
     public static void mostraLogin() {
