@@ -5,9 +5,9 @@ import java.util.Scanner;
 
 public class StartExploringCLI
 {
-    public static String city;
-    public static String stazionePartenza;
-    public static String stazioneArrivo;
+    private static String city;
+    private static String stazionePartenza;
+    private static String stazioneArrivo;
 
     public static void mostraExploring() {
         Scanner scanner = new Scanner(System.in);
@@ -27,5 +27,17 @@ public class StartExploringCLI
         PathControllerGraficoCLI p = new PathControllerGraficoCLI();
         p.post();
 
+    }
+
+    public static String getCity() {
+        return city;
+    }
+
+    public static String getStazioneArrivo() {
+        return stazioneArrivo;
+    }
+
+    public static String getStazionePartenza() {
+        return stazionePartenza;
     }
 }

@@ -13,7 +13,7 @@ public class UpdateNotificationsControllerGraficoCLI
     public static void doPost() {
 
         try {
-            List<String> risolte = ViewNotificationsCLI.risolte;
+            List<String> risolte = ViewNotificationsCLI.getRisolte();
 
             UpdateNotificationsControllerApplicativo service = new UpdateNotificationsControllerApplicativo();
 

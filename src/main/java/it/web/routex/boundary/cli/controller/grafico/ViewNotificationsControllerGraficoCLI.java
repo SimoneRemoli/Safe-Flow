@@ -19,7 +19,7 @@ public class ViewNotificationsControllerGraficoCLI extends LoggedCLI {
         try {
             ViewNotificationsControllerApplicativo notifications = new ViewNotificationsControllerApplicativo();
             List<MessageBean> notifiche = notifications.messages();
-            ViewNotificationsCLI.MostraNotifiche(notifiche);
+            ViewNotificationsCLI.mostraNotifiche(notifiche);
 
         } catch (BrondiNoNotificationsWarningException w) {
 

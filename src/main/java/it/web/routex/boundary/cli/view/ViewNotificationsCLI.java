@@ -12,13 +12,13 @@ import java.util.Scanner;
 public class ViewNotificationsCLI
 {
     private static String notificaRisolta;
-    public static List<String> risolte = new ArrayList<>();
+    private static List<String> risolte = new ArrayList<>();
     public static void mostra()
     {
         ViewNotificationsControllerGraficoCLI not = new ViewNotificationsControllerGraficoCLI();
         not.doGet();
     }
-    public static void MostraNotifiche(List<MessageBean> notifiche)
+    public static void mostraNotifiche(List<MessageBean> notifiche)
     {
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -57,5 +57,9 @@ public class ViewNotificationsCLI
             }
 
         }
+    }
+
+    public static List<String> getRisolte() {
+        return risolte;
     }
 }

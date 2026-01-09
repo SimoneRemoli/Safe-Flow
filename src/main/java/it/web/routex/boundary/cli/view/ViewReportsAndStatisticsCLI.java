@@ -3,7 +3,6 @@ package it.web.routex.boundary.cli.view;
 import it.web.routex.bean.PathInfoBean;
 import it.web.routex.bean.ReportsStatsBean;
 import it.web.routex.boundary.cli.controller.grafico.ReportsControllerGraficoCLI;
-import it.web.routex.boundary.cli.controller.grafico.ViewWorkScheduleControllerGraficoCLI;
 
 public class ViewReportsAndStatisticsCLI {
 

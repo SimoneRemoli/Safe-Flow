@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class SendCommunicationCLI
 {
     private static final Scanner scanner = new Scanner(System.in);
-    public static String message;
+    private static String message;
     public static void mostra()
     {
         System.out.println("\n================================");
@@ -18,5 +18,9 @@ public class SendCommunicationCLI
 
         ConfirmCommunicationControllerGraficoCLI.doPost();
 
+    }
+
+    public static String getMessage() {
+        return message;
     }
 }

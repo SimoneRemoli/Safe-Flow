@@ -14,9 +14,9 @@ public final class RouteInputExtractorCLI
 
     public static RouteRecord from() throws InvalidRouteInputExceptionRemoli {
 
-        String citta = StartExploringCLI.city;
-        String startStation = StartExploringCLI.stazionePartenza;
-        String endStation = StartExploringCLI.stazioneArrivo;
+        String citta = StartExploringCLI.getCity();
+        String startStation = StartExploringCLI.getStazionePartenza();
+        String endStation = StartExploringCLI.getStazioneArrivo();
 
         String city = sanitize(citta);
         String start = sanitize(startStation);

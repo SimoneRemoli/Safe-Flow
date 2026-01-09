@@ -20,7 +20,7 @@ public final class CommunicationInputExtractorCLI {
 
     public static CommunicationInput extract() throws BrondiInvalidCommunicationInputException {
 
-        String testo = SendCommunicationCLI.message;
+        String testo = SendCommunicationCLI.getMessage();
 
         // Controllo input vuoto
         if (testo == null || testo.trim().isEmpty()) {
