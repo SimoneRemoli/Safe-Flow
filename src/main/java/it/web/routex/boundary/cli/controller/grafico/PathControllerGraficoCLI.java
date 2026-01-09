@@ -44,7 +44,7 @@ public class PathControllerGraficoCLI extends LoggedCLI
 
         RouteDecoratorServiceCLI.decorate(dto);
 
-        new PathNORegInitBuilder(status).start(route.start()).end(route.end()).city(route.city());
+        new PathNORegInitBuilder(status).start(route.start()).end(route.end()).city(route.city()).build();
 
         PathController pathCtrl = new PathController();
         boolean salvato = pathCtrl.saveRoute(cred,dto,route, status);

@@ -1,6 +1,7 @@
 package it.web.routex.boundary.cli.view;
 
 import it.web.routex.boundary.cli.controller.grafico.ConfermaPagamentoControllerGraficoCLI;
+import it.web.routex.utility.builder.PayPalBuilder;
 
 import java.util.Scanner;
 @SuppressWarnings("java:S106")
@@ -105,7 +106,7 @@ public final class ConfermaPagamentoCLI
                     emailPaypal = scanner.nextLine();
                     System.out.println("Codice Transazione: ");
                     codiceTransazione = scanner.nextLine();
-                    new PaypalCLI(emailPaypal, codiceTransazione);
+                    new PayPalBuilder(emailPaypal).codiceTransazione(codiceTransazione).build();
                 }
 
                 while(end) {

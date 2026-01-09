@@ -1,15 +1,32 @@
 package it.web.routex.boundary.cli.view;
 
-public class PaypalCLI
+import it.web.routex.dao.PaypalData;
+
+public final class PaypalCLI
 {
     private static String emailPaypal;
     private static String codiceTransazione;
 
-    public PaypalCLI(String a, String b)
+    private PaypalCLI(){
+        //Prevent the instantiation
+    }
+
+    public static void from(PaypalData p){
+        init(p);
+    }
+    public static void init(PaypalData p)
+    {
+        emailPaypal = p.getEmailPaypal();
+        codiceTransazione = p.getCodiceTransazione();
+    }
+
+    /*public PaypalCLI(String a, String b)
     {
         this.emailPaypal = a;
         this.codiceTransazione = b;
     }
+
+     */
 
     public static String getCodiceTransazione() {
         return codiceTransazione;
