@@ -4,7 +4,6 @@ import it.web.routex.bean.FermataRecordBean;
 import it.web.routex.enumerator.PaymentMethod;
 import it.web.routex.exception.*;
 import it.web.routex.model.*;
-import it.web.routex.record.PaymentRecord;
 import it.web.routex.utility.singleton.Credentials;
 
 import java.sql.SQLException;
