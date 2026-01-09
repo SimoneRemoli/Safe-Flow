@@ -1,6 +1,7 @@
 package it.web.routex.boundary.cli.extractor;
 
 
+import it.web.routex.boundary.cli.view.ConfermaPagamentoCLI;
 import it.web.routex.enumerator.TypesOfPersistenceLayer;
 import it.web.routex.record.PaymentRecord;
 
@@ -13,13 +14,13 @@ public final class PagamentoExtractorCLI {
         throw new AssertionError("Classe di estrazione dati, non si creano new");
     }
 
-    public static PaymentRecord from(String cityy, String quantityy, String price, String metodoPagamento, String persistenza) throws InvalidPaymentInputExceptionRemoli {
+    public static PaymentRecord from() throws InvalidPaymentInputExceptionRemoli {
 
-        String city = cityy;
-        String quantityParam = quantityy;
-        String totaleParam = price;
-        String metodo = metodoPagamento;
-        String persistence = persistenza;
+        String city = ConfermaPagamentoCLI.getCity();
+        String quantityParam = ConfermaPagamentoCLI.getQuantity();
+        String totaleParam = String.valueOf(ConfermaPagamentoCLI.getPrezzoTotale());
+        String metodo = ConfermaPagamentoCLI.getMetodoPagamento();
+        String persistence = ConfermaPagamentoCLI.getPersistenza();
 
         if (city == null)
             throw new InvalidPaymentInputExceptionRemoli(

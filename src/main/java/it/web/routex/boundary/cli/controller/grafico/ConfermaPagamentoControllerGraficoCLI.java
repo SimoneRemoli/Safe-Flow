@@ -24,13 +24,13 @@ import it.web.routex.exception.InvalidCardInputExceptionRemoli;
 
 public class ConfermaPagamentoControllerGraficoCLI extends LoggedCLI {
 
-    public void doPost(String city, String quantity, String prezzo, String metodo, String persistenza) {
+    public void doPost() {
 
         Credentials cred = Credentials.getInstanceSingleton();
         logUtente(cred);
 
 
-        PaymentRecord paymentRecord = estraiPagamento(city, quantity, prezzo, metodo, persistenza);
+        PaymentRecord paymentRecord = estraiPagamento();
         if (paymentRecord == null) return;
 
         impostaPersistenza(paymentRecord);
@@ -46,10 +46,10 @@ public class ConfermaPagamentoControllerGraficoCLI extends LoggedCLI {
         mostraSuccesso(result);
     }
 
-    private PaymentRecord estraiPagamento(String city, String quantity, String price, String metodo, String persistenza)
+    private PaymentRecord estraiPagamento()
     {
         try{
-            return PagamentoExtractorCLI.from(city, quantity, price, metodo, persistenza);
+            return PagamentoExtractorCLI.from();
         }catch(InvalidPaymentInputExceptionRemoli e) {
             GenericErrorCLI.mostraErrore("Errore nell'input del pagamento"+ e.getUserMessage());
             return null;

@@ -9,6 +9,8 @@ public final class ConfermaPagamentoCLI
     private static String city;
     private static String quantity;
     private static double prezzoTotale;
+    private static String metodoPagamento;
+    private static String persistenza;
 
     public ConfermaPagamentoCLI(String city, String quantity, double prezzoTotale)
     {
@@ -29,11 +31,17 @@ public final class ConfermaPagamentoCLI
         return quantity;
     }
 
+    public static String getMetodoPagamento() {
+        return metodoPagamento;
+    }
+
+    public static String getPersistenza() {
+        return persistenza;
+    }
+
     public static void stampa()
     {
         Scanner scanner = new Scanner(System.in);
-        String metodoPagamento = "";
-        String persistenza = "";
         String numeroCarta;
         String scadenza;
         String cvv;
@@ -120,8 +128,7 @@ public final class ConfermaPagamentoCLI
                 }
 
                 ConfermaPagamentoControllerGraficoCLI pay = new ConfermaPagamentoControllerGraficoCLI();
-                pay.doPost(getCity(), getQuantity(), String.valueOf(getPrezzoTotale()), metodoPagamento, persistenza);
-
+                pay.doPost();
         }
     }
 }
