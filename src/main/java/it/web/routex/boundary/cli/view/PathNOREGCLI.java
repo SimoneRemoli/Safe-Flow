@@ -1,5 +1,7 @@
 package it.web.routex.boundary.cli.view;
 
+import it.web.routex.dao.PathNoRegData;
+
 import java.util.ArrayList;
 import java.util.List;
 @SuppressWarnings("java:S106")
@@ -72,26 +74,16 @@ public final class PathNOREGCLI
     }
 
 
-    public PathNOREGCLI(
-            List<String> percorsiConNomi,
-            int numeroCambi,
-            List<String> linee,
-            int numeroStazioniUsate,
-            double minutaggio,
-            int numeroStazioniTotali,
-            double percentualeStazioniUsate,
-            List<String> sequenzeDiCambiamento,
-            List<String> sequenzeNodiCruciali
-    ) {
-        this.percorsiConNomi = percorsiConNomi;
-        this.numeroCambi = numeroCambi;
-        this.linee = linee;
-        this.numeroStazioniUsate = numeroStazioniUsate;
-        this.minutaggio = minutaggio;
-        this.numeroStazioniTotali = numeroStazioniTotali;
-        this.percentualeStazioniUsate = percentualeStazioniUsate;
-        this.sequenzeDiCambiamento = sequenzeDiCambiamento;
-        this.sequenzeNodiCruciali = sequenzeNodiCruciali;
+    public PathNOREGCLI(PathNoRegData path) {
+        this.percorsiConNomi = path.getPercorsiConNomi();
+        this.numeroCambi = path.getNumeroCambi();
+        this.linee = path.getLinee();
+        this.numeroStazioniUsate = path.getNumeroStazioniUsate();
+        this.minutaggio = path.getMinutaggio();
+        this.numeroStazioniTotali = path.getNumeroStazioniTotali();
+        this.percentualeStazioniUsate = path.getPercentualeStazioniUsate();
+        this.sequenzeDiCambiamento = path.getSequenzeDiCambiamento();
+        this.sequenzeNodiCruciali = path.getSequenzeNodiCruciali();
 
     }
     public PathNOREGCLI(String status, String start, String end, String city)

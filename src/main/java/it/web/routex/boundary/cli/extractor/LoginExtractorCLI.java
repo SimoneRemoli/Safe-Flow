@@ -7,7 +7,7 @@ import it.web.routex.record.LoginRecord;
 
 public final class LoginExtractorCLI {
 
-    public LoginExtractorCLI(){
+    private LoginExtractorCLI(){
         // Prevent instantiation
     }
 

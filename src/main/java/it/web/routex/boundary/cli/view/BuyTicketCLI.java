@@ -5,8 +5,11 @@ import it.web.routex.boundary.cli.controller.grafico.BuyTicketControllerGraficoC
 import java.util.List;
 import java.util.Scanner;
 @SuppressWarnings("java:S106")
-public class BuyTicketCLI
+public final class BuyTicketCLI
 {
+    private BuyTicketCLI(){
+        // Prevent instantiation
+    }
     public static void mostraBuyTicket()
     {
         BuyTicketControllerGraficoCLI ctrgraphic = new BuyTicketControllerGraficoCLI();
