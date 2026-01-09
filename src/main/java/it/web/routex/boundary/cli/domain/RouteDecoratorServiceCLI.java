@@ -6,7 +6,11 @@ import it.web.routex.utility.decorator.decoratorchange.BaseComponent;
 import it.web.routex.utility.decorator.decoratorchange.CheckCambiamentiDecorator;
 import it.web.routex.utility.decorator.decoratorchange.Component;
 
-public class RouteDecoratorServiceCLI {
+public final class RouteDecoratorServiceCLI {
+
+    private RouteDecoratorServiceCLI(){
+        // Prevent instantiation
+    }
 
     public static void decorate(InformazioniPercorsoBean dto)
     {

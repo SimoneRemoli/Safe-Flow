@@ -5,7 +5,11 @@ import it.web.routex.exception.InvalidLoginInputExceptionRemoli;
 import it.web.routex.record.LoginRecord;
 
 
-public class LoginExtractorCLI {
+public final class LoginExtractorCLI {
+
+    public LoginExtractorCLI(){
+        // Prevent instantiation
+    }
 
     private static String sanitize(String s) {
         return (s == null) ? null : s.trim();

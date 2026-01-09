@@ -7,8 +7,11 @@ import it.web.routex.exception.DAOExceptionRemoli;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class UpdateNotificationsControllerGraficoCLI
+public final class UpdateNotificationsControllerGraficoCLI
 {
+    private UpdateNotificationsControllerGraficoCLI() {
+        // Prevent instantiation
+    }
 
     public static void doPost() {
 

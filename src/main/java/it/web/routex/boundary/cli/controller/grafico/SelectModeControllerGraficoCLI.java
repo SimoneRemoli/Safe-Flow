@@ -5,7 +5,11 @@ import it.web.routex.boundary.cli.view.HomePrincipaleCLI;
 import it.web.routex.boundary.cli.view.SelectModeCLI;
 import it.web.routex.controller.applicativo.SelectModeControllerApplicativo;
 @SuppressWarnings("java:S106")
-public class SelectModeControllerGraficoCLI {
+public final class SelectModeControllerGraficoCLI {
+
+    private SelectModeControllerGraficoCLI() {
+        // Prevent instantiation
+    }
 
     public static void doPost() {
 

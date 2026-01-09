@@ -3,14 +3,17 @@ package it.web.routex.boundary.cli.view;
 import it.web.routex.bean.RouteBean;
 import it.web.routex.bean.TicketBean;
 import it.web.routex.boundary.cli.controller.grafico.AreaRiservataControllerGraficoCLI;
-
 import java.util.ArrayList;
 import java.util.List;
 @SuppressWarnings("java:S106")
-public class AreaRiservataCLI
+public final class AreaRiservataCLI
 {
     private static List<RouteBean> listaPercorsi = new ArrayList<>();
     private static List<TicketBean> tickets = new ArrayList<>();
+
+    private AreaRiservataCLI(){
+        // Prevent instantiation
+    }
 
     public static void setListaPercorsi(List<RouteBean> listaPercorsi) {
         AreaRiservataCLI.listaPercorsi = listaPercorsi;
