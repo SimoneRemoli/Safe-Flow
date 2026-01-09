@@ -17,7 +17,6 @@ import it.web.routex.record.LoginRecord;
 import it.web.routex.utility.factory.ConnectionFactory;
 import java.sql.SQLException;
 
-
 public class LoginControllerGraficoCLI extends LoggedCLI {
 
 
@@ -102,11 +101,6 @@ public class LoginControllerGraficoCLI extends LoggedCLI {
 
                 case ERRORE_LOGIN:
                     ErroreLoginCLI.mostraErrore("Errore di autenticazione.");
-                    return;
-
-
-                default:
-                    System.out.println("❌ Destinazione CLI non valida.");
             }
 
         } catch (Exception e) {
