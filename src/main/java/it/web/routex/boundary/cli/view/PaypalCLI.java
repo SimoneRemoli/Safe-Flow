@@ -1,6 +1,6 @@
 package it.web.routex.boundary.cli.view;
 
-public final class PaypalCLI
+public class PaypalCLI
 {
     private static String emailPaypal;
     private static String codiceTransazione;
