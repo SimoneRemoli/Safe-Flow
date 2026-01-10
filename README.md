@@ -57,22 +57,22 @@ RouteX is a powerful metro route finder that allows users to search for stations
 <img width="469" height="590" alt="Screenshot 2026-01-10 alle 17 06 21" src="https://github.com/user-attachments/assets/cfdbe146-86f1-416a-ab08-f9be34c2ccab" />
 <br>
 <p align="center">
-  Traveler:
-• As a traveler, I want to find the shortest route between two metro stations, so that I
-can reach my destination in the most efficient way.
-• As a traveler, I want to purchase metro tickets, so that I can use them to travel.
+  Traveler:<br>
+• As a traveler, I want to find the shortest route between two metro stations, so that<br> I
+can reach my destination in the most efficient way.<br>
+• As a traveler, I want to purchase metro tickets, so that I can use them to travel.<br><br>
   
-Worker:
+Worker:<br>
 • As a worker, I want to read all the maintenance reports related to the stations, so
-that I can promptly identify issues and take action to fix them.
-• As a worker, I want to consult my work schedule, so that I can keep track of my
-assigned shifts.
+that<br> I can promptly identify issues and take action to fix them.<br>
+• As a worker, I want to consult my work schedule, so that I can keep <br>track of my
+assigned shifts.<br><br>
 
-Admin:
+Admin:<br>
 • As an administrator, I want to check reports and statistics about completed trips, so
-that I can analyze overall trends and make informed decisions.
-• As an administrator, I want to create maintenance notifications, so that I can
-communicate maintenance-related updates and service interruptions.
+that<br>I can analyze overall trends and make informed decisions.<br>
+• As an administrator, I want to create maintenance notifications, so that<br>I can
+communicate maintenance-related updates and service interruptions.<br>
 
 </p>
 
