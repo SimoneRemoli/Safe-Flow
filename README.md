@@ -3,7 +3,7 @@
 </h1>
 <p align="center">
   <img 
-    src="https://github.com/user-attachments/assets/b133cd6f-0010-49a0-8db1-a75e35f4d067"
+    src="https://github.com/user-attachments/assets/a3b960cc-12f8-49ff-bd73-135296833078"
     width="300"
     alt="RouteX Logo"
   />
