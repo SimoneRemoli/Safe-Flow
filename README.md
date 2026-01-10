@@ -56,7 +56,6 @@ RouteX is a powerful metro route finder that allows users to search for stations
 ## UseCase Diagram
 <table align="center" width="100%">
   <tr>
-    <!-- COLONNA SINISTRA: DIAGRAMMA -->
     <td width="50%" align="center" valign="top">
       <h3>📌 Use Case Diagram</h3>
       <img 
@@ -65,9 +64,7 @@ RouteX is a powerful metro route finder that allows users to search for stations
         alt="Use Case Diagram RouteX"
       />
     </td>
-
-    <!-- COLONNA DESTRA: USER STORIES -->
-    <td width="50%" valign="top">
+    <td align="center">
       <h3>👤 User Stories</h3>
 
       <ul>
