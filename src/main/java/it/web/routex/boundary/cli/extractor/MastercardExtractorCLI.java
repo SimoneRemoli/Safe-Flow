@@ -5,9 +5,6 @@ import it.web.routex.exception.InvalidCardInputExceptionRemoli;
 import it.web.routex.extractor.MastercardValidator;
 import it.web.routex.record.MastercardRecord;
 
-import java.time.LocalDate;
-
-
 
 public final class MastercardExtractorCLI {
 
