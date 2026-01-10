@@ -38,21 +38,21 @@ RouteX is a powerful metro route finder that allows users to search for stations
 
 
 
-## Key Features
-- **Interactive visualization** of metro lines and stations.
-- **Accessibility support**, indicating stations suitable for disabled passengers.
-- **Optimized data management** for easy integration with relational databases.
-- **User-friendly interface**, scalable across different devices.
-- **REST API** for integration with third-party applications.
+## Storyboards
+<div align="center" style="display: flex; justify-content: center; gap: 10px;">
 
-## Contributions
-We welcome community contributions! If you'd like to contribute:
-1. Fork the repository
-2. Create a branch for your changes (`git checkout -b feature-name`)
-3. Submit a pull request
+  <img src="https://github.com/user-attachments/assets/e47368d7-315a-4bad-8268-62d490d24305"
+       width="300"/>
 
-## License
-This project is distributed under the MIT License. See the LICENSE file for more details.
+  <img src="https://github.com/user-attachments/assets/a9ce1e7f-e3a1-43ff-8dd5-837e63802b62"
+       width="300"/>
+
+  <img src="https://github.com/user-attachments/assets/7b0a8389-3c20-4570-829a-2add1d35fdf0"
+       width="300"/>
+
+</div>
+
+
 
 ---
 
