@@ -1,5 +1,6 @@
 package it.web.routex.model;
 import it.web.routex.bean.InformazioniPercorsoBean;
+import it.web.routex.dao.RouteData;
 import it.web.routex.exception.InvalidRouteException;
 import it.web.routex.record.RouteRecord;
 import it.web.routex.utility.decorator.decoratorchange.BaseComponent;
@@ -24,35 +25,21 @@ public class Route {
     private Double percTerrenoUtilizzato;
     private String utente;
 
-    public Route(
-            String startStation,
-            String endStation,
-            String city,
-            String tipoViaggiatore,
-            int nCambi,
-            String listaCambi,
-            String stazioneDiInterscambio,
-            int nStazioniAttraversate,
-            double tempoDiArrivo,
-            int nStazioniCitta,
-            double percTerrenoUtilizzato,
-            String utente
-    ) {
-        this.partenza = startStation;
-        this.arrivo = endStation;
-        this.citta = city;
-        this.tipoViaggiatore = tipoViaggiatore;
-        this.nCambi = nCambi;
-        this.listaCambi = listaCambi;
-        this.stazInterscambio = stazioneDiInterscambio;
-        this.nStazAttraversate = nStazioniAttraversate;
-        this.tempoDiArrivo = tempoDiArrivo;
-        this.nStazioniCitta = nStazioniCitta;
-        this.percTerrenoUtilizzato = percTerrenoUtilizzato;
-        this.utente = utente;
+    public Route(RouteData data)
+    {
+        this.partenza = data.getStartStation();
+        this.arrivo = data.getEndStation();
+        this.citta = data.getCity();
+        this.tipoViaggiatore = data.getTipoViaggiatore();
+        this.nCambi = data.getnCambi();
+        this.listaCambi = data.getListaCambi();
+        this.stazInterscambio = data.getStazioneDiInterscambio();
+        this.nStazAttraversate = data.getnStazioniAttraversate();
+        this.tempoDiArrivo = data.getTempoDiArrivo();
+        this.nStazioniCitta = data.getnStazioniCitta();
+        this.percTerrenoUtilizzato = data.getPercTerrenoUtilizzato();
+        this.utente = data.getUtente();
     }
-
-
 
 
     public Route(InformazioniPercorsoBean dto, RouteRecord route, String status) throws InvalidRouteException {

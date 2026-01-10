@@ -8,6 +8,7 @@ import it.web.routex.exception.LoginNotFoundRemoli;
 import it.web.routex.exception.PathNotFoundExceptionRemoli;
 import it.web.routex.exception.PaymentValidationExceptionRemoli;
 import it.web.routex.model.*;
+import it.web.routex.utility.builder.RouteBuilder;
 import it.web.routex.utility.factory.ConnectionFactory;
 import it.web.routex.utility.singleton.Credentials;
 
@@ -354,20 +355,20 @@ public class LayerPersistenzaFull extends LayerPersistenza
                 try (ResultSet rs = cs.getResultSet()) {
                     while (rs.next()) {
 
-                        Route info = new Route(
-                                rs.getString("StartStation"),
-                                rs.getString("EndStation"),
-                                rs.getString("City"),
-                                rs.getString("TipoViaggiatore"),
-                                rs.getInt("NCambi"),
-                                rs.getString("ListaCambi"),
-                                rs.getString("StazioneDiInterscambio"),
-                                rs.getInt("NStazioniAttraversate"),
-                                rs.getDouble("TempoDiArrivo"),
-                                rs.getInt("NStazioniCitta"),
-                                rs.getDouble("PercTerrenoUtilizzato"),
-                                rs.getString("Utente")
-                        );
+                        Route info = new RouteBuilder(rs.getString("StartStation"))
+                                .endStation(rs.getString("EndStation"))
+                                .city(rs.getString("City"))
+                                .tipoViaggiatore(rs.getString("TipoViaggiatore"))
+                                .nCambi(rs.getInt("NCambi"))
+                                .listaCambi(rs.getString("ListaCambi"))
+                                .stazioneDiInterscambio(rs.getString("StazioneDiInterscambio"))
+                                .nStazioniAttraversate(rs.getInt("NStazioniAttraversate"))
+                                .tempoDiArrivo(rs.getDouble("TempoDiArrivo"))
+                                .nStazioniCitta(rs.getInt("NStazioniCitta"))
+                                .percTerrenoUtilizzato(rs.getDouble("PercTerrenoUtilizzato"))
+                                .utente(rs.getString("Utente"))
+                                .build();
+
 
                         resultList.add(info);
                     }

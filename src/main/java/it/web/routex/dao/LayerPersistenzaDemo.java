@@ -4,6 +4,7 @@ import it.web.routex.bean.FermataRecordBean;
 import it.web.routex.enumerator.PaymentMethod;
 import it.web.routex.exception.*;
 import it.web.routex.model.*;
+import it.web.routex.utility.builder.RouteBuilder;
 import it.web.routex.utility.singleton.Credentials;
 
 import java.sql.SQLException;
@@ -245,20 +246,13 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
             }
 
             // simulazione INSERT INTO Route
-            Route copy = new Route(
-                    route.getPartenza(),
-                    route.getArrivo(),
-                    route.getCitta(),
-                    route.getTipoViaggiatore(),
-                    route.getnCambi(),
-                    route.getListaCambi(),
-                    route.getStazInterscambio(),
-                    route.getnStazAttraversate(),
-                    route.getTempoDiArrivo(),
-                    route.getnStazioniCitta(),
-                    route.getPercTerrenoUtilizzato(),
-                    route.getUtente()
-            );
+            Route copy = new RouteBuilder(route.getPartenza()).endStation(route.getArrivo())
+                            .city(route.getCitta()).tipoViaggiatore(route.getTipoViaggiatore())
+                            .nCambi(route.getnCambi()).listaCambi(route.getListaCambi())
+                            .stazioneDiInterscambio(route.getStazInterscambio()).nStazioniAttraversate(route.getnStazAttraversate())
+                            .tempoDiArrivo(route.getTempoDiArrivo()).nStazioniCitta(route.getnStazioniCitta())
+                            .percTerrenoUtilizzato(route.getPercTerrenoUtilizzato()).utente(route.getUtente())
+                            .build();
 
             DemoStorage.getRoutes().add(copy);
 
@@ -385,20 +379,13 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
             for (Route r : DemoStorage.getRoutes()) {
 
                 // simulazione ResultSet -> nuova riga
-                Route copy = new Route(
-                        r.getPartenza(),
-                        r.getArrivo(),
-                        r.getCitta(),
-                        r.getTipoViaggiatore(),
-                        r.getnCambi(),
-                        r.getListaCambi(),
-                        r.getStazInterscambio(),
-                        r.getnStazAttraversate(),
-                        r.getTempoDiArrivo(),
-                        r.getnStazioniCitta(),
-                        r.getPercTerrenoUtilizzato(),
-                        r.getUtente()
-                );
+                Route copy = new RouteBuilder(r.getPartenza()).endStation(r.getArrivo())
+                        .city(r.getCitta()).tipoViaggiatore(r.getTipoViaggiatore())
+                        .nCambi(r.getnCambi()).listaCambi(r.getListaCambi())
+                        .stazioneDiInterscambio(r.getStazInterscambio()).nStazioniAttraversate(r.getnStazAttraversate())
+                        .tempoDiArrivo(r.getTempoDiArrivo()).nStazioniCitta(r.getnStazioniCitta())
+                        .percTerrenoUtilizzato(r.getPercTerrenoUtilizzato()).utente(r.getUtente())
+                        .build();
 
                 resultList.add(copy);
             }

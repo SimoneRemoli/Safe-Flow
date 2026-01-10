@@ -26,7 +26,7 @@ public class PathNORegInitBuilder
     }
     public PathNORegInitBuilder city(String city)
     {
-        this.start = city;
+        this.city = city;
         return this;
     }
     public void build() {

@@ -23,7 +23,5 @@ public class PayPalBuilder
         data.setEmailPaypal(emailPaypal);
         PaypalCLI.from(data);
 
-
-
     }
 }
