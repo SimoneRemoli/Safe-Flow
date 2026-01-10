@@ -17,8 +17,7 @@ public final class SelectModeControllerGraficoCLI {
 
         if(mode.isEmpty() || (!mode.equals("DEMO") && !mode.equals("FULL"))) {
             System.out.println("Modalità non valida. Per favore, scegli tra DEMO e FULL.");
-            SelectModeCLI selectMode = new SelectModeCLI();
-            selectMode.choiceDemoFull();
+            SelectModeCLI.choiceDemoFull();
             return;
         }
 

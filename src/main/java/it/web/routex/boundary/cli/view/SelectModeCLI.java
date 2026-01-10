@@ -5,11 +5,15 @@ import it.web.routex.boundary.cli.controller.grafico.SelectModeControllerGrafico
 import java.util.Scanner;
 
 @SuppressWarnings("java:S106")
-public class SelectModeCLI {
+public final class SelectModeCLI {
 
     private final static Scanner scanner = new Scanner(System.in);
     private static String scelta = "";
     private static String mode = "";
+
+    private SelectModeCLI(){
+        //Prevent the init
+    }
 
     public static void choiceDemoFull() {
 
