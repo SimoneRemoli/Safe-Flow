@@ -3,7 +3,7 @@
 </h1>
 RouteX is a powerful metro route finder that allows users to search for stations in real-time, select a city, and view an interactive metro map. Featuring dynamic autocomplete, RouteX helps travelers quickly find the best metro routes with ease. 🚇✨
 
-<br>
+<hr/>
 <p align="center">
   <a href="https://sonarcloud.io/summary/new_code?id=SimoneRemoli_RouteX2">
     <img src="https://sonarcloud.io/api/project_badges/quality_gate?project=SimoneRemoli_RouteX2"
