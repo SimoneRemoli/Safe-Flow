@@ -41,96 +41,103 @@ public final class ConfermaPagamentoCLI
         return persistenza;
     }
 
-    public static void stampa()
-    {
+    public static void stampa() {
+
         Scanner scanner = new Scanner(System.in);
-        String numeroCarta;
-        String scadenza;
-        String cvv;
-        String emailPaypal;
-        String codiceTransazione;
-        boolean fine = true;
-        boolean end = true;
+
+        printHeader();
+        printRiepilogo();
+
+        if (!askConferma(scanner)) {
+            return;
+        }
+
+        metodoPagamento = scegliMetodoPagamento(scanner);
+        gestisciDatiPagamento(scanner, metodoPagamento);
+
+        persistenza = scegliPersistenza(scanner);
+
+        ConfermaPagamentoControllerGraficoCLI pay =
+                new ConfermaPagamentoControllerGraficoCLI();
+        pay.doPost();
+    }
+    private static void printHeader() {
         System.out.println("\n========================================");
         System.out.println("            CONFERMA PAGAMENTO           ");
         System.out.println("========================================");
+    }
 
+    private static void printRiepilogo() {
         System.out.println("Città: " + getCity());
         System.out.println("Quantità dei biglietti: " + getQuantity());
         System.out.println("Prezzo: " + getPrezzoTotale());
-
+    }
+    private static boolean askConferma(Scanner scanner) {
         System.out.println("Vuoi confermare?(si/no) :");
-        String scelta = scanner.nextLine();
-        if ("si".equals(scelta)) {
+        return "si".equals(scanner.nextLine());
+    }
+    private static String scegliMetodoPagamento(Scanner scanner) {
 
-                while(fine) {
-                    System.out.println("* METODI DI PAGAMENTO DISPONIBILI *");
-                    System.out.println("1. Mastercard \n");
-                    System.out.println("2. Paypal \n");
-                    System.out.println("Scegli il metodo di pagamento: ");
-                    int value = scanner.nextInt();
+        while (true) {
+            System.out.println("* METODI DI PAGAMENTO DISPONIBILI *");
+            System.out.println("1. Mastercard");
+            System.out.println("2. Paypal");
+            System.out.print("Scegli il metodo di pagamento: ");
 
-                    if (value == 1)
-                    {
-                        metodoPagamento = "Mastercard";
-                        fine = false;
-                    }
-                    if (value == 2)
-                    {
-                        metodoPagamento = "Paypal";
-                        fine = false;
-                    }
-                    if (value < 1 || value > 2) fine = true;
-                }
+            int value = scanner.nextInt();
 
-                if(metodoPagamento.equals("Mastercard"))
-                {
-                    // PULIZIA BUFFER UNA SOLA VOLTA
-                    scanner.nextLine();
-
-                    System.out.print("Numero carta: ");
-                    numeroCarta = scanner.nextLine();
-
-                    System.out.print("Scadenza (YYYY-MM-DD): ");
-                    scadenza = scanner.nextLine();
-
-                    System.out.print("CVV: ");
-                    cvv = scanner.nextLine();
-
-                    MastercardCLI.init(numeroCarta, scadenza, cvv);
-                }
-                if(metodoPagamento.equals("Paypal"))
-                {
-                    scanner.nextLine();
-                    System.out.println("Email paypal: ");
-                    emailPaypal = scanner.nextLine();
-                    System.out.println("Codice Transazione: ");
-                    codiceTransazione = scanner.nextLine();
-                    new PayPalBuilder(emailPaypal).codiceTransazione(codiceTransazione).build();
-                }
-
-                while(end) {
-                    System.out.println("* Modalità di persistenza*");
-                    System.out.println("1. JDBC \n");
-                    System.out.println("2. FILE_SYSTEM \n");
-                    System.out.println("Scegli la modalità di persistenza: ");
-                    int value = scanner.nextInt();
-
-                    if (value == 1)
-                    {
-                        persistenza = "JDBC";
-                        end = false;
-                    }
-                    if (value == 2)
-                    {
-                        persistenza = "FileSystem";
-                        end = false;
-                    }
-                    if (value < 1 || value > 2) end = true;
-                }
-
-                ConfermaPagamentoControllerGraficoCLI pay = new ConfermaPagamentoControllerGraficoCLI();
-                pay.doPost();
+            if (value == 1) return "Mastercard";
+            if (value == 2) return "Paypal";
         }
     }
+    private static void gestisciDatiPagamento(Scanner scanner, String metodo) {
+
+        scanner.nextLine(); // pulizia buffer
+
+        if ("Mastercard".equals(metodo)) {
+            System.out.print("Numero carta: ");
+            String numeroCarta = scanner.nextLine();
+
+            System.out.print("Scadenza (YYYY-MM-DD): ");
+            String scadenza = scanner.nextLine();
+
+            System.out.print("CVV: ");
+            String cvv = scanner.nextLine();
+
+            MastercardCLI.init(numeroCarta, scadenza, cvv);
+            return;
+        }
+
+        if ("Paypal".equals(metodo)) {
+            System.out.print("Email paypal: ");
+            String emailPaypal = scanner.nextLine();
+
+            System.out.print("Codice Transazione: ");
+            String codiceTransazione = scanner.nextLine();
+
+            new PayPalBuilder(emailPaypal)
+                    .codiceTransazione(codiceTransazione)
+                    .build();
+        }
+    }
+    private static String scegliPersistenza(Scanner scanner) {
+
+        while (true) {
+            System.out.println("* Modalità di persistenza *");
+            System.out.println("1. JDBC");
+            System.out.println("2. FILE_SYSTEM");
+            System.out.print("Scegli la modalità di persistenza: ");
+
+            int value = scanner.nextInt();
+
+            if (value == 1) return "JDBC";
+            if (value == 2) return "FileSystem";
+        }
+    }
+
+
+
+
+
+
 }
