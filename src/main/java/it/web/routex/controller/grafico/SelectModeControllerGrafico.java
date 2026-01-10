@@ -2,15 +2,15 @@ package it.web.routex.controller.grafico;
 
 import it.web.routex.bean.ApplicationModeBean;
 import it.web.routex.controller.applicativo.SelectModeControllerApplicativo;
+import it.web.routex.domain.LoggedHttpServlet;
 
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/selectMode")
-public class SelectModeControllerGrafico extends HttpServlet {
+public class SelectModeControllerGrafico extends LoggedHttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
@@ -26,8 +26,7 @@ public class SelectModeControllerGrafico extends HttpServlet {
         try{
             response.sendRedirect("index.jsp");
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Errore nel redirect a index.jsp");
         }
-
     }
 }

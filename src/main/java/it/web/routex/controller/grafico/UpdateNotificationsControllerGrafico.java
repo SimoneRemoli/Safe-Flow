@@ -2,13 +2,14 @@ package it.web.routex.controller.grafico;
 
 import it.web.routex.bean.MessageBean;
 import it.web.routex.controller.applicativo.UpdateNotificationsControllerApplicativo;
+import it.web.routex.domain.LoggedHttpServlet;
 import it.web.routex.exception.DAOExceptionRemoli;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.sql.Timestamp;
 @WebServlet("/updateNotifications")
-public class UpdateNotificationsControllerGrafico extends HttpServlet {
+public class UpdateNotificationsControllerGrafico extends LoggedHttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
@@ -52,7 +53,7 @@ public class UpdateNotificationsControllerGrafico extends HttpServlet {
                 request.getRequestDispatcher("/error.jsp")
                         .forward(request, response);
             } catch (Exception ex) {
-                ex.printStackTrace(); // fallback estremo
+                logger.error("Errore nel redirect a /error.jsp");
             }
 
         } catch (Exception e) {
@@ -60,14 +61,14 @@ public class UpdateNotificationsControllerGrafico extends HttpServlet {
             // ERRORE IMPREVISTO
             request.setAttribute(
                     "errore",
-                    "Errore imprevisto durante l'operazione."
+                    "Errore generico durante l'operazione."
             );
 
             try {
                 request.getRequestDispatcher("/error.jsp")
                         .forward(request, response);
             } catch (Exception ex) {
-                ex.printStackTrace();
+                logger.error("Errore generico nel redirect a /error.jsp");
             }
         }
     }
