@@ -19,12 +19,7 @@ public class ReportsControllerGrafico extends LoggedHttpServlet {
             ReportsStatsBean stats = service.recuperaStatistiche();
 
             request.setAttribute("stats", stats);
-            try {
-                request.getRequestDispatcher("/viewRAS.jsp").forward(request, response);
-            }catch(Exception e)
-            {
-                logger.error("Errore nel forwarding verso viewRAS.jsp. {}", e.getMessage());
-            }
+            forwardToView(request, response, "/viewRAS.jsp");
 
         } catch (DAOExceptionRemoli e) {
             logger.error("Errore statistiche admin", e);
@@ -37,4 +32,14 @@ public class ReportsControllerGrafico extends LoggedHttpServlet {
             }
         }
     }
+    private void forwardToView(HttpServletRequest request,
+                               HttpServletResponse response,
+                               String view) {
+        try {
+            request.getRequestDispatcher(view).forward(request, response);
+        } catch (Exception e) {
+            logger.error("Errore nel forwarding verso {}. {}", view, e.getMessage());
+        }
+    }
+
 }

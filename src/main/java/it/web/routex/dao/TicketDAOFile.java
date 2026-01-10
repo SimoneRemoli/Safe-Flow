@@ -51,18 +51,7 @@ public class TicketDAOFile extends TicketDAOLayer
                 // Filtra per codice fiscale
                 if (codiceFiscale.equals(cf)) {
 
-                    LocalDateTime dataAcquisto;
-                    try {
-                        dataAcquisto = LocalDateTime.parse(
-                                timestamp,
-                                CSV_TIMESTAMP_FORMAT
-                        );
-                    } catch (DateTimeParseException e) {
-                        throw new DAOExceptionRemoli(
-                                "Timestamp non valido nel CSV: " + timestamp,
-                                e
-                        );
-                    }
+                    LocalDateTime dataAcquisto = parseTimestamp(timestamp);
 
                     // Un Ticket per ogni codice biglietto
                     for (String codice : codiciBiglietti) {
@@ -131,4 +120,15 @@ public class TicketDAOFile extends TicketDAOLayer
                     "Errore in TicketDAOFile.java");
         }
     }
+    private LocalDateTime parseTimestamp(String timestamp) throws DAOExceptionRemoli {
+        try {
+            return LocalDateTime.parse(timestamp, CSV_TIMESTAMP_FORMAT);
+        } catch (DateTimeParseException e) {
+            throw new DAOExceptionRemoli(
+                    "Timestamp non valido nel CSV: " + timestamp,
+                    e
+            );
+        }
+    }
+
 }
