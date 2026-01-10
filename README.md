@@ -1,6 +1,3 @@
-<h1 align="center">
-  RouteX - Find Your Metro Route
-</h1>
 <p align="center">
   <img 
     src="https://github.com/user-attachments/assets/a3b960cc-12f8-49ff-bd73-135296833078"
