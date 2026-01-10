@@ -7,11 +7,11 @@ import java.util.Scanner;
 @SuppressWarnings("java:S106")
 public class SelectModeCLI {
 
-    private final Scanner scanner = new Scanner(System.in);
+    private final static Scanner scanner = new Scanner(System.in);
     private static String scelta = "";
-    private String mode = "";
+    private static String mode = "";
 
-    public void choiceDemoFull() {
+    public static void choiceDemoFull() {
 
         System.out.println("\n================================");
         System.out.println("     ROUTEX - TYPE MODE       ");
