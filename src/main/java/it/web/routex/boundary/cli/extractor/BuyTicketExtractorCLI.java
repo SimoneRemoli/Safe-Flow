@@ -1,7 +1,7 @@
 package it.web.routex.boundary.cli.extractor;
 
 
-import it.web.routex.extractor.BuyTicketValidator;
+import it.web.routex.validator.BuyTicketValidator;
 import it.web.routex.record.BuyTicketRecord;
 
 import it.web.routex.exception.InvalidBuyTicketInputExceptionRemoli;

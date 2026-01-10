@@ -1,6 +1,6 @@
 package it.web.routex.boundary.cli.view;
 
-import it.web.routex.dao.PaypalData;
+import it.web.routex.utility.builder.data.PaypalData;
 
 public final class PaypalCLI
 {

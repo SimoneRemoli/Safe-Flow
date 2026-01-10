@@ -6,7 +6,7 @@ import it.web.routex.controller.applicativo.PathController;
 import it.web.routex.exception.*;
 import it.web.routex.domain.LoggedHttpServlet;
 import it.web.routex.domain.RouteDecoratorService;
-import it.web.routex.domain.RouteValidator;
+import it.web.routex.validator.RouteValidator;
 import it.web.routex.domain.UserStatusResolver;
 import it.web.routex.extractor.RouteInputExtractor;
 import it.web.routex.record.RouteRecord;

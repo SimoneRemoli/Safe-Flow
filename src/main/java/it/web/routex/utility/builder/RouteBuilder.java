@@ -1,6 +1,6 @@
 package it.web.routex.utility.builder;
 
-import it.web.routex.dao.RouteData;
+import it.web.routex.utility.builder.data.RouteData;
 import it.web.routex.model.Route;
 
 public class RouteBuilder {

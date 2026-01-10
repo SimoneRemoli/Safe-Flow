@@ -2,6 +2,7 @@ package it.web.routex.extractor;
 
 import it.web.routex.record.PaypalRecord;
 import it.web.routex.exception.InvalidCardInputExceptionRemoli;
+import it.web.routex.validator.PaypalValidator;
 
 import javax.servlet.http.HttpServletRequest;
 

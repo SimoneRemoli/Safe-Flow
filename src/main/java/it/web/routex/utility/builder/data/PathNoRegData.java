@@ -1,4 +1,4 @@
-package it.web.routex.dao;
+package it.web.routex.utility.builder.data;
 
 import java.util.List;
 

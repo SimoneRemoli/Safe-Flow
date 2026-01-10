@@ -1,7 +1,7 @@
 package it.web.routex.utility.builder;
 
 import it.web.routex.boundary.cli.view.PathNOREGCLI;
-import it.web.routex.dao.PathInit;
+import it.web.routex.utility.builder.data.PathInit;
 
 public class PathNORegInitBuilder
 {

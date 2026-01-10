@@ -5,6 +5,7 @@ import it.web.routex.record.PaymentRecord;
 import javax.servlet.http.HttpServletRequest;
 
 import it.web.routex.exception.InvalidPaymentInputExceptionRemoli;
+import it.web.routex.validator.PaymentValidator;
 
 public final class PagamentoExtractor {
 

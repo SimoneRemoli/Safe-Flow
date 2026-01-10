@@ -4,6 +4,7 @@ import it.web.routex.record.BuyTicketRecord;
 
 import javax.servlet.http.HttpServletRequest;
 import it.web.routex.exception.InvalidBuyTicketInputExceptionRemoli;
+import it.web.routex.validator.BuyTicketValidator;
 
 import static it.web.routex.extractor.RouteInputExtractor.sanitize;
 

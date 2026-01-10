@@ -1,4 +1,4 @@
-package it.web.routex.dao;
+package it.web.routex.demo;
 
 public class PaymentReg {
 

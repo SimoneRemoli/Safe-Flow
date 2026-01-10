@@ -11,7 +11,7 @@ import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.FuoriRangeExceptionRemoli;
 import it.web.routex.exception.InvalidRouteInputExceptionRemoli;
 import it.web.routex.exception.UnreacheableNodeExceptionRemoli;
-import it.web.routex.domain.RouteValidator;
+import it.web.routex.validator.RouteValidator;
 import it.web.routex.domain.UserStatusResolver;
 import it.web.routex.record.RouteRecord;
 import it.web.routex.utility.builder.PathNORegInitBuilder;

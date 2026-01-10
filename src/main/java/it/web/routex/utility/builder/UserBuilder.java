@@ -2,8 +2,8 @@ package it.web.routex.utility.builder;
 
 
 
-import it.web.routex.dao.User;
-import it.web.routex.dao.UserData;
+import it.web.routex.demo.User;
+import it.web.routex.utility.builder.data.UserData;
 import it.web.routex.enumerator.Ruolo;
 
 import java.util.Date;

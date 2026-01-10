@@ -4,7 +4,7 @@ import it.web.routex.bean.CityBean;
 import it.web.routex.bean.InformazioniPercorsoBean;
 import it.web.routex.controller.applicativo.CityController;
 import it.web.routex.controller.applicativo.PathController;
-import it.web.routex.domain.RouteValidator;
+import it.web.routex.validator.RouteValidator;
 import it.web.routex.domain.UserStatusResolver;
 import it.web.routex.record.RouteRecord;
 import it.web.routex.utility.singleton.Credentials;

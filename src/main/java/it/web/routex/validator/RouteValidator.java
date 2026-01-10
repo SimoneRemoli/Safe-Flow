@@ -1,4 +1,4 @@
-package it.web.routex.domain;
+package it.web.routex.validator;
 
 import it.web.routex.record.RouteRecord;
 

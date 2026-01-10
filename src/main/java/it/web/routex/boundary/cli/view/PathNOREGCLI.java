@@ -1,6 +1,6 @@
 package it.web.routex.boundary.cli.view;
-import it.web.routex.dao.PathInit;
-import it.web.routex.dao.PathNoRegData;
+import it.web.routex.utility.builder.data.PathInit;
+import it.web.routex.utility.builder.data.PathNoRegData;
 import java.util.ArrayList;
 import java.util.List;
 @SuppressWarnings("java:S106")

@@ -1,4 +1,4 @@
-package it.web.routex.extractor;
+package it.web.routex.validator;
 
 import it.web.routex.exception.InvalidBuyTicketInputExceptionRemoli;
 
