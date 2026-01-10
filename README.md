@@ -54,43 +54,28 @@ RouteX is a powerful metro route finder that allows users to search for stations
 </table>
 
 ## UseCase Diagram
-<table align="center" width="100%">
-  <tr>
-    <td width="50%" align="center" valign="top">
-      <h3>📌 Use Case Diagram</h3>
-      <img 
-        src="https://github.com/user-attachments/assets/b8cbb906-1bbf-4e04-9b90-a4d283e1895e"
-        width="420"
-        alt="Use Case Diagram RouteX"
-      />
-    </td>
-    <td align="center">
-      <h3>👤 User Stories</h3>
+<img width="469" height="590" alt="Screenshot 2026-01-10 alle 17 06 21" src="https://github.com/user-attachments/assets/cfdbe146-86f1-416a-ab08-f9be34c2ccab" />
+<br>
+<p align="center">
+  Traveler:
+• As a traveler, I want to find the shortest route between two metro stations, so that I
+can reach my destination in the most efficient way.
+• As a traveler, I want to purchase metro tickets, so that I can use them to travel.
+  
+Worker:
+• As a worker, I want to read all the maintenance reports related to the stations, so
+that I can promptly identify issues and take action to fix them.
+• As a worker, I want to consult my work schedule, so that I can keep track of my
+assigned shifts.
 
-      <ul>
-        <li>
-          <b>US1</b> – As a <i>guest user</i>, I want to explore available routes  
-          so that I can understand the service without authentication.
-        </li>
-        <br/>
-        <li>
-          <b>US2</b> – As a <i>registered user</i>, I want to purchase tickets  
-          so that I can travel within the selected city.
-        </li>
-        <br/>
-        <li>
-          <b>US3</b> – As a <i>user</i>, I want to choose a payment method  
-          so that I can complete the transaction securely.
-        </li>
-        <br/>
-        <li>
-          <b>US4</b> – As a <i>user</i>, I want to view my purchased tickets  
-          so that I can manage my trips.
-        </li>
-      </ul>
-    </td>
-  </tr>
-</table>
+Admin:
+• As an administrator, I want to check reports and statistics about completed trips, so
+that I can analyze overall trends and make informed decisions.
+• As an administrator, I want to create maintenance notifications, so that I can
+communicate maintenance-related updates and service interruptions.
+
+</p>
+
 
 
 
