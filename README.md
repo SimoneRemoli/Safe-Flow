@@ -13,6 +13,9 @@ RouteX is a powerful metro route finder that allows users to search for stations
          alt="Quality Gate">
     <img src="https://sonarcloud.io/api/project_badges/measure?project=SimoneRemoli_RouteX2&metric=sqale_rating"
          alt="Quality Gate">
+    <br>
+   <img src="https://sonarcloud.io/api/project_badges/measure?project=SimoneRemoli_RouteX2&metric=bugs"
+         alt="Quality Gate">
     
   </a>
 </p>
