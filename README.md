@@ -126,7 +126,7 @@ RouteX follows a layered architecture inspired by MVP/MVC principles.
 The system is organized into clear layers that separate concerns such as
 presentation, application logic, domain logic, and persistence.
 
-<img width="1536" height="1024" alt="Image" src="https://github.com/user-attachments/assets/d9af0cac-319e-4ebb-b481-ea84439dbcdf" />
+<img width="1536" height="1024" alt="image2" src="https://github.com/user-attachments/assets/7313406b-7891-476d-ab0b-a128df7c8b1f" />
 
 
 
