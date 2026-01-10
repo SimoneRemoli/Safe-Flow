@@ -54,7 +54,46 @@ RouteX is a powerful metro route finder that allows users to search for stations
 </table>
 
 ## UseCase Diagram
-<img width="469" height="596" alt="Screenshot 2026-01-10 alle 17 02 37" src="https://github.com/user-attachments/assets/b8cbb906-1bbf-4e04-9b90-a4d283e1895e" />
+<table align="center" width="100%">
+  <tr>
+    <!-- COLONNA SINISTRA: DIAGRAMMA -->
+    <td width="50%" align="center" valign="top">
+      <h3>📌 Use Case Diagram</h3>
+      <img 
+        src="https://github.com/user-attachments/assets/b8cbb906-1bbf-4e04-9b90-a4d283e1895e"
+        width="420"
+        alt="Use Case Diagram RouteX"
+      />
+    </td>
+
+    <!-- COLONNA DESTRA: USER STORIES -->
+    <td width="50%" valign="top">
+      <h3>👤 User Stories</h3>
+
+      <ul>
+        <li>
+          <b>US1</b> – As a <i>guest user</i>, I want to explore available routes  
+          so that I can understand the service without authentication.
+        </li>
+        <br/>
+        <li>
+          <b>US2</b> – As a <i>registered user</i>, I want to purchase tickets  
+          so that I can travel within the selected city.
+        </li>
+        <br/>
+        <li>
+          <b>US3</b> – As a <i>user</i>, I want to choose a payment method  
+          so that I can complete the transaction securely.
+        </li>
+        <br/>
+        <li>
+          <b>US4</b> – As a <i>user</i>, I want to view my purchased tickets  
+          so that I can manage my trips.
+        </li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
 
 
