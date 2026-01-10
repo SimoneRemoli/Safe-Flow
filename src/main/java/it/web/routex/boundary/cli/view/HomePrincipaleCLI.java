@@ -29,6 +29,7 @@ public class HomePrincipaleCLI {
                 case "3" -> {
                     return;
                 }
+                default -> System.out.println("Opzione non valida. Riprova.");
             }
         }
     }
