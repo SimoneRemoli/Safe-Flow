@@ -16,11 +16,7 @@ public final class LoginViewCLI {
 
     public static void mostraLogin() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("================================");
-        System.out.println("        ROUTEX - LOGIN CLI        ");
-        System.out.println("================================");
-
-
+        System.out.println();
         System.out.print("Inserisci Email: ");
         emailUtente = scanner.nextLine();
 

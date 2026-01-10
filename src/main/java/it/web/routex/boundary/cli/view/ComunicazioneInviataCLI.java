@@ -6,10 +6,7 @@ public final class ComunicazioneInviataCLI
         // Prevent instantiation
     }
     public static void invioComunicazioneConfirm(String messaggio) {
-        System.out.println("\n================================");
         System.out.println("        Comunicazione Inviata !          ");
-        System.out.println("================================");
         System.out.println("Ok. " + messaggio);
-        System.out.println("================================\n");
     }
 }
