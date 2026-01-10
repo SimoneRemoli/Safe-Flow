@@ -39,18 +39,20 @@ RouteX is a powerful metro route finder that allows users to search for stations
 
 
 ## Storyboards
-<div align="center" style="display: flex; justify-content: center; gap: 10px;">
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/e47368d7-315a-4bad-8268-62d490d24305" width="300"/>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/a9ce1e7f-e3a1-43ff-8dd5-837e63802b62" width="300"/>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/7b0a8389-3c20-4570-829a-2add1d35fdf0" width="300"/>
+    </td>
+  </tr>
+</table>
 
-  <img src="https://github.com/user-attachments/assets/e47368d7-315a-4bad-8268-62d490d24305"
-       width="300"/>
-
-  <img src="https://github.com/user-attachments/assets/a9ce1e7f-e3a1-43ff-8dd5-837e63802b62"
-       width="300"/>
-
-  <img src="https://github.com/user-attachments/assets/7b0a8389-3c20-4570-829a-2add1d35fdf0"
-       width="300"/>
-
-</div>
 
 
 
