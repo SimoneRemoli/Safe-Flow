@@ -18,11 +18,17 @@ public final class PaypalExtractorCLI {
 
     public static PaypalRecord from() throws InvalidCardInputExceptionRemoli {
 
-        String rawEmail = PaypalCLI.getEmailPaypal();
-        String rawCodice = PaypalCLI.getCodiceTransazione();
+        String email = sanitize(PaypalCLI.getEmailPaypal());
+        String codice = sanitize(PaypalCLI.getCodiceTransazione());
 
-        String email = sanitize(rawEmail);
-        String codice = sanitize(rawCodice);
+        validateEmailAndCode(email, codice);
+
+        return new PaypalRecord(email, codice);
+    }
+
+
+    private static void validateEmailAndCode(String email, String codice)
+            throws InvalidCardInputExceptionRemoli {
 
         boolean emailBlank = email.isBlank();
         boolean codiceBlank = codice.isBlank();
@@ -34,61 +40,39 @@ public final class PaypalExtractorCLI {
         boolean codiceInvalid = !codiceBlank && !codiceValid;
 
         if (emailBlank && codiceBlank) {
-            throw new InvalidCardInputExceptionRemoli(
-                    "Email PayPal e codice transazione mancanti.",
-                    "email blank + codice blank.",
-                    InvalidCardInputExceptionRemoli.Severity.MEDIUM
-            );
+            error("Email PayPal e codice transazione mancanti.");
         }
         if (emailBlank && codiceValid) {
-            throw new InvalidCardInputExceptionRemoli(
-                    "Inserisci la tua email PayPal.",
-                    "Email PayPal blank dopo sanitizzazione.",
-                    InvalidCardInputExceptionRemoli.Severity.MEDIUM
-            );
+            error("Inserisci la tua email PayPal.");
         }
         if (emailBlank && codiceInvalid) {
-            throw new InvalidCardInputExceptionRemoli(
-                    "Email mancante e codice transazione non valido.",
-                    "email blank + codice formato errato.",
-                    InvalidCardInputExceptionRemoli.Severity.MEDIUM
-            );
+            error("Email mancante e codice transazione non valido.");
         }
         if (emailValid && codiceBlank) {
-            throw new InvalidCardInputExceptionRemoli(
-                    "Il codice transazione è obbligatorio.",
-                    "Codice transazione blank.",
-                    InvalidCardInputExceptionRemoli.Severity.MEDIUM
-            );
+            error("Il codice transazione è obbligatorio.");
         }
         if (emailValid && codiceInvalid) {
-            throw new InvalidCardInputExceptionRemoli(
-                    "Il codice transazione non è valido.",
-                    "Formato non conforme: " + codice,
-                    InvalidCardInputExceptionRemoli.Severity.MEDIUM
-            );
+            error("Il codice transazione non è valido.");
         }
         if (emailInvalid && codiceBlank) {
-            throw new InvalidCardInputExceptionRemoli(
-                    "Email PayPal non valida e codice transazione mancante.",
-                    "email formato errato + codice blank.",
-                    InvalidCardInputExceptionRemoli.Severity.MEDIUM
-            );
+            error("Email PayPal non valida e codice transazione mancante.");
         }
         if (emailInvalid && codiceValid) {
-            throw new InvalidCardInputExceptionRemoli(
-                    "L'email PayPal inserita non è valida.",
-                    "Formato email non corretto: " + email,
-                    InvalidCardInputExceptionRemoli.Severity.MEDIUM
-            );
+            error("L'email PayPal inserita non è valida.");
         }
         if (emailInvalid && codiceInvalid) {
-            throw new InvalidCardInputExceptionRemoli(
-                    "Email PayPal e codice transazione non validi.",
-                    "email errata + codice errato.",
-                    InvalidCardInputExceptionRemoli.Severity.MEDIUM
-            );
+            error("Email PayPal e codice transazione non validi.");
         }
-        return new PaypalRecord(email, codice);
     }
+    private static void error(String message)
+            throws InvalidCardInputExceptionRemoli {
+
+        throw new InvalidCardInputExceptionRemoli(
+                message,
+                message,
+                InvalidCardInputExceptionRemoli.Severity.MEDIUM
+        );
+    }
+
+
 }
