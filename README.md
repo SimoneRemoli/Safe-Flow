@@ -1,7 +1,7 @@
 <h1 align="center">
   RouteX - Find Your Metro Route
 </h1>
-RouteX is a powerful metro route finder that allows users to search for stations in real-time, select a city, and view an interactive metro map. Featuring dynamic autocomplete, RouteX helps travelers quickly find the best metro routes with ease<br><br>. 🚇✨
+RouteX is a powerful metro route finder that allows users to search for stations in real-time, select a city, and view an interactive metro map. Featuring dynamic autocomplete, RouteX helps travelers quickly find the best metro routes with ease. 🚇✨<br><br>
 
 <br>
 <p align="center">
