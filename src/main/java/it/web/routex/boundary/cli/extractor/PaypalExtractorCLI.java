@@ -10,7 +10,6 @@ public final class PaypalExtractorCLI {
         return (s == null) ? null : s.trim();
     }
 
-
     private PaypalExtractorCLI()
     {
         throw new AssertionError("Classe di estrazione dati, non si creano new");
@@ -26,44 +25,34 @@ public final class PaypalExtractorCLI {
         return new PaypalRecord(email, codice);
     }
 
-
     private static void validateEmailAndCode(String email, String codice)
             throws InvalidCardInputExceptionRemoli {
 
-        boolean emailBlank = email.isBlank();
-        boolean codiceBlank = codice.isBlank();
-
-        boolean emailValid = email.matches("^[\\w.%+-]+@[\\w.-]+\\.[A-Za-z]{2,}$");
-        boolean codiceValid = codice.matches("^TXN-[A-Za-z0-9]{6,20}$");
-
-        boolean emailInvalid = !emailBlank && !emailValid;
-        boolean codiceInvalid = !codiceBlank && !codiceValid;
-
-        if (emailBlank && codiceBlank) {
+        if (email.isBlank() && codice.isBlank()) {
             error("Email PayPal e codice transazione mancanti.");
+            return;
         }
-        if (emailBlank && codiceValid) {
+
+        if (email.isBlank()) {
             error("Inserisci la tua email PayPal.");
+            return;
         }
-        if (emailBlank && codiceInvalid) {
-            error("Email mancante e codice transazione non valido.");
-        }
-        if (emailValid && codiceBlank) {
+
+        if (codice.isBlank()) {
             error("Il codice transazione è obbligatorio.");
+            return;
         }
-        if (emailValid && codiceInvalid) {
+
+        if (!email.matches("^[\\w.%+-]+@[\\w.-]+\\.[A-Za-z]{2,}$")) {
+            error("L'email PayPal inserita non è valida.");
+            return;
+        }
+
+        if (!codice.matches("^TXN-[A-Za-z0-9]{6,20}$")) {
             error("Il codice transazione non è valido.");
         }
-        if (emailInvalid && codiceBlank) {
-            error("Email PayPal non valida e codice transazione mancante.");
-        }
-        if (emailInvalid && codiceValid) {
-            error("L'email PayPal inserita non è valida.");
-        }
-        if (emailInvalid && codiceInvalid) {
-            error("Email PayPal e codice transazione non validi.");
-        }
     }
+
     private static void error(String message)
             throws InvalidCardInputExceptionRemoli {
 
