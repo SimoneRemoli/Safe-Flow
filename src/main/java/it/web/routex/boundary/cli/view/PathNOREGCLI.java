@@ -106,58 +106,56 @@ public final class PathNOREGCLI
     }
     public static void stampa() {
 
+        printHeader();
+        printDatiPrincipali();
+        printInformazioniGenerali();
+
+        printLista("Linee coinvolte", getLinee(), "Nessuna linea disponibile.");
+        printLista("Percorsi con nomi", getPercorsiConNomi(), "Nessun percorso disponibile.");
+        printLista("Sequenze di cambiamento", getSequenzeDiCambiamento(), "Nessuna sequenza disponibile.");
+        printLista("Nodi cruciali", getSequenzeNodiCruciali(), "Nessun nodo cruciale.");
+
+        printFooter();
+    }
+    private static void printHeader() {
         System.out.println("\n========================================");
         System.out.println("            DETTAGLI PERCORSO           ");
         System.out.println("========================================");
+    }
 
+    private static void printFooter() {
+        System.out.println("========================================\n");
+    }
+    private static void printDatiPrincipali() {
         System.out.println("Città: " + getCity());
         System.out.println("Stazione di partenza: " + getStart());
         System.out.println("Stazione di arrivo: " + getEnd());
         System.out.println("Stato: " + getStatus());
-
+    }
+    private static void printInformazioniGenerali() {
         System.out.println("\n--- Informazioni generali ---");
         System.out.println("Numero cambi: " + getNumeroCambi());
         System.out.println("Numero stazioni usate: " + getNumeroStazioniUsate());
         System.out.println("Numero stazioni totali: " + getNumeroStazioniTotali());
         System.out.println("Minutaggio: " + getMinutaggio() + " min");
         System.out.println("Percentuale stazioni usate: " + getPercentualeStazioniUsate() + " %");
-
-        System.out.println("\n--- Linee coinvolte ---");
-        if (getLinee() != null && getLinee().isEmpty()) {
-            for (String linea : getLinee()) {
-                System.out.println(" - " + linea);
-            }
-        } else {
-            System.out.println(" Nessuna linea disponibile.");
-        }
-
-        System.out.println("\n--- Percorsi con nomi ---");
-        if (getPercorsiConNomi() != null && !getPercorsiConNomi().isEmpty()) {
-            for (String p : getPercorsiConNomi()) {
-                System.out.println(" - " + p);
-            }
-        } else {
-            System.out.println(" Nessun percorso disponibile.");
-        }
-
-        System.out.println("\n--- Sequenze di cambiamento ---");
-        if (getSequenzeDiCambiamento() != null && !getSequenzeDiCambiamento().isEmpty()) {
-            for (String c : getSequenzeDiCambiamento()) {
-                System.out.println(" - " + c);
-            }
-        } else {
-            System.out.println(" Nessuna sequenza disponibile.");
-        }
-
-        System.out.println("\n--- Nodi cruciali ---");
-        if (getSequenzeNodiCruciali() != null && !getSequenzeNodiCruciali().isEmpty()) {
-            for (String n : getSequenzeNodiCruciali()) {
-                System.out.println(" - " + n);
-            }
-        } else {
-            System.out.println(" Nessun nodo cruciale.");
-        }
-
-        System.out.println("========================================\n");
     }
+    private static void printLista(String titolo, List<String> lista, String emptyMessage) {
+
+        System.out.println("\n--- " + titolo + " ---");
+
+        if (lista == null || lista.isEmpty()) {
+            System.out.println(" " + emptyMessage);
+            return;
+        }
+
+        for (String elemento : lista) {
+            System.out.println(" - " + elemento);
+        }
+    }
+
+
+
+
+
 }
