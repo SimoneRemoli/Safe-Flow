@@ -121,6 +121,11 @@ RouteX is a powerful metro route finder that allows users to search for stations
   </tr>
 </table>
 
+## 🏗️ Architecture Overview
+RouteX follows a layered architecture inspired by MVC principles.
+The system is organized into clear layers that separate concerns such as
+presentation, application logic, domain logic, and persistence.
+
 
 
 
