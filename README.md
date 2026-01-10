@@ -70,9 +70,7 @@ RouteX is a powerful metro route finder that allows users to search for stations
           so that I can use them to travel.
         </li>
       </ul>
-
       <hr>
-
       <p><b>🛠️ Worker</b></p>
       <ul>
         <li>
@@ -84,9 +82,7 @@ RouteX is a powerful metro route finder that allows users to search for stations
           so that I can keep track of my assigned shifts.
         </li>
       </ul>
-
       <hr>
-
       <p><b>🛡️ Administrator</b></p>
       <ul>
         <li>
@@ -98,7 +94,6 @@ RouteX is a powerful metro route finder that allows users to search for stations
           so that I can communicate maintenance-related updates and service interruptions.
         </li>
       </ul>
-
     </td>
   </tr>
 </table>
