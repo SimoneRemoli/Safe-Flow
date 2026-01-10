@@ -112,30 +112,12 @@ RouteX is a powerful metro route finder that allows users to search for stations
   <tr>
     <td style="padding: 18px;">
       <p>
-        RouteX was born from a simple but concrete question:
-        <i>how can urban mobility systems be made clearer, smarter, and more accessible?</i>
-      </p>
-      <p>
-        The project originated in an academic context, where the goal was not only to build
-        a working software system, but also to apply solid principles of
-        <b>Software Engineering</b>, <b>clean architecture</b>, and <b>requirement-driven design</b>.
-      </p>
-      <p>
-        Starting from real-world metro networks and everyday user needs, RouteX was designed
-        to support different actors — travelers, workers, and administrators — each with
-        clearly defined responsibilities and goals.
-      </p>
-      <p>
-        What began as a routing problem gradually evolved into a complete system including
-        route computation, ticket purchasing, payment management, and administrative tools.
-        Every design choice was guided by maintainability, clarity, and traceability
-        between requirements, use cases, and implementation.
-      </p>
-      <p>
-        Today, RouteX represents more than just a software project:
-        it is the result of an iterative design process where
-        <b>analysis, modeling, implementation, and quality assurance</b>
-        work together to form a coherent and robust solution.
+      The idea behind RouteX was conceived by Simone Remoli, a computer engineering student at the University of Rome Tor Vergata.
+      As someone who has relied on public transportation for most of his daily commuting and has rarely used a car, he began to reflect on a simple yet meaningful question:
+      “What would the world look like if every commuter had access to an easy-to-use application designed to simplify metropolitan travel?”
+      This question led to a long period of reflection and experimentation, eventually resulting in the development of RouteX, whose core engine is based on Dijkstra’s algorithm— the beating heart of the system.
+       
+        
       </p>
     </td>
   </tr>
