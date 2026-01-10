@@ -44,7 +44,7 @@ public class SearchFXController {
         );
 
         if (!RouteValidator.isValid(route)) {
-            showError("Errore", "Dati del percorso non validi");
+            showError("Errore dati", "Dati del percorso non validi");
             return;
         }
         Credentials cred = Credentials.getInstanceSingleton();
@@ -64,7 +64,7 @@ public class SearchFXController {
             SceneNavigator.switchTo("result.fxml");
 
         } catch (Exception e) {
-            showError("Errore", e.getMessage());
+            showError("Errore generico", e.getMessage());
         }
     }
 

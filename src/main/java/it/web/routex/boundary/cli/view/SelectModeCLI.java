@@ -7,7 +7,7 @@ import java.util.Scanner;
 @SuppressWarnings("java:S106")
 public final class SelectModeCLI {
 
-    private final static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
     private static String scelta = "";
     private static String mode = "";
 
