@@ -27,7 +27,7 @@ public final class SceneNavigator {
                     new FXMLLoader(SceneNavigator.class.getResource(fxml));
             stage.setScene(new Scene(loader.load(), 1200, 800));
         } catch (Exception e) {
-            logger.error("Errore durante il cambio scena: " + e.getMessage());
+            logger.error("Errore durante il cambio scena", e);
         }
     }
 }
