@@ -8,6 +8,8 @@ public final class ViewWorkScheduleCLI
     private static  Integer oraFine;
     private static String luogoDiLavoro;
     private static int durataTurno;
+    private static final String SEPARATOR = "====================================";
+
 
     private ViewWorkScheduleCLI(){
         //Prevent the init
@@ -25,14 +27,15 @@ public final class ViewWorkScheduleCLI
         luogoDiLavoro = luogo;
         durataTurno = durata;
 
-        System.out.println("====================================");
+        System.out.println(SEPARATOR);
         System.out.println("         ORARIO DI LAVORO");
-        System.out.println("====================================");
+        System.out.println(SEPARATOR);
         System.out.println("Luogo di lavoro: " + luogoDiLavoro);
         System.out.println("Ora di inizio: " + oraInizio + ":00");
         System.out.println("Ora di fine: " + oraFine + ":00");
         System.out.println("Durata turno: " + durataTurno + " ore");
-        System.out.println("====================================");
+        System.out.println(SEPARATOR);
     }
+
 
 }
