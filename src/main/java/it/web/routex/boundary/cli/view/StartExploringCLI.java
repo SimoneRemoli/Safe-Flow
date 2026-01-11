@@ -1,6 +1,9 @@
 package it.web.routex.boundary.cli.view;
+import it.web.routex.bean.CityBean;
 import it.web.routex.boundary.cli.controller.grafico.PathControllerGraficoCLI;
+import it.web.routex.boundary.cli.controller.grafico.ReportsControllerGraficoCLI;
 
+import java.util.List;
 import java.util.Scanner;
 @SuppressWarnings("java:S106")
 public final class StartExploringCLI
@@ -13,13 +16,27 @@ public final class StartExploringCLI
         //Prevent the init
     }
 
-    public static void mostraExploring() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("================================");
-        System.out.println("        ROUTEX - Start Exploring CLI        ");
-        System.out.println("================================");
+    public static void mostra()
+    {
+        PathControllerGraficoCLI not = new PathControllerGraficoCLI();
+        not.doGet();
+    }
 
-        System.out.print("Inserisci città: ");
+    public static void mostraExploring(List<CityBean> cities) {
+
+        System.out.println("\n==============================================");
+        System.out.println("              CITTÀ DISPONIBILI               ");
+        System.out.println("==============================================");
+        int index = 1;
+        for (CityBean city : cities) {
+            System.out.println(index + ") " + city.getName());
+            index++;
+        }
+        System.out.println("==============================================");
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Inserisci per intero il nome della città: ");
         city = scanner.nextLine();
 
         System.out.print("Inserisci stazione di partenza: ");

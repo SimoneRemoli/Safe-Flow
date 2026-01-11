@@ -34,38 +34,41 @@ public final class ViewReportsAndStatisticsCLI {
 
         System.out.println("----------------------------------------------");
 
-        /* ===== Utenti coinvolti ===== */
-        if (stats.getUtenti() == null || stats.getUtenti().isEmpty())
+
+
+        System.out.println("Utenti coinvolti (" + stats.getUtenti().size() + "):");
+        for (String u : stats.getUtenti())
         {
-            System.out.println("Utenti coinvolti: nessuno");
+            System.out.println(" - " + u);
         }
-        else
-        {
-            System.out.println("Utenti coinvolti (" + stats.getUtenti().size() + "):");
-            for (String u : stats.getUtenti())
-            {
-                System.out.println(" - " + u);
-            }
-        }
+
 
         System.out.println("----------------------------------------------");
 
-        /* ===== Percorsi ===== */
-        if (stats.getPaths() == null || stats.getPaths().isEmpty())
-        {
-            System.out.println("Nessun percorso registrato.");
-        }
-        else
-        {
             System.out.println("Dettaglio percorsi:");
-            int index = 1;
+            System.out.println("-----------------------------------------------------------------------------------------------");
+            System.out.printf(
+                    "%-3s %-15s %-15s %-10s %-15s %-7s %-8s %-10s%n",
+                    "#", "START", "END", "CITY", "USER", "CAMBI", "TEMPO", "DISTANZA"
+            );
+            System.out.println("-----------------------------------------------------------------------------------------------");
 
-            for (PathInfoBean path : stats.getPaths())
-            {
-                System.out.println(index + ") " + path.toString());
+            int index = 1;
+            for (PathInfoBean p : stats.getPaths()) {
+
+                System.out.printf(
+                        "%-3d %-15s %-15s %-10s %-15s %-7d %-8.2f %-10.2f%n",
+                        index,
+                        p.getStartStation(),
+                        p.getEndStation(),
+                        p.getCity(),
+                        p.getUtente(),
+                        p.getNCambi(),
+                        p.getTempoDiArrivo(),
+                        p.getPercTerrenoUtilizzato()
+                );
                 index++;
             }
-        }
 
         System.out.println("==============================================\n");
     }

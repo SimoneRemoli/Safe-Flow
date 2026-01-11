@@ -19,7 +19,7 @@ public class IndexLoggedCLI{
             String scelta = scanner.nextLine();
 
             switch (scelta) {
-                case "1" -> StartExploringCLI.mostraExploring();
+                case "1" -> StartExploringCLI.mostra();
 
                 case "2" -> BuyTicketCLI.mostraBuyTicket();
 

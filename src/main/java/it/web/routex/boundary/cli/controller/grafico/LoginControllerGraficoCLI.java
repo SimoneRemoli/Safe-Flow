@@ -52,6 +52,7 @@ public class LoginControllerGraficoCLI extends LoggedCLI {
         } catch (InvalidLoginInputExceptionRemoli e) {
             ErroreLoginCLI.mostraErrore(e.getUserMessage());
             logger.error("[CLI]Errore di validazione input login: {}", e.toString());
+            return null;
         }
         aut.setEmail(login.email());
         aut.setPassword(login.password());

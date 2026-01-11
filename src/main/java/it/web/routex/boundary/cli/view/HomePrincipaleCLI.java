@@ -20,7 +20,7 @@ public class HomePrincipaleCLI {
 
             switch(scelta)
             {
-                case "1" -> StartExploringCLI.mostraExploring();
+                case "1" -> StartExploringCLI.mostra();
 
                 case "2" -> {
                     LoginViewCLI.mostraLogin();
