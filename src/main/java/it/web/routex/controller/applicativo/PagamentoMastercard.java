@@ -2,6 +2,7 @@ package it.web.routex.controller.applicativo;
 import it.web.routex.bean.PaymentResultBean;
 import it.web.routex.dao.LayerPersistenza;
 import it.web.routex.dao.LayerPersistenzaDemo;
+import it.web.routex.enumerator.PaymentMethod;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.CredentialsExceptionRemoli;
 import it.web.routex.exception.PaymentValidationExceptionRemoli;
@@ -32,6 +33,14 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
 
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         Mastercard mastercard = layer.getPaymentMastercard(numeroCarta, scadenza, cvv);
+        if (mastercard == null) {
+            throw new PaymentValidationExceptionRemoli(
+                    "Carta non valida o non presente nel sistema.",
+                    PaymentMethod.MASTERCARD,
+                    "PagamentoMastercard.run"
+            );
+        }
+
         mastercard.validate();
 
         Component gen = new TimestampDecorator(new CittaDecorator(new BaseTicketCode(), city));

@@ -37,12 +37,14 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
 
     @Override
     public Mastercard getPaymentMastercard(String nC, String sc, String cvv)
-            throws DAOExceptionRemoli, PaymentValidationExceptionRemoli {
+            throws DAOExceptionRemoli {
 
         try {
             for (Mastercard m : DemoStorage.getMastercards()) {
 
-                if (m.getNumeroCarta().equals(nC) && m.getDataScadenza().equals(sc) && m.getCvv().equals(cvv)) {
+                if (m.getNumeroCarta().equals(nC)
+                        && m.getDataScadenza().equals(sc)
+                        && m.getCvv().equals(cvv)) {
 
                     Mastercard found = new Mastercard();
                     found.setNumeroCarta(m.getNumeroCarta());
@@ -53,52 +55,41 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
                 }
             }
 
-            throw new PaymentValidationExceptionRemoli(
-                    "Nessun pagamento trovato per la carta indicata.",
-                    PaymentMethod.MASTERCARD,
-                    "MastercardDAO.java ha fallito"
-            );
+            //  nessun risultato : NON errore DAO
+            return null;
 
-        } catch (PaymentValidationExceptionRemoli e) {
-            throw e; // stesso comportamento della FULL
         } catch (Exception e) {
             throw new DAOExceptionRemoli(
-                    "Errore interno alla connessione: " + e.getMessage()
+                    "Errore interno alla persistenza DEMO: " + e.getMessage(),
+                    e
             );
         }
     }
 
-
-
     @Override
     public Paypal getPaymentPaypal(String email, String codice)
-            throws DAOExceptionRemoli, PaymentValidationExceptionRemoli {
+            throws DAOExceptionRemoli {
 
         try {
             for (Paypal p : DemoStorage.getPaypals()) {
 
-                if (p.getEmail().equals(email) && p.getCodice().equals(codice))
-                {
+                if (p.getEmail().equals(email)
+                        && p.getCodice().equals(codice)) {
 
                     Paypal found = new Paypal();
                     found.setEmail(p.getEmail());
                     found.setCodice(p.getCodice());
-
                     return found;
                 }
             }
 
-            throw new PaymentValidationExceptionRemoli(
-                    "Nessun pagamento trovato per i dati Paypal inseriti.",
-                    PaymentMethod.PAYPAL,
-                    "PaypalDAO.java ha fallito"
-            );
+            // nessun pagamento trovato decisione applicativa
+            return null;
 
-        } catch (PaymentValidationExceptionRemoli e) {
-            throw e;
         } catch (Exception e) {
             throw new DAOExceptionRemoli(
-                    "Errore in GetPaymentMastercard: " + e.getMessage()
+                    "Errore nel recupero del pagamento Paypal in modalità DEMO: " + e.getMessage(),
+                    e
             );
         }
     }

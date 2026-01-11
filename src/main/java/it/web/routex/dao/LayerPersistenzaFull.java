@@ -50,8 +50,8 @@ public class LayerPersistenzaFull extends LayerPersistenza
         }
     }
 
-    @Override
-    public Mastercard getPaymentMastercard(String nC, String sc, String cvv) throws DAOExceptionRemoli, PaymentValidationExceptionRemoli{
+    public Mastercard getPaymentMastercard(String nC, String sc, String cvv)
+            throws DAOExceptionRemoli {
 
         final String query = "{ CALL RouteX_Update.getMastercardPayment(?,?,?) }";
 
@@ -64,24 +64,29 @@ public class LayerPersistenzaFull extends LayerPersistenza
 
             try (ResultSet rs = cs.executeQuery()) {
 
-                //  Se la stored procedure ha trovato una riga
                 if (rs.next()) {
-                    // Costruisco e restituisco un oggetto Mastercard con i dati trovati
                     Mastercard found = new Mastercard();
                     found.setNumeroCarta(rs.getString("numero_carta"));
                     found.setDataScadenza(rs.getString("data_scadenza"));
                     found.setCvv(rs.getString("cvv"));
                     return found;
-                } else {
-                    throw new PaymentValidationExceptionRemoli("Nessun pagamento trovato per la carta indicata.", PaymentMethod.MASTERCARD, "MastercardDAO.java ha fallito");
                 }
+
+                // nessun risultato → NON è errore DAO
+                return null;
             }
+
         } catch (SQLException e) {
-            throw new DAOExceptionRemoli("Errore interno alla connessione: " + e.getMessage());
+            throw new DAOExceptionRemoli(
+                    "Errore interno alla connessione: " + e.getMessage(),
+                    e
+            );
         }
     }
+
     @Override
-    public Paypal getPaymentPaypal(String email, String codice) throws DAOExceptionRemoli, PaymentValidationExceptionRemoli {
+    public Paypal getPaymentPaypal(String email, String codice)
+            throws DAOExceptionRemoli {
 
         final String query = "{ CALL RouteX_Update.getPaypalPayment(?,?) }";
 
@@ -93,21 +98,25 @@ public class LayerPersistenzaFull extends LayerPersistenza
 
             try (ResultSet rs = cs.executeQuery()) {
 
-                //  Se la stored procedure ha trovato una riga
                 if (rs.next()) {
-                    // Costruisco e restituisco un oggetto Paypal con i dati trovati
                     Paypal found = new Paypal();
                     found.setEmail(rs.getString("email_paypal"));
                     found.setCodice(rs.getString("codice_transazione"));
                     return found;
-                } else {
-                    throw new PaymentValidationExceptionRemoli("Nessun pagamento trovato per i dati Paypal inseriti.", PaymentMethod.PAYPAL, "PaypalDAO.java ha fallito");
                 }
+
+                //  nessun risultato semantica neutra
+                return null;
             }
+
         } catch (SQLException e) {
-            throw new DAOExceptionRemoli("Errore in GetPaymentMastercard: " + e.getMessage());
+            throw new DAOExceptionRemoli(
+                    "Errore durante il recupero del pagamento Paypal: " + e.getMessage(),
+                    e
+            );
         }
     }
+
 
     @Override
     public List<City> listCities() throws DAOExceptionRemoli {

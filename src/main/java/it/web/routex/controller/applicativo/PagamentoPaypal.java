@@ -3,6 +3,7 @@ import it.web.routex.bean.PaymentResultBean;
 import it.web.routex.dao.LayerPersistenza;
 import it.web.routex.dao.LayerPersistenzaDemo;
 import it.web.routex.dao.TicketDAOLayer;
+import it.web.routex.enumerator.PaymentMethod;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.model.Paypal;
 import it.web.routex.utility.factory.FactoryLayerPersistenza;
@@ -30,6 +31,15 @@ public class PagamentoPaypal extends RegistrazionePagamentoController
 
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         Paypal p = layer.getPaymentPaypal(email,codice);
+
+        if (p == null) {
+            throw new PaymentValidationExceptionRemoli(
+                    "Nessun pagamento Paypal trovato per i dati inseriti.",
+                    PaymentMethod.PAYPAL,
+                    "PagamentoPaypal.run"
+            );
+        }
+
         p.validate();
 
         Component gen = new TimestampDecorator(new CittaDecorator(new BaseTicketCode(), city));
