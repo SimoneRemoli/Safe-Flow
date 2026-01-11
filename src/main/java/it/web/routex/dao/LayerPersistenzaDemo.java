@@ -1,7 +1,6 @@
 package it.web.routex.dao;
 
 import it.web.routex.demo.*;
-import it.web.routex.enumerator.PaymentMethod;
 import it.web.routex.exception.*;
 import it.web.routex.model.*;
 import it.web.routex.utility.builder.RouteBuilder;

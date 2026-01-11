@@ -1,10 +1,8 @@
 package it.web.routex.dao;
-import it.web.routex.enumerator.PaymentMethod;
 import it.web.routex.enumerator.Ruolo;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.LoginNotFoundRemoli;
 import it.web.routex.exception.PathNotFoundExceptionRemoli;
-import it.web.routex.exception.PaymentValidationExceptionRemoli;
 import it.web.routex.model.*;
 import it.web.routex.utility.builder.RouteBuilder;
 import it.web.routex.utility.factory.ConnectionFactory;
