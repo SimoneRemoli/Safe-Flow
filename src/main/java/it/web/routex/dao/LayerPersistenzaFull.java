@@ -227,10 +227,8 @@ public class LayerPersistenzaFull extends LayerPersistenza
                     }
                 }
             }
-
-            if (result.isEmpty()) {
-                throw new DAOExceptionRemoli("Nessuna notifica presente nel sistema");
-            }
+            //  NESSUN controllo isEmpty()
+            return result;
 
         } catch (SQLException e) {
             throw new DAOExceptionRemoli(
@@ -238,8 +236,6 @@ public class LayerPersistenzaFull extends LayerPersistenza
                     e
             );
         }
-
-        return result;
     }
 
     @Override
@@ -270,8 +266,8 @@ public class LayerPersistenzaFull extends LayerPersistenza
 
 
     @Override
-    public WorkerSchedule getWorkerSchedule(String codiceFiscale) throws DAOExceptionRemoli
-    {
+    public WorkerSchedule getWorkerSchedule(String codiceFiscale)
+            throws DAOExceptionRemoli {
 
         String sp = "{ CALL RouteX_Update.viewWorkSchedule(?) }";
 
@@ -280,11 +276,11 @@ public class LayerPersistenzaFull extends LayerPersistenza
 
             cs.setString(1, codiceFiscale);
 
-            try (ResultSet rs = cs.executeQuery())
-            {
+            try (ResultSet rs = cs.executeQuery()) {
 
+                //  NESSUNA ECCEZIONE: se non c'è risultato, ritorno null
                 if (!rs.next()) {
-                    throw new DAOExceptionRemoli("Errore.");
+                    return null;
                 }
 
                 int oraInizio = rs.getInt("oraInizio");
@@ -297,10 +293,15 @@ public class LayerPersistenzaFull extends LayerPersistenza
                         luogo
                 );
             }
+
         } catch (SQLException e) {
-            throw new DAOExceptionRemoli("Errore durante la chiamata a viewWorkSchedule: " + e.getMessage(), e);
+            throw new DAOExceptionRemoli(
+                    "Errore durante la chiamata a viewWorkSchedule",
+                    e
+            );
         }
     }
+
 
     @Override
     public void sendMessage(Notification n) throws DAOExceptionRemoli {
@@ -391,7 +392,8 @@ public class LayerPersistenzaFull extends LayerPersistenza
     public List<Route> getData(String cf)
             throws PathNotFoundExceptionRemoli, DAOExceptionRemoli {
 
-        try (Connection conn = ConnectionFactory.getConnection()) {
+        try (Connection conn = ConnectionFactory.getConnection())
+        {
 
             CallableStatement cs =
                     conn.prepareCall("{ CALL RouteX_Update.getPath(?) }");
@@ -420,7 +422,8 @@ public class LayerPersistenzaFull extends LayerPersistenza
                 lista.add(r);
             }
 
-            if (lista.isEmpty()) {
+            if (lista.isEmpty())
+            {
                 throw new PathNotFoundExceptionRemoli(
                         "Nessun percorso trovato per l’utente.",
                         cf,
@@ -430,9 +433,6 @@ public class LayerPersistenzaFull extends LayerPersistenza
             }
 
             return lista;
-
-        } catch (PathNotFoundExceptionRemoli e) {
-            throw e;
         } catch (SQLException e) {
             // Errore tecnico
             throw new DAOExceptionRemoli(

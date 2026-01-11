@@ -17,6 +17,14 @@ public class ViewWorkScheduleControllerApplicativo {
             LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
             WorkerSchedule model = layer.getWorkerSchedule(cf);
 
+            if (model == null) {
+                throw new BrondiException(
+                        "Il Worker non possiede orari di lavoro assegnati da nessun admin.",
+                        "BRONDI_002",
+                        "Nessun record restituito dalla DAO"
+                );
+            }
+
             //logica applicativa
             if (!model.isValid()) {
                 throw new BrondiException(

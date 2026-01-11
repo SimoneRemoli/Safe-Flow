@@ -214,27 +214,26 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
             // simulazione del ResultSet
             for (Notification n : DemoStorage.getNotifications()) {
 
-                Notification copy = new Notification(n.getMessage(), n.getDate(), n.isRisolto());
+                Notification copy = new Notification(
+                        n.getMessage(),
+                        n.getDate(),
+                        n.isRisolto()
+                );
 
                 result.add(copy);
             }
 
-            if (result.isEmpty()) {
-                throw new DAOExceptionRemoli("Nessuna notifica presente nel sistema");
-            }
-
+            //  NESSUN controllo su lista vuota
             return result;
-
-        } catch (DAOExceptionRemoli e) {
-            throw e;
 
         } catch (Exception e) {
             throw new DAOExceptionRemoli(
-                    "Errore nel recupero delle notifiche",
+                    "Errore nel recupero delle notifiche (DEMO)",
                     e
             );
         }
     }
+
 
 
     @Override
@@ -276,9 +275,7 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
         try {
             for (WorkerScheduleRecord r : DemoStorage.getWorkerSchedules()) {
 
-                // equivale a: WHERE p.Codice_Fiscale = ?
                 if (r.getCodiceFiscale().equals(codiceFiscale)) {
-
                     return new WorkerSchedule(
                             r.getOraInizio(),
                             r.getOraFine(),
@@ -286,19 +283,16 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
                     );
                 }
             }
-
-            throw new DAOExceptionRemoli("Errore.");
-
-        } catch (DAOExceptionRemoli e) {
-            throw e;
+            return null;
 
         } catch (Exception e) {
             throw new DAOExceptionRemoli(
-                    "Errore durante la chiamata a viewWorkSchedule: " + e.getMessage(),
+                    "Errore durante il recupero degli orari di lavoro in modalità DEMO",
                     e
             );
         }
     }
+
 
 
     @Override
@@ -482,8 +476,7 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
         }
     }
     @Override
-    public List<Route> getData(String cf)
-            throws PathNotFoundExceptionRemoli, DAOExceptionRemoli {
+    public List<Route> getData(String cf) throws DAOExceptionRemoli {
 
         try {
             List<Route> result = new ArrayList<>();
@@ -491,8 +484,6 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
             for (Route r : DemoStorage.getRoutes()) {
 
                 if (r.getUtente() != null && r.getUtente().equals(cf)) {
-
-                    // come nella FULL: creo un oggetto Route popolato
                     Route copy = new Route();
                     copy.setPartenza(r.getPartenza());
                     copy.setArrivo(r.getArrivo());
@@ -511,19 +502,8 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
                 }
             }
 
-            if (result.isEmpty()) {
-                throw new PathNotFoundExceptionRemoli(
-                        "Nessun percorso trovato per l’utente.",
-                        cf,
-                        404,
-                        "Errore nella RouteDAODemo.java nel metodo getData"
-                );
-            }
-
+            // SEMPRE ritorna la lista (anche vuota)
             return result;
-
-        } catch (PathNotFoundExceptionRemoli e) {
-            throw e;
 
         } catch (Exception e) {
             throw new DAOExceptionRemoli(
@@ -531,8 +511,4 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
             );
         }
     }
-
-
-
-
 }

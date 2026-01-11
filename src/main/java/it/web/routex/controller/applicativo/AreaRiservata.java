@@ -65,16 +65,35 @@ public class AreaRiservata
     }
 
 
-    public List<RouteBean> runPath(String cf) throws PathNotFoundExceptionRemoli, DAOExceptionRemoli {
+    public List<RouteBean> runPath(String cf)
+            throws PathNotFoundExceptionRemoli, DAOExceptionRemoli {
+
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         List<Route> listaPercorsi = layer.getData(cf);
 
+        // LOGICA APPLICATIVA: interpretazione del risultato
+        if (listaPercorsi == null || listaPercorsi.isEmpty()) {
+            throw new PathNotFoundExceptionRemoli(
+                    "Nessun percorso trovato per l’utente.",
+                    cf,
+                    404,
+                    "PathControllerApplicativo.runPath"
+            );
+        }
+
         List<RouteBean> listaPercorsiBean = new ArrayList<>();
 
-        Component component = new TempoArrivoDecorator(new PercorsoLungoDecorator(new ListaCambiDecorator(new BaseComponent()))); //in più
+        Component component =
+                new TempoArrivoDecorator(
+                        new PercorsoLungoDecorator(
+                                new ListaCambiDecorator(
+                                        new BaseComponent()
+                                )
+                        )
+                );
 
-        for(Route r: listaPercorsi)
-        {
+        for (Route r : listaPercorsi) {
+
             RouteBean rb = new RouteBean();
             rb.setPartenza(r.getPartenza());
             rb.setArrivo(r.getArrivo());
@@ -87,12 +106,13 @@ public class AreaRiservata
             rb.setnStazioniCitta(r.getnStazioniCitta());
             rb.setPercTerrenoUtilizzato(r.getPercTerrenoUtilizzato());
 
-            rb = component.update(rb,r); //in più
-
+            // Decorator applicativo
+            rb = component.update(rb, r);
 
             listaPercorsiBean.add(rb);
-
         }
+
         return listaPercorsiBean;
     }
+
 }
