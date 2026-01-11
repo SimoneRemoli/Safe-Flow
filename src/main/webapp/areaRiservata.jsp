@@ -173,8 +173,9 @@
                     <tbody>
                         <%
                             List<RouteBean> listaPercorsi = (List<RouteBean>) request.getAttribute("listaPercorsi");
-                            if (listaPercorsi != null && !listaPercorsi.isEmpty()) {
-                                for (RouteBean r : listaPercorsi) {
+
+                                for (RouteBean r : listaPercorsi)
+                                {
                         %>
                             <tr>
                                 <td><%= r.getPartenza() %></td>
@@ -190,13 +191,7 @@
                             </tr>
                         <%
                                 }
-                            } else {
-                        %>
-                            <tr>
-                                <td colspan="10" style="text-align:center;">Nessun percorso trovato.</td>
-                            </tr>
-                        <%
-                            }
+
                         %>
                     </tbody>
                 </table>

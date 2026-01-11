@@ -388,41 +388,58 @@ public class LayerPersistenzaFull extends LayerPersistenza
     }
 
     @Override
-    public List<Route> getData(String cf) throws PathNotFoundExceptionRemoli, DAOExceptionRemoli {
-        try (Connection conn = ConnectionFactory.getConnection()){
+    public List<Route> getData(String cf)
+            throws PathNotFoundExceptionRemoli, DAOExceptionRemoli {
 
-            String sp = "{ CALL RouteX_Update.getPath(?) }";
-            CallableStatement cs = conn.prepareCall(sp);
+        try (Connection conn = ConnectionFactory.getConnection()) {
+
+            CallableStatement cs =
+                    conn.prepareCall("{ CALL RouteX_Update.getPath(?) }");
 
             cs.setString(1, cf);
+            cs.execute();
 
-            boolean trovato = cs.execute();
+            ResultSet rs = cs.getResultSet();
+            List<Route> lista = new ArrayList<>();
 
-            if (trovato) {
-                ResultSet rs = cs.getResultSet();
-                List<Route> lista = new ArrayList<>();
-                while (rs.next()) {
-                    Route r = new Route();
-                    r.setPartenza(rs.getString("StartStation"));
-                    r.setArrivo(rs.getString("EndStation"));
-                    r.setCitta(rs.getString("City"));
-                    r.setTipoViaggiatore(rs.getString("TipoViaggiatore"));
-                    r.setnCambi(rs.getInt("NCambi"));
-                    r.setnStazAttraversate(rs.getInt("NStazioniAttraversate"));
-                    r.setTempoDiArrivo(rs.getDouble("TempoDiArrivo"));
-                    r.setnStazioniCitta(rs.getInt("NStazioniCitta"));
-                    r.setPercTerrenoUtilizzato(rs.getDouble("PercTerrenoUtilizzato"));
-                    r.setUtente(cf);
-                    r.setListaCambi(rs.getString("ListaCambi"));
-                    r.setStazInterscambio(rs.getString("StazioneDiInterscambio"));
-                    lista.add(r);
-                }
-                return lista;
-            } else {
-                throw new PathNotFoundExceptionRemoli("Nessun percorso trovato per l’utente.", cf, 404, "Errore nella RouteDAO.java nel metodo getData");
+            while (rs.next()) {
+                Route r = new Route();
+                r.setPartenza(rs.getString("StartStation"));
+                r.setArrivo(rs.getString("EndStation"));
+                r.setCitta(rs.getString("City"));
+                r.setTipoViaggiatore(rs.getString("TipoViaggiatore"));
+                r.setnCambi(rs.getInt("NCambi"));
+                r.setnStazAttraversate(rs.getInt("NStazioniAttraversate"));
+                r.setTempoDiArrivo(rs.getDouble("TempoDiArrivo"));
+                r.setnStazioniCitta(rs.getInt("NStazioniCitta"));
+                r.setPercTerrenoUtilizzato(rs.getDouble("PercTerrenoUtilizzato"));
+                r.setListaCambi(rs.getString("ListaCambi"));
+                r.setStazInterscambio(rs.getString("StazioneDiInterscambio"));
+                r.setUtente(cf);
+
+                lista.add(r);
             }
-        } catch (Exception e) {
-            throw new DAOExceptionRemoli("Errore durante la connessione al database" + e.getMessage());
+
+            if (lista.isEmpty()) {
+                throw new PathNotFoundExceptionRemoli(
+                        "Nessun percorso trovato per l’utente.",
+                        cf,
+                        404,
+                        "RouteDAO.getData"
+                );
+            }
+
+            return lista;
+
+        } catch (PathNotFoundExceptionRemoli e) {
+            throw e;
+        } catch (SQLException e) {
+            // Errore tecnico
+            throw new DAOExceptionRemoli(
+                    "Errore durante la connessione al database",
+                    e
+            );
         }
     }
+
 }
