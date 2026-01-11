@@ -6,7 +6,6 @@ import it.web.routex.controller.applicativo.PathController;
 import it.web.routex.exception.*;
 import it.web.routex.domain.LoggedHttpServlet;
 import it.web.routex.domain.RouteDecoratorService;
-import it.web.routex.validator.RouteValidator;
 import it.web.routex.domain.UserStatusResolver;
 import it.web.routex.extractor.RouteInputExtractor;
 import it.web.routex.record.RouteRecord;
@@ -23,7 +22,7 @@ import java.util.List;
 public class PathControllerGrafico extends LoggedHttpServlet {
     private static final String FORWARDING = "Errore nel forwarding";
     private static final String ERRORE = "errore";
-    private static final String PAGE_ERROR = "error.jsp";
+
 
     private void forward(HttpServletRequest request,
                                     HttpServletResponse response) {
@@ -35,12 +34,10 @@ public class PathControllerGrafico extends LoggedHttpServlet {
         }
     }
 
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     {
-        String s = ERRORE;
-        String pageErr = PAGE_ERROR;
+        Credentials cred = Credentials.getInstanceSingleton();
         try {
             // Recupero delle città tramite il controller applicativo
             CityController cityController = new CityController();
@@ -52,20 +49,12 @@ public class PathControllerGrafico extends LoggedHttpServlet {
             forward(request, response);
 
         } catch (DAOExceptionRemoli e) {
-            request.setAttribute(s, "Errore nel caricamento delle città: " + e.getMessage());
-            try {
-                request.getRequestDispatcher(pageErr).forward(request, response);
-            }catch(Exception a) {
-                logger.error("Errore nella presentazione della view il caricamento delle città: {}", a.toString());
-            }
+            forwardToError(request, response, "Errore nel caricamento delle città: " + e.getMessage(), cred);
+            logger.error("Errore nella presentazione della view il caricamento delle città: {}", e.toString());
+
         } catch (InvalidCityDataExceptionRemoli e) {
-            request.setAttribute(s, e.getUserMessage());
-            try {
-                request.getRequestDispatcher(pageErr).forward(request, response);
-                logger.error("Errore nei dati delle città: {}", e.toString());
-            }catch(Exception a) {
-                logger.error("errore nel forwarding");
-            }
+            forwardToError(request, response, e.getUserMessage(), cred);
+            logger.error("Errore nei dati delle città: {}", e.toString());
         }
     }
 
@@ -73,8 +62,6 @@ public class PathControllerGrafico extends LoggedHttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     {
-            String s = ERRORE;
-            String pageErr = PAGE_ERROR;
             RouteRecord route;
             final HttpSession session = request.getSession(false);
             if (session == null) {
@@ -88,18 +75,9 @@ public class PathControllerGrafico extends LoggedHttpServlet {
 
             final Credentials cred = Credentials.getInstanceSingleton();
 
-            route = estrattorePercorso(request, response);
+            route = estrattorePercorso(request, response, cred);
             String status = UserStatusResolver.resolve(cred);
 
-            if(!RouteValidator.isValid(route))
-            {
-                try {
-                    response.sendRedirect("datiPercorsoAssenti.jsp");
-                }catch(Exception e){
-                    logger.info(FORWARDING,e);
-                }
-                return;
-            }
 
             logger.info("Dati per il percorso acquisiti correttamente. Città={}, StazPart={}, StazArr={}", route.city(), route.start(), route.end());
             InformazioniPercorsoBean dto = new InformazioniPercorsoBean();
@@ -108,13 +86,10 @@ public class PathControllerGrafico extends LoggedHttpServlet {
                 PathController path = new PathController();
                 dto = path.run(route.start(), route.end(), route.city()); //controller applicativo
             } catch (IllegalArgumentException | UnreacheableNodeExceptionRemoli |
-                     FuoriRangeExceptionRemoli | DAOExceptionRemoli | SQLException e) {
-                request.setAttribute(s, "Errore processamento dati percorso" + e.getMessage());
-                try {
-                    request.getRequestDispatcher(pageErr).forward(request, response);
-                }catch(Exception a) {
-                    logger.error("Errore processamento dati percorso {}", e.toString());
-                }
+                     FuoriRangeExceptionRemoli | DAOExceptionRemoli | SQLException e)
+            {
+                forwardToError(request, response, "Errore processamento dati percorso" + e.getMessage(), cred);
+                logger.error("Errore processamento dati percorso {}", e.toString());
             }
 
             RouteDecoratorService.decorate(dto, request);
@@ -145,19 +120,37 @@ public class PathControllerGrafico extends LoggedHttpServlet {
             logger.info(result);
 
     }
-    private RouteRecord estrattorePercorso(HttpServletRequest request, HttpServletResponse response)
+    private RouteRecord estrattorePercorso(HttpServletRequest request, HttpServletResponse response, Credentials cred)
     {
         try {
             return RouteInputExtractor.from(request);
         } catch (InvalidRouteInputExceptionRemoli e)
         {
-            request.setAttribute(ERRORE, "Errore nell'input del percorso {}" + e.getMessage());
-            try {
-                request.getRequestDispatcher(PAGE_ERROR).forward(request, response);
-            }catch(Exception a) {
-                logger.error("Errore nell'input del percorso {}", e.getMessage());
-            }
+            forwardToError(request, response, "Errore nell'input del percorso {}. -" + e.getMessage(), cred);
+            logger.error("Errore nell'input del percorso {}", e.getMessage());
             return null;
         }
     }
+    protected void forwardToError(HttpServletRequest request,
+                                  HttpServletResponse response,
+                                  String errorMessage, Credentials cred) {
+        try {
+            request.setAttribute(ERRORE, errorMessage);
+
+            HttpSession session = request.getSession(false);
+
+            String errorPage;
+            if (session != null && cred.getCodiceFiscale() != null) {
+                errorPage = "errorLogged.jsp";
+            } else {
+                errorPage = "errorNotLogged.jsp";
+            }
+
+            request.getRequestDispatcher(errorPage).forward(request, response);
+
+        } catch (Exception e) {
+            logger.error("Errore nel forwarding alla pagina di errore", e);
+        }
+    }
+
 }

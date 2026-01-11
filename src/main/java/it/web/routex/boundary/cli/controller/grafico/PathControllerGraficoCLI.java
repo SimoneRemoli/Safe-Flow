@@ -4,14 +4,12 @@ import it.web.routex.bean.InformazioniPercorsoBean;
 import it.web.routex.boundary.cli.LoggedCLI;
 import it.web.routex.boundary.cli.domain.RouteDecoratorServiceCLI;
 import it.web.routex.boundary.cli.extractor.RouteInputExtractorCLI;
-import it.web.routex.boundary.cli.view.ErrorePath;
 import it.web.routex.boundary.cli.view.GenericErrorCLI;
 import it.web.routex.boundary.cli.view.PathNOREGCLI;
 import it.web.routex.boundary.cli.view.StartExploringCLI;
 import it.web.routex.controller.applicativo.CityController;
 import it.web.routex.controller.applicativo.PathController;
 import it.web.routex.exception.*;
-import it.web.routex.validator.RouteValidator;
 import it.web.routex.domain.UserStatusResolver;
 import it.web.routex.record.RouteRecord;
 import it.web.routex.utility.builder.PathNORegInitBuilder;
@@ -47,9 +45,12 @@ public class PathControllerGraficoCLI extends LoggedCLI
         final Credentials cred = Credentials.getInstanceSingleton();
 
         RouteRecord route = estrattorePercorso();
+        if (route == null) {
+            return;
+        }
         String status = UserStatusResolver.resolve(cred);
 
-        if(!RouteValidator.isValid(route)) ErrorePath.mostraErrore();
+        //if(!RouteValidator.isValid(route)) ErrorePath.mostraErrore();
 
         logger.info("Dati per il percorso acquisiti correttamente. Città={}, StazPart={}, StazArr={}", route.city(), route.start(), route.end());
         InformazioniPercorsoBean dto = new InformazioniPercorsoBean();
@@ -89,7 +90,7 @@ public class PathControllerGraficoCLI extends LoggedCLI
         } catch (InvalidRouteInputExceptionRemoli e)
         {
             logger.error("Errore nell'input del percorso {}", e.getMessage());
-            GenericErrorCLI.mostraErrore("Errore nell'input del percorso");
+            GenericErrorCLI.mostraErrore("Errore nell'input del percorso: "+e.getMessage());
             return null;
         }
     }
