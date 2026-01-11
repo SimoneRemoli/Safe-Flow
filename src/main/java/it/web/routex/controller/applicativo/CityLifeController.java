@@ -1,7 +1,5 @@
 package it.web.routex.controller.applicativo;
 import it.web.routex.bean.CityLifeBean;
-import it.web.routex.bean.FermataRecordBean;
-
 import java.sql.SQLException;
 import java.util.*;
 
@@ -9,6 +7,7 @@ import it.web.routex.dao.LayerPersistenza;
 import it.web.routex.exception.FuoriRangeExceptionRemoli;
 import it.web.routex.exception.UnreacheableNodeExceptionRemoli;
 import it.web.routex.model.CityModel;
+import it.web.routex.model.Fermata;
 import it.web.routex.utility.factory.FactoryLayerPersistenza;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,15 +92,13 @@ public class CityLifeController
         StatoPercorso stato = new StatoPercorso();
 
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
-        List<FermataRecordBean> fermateTot = layer.getFermateByIds(ids,city);
+        List<Fermata> fermateTot = layer.getFermateByIds(ids, city);
 
         for (int i = 0; i < fermateTot.size(); i++)
         {
-            FermataRecordBean fermata = fermateTot.get(i);
-            String fermate = fermata.getNome();
-            String linea = fermata.getLinea();
-            gestisciCambiIniziali(linea, stato, i, fermate);
-            gestisciLogicaCambiPassoInduttivo(linea, stato, i, fermate);
+            Fermata corrente = fermateTot.get(i);
+            gestisciCambiIniziali(corrente, stato, i);
+            gestisciLogicaCambiPassoInduttivo(corrente, stato, i);
 
         }
 
@@ -264,16 +261,18 @@ public class CityLifeController
         return percorsiCodifica;
     }
 
-    private void gestisciCambiIniziali(String linea, StatoPercorso statoPercorso, int i, String fermate)
+    private void gestisciCambiIniziali(Fermata corrente, StatoPercorso statoPercorso, int i)
     {
-        checkFirstStation(statoPercorso, linea, fermate, i);
-        checkSecondStation(statoPercorso, linea, fermate, i);
+        String linea = corrente.getLinea();
+        String fermate = corrente.getNome();
+        checkFirstStation(statoPercorso, corrente, i);
+        checkSecondStation(statoPercorso, corrente, i);
 
         if (!statoPercorso.lineaTemp.equals(linea) && i == 1) {
             statoPercorso.noPass = true;
         }
         if (!statoPercorso.stopping && statoPercorso.ancora && i > 1) {
-            if ((linea.contains("-")))
+            if (corrente.isLineaComposta())
             {
                 statoPercorso.stopping = false;
                 statoPercorso.noPass = true;
@@ -290,16 +289,19 @@ public class CityLifeController
 
         }
     }
-    private void gestisciLogicaCambiPassoInduttivo(String linea, StatoPercorso statoPercorso, int i, String fermate)
+    private void gestisciLogicaCambiPassoInduttivo(Fermata corrente, StatoPercorso statoPercorso, int i)
     {
+
         if (statoPercorso.check)
         {
-            path1(statoPercorso,linea,fermate,i);
+            path1(statoPercorso,corrente,i);
         }
         else
         {
-            path2(statoPercorso,linea,fermate,i);
+            path2(statoPercorso,corrente,i);
         }
+        String linea = corrente.getLinea();
+        String fermate = corrente.getNome();
         statoPercorso.percorsiConFermate.add(fermate); //linea che consente di stampare i percorsi con fermate (non toccare)
         statoPercorso.linee.add(linea);
     }
@@ -453,11 +455,13 @@ public class CityLifeController
         }
 
     }
-    private void path1(StatoPercorso statoPercorso, String linea, String fermate, int i)
+    private void path1(StatoPercorso statoPercorso, Fermata corrente, int i)
     {
+        String linea = corrente.getLinea();
+        String fermate = corrente.getNome();
         if (!statoPercorso.lineaTemp.equals(linea))
         {
-            if (linea.contains("-"))
+            if (corrente.isLineaComposta())
             {
                 fermataCambio(statoPercorso, linea, fermate);
                 if (i == statoPercorso.percorsiCodifica.size() - 1) {
@@ -475,8 +479,10 @@ public class CityLifeController
         }
 
     }
-    private void path2(StatoPercorso statoPercorso, String linea, String fermate, int i)
+    private void path2(StatoPercorso statoPercorso, Fermata corrente, int i)
     {
+        String linea = corrente.getLinea();
+        String fermate = corrente.getNome();
         if (statoPercorso.countBin != 0)
         {
             if (!statoPercorso.lineaTemp.equals(linea))
@@ -543,18 +549,22 @@ public class CityLifeController
         }
         statoPercorso.lineaTemp = linea;
     }
-    private void checkFirstStation(StatoPercorso statoPercorso, String linea, String fermate, int i)
+    private void checkFirstStation(StatoPercorso statoPercorso, Fermata corrente, int i)
     {
-        if (linea.contains("-") && i == 0) {
+        String linea = corrente.getLinea();
+        String fermate = corrente.getNome();
+        if (corrente.isLineaComposta() && i == 0) {
             statoPercorso.controllo = true;
             statoPercorso.cambiIniziali.add(fermate);
             statoPercorso.cambiInizialiLinee.add(linea);
             statoPercorso.uno = true;
         }
     }
-    private void checkSecondStation(StatoPercorso statoPercorso, String linea, String fermate, int i)
+    private void checkSecondStation(StatoPercorso statoPercorso, Fermata corrente, int i)
     {
-        if (linea.contains("-") && i == 1) {
+        String linea = corrente.getLinea();
+        String fermate = corrente.getNome();
+        if (corrente.isLineaComposta() && i == 1) {
             statoPercorso.noPass = true;
             statoPercorso.cambiIniziali.add(fermate);
             statoPercorso.cambiInizialiLinee.add(linea);

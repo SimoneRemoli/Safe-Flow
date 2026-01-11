@@ -1,6 +1,4 @@
 package it.web.routex.dao;
-
-import it.web.routex.bean.FermataRecordBean;
 import it.web.routex.enumerator.PaymentMethod;
 import it.web.routex.enumerator.Ruolo;
 import it.web.routex.exception.DAOExceptionRemoli;
@@ -11,7 +9,6 @@ import it.web.routex.model.*;
 import it.web.routex.utility.builder.RouteBuilder;
 import it.web.routex.utility.factory.ConnectionFactory;
 import it.web.routex.utility.singleton.Credentials;
-
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -146,8 +143,8 @@ public class LayerPersistenzaFull extends LayerPersistenza
     }
 
     @Override
-    public List<FermataRecordBean> getFermateByIds(List<Integer> ids, String city) throws SQLException {
-        List<FermataRecordBean> fermate = new ArrayList<>();
+    public List<Fermata> getFermateByIds(List<Integer> ids, String city) throws SQLException {
+        List<Fermata> fermate = new ArrayList<>();
 
         try (Connection conn = ConnectionFactory.getConnection();
              CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.GetFermataById(?, ?) }")) {
@@ -158,15 +155,20 @@ public class LayerPersistenzaFull extends LayerPersistenza
                 cs.setInt(2, id);
 
                 try (ResultSet rs = cs.executeQuery()) {
-                    while (rs.next())
-                    {
-                        fermate.add(new FermataRecordBean(rs.getString("nome"), rs.getString("linea")));
+                    while (rs.next()) {
+                        fermate.add(
+                                new Fermata(
+                                        rs.getString("nome"),
+                                        rs.getString("linea")
+                                )
+                        );
                     }
                 }
             }
         }
         return fermate;
     }
+
     @Override
     public List<Station> restituisciIdStazioni(String startStation, String endStation, String city) throws SQLException
     {

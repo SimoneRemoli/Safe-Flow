@@ -1,6 +1,5 @@
 package it.web.routex.dao;
 
-import it.web.routex.bean.FermataRecordBean;
 import it.web.routex.demo.*;
 import it.web.routex.enumerator.PaymentMethod;
 import it.web.routex.exception.*;
@@ -135,21 +134,22 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
 
 
     @Override
-    public List<FermataRecordBean> getFermateByIds(List<Integer> ids, String city) throws SQLException {
+    public List<Fermata> getFermateByIds(List<Integer> ids, String city) throws SQLException {
 
-        List<FermataRecordBean> fermateAll = new ArrayList<>();
+        List<Fermata> fermateAll = new ArrayList<>();
 
         try {
             for (int id : ids) {
 
-                for(Fermate f : DemoStorage.getFermate())
-                {
-                    if(id == f.getId())
-                    {
-                        FermataRecordBean a = new FermataRecordBean();
-                        a.setNome(f.getNome());
-                        a.setLinea(f.getLinea());
-                        fermateAll.add(a);
+                for (Fermate f : DemoStorage.getFermate()) {
+
+                    if (id == f.getId()) {
+                        fermateAll.add(
+                                new Fermata(
+                                        f.getNome(),
+                                        f.getLinea()
+                                )
+                        );
                     }
                 }
             }
@@ -158,9 +158,10 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
 
         } catch (Exception e) {
             // equivalente concettuale della SQLException
-            throw new SQLException("Errore durante il recupero delle fermate", e);
+            throw new SQLException("Errore durante il recupero delle fermate (DEMO)", e);
         }
     }
+
 
     @Override
     public List<Station> restituisciIdStazioni(String startStation, String endStation, String city) throws SQLException {

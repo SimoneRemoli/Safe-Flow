@@ -20,7 +20,7 @@ public abstract class LayerPersistenza {
 
     public abstract List<City> listCities() throws DAOExceptionRemoli;
 
-    public abstract List<FermataRecordBean> getFermateByIds(List<Integer> ids, String city) throws SQLException;
+    public abstract List<Fermata> getFermateByIds(List<Integer> ids, String city) throws SQLException;
 
     public abstract List<Station> restituisciIdStazioni(String startStation, String endStation, String city) throws SQLException;
 

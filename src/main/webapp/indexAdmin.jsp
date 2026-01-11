@@ -174,7 +174,6 @@
 
             <div class="button-container">
                 <a href="logout">Logout</a>
-                <a href="registerWorker.jsp">Registra Lavoratore</a>
             </div>
 
             <div class="welcome-container">
