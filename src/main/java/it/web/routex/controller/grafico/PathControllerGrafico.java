@@ -73,6 +73,8 @@ public class PathControllerGrafico extends LoggedHttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     {
+            String s = ERRORE;
+            String pageErr = PAGE_ERROR;
             RouteRecord route;
             final HttpSession session = request.getSession(false);
             if (session == null) {
@@ -107,11 +109,12 @@ public class PathControllerGrafico extends LoggedHttpServlet {
                 dto = path.run(route.start(), route.end(), route.city()); //controller applicativo
             } catch (IllegalArgumentException | UnreacheableNodeExceptionRemoli |
                      FuoriRangeExceptionRemoli | DAOExceptionRemoli | SQLException e) {
-                logger.error("Errore processamento dati percorso {}", e.toString());
-                request.setAttribute("stazioniNonValide", true);
-                doGet(request, response); //  Ricarica la lista delle città e forwarda la JSP
-
-
+                request.setAttribute(s, "Errore processamento dati percorso" + e.getMessage());
+                try {
+                    request.getRequestDispatcher(pageErr).forward(request, response);
+                }catch(Exception a) {
+                    logger.error("Errore processamento dati percorso {}", e.toString());
+                }
             }
 
             RouteDecoratorService.decorate(dto, request);
@@ -148,10 +151,13 @@ public class PathControllerGrafico extends LoggedHttpServlet {
             return RouteInputExtractor.from(request);
         } catch (InvalidRouteInputExceptionRemoli e)
         {
-            logger.error("Errore nell'input del percorso {}", e.getMessage());
-            doGet(request, response);
+            request.setAttribute(ERRORE, "Errore nell'input del percorso {}" + e.getMessage());
+            try {
+                request.getRequestDispatcher(PAGE_ERROR).forward(request, response);
+            }catch(Exception a) {
+                logger.error("Errore nell'input del percorso {}", e.getMessage());
+            }
             return null;
         }
     }
 }
-

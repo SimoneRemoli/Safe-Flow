@@ -222,7 +222,6 @@
     %>
         <div class="button-container-right">
             <a href="index.jsp">Home</a>
-            <a href="register.jsp">Register</a>
             <a href="login.jsp">Login</a>
         </div>
     <%
@@ -242,7 +241,7 @@
             <h2>RouteX - Find Your Metro Route</h2>
             <form action="PathControllerGrafico" method="post" name="select">
 
-               <select id="citySelect" name="city" class="form-select" required onchange="updateStationsAndMap()">
+               <select id="citySelect" name="city" class="form-select" onchange="updateStationsAndMap()">
                 <option value="" disabled selected>-- Choose a city --</option>
                 <%
                     List<it.web.routex.bean.CityBean> cities = (List<it.web.routex.bean.CityBean>) request.getAttribute("cities2");

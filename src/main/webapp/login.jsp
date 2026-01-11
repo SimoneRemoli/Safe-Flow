@@ -96,7 +96,6 @@
 
     <div class="button-container-right">
         <a href="index.jsp">Home</a>
-        <a href="register.jsp">Register</a>
     </div>
 
     <div class="login-container">
