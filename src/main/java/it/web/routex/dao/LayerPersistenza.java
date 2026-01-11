@@ -4,9 +4,6 @@ import it.web.routex.exception.LoginNotFoundRemoli;
 import it.web.routex.exception.PaymentValidationExceptionRemoli;
 import it.web.routex.exception.PathNotFoundExceptionRemoli;
 import it.web.routex.model.*;
-
-import it.web.routex.bean.FermataRecordBean;
-
 import java.sql.SQLException;
 import java.util.List;
 
