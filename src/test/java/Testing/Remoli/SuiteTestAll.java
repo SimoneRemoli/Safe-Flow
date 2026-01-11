@@ -13,5 +13,5 @@ import org.junit.platform.suite.api.Suite;
         PercorsoTest.class,
         CityTest.class
 })
-public class SuiteTestAll {
+public class  SuiteTestAll {
 }

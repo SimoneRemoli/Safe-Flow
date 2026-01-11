@@ -5,10 +5,7 @@ import it.web.routex.bean.UtenteBeanGenerico;
 import it.web.routex.boundary.cli.CLIRoute;
 import it.web.routex.boundary.cli.LoggedCLI;
 import it.web.routex.boundary.cli.extractor.LoginExtractorCLI;
-import it.web.routex.boundary.cli.view.AdminViewCLI;
-import it.web.routex.boundary.cli.view.ErroreLoginCLI;
-import it.web.routex.boundary.cli.view.IndexLoggedCLI;
-import it.web.routex.boundary.cli.view.WorkerViewCLI;
+import it.web.routex.boundary.cli.view.*;
 import it.web.routex.controller.applicativo.LoginController;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.InvalidLoginInputExceptionRemoli;
@@ -25,6 +22,9 @@ public class LoginControllerGraficoCLI extends LoggedCLI {
         try {
         AutenticazioneBean credenziali = creaBeanAutenticazione();
 
+        if (credenziali == null) return;
+
+
         //  Delegazione al controller applicativo
         LoginController loginController = new LoginController(credenziali);
         UtenteBeanGenerico utente = loginController.autenticaUtente();
@@ -38,31 +38,33 @@ public class LoginControllerGraficoCLI extends LoggedCLI {
 
         } catch (LoginNotFoundRemoli ex) {
             ErroreLoginCLI.mostraErrore(ex.getMessage());
+            LoginViewCLI.mostraLogin();
             logger.error("[CLI]Tentativo di login fallito: email={}, Maskedpassw={}, message={}", ex.getEmail(), ex.getMaskedPassword(), ex.getMessage());
         }
 
 
     }
     private AutenticazioneBean creaBeanAutenticazione() {
-        AutenticazioneBean aut = new AutenticazioneBean();
-        LoginRecord login = null;
-
         try {
-            login = LoginExtractorCLI.from();
+            LoginRecord login = LoginExtractorCLI.from();
+
+            AutenticazioneBean aut = new AutenticazioneBean();
+            aut.setEmail(login.email());
+            aut.setPassword(login.password());
+
+            logger.info(
+                    "Bean di autenticazione creato con email: {}, password presente={}",
+                    login.email(),
+                    login.password() != null
+            );
+
+            return aut;
+
         } catch (InvalidLoginInputExceptionRemoli e) {
             ErroreLoginCLI.mostraErrore(e.getUserMessage());
             logger.error("[CLI]Errore di validazione input login: {}", e.toString());
-            return null;
+            return null;   // ✅ SOLO QUESTO
         }
-        aut.setEmail(login.email());
-        aut.setPassword(login.password());
-        logger.info(
-                "Bean di autenticazione creato con email: {}, password presente={}",
-                login.email(),
-                login.password() != null
-        );
-
-        return aut;
     }
     private void gestisciReindirizzamento(UtenteBeanGenerico utente)
     {

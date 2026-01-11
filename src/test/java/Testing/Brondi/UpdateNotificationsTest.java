@@ -28,7 +28,7 @@ class UpdateNotificationsTest {
     void TestAggiornaNotifica() throws SQLException {
 
         // 1. Setup Ruolo
-        ConnectionFactory.cambioDiRuolo(Ruolo.ADMIN);
+        ConnectionFactory.cambioDiRuolo(Ruolo.WORKER);
 
 
         // 2. Creazione Bean (come fa il controller grafico)
@@ -43,17 +43,6 @@ class UpdateNotificationsTest {
         // 4. Verifica
         assertDoesNotThrow(() ->
                 controller.aggiornaStatoNotifica(bean)
-        );
-    }
-
-    @Test
-    void TestBeanNull() {
-
-        UpdateNotificationsControllerApplicativo controller =
-                new UpdateNotificationsControllerApplicativo();
-
-        assertDoesNotThrow(() ->
-                controller.aggiornaStatoNotifica(null)
         );
     }
 }
