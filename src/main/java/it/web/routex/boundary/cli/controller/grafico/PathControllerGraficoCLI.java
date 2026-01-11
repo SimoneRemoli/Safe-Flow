@@ -50,8 +50,6 @@ public class PathControllerGraficoCLI extends LoggedCLI
         }
         String status = UserStatusResolver.resolve(cred);
 
-        //if(!RouteValidator.isValid(route)) ErrorePath.mostraErrore();
-
         logger.info("Dati per il percorso acquisiti correttamente. Città={}, StazPart={}, StazArr={}", route.city(), route.start(), route.end());
         InformazioniPercorsoBean dto = new InformazioniPercorsoBean();
 
