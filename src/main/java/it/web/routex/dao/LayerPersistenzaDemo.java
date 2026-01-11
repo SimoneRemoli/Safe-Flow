@@ -13,25 +13,39 @@ import java.util.List;
 
 public class LayerPersistenzaDemo extends LayerPersistenza{
     @Override
-    public void login(String email, String password) throws DAOExceptionRemoli, LoginNotFoundRemoli
-    {
-        for (User u : DemoStorage.getUsers()) {
-            if (u.getEmail().equals(email) && u.getPassword().equals(password))
-            {
-                Credentials cred = Credentials.getInstanceSingleton();
-                cred.setCodiceFiscale(u.getCodiceFiscale());
-                cred.setNome(u.getNome());
-                cred.setCognome(u.getCognome());
-                cred.setDataDiNascita(u.getDataDiNascita());
-                cred.setDisabile(u.isDisabile());
-                cred.setRuolo(u.getRuolo());
-                cred.setEmail(email);
-                cred.setPassword(password);
-                return;
-            }
-        }
-        throw new LoginNotFoundRemoli("Credenziali non valide.", email, password);
+    public Credentials login(String email, String password)
+            throws DAOExceptionRemoli, LoginNotFoundRemoli {
 
+        try {
+            for (User u : DemoStorage.getUsers()) {
+
+                if (u.getEmail().equals(email) && u.getPassword().equals(password)) {
+
+                    Credentials cred = new Credentials(); // OGGETTO NORMALE
+
+                    cred.setCodiceFiscale(u.getCodiceFiscale());
+                    cred.setNome(u.getNome());
+                    cred.setCognome(u.getCognome());
+                    cred.setDataDiNascita(u.getDataDiNascita());
+                    cred.setDisabile(u.isDisabile());
+                    cred.setRuolo(u.getRuolo());
+                    cred.setEmail(email);
+                    cred.setPassword(password);
+
+                    return cred;
+                }
+            }
+
+            throw new LoginNotFoundRemoli("Credenziali non valide.", email, password);
+
+        } catch (LoginNotFoundRemoli e) {
+            throw e;
+        } catch (Exception e) {
+            throw new DAOExceptionRemoli(
+                    "Errore durante il login in modalità DEMO: " + e.getMessage(),
+                    e
+            );
+        }
     }
 
     @Override
@@ -98,29 +112,29 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
     public List<City> listCities() throws DAOExceptionRemoli {
 
         try {
-            if (DemoStorage.getCities().isEmpty()) {
-                throw new DAOExceptionRemoli(
-                        "Il database non ha restituito nessuna città. "
-                                + "Possibile errore nella stored procedure o nel caricamento dati."
-                );
-            }
-
             List<City> informazioni = new ArrayList<>();
 
             for (City c : DemoStorage.getCities()) {
-                informazioni.add(new City(c.getName(), c.getCostoBiglietto(), c.getNumeroStazioni()));
+                informazioni.add(
+                        new City(
+                                c.getName(),
+                                c.getCostoBiglietto(),
+                                c.getNumeroStazioni()
+                        )
+                );
             }
 
+            // può essere vuota, decisione rimandata al controller applicativo
             return informazioni;
 
-        } catch (DAOExceptionRemoli e) {
-            throw e; // stesso comportamento della FULL
         } catch (Exception e) {
             throw new DAOExceptionRemoli(
-                    "Errore nella comunicazione con il database: " + e.getMessage()
+                    "Errore nella comunicazione con il database: " + e.getMessage(),
+                    e
             );
         }
     }
+
 
 
     @Override

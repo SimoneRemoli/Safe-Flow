@@ -33,10 +33,19 @@ public class LoginController {
 
         // Chiamata al DAO
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
-        layer.login(autenticazione.getEmail(), autenticazione.getPassword());
+        Credentials credFromDb = layer.login(autenticazione.getEmail(), autenticazione.getPassword());
         
         // Ottieni l'istanza singleton delle credenziali
         Credentials sessionCred = Credentials.getInstanceSingleton();
+
+        sessionCred.setCodiceFiscale(credFromDb.getCodiceFiscale());
+        sessionCred.setNome(credFromDb.getNome());
+        sessionCred.setCognome(credFromDb.getCognome());
+        sessionCred.setDataDiNascita(credFromDb.getDataDiNascita());
+        sessionCred.setDisabile(credFromDb.getDisabile());
+        sessionCred.setRuolo(credFromDb.getRuolo());
+        sessionCred.setEmail(credFromDb.getEmail());
+        sessionCred.setPassword(credFromDb.getPassword());
 
 
         logger.info("Funzione autenticaUtente() dentro LoginController.java con autenticazione {} e {}", sessionCred.getNome(), sessionCred.getCognome());

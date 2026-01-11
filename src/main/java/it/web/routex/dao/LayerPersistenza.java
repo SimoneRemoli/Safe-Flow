@@ -4,12 +4,14 @@ import it.web.routex.exception.LoginNotFoundRemoli;
 import it.web.routex.exception.PaymentValidationExceptionRemoli;
 import it.web.routex.exception.PathNotFoundExceptionRemoli;
 import it.web.routex.model.*;
+import it.web.routex.utility.singleton.Credentials;
+
 import java.sql.SQLException;
 import java.util.List;
 
 public abstract class LayerPersistenza {
 
-    public abstract void login(String email, String password) throws DAOExceptionRemoli, LoginNotFoundRemoli;
+    public abstract Credentials login(String email, String password) throws DAOExceptionRemoli, LoginNotFoundRemoli;
 
     public abstract Mastercard getPaymentMastercard(String nC, String sc, String cvv) throws DAOExceptionRemoli, PaymentValidationExceptionRemoli;
 

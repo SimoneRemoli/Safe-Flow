@@ -16,37 +16,38 @@ import java.util.List;
 
 public class LayerPersistenzaFull extends LayerPersistenza
 {
-    @Override
-    public void login(String email, String password) throws DAOExceptionRemoli, LoginNotFoundRemoli {
+    public Credentials login(String email, String password)
+            throws DAOExceptionRemoli, LoginNotFoundRemoli {
 
-        Credentials credenzialiSingleton = Credentials.getInstanceSingleton();
-
-        try {
-            Connection conn = ConnectionFactory.getConnection();
-            CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.login_user(?, ?) }");
+        try (Connection conn = ConnectionFactory.getConnection();
+             CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.login_user(?, ?) }")) {
 
             cs.setString(1, email);
             cs.setString(2, password);
 
             ResultSet rs = cs.executeQuery();
 
-            if (rs.next()) {
-                credenzialiSingleton.setCodiceFiscale(rs.getString("p_codiceFiscale"));
-                credenzialiSingleton.setNome(rs.getString("p_nome"));
-                credenzialiSingleton.setCognome(rs.getString("p_cognome"));
-                credenzialiSingleton.setDataDiNascita(rs.getDate("p_dataDiNascita"));
-                credenzialiSingleton.setDisabile(rs.getBoolean("p_disabile"));
-                credenzialiSingleton.setRuolo(Ruolo.fromint(rs.getInt("ruolo")));
-                credenzialiSingleton.setEmail(email);
-                credenzialiSingleton.setPassword(password);
-            } else {
-                throw new LoginNotFoundRemoli("Credenziali non valide.", email, password);
+            if (!rs.next()) {
+                throw new LoginNotFoundRemoli("Credenziali non valide per l'autenticazione.", email, password);
             }
 
+            Credentials c = new Credentials();
+            c.setCodiceFiscale(rs.getString("p_codiceFiscale"));
+            c.setNome(rs.getString("p_nome"));
+            c.setCognome(rs.getString("p_cognome"));
+            c.setDataDiNascita(rs.getDate("p_dataDiNascita"));
+            c.setDisabile(rs.getBoolean("p_disabile"));
+            c.setRuolo(Ruolo.fromint(rs.getInt("ruolo")));
+            c.setEmail(email);
+            c.setPassword(password);
+
+            return c;
+
         } catch (SQLException e) {
-            throw new DAOExceptionRemoli("Errore durante il login: " + e.getMessage());
+            throw new DAOExceptionRemoli("Errore durante il login: " + e.getMessage(), e);
         }
     }
+
 
     public Mastercard getPaymentMastercard(String nC, String sc, String cvv)
             throws DAOExceptionRemoli {
@@ -125,14 +126,6 @@ public class LayerPersistenzaFull extends LayerPersistenza
              CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.getAllCity() }");
              ResultSet rs = cs.executeQuery()) {
 
-            // Se la stored procedure NON restituisce righe:  errore grave
-            if (!rs.isBeforeFirst()) {  // controlla se ci sono righe
-                throw new DAOExceptionRemoli(
-                        "Il database non ha restituito nessuna città. "
-                                + "Possibile errore nella stored procedure o nel caricamento dati."
-                );
-            }
-
             while (rs.next()) {
                 String nome = rs.getString("nome_citta");
                 double costo = rs.getDouble("prezzo_ticket");
@@ -141,13 +134,17 @@ public class LayerPersistenzaFull extends LayerPersistenza
                 informazioni.add(new City(nome, costo, numero));
             }
 
+            // può essere vuota, è lecito
+            return informazioni;
+
         } catch (SQLException e) {
             throw new DAOExceptionRemoli(
-                    "Errore nella comunicazione con il database: " + e.getMessage()
+                    "Errore nella comunicazione con il database: " + e.getMessage(),
+                    e
             );
         }
-        return informazioni;
     }
+
 
     @Override
     public List<Fermata> getFermateByIds(List<Integer> ids, String city) throws SQLException {
