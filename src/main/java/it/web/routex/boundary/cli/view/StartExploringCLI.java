@@ -1,8 +1,6 @@
 package it.web.routex.boundary.cli.view;
 import it.web.routex.bean.CityBean;
 import it.web.routex.boundary.cli.controller.grafico.PathControllerGraficoCLI;
-import it.web.routex.boundary.cli.controller.grafico.ReportsControllerGraficoCLI;
-
 import java.util.List;
 import java.util.Scanner;
 @SuppressWarnings("java:S106")
