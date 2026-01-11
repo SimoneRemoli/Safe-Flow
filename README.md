@@ -121,6 +121,8 @@ RouteX is a powerful metro route finder that allows users to search for stations
   </tr>
 </table>
 
+Video RouteX - Italian: https://www.youtube.com/watch?v=Pyo2HfCaby0
+
 ## 🏗️ Architecture Overview
 RouteX follows a layered architecture inspired by MVP/MVC principles.
 The system is organized into clear layers that separate concerns such as
