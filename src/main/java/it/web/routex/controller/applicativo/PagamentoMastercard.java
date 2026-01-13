@@ -74,7 +74,9 @@ public class PagamentoMastercard extends RegistrazionePagamentoController
         }
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         layer.salvataggio(credenziali, codiciBiglietti, mastercard.getMethod().getDisplayName(), city);
-        logger.info("Pagamento effettuato con Mastercard {}", mastercard.maskedNumber());
+        if (logger.isInfoEnabled()) {
+            logger.info("Pagamento effettuato con Mastercard {}", mastercard.maskedNumber());
+        }
 
     }
 }

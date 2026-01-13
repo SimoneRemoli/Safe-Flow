@@ -73,6 +73,8 @@ public class PagamentoPaypal extends RegistrazionePagamentoController
         }
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         layer.salvataggio(credenziali, codiciBiglietti, paypal.getMethod().getDisplayName(), city);
-        logger.info("Pagamento effettuato con Paypal {}", paypal.maskedAccount());
+        if(logger.isInfoEnabled()) {
+            logger.info("Pagamento effettuato con Paypal {}", paypal.maskedAccount());
+        }
     }
 }
