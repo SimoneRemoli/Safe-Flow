@@ -5,6 +5,7 @@ import it.web.routex.dao.LayerPersistenza;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.model.Notification;
 import it.web.routex.utility.factory.FactoryLayerPersistenza;
+import it.web.routex.utility.observer.Notifier;
 
 public class ConfirmCommunicationControllerApplicativo {
 
@@ -19,5 +20,6 @@ public class ConfirmCommunicationControllerApplicativo {
 
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         layer.sendMessage(notification);
+        Notifier.getInstanceSingleton().comunicazioneInviata();
     }
 }

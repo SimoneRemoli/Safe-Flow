@@ -1,5 +1,4 @@
 package it.web.routex.controller.applicativo;
-
 import it.web.routex.bean.MessageBean;
 import it.web.routex.dao.LayerPersistenza;
 import it.web.routex.exception.BrondiException;
@@ -7,7 +6,6 @@ import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.BrondiNoNotificationsWarningException;
 import it.web.routex.model.Notification;
 import it.web.routex.utility.factory.FactoryLayerPersistenza;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +17,8 @@ public class ViewNotificationsControllerApplicativo {
         List<MessageBean> result = new ArrayList<>();
 
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
-
-
         try {
-            List<Notification> notifications=layer.getMessages();
+            List<Notification> notifications = layer.getMessagesRAM();
             // LOGICA DI BUSINESS: solo NON risolte
             for (Notification n : notifications) {
                 if (!n.isRisolto()) {
@@ -38,7 +34,6 @@ public class ViewNotificationsControllerApplicativo {
                         "Tutte le notifiche risultano risolte"
                 );
             }
-
             return result;
 
         } catch (DAOExceptionRemoli e) {

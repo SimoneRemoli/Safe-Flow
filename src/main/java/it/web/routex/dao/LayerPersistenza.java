@@ -2,13 +2,13 @@ package it.web.routex.dao;
 import it.web.routex.exception.*;
 import it.web.routex.model.*;
 import it.web.routex.utility.singleton.Credentials;
-
 import java.sql.SQLException;
 import java.util.List;
 
 public abstract class LayerPersistenza {
 
     private List<City> cachedCities;
+    private List<Notification> cachedNotifications;
 
     public abstract Credentials login(String email, String password) throws DAOExceptionRemoli, LoginNotFoundRemoli;
 
@@ -22,6 +22,16 @@ public abstract class LayerPersistenza {
             cachedCities = listCities();   // UNA SOLA VOLTA
         }
         return cachedCities;
+    }
+    public final List<Notification> getMessagesRAM() throws DAOExceptionRemoli {
+        if (cachedNotifications == null) {
+            cachedNotifications = getMessages(); // DB una volta
+        }
+        return cachedNotifications;
+    }
+
+    public final void invalidateNotificationsCache() {
+        cachedNotifications = null;
     }
     public abstract List<City> listCities() throws DAOExceptionRemoli;
 
