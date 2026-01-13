@@ -67,7 +67,7 @@ public class PagamentoPaypal extends RegistrazionePagamentoController
 
     }
 
-    private void registraPagamentoPermanente(List<String> codiciBiglietti, Paypal paypal) throws CredentialsExceptionRemoli, DAOExceptionRemoli {
+    private void registraPagamentoPermanente(List<String> codiciBiglietti, Paypal paypal) throws CredentialsExceptionRemoli {
         if (credenziali == null) {
             throw new CredentialsExceptionRemoli("Nessun utente loggato associato al pagamento.", "Errore nel PagamentoPaypal.java");
         }
