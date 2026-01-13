@@ -1,8 +1,5 @@
 package it.web.routex.dao;
-import it.web.routex.exception.DAOExceptionRemoli;
-import it.web.routex.exception.LoginNotFoundRemoli;
-import it.web.routex.exception.PaymentValidationExceptionRemoli;
-import it.web.routex.exception.PathNotFoundExceptionRemoli;
+import it.web.routex.exception.*;
 import it.web.routex.model.*;
 import it.web.routex.utility.singleton.Credentials;
 
@@ -11,12 +8,21 @@ import java.util.List;
 
 public abstract class LayerPersistenza {
 
+    private List<City> cachedCities;
+
     public abstract Credentials login(String email, String password) throws DAOExceptionRemoli, LoginNotFoundRemoli;
 
     public abstract Mastercard getPaymentMastercard(String nC, String sc, String cvv) throws DAOExceptionRemoli, PaymentValidationExceptionRemoli;
 
     public abstract Paypal getPaymentPaypal(String email, String codice) throws DAOExceptionRemoli, PaymentValidationExceptionRemoli;
 
+
+    public final List<City> listCitiesRAM() throws DAOExceptionRemoli {
+        if (cachedCities == null) {
+            cachedCities = listCities();   // UNA SOLA VOLTA
+        }
+        return cachedCities;
+    }
     public abstract List<City> listCities() throws DAOExceptionRemoli;
 
     public abstract List<Fermata> getFermateByIds(List<Integer> ids, String city) throws SQLException;
@@ -36,5 +42,11 @@ public abstract class LayerPersistenza {
     public abstract List<Route> getAllPathInfo() throws DAOExceptionRemoli;
 
     public abstract List<Route> getData(String cf) throws PathNotFoundExceptionRemoli, DAOExceptionRemoli;
+
+    public abstract void salvataggio(
+            Credentials cred,
+            List<String> codiciBiglietti,
+            String metodoPagamento,
+            String city) throws CredentialsExceptionRemoli;
 
 }

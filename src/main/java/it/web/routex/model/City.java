@@ -18,7 +18,6 @@ package it.web.routex.model;
  * @author Simone Remoli
  */
 
-
 public class City {
     private String name;
     private double costoBiglietto;
@@ -45,9 +44,6 @@ public class City {
     }
 
     public double calcolaPrezzoTotale(int quantita) {
-        if (quantita <= 0) {
-            throw new IllegalArgumentException("Quantità non valida");
-        }
         return costoBiglietto * quantita;
     }
 

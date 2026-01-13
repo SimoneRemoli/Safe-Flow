@@ -25,5 +25,4 @@ public final class PagamentoExtractor {
                 request.getParameter("persistence")
         );
     }
-
 }

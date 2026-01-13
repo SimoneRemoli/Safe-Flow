@@ -1,12 +1,17 @@
 package it.web.routex.dao;
 import it.web.routex.enumerator.Ruolo;
+import it.web.routex.exception.CredentialsExceptionRemoli;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.LoginNotFoundRemoli;
 import it.web.routex.exception.PathNotFoundExceptionRemoli;
 import it.web.routex.model.*;
 import it.web.routex.utility.builder.RouteBuilder;
 import it.web.routex.utility.factory.ConnectionFactory;
+import it.web.routex.utility.factory.FactoryPersistence;
 import it.web.routex.utility.singleton.Credentials;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -444,6 +449,15 @@ public class LayerPersistenzaFull extends LayerPersistenza
                     e
             );
         }
+    }
+
+    @Override
+    public void salvataggio(Credentials cred, List<String> codiciBiglietti, String metodoPagamento, String city) throws CredentialsExceptionRemoli {
+        TicketDAOLayer dao = FactoryPersistence.createTicketDAO();
+        dao.salvataggio(cred, codiciBiglietti, metodoPagamento, city);
+        final Logger logger = LoggerFactory.getLogger(getClass());
+        logger.info("Modalità FULL: il pagamento  viene salvato in persistenza.");
+
     }
 
 }

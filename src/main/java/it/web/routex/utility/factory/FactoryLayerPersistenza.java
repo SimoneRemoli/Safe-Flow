@@ -8,21 +8,27 @@ import it.web.routex.utility.singleton.ApplicationModeManager;
 
 public class FactoryLayerPersistenza {
 
-    private FactoryLayerPersistenza() {
-        throw new UnsupportedOperationException("Classe di utility - non istanziabile");
-    }
+    private static LayerPersistenza instance;
+
+    private FactoryLayerPersistenza() {}
 
     public static LayerPersistenza createLayerPersistenza() {
 
-        ApplicationMode mode = ApplicationModeManager.getSingletonInstance().getMode();
+        if (instance == null) {
 
-        switch (mode) {
-            case DEMO:
-                return new LayerPersistenzaDemo();
-            case FULL:
-                return new LayerPersistenzaFull();
-            default:
-                throw new IllegalStateException("Modalità applicativa non supportata");
+            ApplicationMode mode = ApplicationModeManager.getSingletonInstance().getMode();
+
+            switch (mode) {
+                case DEMO:
+                    instance = new LayerPersistenzaDemo();
+                    break;
+                case FULL:
+                    instance = new LayerPersistenzaFull();
+                    break;
+                default:
+                    throw new IllegalStateException("Modalità non supportata");
+            }
         }
+        return instance;
     }
 }

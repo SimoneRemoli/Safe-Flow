@@ -1,5 +1,4 @@
 package it.web.routex.controller.applicativo;
-
 import it.web.routex.bean.CityBean;
 import it.web.routex.bean.PrezzoTotaleBean;
 import it.web.routex.dao.LayerPersistenza;
@@ -25,10 +24,11 @@ public class CityController {
     public List<CityBean> getAllCities() throws InvalidCityDataExceptionRemoli, DAOExceptionRemoli {
 
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
-        List<City> cities = layer.listCities();
+        List<City> cities = layer.listCitiesRAM(); // ACCESSO DB
 
         // === CONTROLLI DI VALIDAZIONE ===
 
+        // NON CARICATO
         if (cities == null) {
             throw new InvalidCityDataExceptionRemoli(
                     "Nessun dato disponibile al momento.",
@@ -36,7 +36,7 @@ public class CityController {
                     InvalidCityDataExceptionRemoli.Severity.CRITICAL
             );
         }
-
+        // CARICATO MA NESSUN DATO []
         if (cities.isEmpty()) {
             throw new InvalidCityDataExceptionRemoli(
                     "Nessuna città disponibile per l’acquisto al momento.",
@@ -55,7 +55,6 @@ public class CityController {
             }
         }
 
-
         // === COSTRUZIONE BEAN ===
         List<CityBean> cityBeans = new ArrayList<>();
         for (City c : cities) {
@@ -64,7 +63,6 @@ public class CityController {
 
         return cityBeans;
     }
-
 
 
     /**
@@ -78,34 +76,17 @@ public class CityController {
      */
     public PrezzoTotaleBean ottieniPrezzoTotale(String city, int quantity) throws DAOExceptionRemoli, InvalidPriceCalculationExceptionRemoli {
 
-        if (city == null || city.isEmpty()) {
-            throw new InvalidPriceCalculationExceptionRemoli(
-                    "La città selezionata non è valida.",
-                    "Parametro 'city' nullo o vuoto durante il calcolo del prezzo.",
-                    InvalidPriceCalculationExceptionRemoli.Severity.LOW
-            );
-        }
-
-        if (quantity <= 0) {
-            throw new InvalidPriceCalculationExceptionRemoli(
-                    "La quantità deve essere maggiore di zero.",
-                    "Quantity <= 0 nel calcolo del prezzo. Valore: " + quantity,
-                    InvalidPriceCalculationExceptionRemoli.Severity.MEDIUM
-            );
-        }
-
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
-        List<City> cities=layer.listCities();
+        List<City> cities = layer.listCitiesRAM(); // SOLO CACHE
         for (City a : cities) {
             if (a.getName().equalsIgnoreCase(city)) {
                 double totale = a.calcolaPrezzoTotale(quantity);
                 return new PrezzoTotaleBean(totale);
             }
         }
-
         throw new InvalidPriceCalculationExceptionRemoli(
                 "La città selezionata non è disponibile nel database.",
-                "Nessuna corrispondenza in CityDAO.ListCities() per la city='" + city + "'",
+                "Nessuna corrispondenza per la city='" + city + "'",
                 InvalidPriceCalculationExceptionRemoli.Severity.HIGH
         );
     }

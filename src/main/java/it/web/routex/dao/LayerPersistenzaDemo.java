@@ -5,6 +5,8 @@ import it.web.routex.exception.*;
 import it.web.routex.model.*;
 import it.web.routex.utility.builder.RouteBuilder;
 import it.web.routex.utility.singleton.Credentials;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -399,16 +401,12 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
             );
         }
     }
-
+    @Override
     public void salvataggio(Credentials cred, List<String> codiciBiglietti, String metodopayment, String city) throws CredentialsExceptionRemoli
     {
+        final Logger logger = LoggerFactory.getLogger(getClass());
+        logger.info("Modalità DEMO: il pagamento non viene salvato in persistenza.");
         try {
-            if (cred == null || codiciBiglietti == null) {
-                throw new CredentialsExceptionRemoli(
-                        "Nessun salvataggio del percorso nel livello di persistenza",
-                        "Errore in SalvaPagamentoDAO.java"
-                );
-            }
 
             String bigliettiConcatenati = String.join(",", codiciBiglietti);
 
@@ -424,9 +422,6 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
             );
 
             DemoStorage.getPayments().add(records);
-
-        } catch (CredentialsExceptionRemoli e) {
-            throw e;
 
         } catch (Exception e) {
             throw new CredentialsExceptionRemoli(
