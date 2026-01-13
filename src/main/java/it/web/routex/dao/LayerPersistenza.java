@@ -10,7 +10,7 @@ public abstract class LayerPersistenza {
     private List<City> cachedCities;
     private List<Notification> cachedNotifications;
     private long cachedCitiesTimestamp;
-    private static final long CITY_CACHE_TTL_MS = 5 * 60 * 1000; //5 minuti = 300.000 millisecondi
+    private static final long CITY_CACHE_TTL_MS = 5L * 60 * 1000; //5 minuti = 300.000 millisecondi
 
     public abstract Credentials login(String email, String password) throws DAOExceptionRemoli, LoginNotFoundRemoli;
 
