@@ -16,6 +16,16 @@ public class CityLifeController
 {
     private final CityModel citylife;
 
+    private static final class SegmentDecision {
+        private final int changes;
+        private final String previousLine;
+
+        private SegmentDecision(int changes, String previousLine) {
+            this.changes = changes;
+            this.previousLine = previousLine;
+        }
+    }
+
     public CityLifeController(CityModel city) {
         this.citylife = city;
     }
@@ -89,50 +99,191 @@ public class CityLifeController
 
     public CityLifeBean calcolaPercorso(List<Integer> ids, String city) throws SQLException {
         final Logger logger = LoggerFactory.getLogger(getClass());
-        StatoPercorso stato = new StatoPercorso();
-
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         List<Fermata> fermateTot = layer.getFermateByIds(ids, city);
+        CityLifeBean result = new CityLifeBean();
+        result.setNumeroStazioniTotali(citylife.getMatriceAdiacenza().length);
 
-        for (int i = 0; i < fermateTot.size(); i++)
-        {
-            Fermata corrente = fermateTot.get(i);
-            gestisciCambiIniziali(corrente, stato, i);
-            gestisciLogicaCambiPassoInduttivo(corrente, stato, i);
-
+        if (fermateTot == null || fermateTot.isEmpty()) {
+            return result;
         }
 
-        removeDuplicate(stato.cambi, 0);
+        List<String> percorsiConFermate = new ArrayList<>();
+        List<String> lineeStazioni = new ArrayList<>();
+        for (Fermata fermata : fermateTot) {
+            percorsiConFermate.add(fermata.getNome());
+            lineeStazioni.add(fermata.getLinea());
+        }
 
-        if (stato.cambi != null && !stato.cambi.isEmpty()) {
+        result.setPercorsiConNomi(percorsiConFermate);
+        result.setLinee(lineeStazioni);
 
-            for (int j = stato.cambi.size() - 1; j >= 0; j--) {
-                String cambio = stato.cambi.get(j);
+        if (fermateTot.size() == 1) {
+            result.setNumeroCambi(0);
+            result.setSequenzeDiCambiamento(new ArrayList<>());
+            result.setSequenzeNodiCruciali(new ArrayList<>());
+            return result;
+        }
 
-                logger.info("Cambio {}", cambio);
-                stato.sequenzeNodiCruciali.add(cambio);
+        List<List<String>> lineePerStazione = new ArrayList<>();
+        for (Fermata fermata : fermateTot) {
+            lineePerStazione.add(estraiLinee(fermata.getLinea()));
+        }
+
+        List<List<String>> lineePerSegmento = new ArrayList<>();
+        for (int i = 0; i < lineePerStazione.size() - 1; i++) {
+            List<String> compatibili = intersezioneLinee(lineePerStazione.get(i), lineePerStazione.get(i + 1));
+            if (compatibili.isEmpty()) {
+                compatibili = fallbackSegmentLines(lineePerStazione.get(i), lineePerStazione.get(i + 1));
+                logger.warn(
+                        "Nessuna linea condivisa tra '{}' e '{}'. Uso fallback={} per il segmento {} in città {}.",
+                        fermateTot.get(i).getNome(),
+                        fermateTot.get(i + 1).getNome(),
+                        compatibili,
+                        i,
+                        city
+                );
+            }
+            lineePerSegmento.add(compatibili);
+        }
+
+        List<String> lineeScelte = scegliSequenzaMinimaCambi(lineePerSegmento);
+        List<String> sequenzeDiCambiamento = comprimiLineeConsecutive(lineeScelte);
+        List<String> sequenzeNodiCruciali = trovaNodiCruciali(fermateTot, lineeScelte);
+
+        int numeroCambi = Math.max(0, sequenzeDiCambiamento.size() - 1);
+
+        result.setNumeroCambi(numeroCambi);
+        result.setSequenzeDiCambiamento(numeroCambi == 0 ? new ArrayList<>() : sequenzeDiCambiamento);
+        result.setSequenzeNodiCruciali(sequenzeNodiCruciali);
+
+        logger.info(
+                "Calcolo cambi completato. Città={}, cambi={}, lineeUsate={}, nodiCruciali={}",
+                city,
+                numeroCambi,
+                sequenzeDiCambiamento,
+                sequenzeNodiCruciali
+        );
+
+        return result;
+    }
+
+    private List<String> estraiLinee(String lineaRaw) {
+        if (lineaRaw == null || lineaRaw.isBlank()) {
+            return new ArrayList<>();
+        }
+
+        List<String> linee = new ArrayList<>();
+        for (String parte : lineaRaw.split("-")) {
+            String linea = parte.trim();
+            if (!linea.isEmpty() && !linee.contains(linea)) {
+                linee.add(linea);
+            }
+        }
+        return linee;
+    }
+
+    private List<String> intersezioneLinee(List<String> sinistra, List<String> destra) {
+        List<String> intersezione = new ArrayList<>();
+        for (String linea : sinistra) {
+            if (destra.contains(linea) && !intersezione.contains(linea)) {
+                intersezione.add(linea);
+            }
+        }
+        return intersezione;
+    }
+
+    private List<String> fallbackSegmentLines(List<String> sinistra, List<String> destra) {
+        List<String> fallback = new ArrayList<>();
+        for (String linea : sinistra) {
+            if (!fallback.contains(linea)) {
+                fallback.add(linea);
+            }
+        }
+        for (String linea : destra) {
+            if (!fallback.contains(linea)) {
+                fallback.add(linea);
+            }
+        }
+        if (fallback.isEmpty()) {
+            fallback.add("Unknown");
+        }
+        return fallback;
+    }
+
+    private List<String> scegliSequenzaMinimaCambi(List<List<String>> lineePerSegmento) {
+        List<Map<String, SegmentDecision>> dp = new ArrayList<>();
+        Map<String, SegmentDecision> iniziale = new LinkedHashMap<>();
+        for (String linea : lineePerSegmento.get(0)) {
+            iniziale.put(linea, new SegmentDecision(0, null));
+        }
+        dp.add(iniziale);
+
+        for (int segmentIndex = 1; segmentIndex < lineePerSegmento.size(); segmentIndex++) {
+            Map<String, SegmentDecision> precedente = dp.get(segmentIndex - 1);
+            Map<String, SegmentDecision> corrente = new LinkedHashMap<>();
+
+            for (String lineaCorrente : lineePerSegmento.get(segmentIndex)) {
+                int bestCost = Integer.MAX_VALUE;
+                String bestPreviousLine = null;
+
+                for (Map.Entry<String, SegmentDecision> entry : precedente.entrySet()) {
+                    String lineaPrecedente = entry.getKey();
+                    int costo = entry.getValue().changes + (lineaPrecedente.equals(lineaCorrente) ? 0 : 1);
+
+                    if (costo < bestCost) {
+                        bestCost = costo;
+                        bestPreviousLine = lineaPrecedente;
+                    }
+                }
+
+                corrente.put(lineaCorrente, new SegmentDecision(bestCost, bestPreviousLine));
             }
 
+            dp.add(corrente);
         }
-        stato.cambiLineeMetropolitane = stato.sequenzeNodiCruciali.size();
-        logger.info("Cambi linee metropolitane in CityLifeController.java {}", stato.cambiLineeMetropolitane);
 
-        removeDuplicate(stato.sequenzeDiCambiamento, 0);
-        removeChangeLines(stato.sequenzeDiCambiamento);
+        Map<String, SegmentDecision> ultimoSegmento = dp.get(dp.size() - 1);
+        String lineaFinale = null;
+        int costoFinale = Integer.MAX_VALUE;
+        for (Map.Entry<String, SegmentDecision> entry : ultimoSegmento.entrySet()) {
+            if (entry.getValue().changes < costoFinale) {
+                costoFinale = entry.getValue().changes;
+                lineaFinale = entry.getKey();
+            }
+        }
 
+        List<String> scelta = new ArrayList<>(Collections.nCopies(lineePerSegmento.size(), ""));
+        String lineaCorrente = lineaFinale;
+        for (int segmentIndex = dp.size() - 1; segmentIndex >= 0; segmentIndex--) {
+            scelta.set(segmentIndex, lineaCorrente);
+            lineaCorrente = dp.get(segmentIndex).get(lineaCorrente).previousLine;
+        }
 
-        CityLifeBean c = new CityLifeBean();
-        c.setLinee(stato.linee);
-        c.setNumeroCambi(stato.cambiLineeMetropolitane);
-        c.setSequenzeDiCambiamento(stato.sequenzeDiCambiamento);
-        c.setSequenzeNodiCruciali(stato.sequenzeNodiCruciali);
-        c.setPercorsiConNomi(stato.percorsiConFermate);
-        c.setNumeroStazioniTotali(citylife.getMatriceAdiacenza().length);
-        c.setSequenzeNodiCruciali(stato.sequenzeNodiCruciali);
+        return scelta;
+    }
 
+    private List<String> comprimiLineeConsecutive(List<String> lineeScelte) {
+        List<String> lineeCompresse = new ArrayList<>();
+        for (String linea : lineeScelte) {
+            if (lineeCompresse.isEmpty() || !lineeCompresse.get(lineeCompresse.size() - 1).equals(linea)) {
+                lineeCompresse.add(linea);
+            }
+        }
+        return lineeCompresse;
+    }
 
-
-        return c;
+    private List<String> trovaNodiCruciali(List<Fermata> fermateTot, List<String> lineeScelte) {
+        List<String> nodiCruciali = new ArrayList<>();
+        for (int i = 1; i < lineeScelte.size(); i++) {
+            if (!lineeScelte.get(i).equals(lineeScelte.get(i - 1))) {
+                String nodo = fermateTot.get(i).getNome();
+                if (nodiCruciali.isEmpty() || !nodiCruciali.get(nodiCruciali.size() - 1).equals(nodo)) {
+                    nodiCruciali.add(nodo);
+                }
+            }
+        }
+        return nodiCruciali;
     }
 
     private boolean checkfill(int[]a, int dim)

@@ -1,4 +1,5 @@
 
+<%@ page import="it.web.routex.domain.SessionAuthUtil" %>
 <%
     // Recupera la sessione senza crearne una nuova
     HttpSession currentSession = request.getSession(false);
@@ -9,7 +10,7 @@
     String ruoloHeader = null;
 
     // Recupera i dati se la sessione esiste
-    if (currentSession != null) {
+    if (SessionAuthUtil.isLoggedIn(currentSession)) {
         nomeHeader = (String) currentSession.getAttribute("nome");
         cognomeHeader = (String) currentSession.getAttribute("cognome");
         Object ruoloObj = currentSession.getAttribute("ruolo");
@@ -25,4 +26,3 @@
         <%= nomeHeader %> <%= cognomeHeader %> (<%= ruoloHeader %>)
     </div>
 <% } %>
-

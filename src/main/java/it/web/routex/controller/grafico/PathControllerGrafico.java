@@ -76,6 +76,9 @@ public class PathControllerGrafico extends LoggedHttpServlet {
             final Credentials cred = Credentials.getInstanceSingleton();
 
             route = estrattorePercorso(request, response, cred);
+            if (route == null) {
+                return;
+            }
             String status = UserStatusResolver.resolve(cred);
 
 
@@ -88,8 +91,9 @@ public class PathControllerGrafico extends LoggedHttpServlet {
             } catch (IllegalArgumentException | UnreacheableNodeExceptionRemoli |
                      FuoriRangeExceptionRemoli | DAOExceptionRemoli | SQLException e)
             {
-                forwardToError(request, response, "Errore processamento dati percorso" + e.getMessage(), cred);
-                logger.error("Errore processamento dati percorso {}", e.toString());
+                forwardToError(request, response, "Errore processamento dati percorso: " + e.getMessage(), cred);
+                logger.error("Errore processamento dati percorso", e);
+                return;
             }
 
             RouteDecoratorService.decorate(dto, request);

@@ -24,12 +24,12 @@
 -- ===============================
 
 -- DROP + CREATE DATABASE
-DROP DATABASE IF EXISTS routex_update;
-CREATE DATABASE routex_update
+DROP DATABASE IF EXISTS RouteX_Update;
+CREATE DATABASE RouteX_Update
   CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
+  COLLATE utf8mb4_0900_ai_ci;
 
-USE routex_update;
+USE RouteX_Update;
 
 --
 -- Table structure for table `Athens`

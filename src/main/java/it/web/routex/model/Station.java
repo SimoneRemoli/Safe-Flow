@@ -28,7 +28,7 @@ public class Station {
     }
 
     public boolean isValid() {
-        return id > 0;
+        return id >= 0;
     }
 
     public void validate() {

@@ -40,7 +40,8 @@ public class ViewNotificationsControllerApplicativo {
             throw new BrondiException(
                     "Errore nel recupero delle notifiche",
                     "BRONDI_020",
-                    "ViewNotificationsControllerApplicativo.messages"
+                    "ViewNotificationsControllerApplicativo.messages",
+                    e
             );
         }
     }

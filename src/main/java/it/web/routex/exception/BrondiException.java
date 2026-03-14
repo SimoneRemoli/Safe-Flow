@@ -13,6 +13,15 @@ public class BrondiException extends Exception {
         this.details = details;
     }
 
+    public BrondiException(String message,
+                           String codiceDiErrore,
+                           String details,
+                           Throwable cause) {
+        super(message, cause);
+        this.codiceDiErrore = codiceDiErrore;
+        this.details = details;
+    }
+
 
     public String getCodiceDiErrore() {
         return codiceDiErrore;

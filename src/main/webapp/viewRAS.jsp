@@ -1,234 +1,259 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="it.web.routex.bean.ReportsStatsBean"%>
 <%@ page import="it.web.routex.bean.PathInfoBean"%>
-<%@ page import="java.util.Set"%>
 <%@ page import="java.util.List"%>
-
 <%
-    ReportsStatsBean stats =
-            (ReportsStatsBean) request.getAttribute("stats");
-
+    ReportsStatsBean stats = (ReportsStatsBean) request.getAttribute("stats");
     List<PathInfoBean> pathList = stats.getPaths();
-    Set<String> utenti = stats.getUtenti();
 %>
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RouteX - Reports & Statistics</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
     <style>
+        :root {
+            --bg-1: #04111f;
+            --bg-2: #0a1f37;
+            --line: rgba(111, 247, 255, 0.18);
+            --text: #ecf7ff;
+            --muted: #91abc2;
+            --accent: #6ff7ff;
+            --success: #89ffd1;
+        }
+
+        * { box-sizing: border-box; }
+
         body {
-            margin:0;
-            padding:0;
-            font-family:'Arial Rounded MT Bold', sans-serif;
-            height:100vh;
-            display:flex;
-            align-items:center;
-            background:url('images/light.jpg') no-repeat center center/cover;
-            overflow:hidden;
-            position:relative;
-            color:white;
+            margin: 0;
+            min-height: 100vh;
+            color: var(--text);
+            font-family: "Trebuchet MS", "Gill Sans", sans-serif;
+            background:
+                radial-gradient(circle at 15% 22%, rgba(111, 247, 255, 0.16), transparent 24%),
+                radial-gradient(circle at 85% 18%, rgba(83, 169, 255, 0.18), transparent 22%),
+                linear-gradient(135deg, var(--bg-1), var(--bg-2) 58%, #040913);
         }
 
-        .background-blur {
-            position:absolute;
-            inset:0;
-            backdrop-filter:blur(6px);
-            z-index:-1;
+        .shell {
+            width: min(1320px, calc(100% - 32px));
+            margin: 24px auto;
+            padding: 28px;
+            border-radius: 30px;
+            border: 1px solid var(--line);
+            background: linear-gradient(180deg, rgba(7, 20, 36, 0.84), rgba(4, 12, 23, 0.9));
+            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.38);
+            backdrop-filter: blur(16px);
         }
 
-        .main-container {
-            display:flex;
-            width:100%;
-            height:100%;
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
-        .left-box {
-            flex:1;
-            padding:30px;
-            background:rgba(0,0,0,0.6);
-            display:flex;
-            flex-direction:column;
-            align-items:center;
-            justify-content:center;
-            box-shadow:2px 0 10px rgba(0,0,0,0.5);
+        .eyebrow {
+            display: inline-flex;
+            padding: 8px 14px;
+            border-radius: 999px;
+            color: var(--accent);
+            border: 1px solid rgba(111, 247, 255, 0.2);
+            background: rgba(111, 247, 255, 0.08);
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            font-size: 11px;
         }
 
-        .left-box img {
-            width:150px;
-            margin-bottom:20px;
+        h1 {
+            margin: 14px 0 8px;
+            font-size: clamp(2.2rem, 4vw, 3.8rem);
         }
 
-        .right-content {
-            flex:3;
-            padding:40px;
-            overflow-y:auto;
-            position:relative;
+        .subtitle {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.75;
+            max-width: 860px;
         }
 
-        .button-container {
-            position:absolute;
-            top:20px;
-            right:40px;
-            display:flex;
-            gap:10px;
+        .nav-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
-        .button-container a {
-            background:#007bff;
-            color:white;
-            padding:10px 15px;
-            border-radius:10px;
-            text-decoration:none;
+        .nav-actions a {
+            text-decoration: none;
+            color: var(--text);
+            padding: 12px 18px;
+            border-radius: 999px;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+
+        .nav-actions a:hover {
+            transform: translateY(-2px);
+            border-color: rgba(111, 247, 255, 0.4);
         }
 
         .stats-container {
-            display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-            gap:20px;
-            margin-top:40px;
+            margin-top: 24px;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
         }
 
         .stat-card {
-            background:rgba(255,255,255,0.9);
-            color:black;
-            padding:20px;
-            border-radius:15px;
-            text-align:center;
-            box-shadow:0 4px 15px rgba(0,0,0,0.3);
+            padding: 22px;
+            border-radius: 26px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .stat-card i {
-            font-size:40px;
-            color:#007bff;
-            margin-bottom:10px;
+            font-size: 1.7rem;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .stat-card h3 {
+            margin: 0 0 10px;
+        }
+
+        .stat-card p {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .table-panel {
+            margin-top: 24px;
+            border-radius: 26px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
         }
 
         table {
-            width:100%;
-            margin-top:40px;
-            border-collapse:collapse;
-            background:rgba(255,255,255,0.95);
-            color:black;
-            font-size:14px;
-            border-radius:10px;
-            overflow:hidden;
+            width: 100%;
+            border-collapse: collapse;
         }
 
         th, td {
-            padding:6px 8px;
-            border:1px solid #ccc;
-            text-align:center;
+            padding: 16px 18px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         th {
-            background:#007bff;
-            color:white;
+            color: var(--accent);
+            font-size: 0.84rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            background: rgba(111, 247, 255, 0.06);
+            white-space: nowrap;
         }
 
-        tr:nth-child(even) {
-            background:#f5f5f5;
+        td {
+            color: #e8f7ff;
         }
 
-        .action-bar {
-            margin-top:30px;
-            display:flex;
-            gap:15px;
-            align-items:center;
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.03);
         }
 
-        #userList {
-            list-style:none;
-            margin:0;
-            padding:0;
-            background:white;
-            color:black;
-            border-radius:5px;
-            max-height:200px;
-            overflow-y:auto;
-            display:none;
-            position:absolute;
-            z-index:100;
+        @media (max-width: 960px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
         }
 
-        #userList li {
-            padding:6px 10px;
-            cursor:pointer;
-        }
-
-        #userList li:hover {
-            background:#007bff;
-            color:white;
+        @media (max-width: 768px) {
+            .shell {
+                width: min(100% - 20px, 100%);
+                margin: 10px auto;
+                padding: 18px;
+                border-radius: 22px;
+            }
         }
     </style>
 </head>
-
 <body>
-<div class="background-blur"></div>
+<div class="shell">
+    <div class="topbar">
+        <div>
+            <span class="eyebrow">Analytics center</span>
+            <h1>Reports & statistics</h1>
+            <p class="subtitle">
+                Vista amministrativa aggregata dei percorsi RouteX con metriche di utilizzo e dettaglio completo dei viaggi registrati.
+            </p>
+        </div>
 
-<div class="main-container">
-
-    <!-- SINISTRA -->
-    <div class="left-box">
-        <img src="images/logo-no-background.png" alt="Logo">
-        <h2>RouteX</h2>
-        <p>Administrative Reports & Statistics</p>
-    </div>
-
-    <!-- DESTRA -->
-    <div class="right-content">
-
-        <div class="button-container">
+        <div class="nav-actions">
             <a href="indexAdmin.jsp">Home</a>
             <a href="logout">Logout</a>
         </div>
+    </div>
 
-        <h1>Reports & Statistics</h1>
-
-        <!-- STATISTICHE -->
-        <div class="stats-container">
-            <div class="stat-card">
-                <i class="fas fa-route"></i>
-                <h3>Total Trips</h3>
-                <p><%= stats.getTotalTrips() %></p>
-            </div>
-
-            <div class="stat-card">
-                <i class="fas fa-road"></i>
-                <h3>Total Distance</h3>
-                <p><%= String.format("%.2f", stats.getTotalDistance()) %> km</p>
-            </div>
-
-            <div class="stat-card">
-                <i class="fas fa-clock"></i>
-                <h3>Total Time</h3>
-                <p><%= String.format("%.2f", stats.getTotalTime()) %> h</p>
-            </div>
+    <div class="stats-container">
+        <div class="stat-card">
+            <i class="fas fa-route"></i>
+            <h3>Total trips</h3>
+            <p><%= stats.getTotalTrips() %></p>
         </div>
 
+        <div class="stat-card">
+            <i class="fas fa-road"></i>
+            <h3>Total distance</h3>
+            <p><%= String.format("%.2f", stats.getTotalDistance()) %> km</p>
+        </div>
 
+        <div class="stat-card">
+            <i class="fas fa-clock"></i>
+            <h3>Total time</h3>
+            <p><%= String.format("%.2f", stats.getTotalTime()) %> h</p>
+        </div>
+    </div>
 
-        <!-- TABELLA COMPLETA -->
-        <table>
-            <tr>
-                <th>Start</th><th>End</th><th>City</th><th>User</th>
-                <th>Changes</th><th>Time</th><th>Distance</th>
-            </tr>
-
-            <% for(PathInfoBean p : pathList){ %>
+    <div class="table-panel">
+        <div class="table-wrap">
+            <table>
+                <thead>
                 <tr>
-                    <td><%= p.getStartStation() %></td>
-                    <td><%= p.getEndStation() %></td>
-                    <td><%= p.getCity() %></td>
-                    <td><%= p.getUtente() %></td>
-                    <td><%= p.getNCambi() %></td>
-                    <td><%= p.getTempoDiArrivo() %></td>
-                    <td><%= String.format("%.2f", p.getPercTerrenoUtilizzato()) %></td>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>City</th>
+                    <th>User</th>
+                    <th>Changes</th>
+                    <th>Time</th>
+                    <th>Distance</th>
                 </tr>
-            <% } %>
-        </table>
+                </thead>
+                <tbody>
+                <% for (PathInfoBean p : pathList) { %>
+                    <tr>
+                        <td><%= p.getStartStation() %></td>
+                        <td><%= p.getEndStation() %></td>
+                        <td><%= p.getCity() %></td>
+                        <td><%= p.getUtente() %></td>
+                        <td><%= p.getNCambi() %></td>
+                        <td><%= p.getTempoDiArrivo() %></td>
+                        <td><%= String.format("%.2f", p.getPercTerrenoUtilizzato()) %></td>
+                    </tr>
+                <% } %>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 </body>

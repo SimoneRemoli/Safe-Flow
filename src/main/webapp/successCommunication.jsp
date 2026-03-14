@@ -3,86 +3,95 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RouteX - Success</title>
-
-    <!-- FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
     <style>
+        :root {
+            --bg-1: #04111f;
+            --bg-2: #0a1f37;
+            --line: rgba(111, 247, 255, 0.18);
+            --text: #ecf7ff;
+            --muted: #91abc2;
+            --accent: #6ff7ff;
+            --success: #89ffd1;
+        }
+
+        * { box-sizing: border-box; }
+
         body {
-            background-color: #f3fbf6;
-            font-family: "Segoe UI", sans-serif;
-            color: #212529;
-            height: 100vh;
             margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            min-height: 100vh;
+            color: var(--text);
+            font-family: "Trebuchet MS", "Gill Sans", sans-serif;
+            background:
+                radial-gradient(circle at 15% 22%, rgba(111, 247, 255, 0.16), transparent 24%),
+                radial-gradient(circle at 85% 18%, rgba(83, 169, 255, 0.18), transparent 22%),
+                linear-gradient(135deg, var(--bg-1), var(--bg-2) 58%, #040913);
+            display: grid;
+            place-items: center;
+            padding: 18px;
         }
 
         .success-container {
-            background-color: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            width: min(680px, 100%);
+            background: linear-gradient(180deg, rgba(7, 20, 36, 0.84), rgba(4, 12, 23, 0.9));
+            border: 1px solid var(--line);
+            border-radius: 30px;
+            padding: 34px;
+            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.38);
             text-align: center;
-            max-width: 500px;
         }
 
         .success-icon {
             font-size: 55px;
-            color: #28a745;
+            color: var(--success);
             margin-bottom: 20px;
         }
 
         h1 {
-            color: #28a745;
-            font-size: 26px;
-            margin-bottom: 10px;
+            margin: 0 0 12px;
+            color: #dffbff;
+            font-size: 2rem;
         }
 
         p {
-            font-size: 16px;
-            margin-bottom: 30px;
+            color: var(--muted);
+            line-height: 1.75;
+            margin-bottom: 24px;
         }
 
         .btn-home {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 10px 22px;
-            border-radius: 10px;
-            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
             text-decoration: none;
-            transition: background-color 0.3s ease;
+            padding: 14px 20px;
+            border-radius: 999px;
+            font-weight: 700;
+            color: #04111f;
+            background: linear-gradient(90deg, #6ff7ff, #89ffd1 52%, #8dd8ff);
+            box-shadow: 0 18px 32px rgba(111, 247, 255, 0.2);
+            transition: transform 0.25s ease;
         }
 
         .btn-home:hover {
-            background-color: #218838;
+            transform: translateY(-2px);
         }
     </style>
 </head>
-
 <body>
-
-<%@ include file="header.jspf" %>
-
 <%
     String successTitle = (String) request.getAttribute("successTitle");
     String successMessage = (String) request.getAttribute("successMessage");
 %>
-
 <div class="success-container">
     <i class="fas fa-check-circle success-icon"></i>
-
     <h1><%= successTitle %></h1>
-
     <p><%= successMessage %></p>
-
     <a href="indexAdmin.jsp" class="btn-home">
         <i class="fas fa-home"></i> Torna alla Home
     </a>
 </div>
-
 </body>
 </html>

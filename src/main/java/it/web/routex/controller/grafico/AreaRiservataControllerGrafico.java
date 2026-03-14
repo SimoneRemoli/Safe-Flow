@@ -3,6 +3,7 @@ import it.web.routex.bean.RouteBean;
 import it.web.routex.bean.TicketBean;
 import it.web.routex.controller.applicativo.AreaRiservata;
 import it.web.routex.domain.LoggedHttpServlet;
+import it.web.routex.domain.SessionAuthUtil;
 import it.web.routex.utility.singleton.Credentials;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ public class AreaRiservataControllerGrafico extends LoggedHttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response){
             try {
                 final HttpSession session = request.getSession(false);
-                if (session != null) {
+                if (SessionAuthUtil.isLoggedIn(session)) {
                     Credentials cred = Credentials.getInstanceSingleton();
                     String cf = cred.getCodiceFiscale();
                     AreaRiservata reserved = new AreaRiservata();
@@ -35,7 +36,7 @@ public class AreaRiservataControllerGrafico extends LoggedHttpServlet
                     }
                 }
                 // Se non sei loggato o cf è null, reindirizza a login
-                redirectToLogin(response);
+                redirectToLogin(request, response);
             } catch (PathNotFoundExceptionRemoli remoli) {
                 logger.error("Errore PathNotFoundExceptionRemoli. Messaggio={} Cf={} CodiceErrore={} Dettagli={}.", remoli.getMessage(), remoli.getCodiceFiscaleUtente(), remoli.getCodiceDiErrore(), remoli.getDetails());
                 request.setAttribute("errore", remoli.getMessage());
@@ -62,9 +63,9 @@ public class AreaRiservataControllerGrafico extends LoggedHttpServlet
             logger.error("Errore durante il forward alla pagina dell'area riservata", e);
         }
     }
-    private void redirectToLogin(HttpServletResponse response) {
+    private void redirectToLogin(HttpServletRequest request, HttpServletResponse response) {
         try {
-            response.sendRedirect("/login.jsp");
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
         } catch (Exception e) {
             logger.error("Errore durante il redirect alla pagina di login", e);
         }
