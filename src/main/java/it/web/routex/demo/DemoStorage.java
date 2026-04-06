@@ -69,19 +69,40 @@ public final class DemoStorage {
         notifications.add(new Notification(
                 "Manutenzione programmata linea A",
                 new java.sql.Timestamp(System.currentTimeMillis()),
-                false
+                false,
+                true,
+                true,
+                "APPROVED",
+                "ADMIN",
+                null,
+                null,
+                "Rome"
         ));
 
         notifications.add(new Notification(
                 "Ritardo temporaneo Linea A",
                 new java.sql.Timestamp(System.currentTimeMillis()),
-                false
+                false,
+                true,
+                true,
+                "APPROVED",
+                "ADMIN",
+                null,
+                null,
+                "Rome"
         ));
 
         notifications.add(new Notification(
                 "Ritardo temporaneo linea C",
                 new java.sql.Timestamp(System.currentTimeMillis()),
-                false
+                false,
+                true,
+                true,
+                "APPROVED",
+                "ADMIN",
+                null,
+                null,
+                "Athens"
         ));
 
         workerSchedules.add(

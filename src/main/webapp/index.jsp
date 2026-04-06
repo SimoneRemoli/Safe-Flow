@@ -6,69 +6,38 @@
     <title>RouteX - Metro Finder</title>
     <style>
         :root {
-            --bg-1: #04111f;
-            --bg-2: #0a1f37;
-            --panel: rgba(7, 20, 36, 0.8);
-            --line: rgba(111, 247, 255, 0.22);
-            --text: #ecf7ff;
-            --muted: #8ba7c0;
-            --accent: #6ff7ff;
+            --bg: #f3f5f8;
+            --surface: #ffffff;
+            --surface-soft: #f8fafc;
+            --border: #d8e0ea;
+            --text: #16202a;
+            --muted: #64748b;
+            --accent: #0f6dff;
+            --accent-dark: #0b5fe0;
+            --shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
         }
 
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
 
         body {
             margin: 0;
             min-height: 100vh;
+            background: var(--bg);
             color: var(--text);
-            font-family: "Trebuchet MS", "Gill Sans", sans-serif;
-            background:
-                radial-gradient(circle at 15% 22%, rgba(111, 247, 255, 0.16), transparent 24%),
-                radial-gradient(circle at 85% 18%, rgba(83, 169, 255, 0.18), transparent 22%),
-                radial-gradient(circle at bottom center, rgba(67, 112, 255, 0.16), transparent 32%),
-                linear-gradient(135deg, var(--bg-1), var(--bg-2) 58%, #040913);
-            overflow-x: hidden;
-            position: relative;
+            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
         }
 
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            background-image:
-                radial-gradient(circle, rgba(255, 255, 255, 0.72) 1px, transparent 1px),
-                radial-gradient(circle, rgba(111, 247, 255, 0.45) 1px, transparent 1px);
-            background-size: 150px 150px, 230px 230px;
-            background-position: 0 0, 60px 90px;
-            opacity: 0.18;
-            pointer-events: none;
-            animation: drift 18s linear infinite;
-        }
-
-        .shell {
-            width: min(1280px, calc(100% - 32px));
+        .page {
+            width: min(1120px, calc(100% - 32px));
             margin: 24px auto;
             min-height: calc(100vh - 48px);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
             padding: 28px;
-            border-radius: 32px;
-            border: 1px solid var(--line);
-            background: linear-gradient(180deg, rgba(7, 20, 36, 0.84), rgba(4, 12, 23, 0.9));
-            box-shadow: 0 32px 84px rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(16px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .shell::after {
-            content: "";
-            position: absolute;
-            width: 420px;
-            height: 420px;
-            right: -120px;
-            top: -160px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(111, 247, 255, 0.14), transparent 66%);
-            filter: blur(12px);
         }
 
         .topbar {
@@ -76,8 +45,6 @@
             justify-content: space-between;
             align-items: center;
             gap: 16px;
-            position: relative;
-            z-index: 1;
         }
 
         .brand {
@@ -87,313 +54,227 @@
         }
 
         .brand img {
-            width: 72px;
+            width: 64px;
+            height: auto;
         }
 
         .brand strong {
             display: block;
-            font-size: 1.35rem;
+            font-size: 1.2rem;
         }
 
         .brand span {
+            display: block;
+            margin-top: 2px;
             color: var(--muted);
             font-size: 0.94rem;
         }
 
-        .nav-actions a {
+        .topbar a {
             text-decoration: none;
             color: var(--text);
-            padding: 10px 16px;
+            background: var(--surface-soft);
+            border: 1px solid var(--border);
             border-radius: 999px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            background: rgba(255, 255, 255, 0.06);
-            transition: transform 0.25s ease, border-color 0.25s ease;
-        }
-
-        .nav-actions a:hover {
-            transform: translateY(-2px);
-            border-color: rgba(111, 247, 255, 0.4);
+            padding: 10px 16px;
+            font-weight: 600;
         }
 
         .hero {
-            margin-top: 28px;
+            margin-top: 40px;
             display: grid;
-            grid-template-columns: 1.08fr 0.92fr;
+            grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
             gap: 28px;
-            align-items: stretch;
-        }
-
-        .hero-copy {
-            padding: 20px 8px 20px 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-            z-index: 1;
+            align-items: start;
         }
 
         .eyebrow {
-            display: inline-flex;
-            width: fit-content;
-            padding: 8px 14px;
+            display: inline-block;
+            padding: 7px 12px;
             border-radius: 999px;
+            border: 1px solid #cfe0ff;
+            background: #eaf1ff;
             color: var(--accent);
-            border: 1px solid rgba(111, 247, 255, 0.2);
-            background: rgba(111, 247, 255, 0.08);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
-            letter-spacing: 0.18em;
-            font-size: 11px;
         }
 
-        .hero-copy h1 {
-            margin: 18px 0 16px;
-            font-size: clamp(3rem, 5vw, 5.5rem);
-            line-height: 0.92;
+        h1 {
+            margin: 18px 0 14px;
+            font-size: clamp(2.3rem, 4vw, 3.8rem);
+            line-height: 1.02;
+            letter-spacing: -0.03em;
         }
 
-        .hero-copy p {
+        .hero p {
             margin: 0;
+            max-width: 620px;
             color: var(--muted);
-            font-size: 1.05rem;
-            line-height: 1.8;
-            max-width: 700px;
+            font-size: 1rem;
+            line-height: 1.7;
         }
 
-        .cta-row {
+        .actions {
             display: flex;
             gap: 14px;
-            margin-top: 26px;
             flex-wrap: wrap;
+            margin-top: 26px;
         }
 
-        .cta-row button,
-        .cta-row a {
-            border: none;
+        .actions form {
+            margin: 0;
+        }
+
+        .actions button,
+        .actions a {
+            border-radius: 999px;
+            padding: 14px 20px;
+            font-size: 0.96rem;
+            font-weight: 600;
             text-decoration: none;
             cursor: pointer;
-            padding: 16px 24px;
-            border-radius: 999px;
-            font-weight: 700;
-            letter-spacing: 0.06em;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
 
-        .primary-cta {
-            color: #04111f;
-            background: linear-gradient(90deg, #6ff7ff, #89ffd1 52%, #8dd8ff);
-            box-shadow: 0 20px 36px rgba(111, 247, 255, 0.24);
+        .actions button {
+            border: 1px solid var(--accent);
+            background: var(--accent);
+            color: #ffffff;
         }
 
-        .secondary-cta {
+        .actions button:hover {
+            background: var(--accent-dark);
+            border-color: var(--accent-dark);
+        }
+
+        .actions a {
+            border: 1px solid var(--border);
+            background: var(--surface-soft);
             color: var(--text);
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
         }
 
-        .cta-row button:hover,
-        .cta-row a:hover {
-            transform: translateY(-3px);
+        .actions .info-button {
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--muted);
         }
 
-        .info-grid {
-            margin-top: 28px;
+        .actions .info-button:hover {
+            border-color: #c5d2e0;
+            color: var(--text);
+            background: #f9fbfd;
+        }
+
+        .travel-note {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.93rem;
+            line-height: 1.6;
+            max-width: 620px;
+        }
+
+        .travel-note strong {
+            color: var(--text);
+        }
+
+        .travel-note-section {
+            margin-top: 44px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(216, 224, 234, 0.8);
+        }
+
+        .about-modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(15, 23, 42, 0.28);
+            z-index: 1200;
+        }
+
+        .about-modal.is-open {
+            display: flex;
+        }
+
+        .about-modal__panel {
+            width: min(760px, 100%);
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(216, 224, 234, 0.95);
+            border-radius: 24px;
+            box-shadow: 0 28px 60px rgba(15, 23, 42, 0.16);
+            padding: 28px;
+        }
+
+        .about-modal__topbar {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .about-modal__eyebrow {
+            display: inline-block;
+            margin-bottom: 10px;
+            color: var(--accent);
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .about-modal__title {
+            margin: 0;
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            line-height: 1.08;
+            letter-spacing: -0.03em;
+        }
+
+        .about-modal__close {
+            flex: 0 0 auto;
+            border: 1px solid var(--border);
+            background: var(--surface-soft);
+            color: var(--muted);
+            border-radius: 999px;
+            width: 38px;
+            height: 38px;
+            font-size: 1.15rem;
+            cursor: pointer;
+        }
+
+        .about-modal__close:hover {
+            color: var(--text);
+            border-color: #c5d2e0;
+        }
+
+        .about-modal__content {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 16px;
         }
 
-        .info-card {
-            padding: 18px;
-            border-radius: 24px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .info-card strong {
-            display: block;
-            font-size: 1.4rem;
-            margin-bottom: 6px;
-        }
-
-        .info-card span {
+        .about-modal__content p {
+            margin: 0;
             color: var(--muted);
-            line-height: 1.6;
+            line-height: 1.8;
+            font-size: 0.98rem;
         }
 
-        .visual-panel {
-            border-radius: 30px;
-            padding: 22px;
-            background:
-                linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent),
-                rgba(8, 24, 43, 0.9);
-            border: 1px solid rgba(111, 247, 255, 0.18);
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .visual-panel::before {
-            content: "";
-            position: absolute;
-            inset: auto -60px -90px auto;
-            width: 260px;
-            height: 260px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(83, 169, 255, 0.2), transparent 70%);
-        }
-
-        .network-stage {
-            min-height: 460px;
-            border-radius: 26px;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            background:
-                radial-gradient(circle at 20% 18%, rgba(111, 247, 255, 0.14), transparent 30%),
-                linear-gradient(180deg, rgba(8, 18, 32, 0.86), rgba(6, 14, 25, 0.96));
-            position: relative;
-            overflow: hidden;
-        }
-
-        .ring {
-            position: absolute;
-            border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            animation: rotate 18s linear infinite;
-        }
-
-        .ring.one {
-            width: 260px;
-            height: 260px;
-            top: 62px;
-            right: 60px;
-        }
-
-        .ring.two {
-            width: 150px;
-            height: 150px;
-            top: 116px;
-            right: 115px;
-            animation-direction: reverse;
-            animation-duration: 12s;
-        }
-
-        .planet {
-            position: absolute;
-            border-radius: 50%;
-            box-shadow: 0 0 30px rgba(111, 247, 255, 0.32);
-            animation: float 5s ease-in-out infinite;
-        }
-
-        .planet.core {
-            width: 104px;
-            height: 104px;
-            top: 138px;
-            right: 136px;
-            background: radial-gradient(circle at 30% 30%, #ffffff, #7cf5ff 34%, #0a93ff);
-        }
-
-        .planet.small-a {
-            width: 24px;
-            height: 24px;
-            top: 102px;
-            right: 172px;
-            background: radial-gradient(circle at 30% 30%, #fff8bf, #ffd66b 42%, #ff8f3c);
-            animation-delay: 0.4s;
-        }
-
-        .planet.small-b {
-            width: 20px;
-            height: 20px;
-            top: 264px;
-            right: 220px;
-            background: radial-gradient(circle at 30% 30%, #fbe0ff, #c794ff 42%, #7354ff);
-            animation-delay: 1.2s;
-        }
-
-        .network-lines {
-            position: absolute;
-            inset: 0;
-        }
-
-        .network-lines span {
-            position: absolute;
-            display: block;
-            height: 2px;
-            border-radius: 999px;
-            background: linear-gradient(90deg, transparent, rgba(111, 247, 255, 0.55), transparent);
-        }
-
-        .network-lines span:nth-child(1) {
-            width: 180px;
-            left: 42px;
-            top: 110px;
-        }
-
-        .network-lines span:nth-child(2) {
-            width: 210px;
-            left: 92px;
-            top: 206px;
-            transform: rotate(-18deg);
-        }
-
-        .network-lines span:nth-child(3) {
-            width: 160px;
-            left: 84px;
-            bottom: 104px;
-            transform: rotate(24deg);
-        }
-
-        .stage-copy {
-            position: absolute;
-            left: 24px;
-            bottom: 24px;
-            max-width: 260px;
-        }
-
-        .stage-copy strong {
-            display: block;
-            font-size: 1.2rem;
-            margin-bottom: 6px;
-        }
-
-        .stage-copy span {
-            color: var(--muted);
-            line-height: 1.6;
-        }
-
-        @keyframes drift {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-14px); }
-            100% { transform: translateY(0); }
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @media (max-width: 1024px) {
+        @media (max-width: 920px) {
             .hero {
-                grid-template-columns: 1fr;
-            }
-
-            .info-grid {
                 grid-template-columns: 1fr;
             }
         }
 
         @media (max-width: 720px) {
-            .shell {
-                width: min(100% - 16px, 1280px);
+            .page {
+                width: min(100% - 16px, 1120px);
                 margin: 8px auto;
                 min-height: calc(100vh - 16px);
                 padding: 18px;
-                border-radius: 24px;
+                border-radius: 18px;
             }
 
             .topbar {
@@ -405,75 +286,114 @@
 </head>
 <body>
 <%@ include file="header.jspf" %>
-<div class="shell">
+<main class="page">
     <div class="topbar">
         <div class="brand">
             <img src="images/logo-no-background.png" alt="RouteX">
             <div>
                 <strong>RouteX</strong>
-                <span>Metro intelligence for urban exploration</span>
+                <span>Metro route planning, kept simple.</span>
             </div>
         </div>
 
-        <div class="nav-actions">
-            <a href="login.jsp">Login</a>
-        </div>
+        <a href="login.jsp">Login</a>
     </div>
 
     <section class="hero">
-        <div class="hero-copy">
-            <div class="eyebrow">Urban Mobility Interface</div>
-            <h1>Explore metro systems<br>like a future city console.</h1>
+        <div>
+            <div class="eyebrow">Metro Navigation</div>
+            <h1>Find the shortest metro path with a cleaner interface.</h1>
             <p>
-                RouteX trasforma la ricerca di percorsi in un'esperienza urbana immersiva:
-                scegli la rete, entra nelle citta disponibili e naviga il sistema metropolitano con un'interfaccia
-                piu scenografica, tecnica e coerente con il progetto.
+                RouteX lets you search for a route between two stations in a direct way,
+                without visual distractions. Select the city, enter departure and arrival,
+                and view the route.
             </p>
 
-            <div class="cta-row">
-                <form action="PathControllerGrafico" method="get" style="margin:0;">
-                    <button class="primary-cta" type="submit">Start Exploring</button>
+            <div class="actions">
+                <form action="PathControllerGrafico" method="get">
+                    <button type="submit">Start Exploring</button>
                 </form>
-                <a class="secondary-cta" href="login.jsp">Access Control Center</a>
-            </div>
-
-            <div class="info-grid">
-                <div class="info-card">
-                    <strong>4 Networks</strong>
-                    <span>Citta metropolitane pronte per essere esplorate con una UI dinamica.</span>
-                </div>
-                <div class="info-card">
-                    <strong>Animated Flow</strong>
-                    <span>Interfaccia coerente con il linguaggio visivo futuristico del modulo percorsi.</span>
-                </div>
-                <div class="info-card">
-                    <strong>Fast Access</strong>
-                    <span>Ingresso diretto alla navigazione urbana e al motore di ricerca tratte.</span>
-                </div>
+                <a href="login.jsp">Open Reserved Area</a>
+                <button type="button" class="info-button" data-open-about>What is RouteX?</button>
             </div>
         </div>
-
-        <aside class="visual-panel">
-            <div class="network-stage">
-                <div class="ring one"></div>
-                <div class="ring two"></div>
-                <div class="planet core"></div>
-                <div class="planet small-a"></div>
-                <div class="planet small-b"></div>
-
-                <div class="network-lines">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-
-                <div class="stage-copy">
-                    <strong>Metro constellation online</strong>
-                    <span>Avvia l'esplorazione e passa alla selezione città con pianeti interattivi e preview della rete.</span>
-                </div>
-            </div>
-        </aside>
     </section>
+
+    <section class="travel-note-section" aria-label="travel advice">
+        <p class="travel-note">
+            <strong>Travel tip:</strong> stay aware of pickpockets while using public transport, especially in crowded stations and trains.
+        </p>
+    </section>
+
+</main>
+
+<div class="about-modal" id="aboutModal" aria-hidden="true">
+    <div class="about-modal__panel" role="dialog" aria-modal="true" aria-labelledby="aboutModalTitle">
+        <div class="about-modal__topbar">
+            <div>
+                <span class="about-modal__eyebrow">About RouteX</span>
+                <h2 class="about-modal__title" id="aboutModalTitle">RouteX, explained clearly.</h2>
+            </div>
+            <button type="button" class="about-modal__close" data-close-about aria-label="Close dialog">&times;</button>
+        </div>
+
+        <div class="about-modal__content">
+            <p>
+                RouteX is a powerful route finder that allows users to search for stations in real-time,
+                select a city, and view an interactive metro map. Featuring dynamic autocomplete, RouteX
+                helps travelers quickly find the best routes with ease.
+            </p>
+            <p>
+                RouteX was developed by Lorenzo Brondi and Simone Remoli.
+            </p>
+            <p>
+                The idea behind RouteX was conceived by Simone Remoli, a computer engineering student at the
+                University of Rome Tor Vergata.
+            </p>
+            <p>
+                As someone who has relied on public transportation for most of his daily commuting and has rarely
+                used a car, he began to reflect on a simple yet meaningful question:
+                "What would the world look like if every commuter had access to an easy-to-use application
+                designed to simplify metropolitan travel?"
+            </p>
+        </div>
+    </div>
 </div>
+
+<script>
+    (function () {
+        const modal = document.getElementById("aboutModal");
+        const openButton = document.querySelector("[data-open-about]");
+        const closeButton = modal ? modal.querySelector("[data-close-about]") : null;
+
+        if (!modal || !openButton || !closeButton) {
+            return;
+        }
+
+        const closeModal = function () {
+            modal.classList.remove("is-open");
+            modal.setAttribute("aria-hidden", "true");
+        };
+
+        openButton.addEventListener("click", function () {
+            modal.classList.add("is-open");
+            modal.setAttribute("aria-hidden", "false");
+        });
+
+        closeButton.addEventListener("click", closeModal);
+
+        modal.addEventListener("click", function (event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape" && modal.classList.contains("is-open")) {
+                closeModal();
+            }
+        });
+    })();
+</script>
 </body>
 </html>

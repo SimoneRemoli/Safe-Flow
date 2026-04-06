@@ -161,12 +161,28 @@
             box-shadow: 0 24px 42px rgba(111,247,255,0.28);
         }
 
+        .secondary-link {
+            display: inline-flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: 12px;
+            text-decoration: none;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .secondary-link strong {
+            color: #dff8ff;
+            margin-left: 6px;
+        }
+
         @keyframes drift {
             0% { transform: translateY(0); }
             50% { transform: translateY(-14px); }
             100% { transform: translateY(0); }
         }
     </style>
+    <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 <body>
     <a href="index.jsp" class="home-link">Home</a>
@@ -174,7 +190,7 @@
     <div class="login-panel">
         <div class="eyebrow">RouteX Access</div>
         <h1>Minimal login.<br>Future ready.</h1>
-        <p>Accedi alla control room di RouteX con un’interfaccia essenziale, pulita e coerente con il progetto.</p>
+        <p>Access the RouteX control room through an interface that is essential, clean, and consistent with the project.</p>
 
         <form action="login" method="post">
             <div class="field-group">
@@ -189,6 +205,8 @@
 
             <button type="submit" class="submit-btn">Login</button>
         </form>
+
+        <a href="registerTraveler" class="secondary-link">Need an account?<strong>Register as traveler</strong></a>
     </div>
 </body>
 </html>

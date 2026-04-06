@@ -39,4 +39,20 @@ public class PaymentReg {
     public String getCity() {
         return city;
     }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getCognome() {
+        return cognome;
+    }
+
+    public boolean isDisabile() {
+        return disabile;
+    }
+
+    public String getMetodoPagamento() {
+        return metodoPagamento;
+    }
 }

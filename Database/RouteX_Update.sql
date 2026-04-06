@@ -27,7 +27,7 @@
 DROP DATABASE IF EXISTS RouteX_Update;
 CREATE DATABASE RouteX_Update
   CHARACTER SET utf8mb4
-  COLLATE utf8mb4_0900_ai_ci;
+  COLLATE utf8mb4_unicode_ci;
 
 USE RouteX_Update;
 
@@ -44,7 +44,7 @@ CREATE TABLE `Athens` (
   `disabile` varchar(100) DEFAULT NULL,
   `linea` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=268 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=268 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +70,7 @@ CREATE TABLE `Budapest` (
   `disabile` varchar(100) DEFAULT NULL,
   `linea` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,7 +96,7 @@ CREATE TABLE `Citta` (
   `prezzo_ticket` double DEFAULT NULL,
   PRIMARY KEY (`id_Citta`),
   UNIQUE KEY `nome_Citta` (`nome_Citta`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -120,8 +120,21 @@ CREATE TABLE `comunicazioni` (
   `testo` varchar(500) NOT NULL,
   `data` timestamp NOT NULL,
   `risolto` tinyint(1) DEFAULT NULL,
+  `approvato` tinyint(1) NOT NULL DEFAULT '1',
+  `letto` tinyint(1) NOT NULL DEFAULT '1',
+  `status` varchar(20) NOT NULL DEFAULT 'APPROVED',
+  `sender_role` varchar(20) NOT NULL DEFAULT 'ADMIN',
+  `sender_cf` varchar(16) DEFAULT NULL,
+  `recipient_cf` varchar(16) DEFAULT NULL,
+  `city` varchar(100) DEFAULT 'Rome',
+  `pickpocket_alert` tinyint(1) NOT NULL DEFAULT '0',
+  `fight_alert` tinyint(1) NOT NULL DEFAULT '0',
+  `crowd_alert` tinyint(1) NOT NULL DEFAULT '0',
+  `general_alert` tinyint(1) NOT NULL DEFAULT '0',
+  `station_name` varchar(120) DEFAULT NULL,
+  `suspect_clothing` varchar(180) DEFAULT NULL,
   PRIMARY KEY (`testo`,`data`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,7 +143,7 @@ CREATE TABLE `comunicazioni` (
 
 LOCK TABLES `comunicazioni` WRITE;
 /*!40000 ALTER TABLE `comunicazioni` DISABLE KEYS */;
-INSERT INTO `comunicazioni` VALUES ('A Valle Aurelia chiudere la Tratta per lavori domani .. ','2025-12-20 18:21:00',1),('Alla Stazione Termini hanno borseggiato un ragazzo, mandare pattuglia.','2025-12-20 18:27:39',1),('Attenzione, borseggio a Furio Camillo.','2026-01-05 09:54:42',1),('Borseggio Avvenuto presso piazza di Spagna.. contattare 3881253487','2025-12-12 11:08:47',1),('Chiamare Ing.Claudio Rossi per riqualificazione sui pozzi di ventilazione in corrispondenza di Pza. Celimontana','2025-12-11 20:43:08',1),('ciao a tutti dovete fa','2026-01-05 15:16:57',0),('communication','2026-01-02 11:54:49',1),('communication','2026-01-03 09:57:46',1),('communication1','2026-01-02 12:26:47',1),('comunicazione esempio','2025-12-28 15:22:20',1),('Comunicazione Ufficiale 1','2025-12-11 16:39:07',1),('Comunicazione Ufficiale 2','2025-12-11 20:42:50',1),('Controllo pagamenti','2026-01-05 14:48:15',0),('dddddddddddd','2026-01-05 14:09:10',0),('dsfdfs','2025-12-12 11:12:26',1),('emergenza abitativa','2025-12-29 13:48:45',1),('Fare attenzione al Georgiano','2026-01-05 13:55:13',1),('Guasto dell\'ascensore','2026-01-03 15:23:17',1),('Guasto dell\'ascensore','2026-01-03 15:24:38',1),('Guasto dell\'ascensore risolto','2026-01-03 15:23:17',1),('Guasto dell\'ascensore risolto','2026-01-03 15:24:38',1),('La manifestazione chiude alle 18 a Repubblica.','2025-12-29 13:31:30',1),('papapapapapa','2026-01-05 14:07:39',1),('Prova di Notifica','2025-12-20 18:33:25',1),('prova di segnalazione','2026-01-05 14:22:08',0),('Prove tecniche','2026-01-05 13:41:48',1),('Rotta la scala mobile alla stazione Colosseo MB','2025-12-28 15:23:59',1),('segnalazione 2026','2026-01-05 15:41:55',1);
+INSERT INTO `comunicazioni` (`testo`, `data`, `risolto`, `approvato`, `letto`, `status`, `sender_role`, `sender_cf`, `recipient_cf`) VALUES ('A Valle Aurelia chiudere la Tratta per lavori domani .. ','2025-12-20 18:21:00',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Alla Stazione Termini hanno borseggiato un ragazzo, mandare pattuglia.','2025-12-20 18:27:39',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Attenzione, borseggio a Furio Camillo.','2026-01-05 09:54:42',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Borseggio Avvenuto presso piazza di Spagna.. contattare 3881253487','2025-12-12 11:08:47',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Chiamare Ing.Claudio Rossi per riqualificazione sui pozzi di ventilazione in corrispondenza di Pza. Celimontana','2025-12-11 20:43:08',1,1,1,'APPROVED','ADMIN',NULL,NULL),('ciao a tutti dovete fa','2026-01-05 15:16:57',0,1,1,'APPROVED','ADMIN',NULL,NULL),('communication','2026-01-02 11:54:49',1,1,1,'APPROVED','ADMIN',NULL,NULL),('communication','2026-01-03 09:57:46',1,1,1,'APPROVED','ADMIN',NULL,NULL),('communication1','2026-01-02 12:26:47',1,1,1,'APPROVED','ADMIN',NULL,NULL),('comunicazione esempio','2025-12-28 15:22:20',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Comunicazione Ufficiale 1','2025-12-11 16:39:07',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Comunicazione Ufficiale 2','2025-12-11 20:42:50',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Controllo pagamenti','2026-01-05 14:48:15',0,1,1,'APPROVED','ADMIN',NULL,NULL),('dddddddddddd','2026-01-05 14:09:10',0,1,1,'APPROVED','ADMIN',NULL,NULL),('dsfdfs','2025-12-12 11:12:26',1,1,1,'APPROVED','ADMIN',NULL,NULL),('emergenza abitativa','2025-12-29 13:48:45',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Fare attenzione al Georgiano','2026-01-05 13:55:13',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Guasto dell\'ascensore','2026-01-03 15:23:17',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Guasto dell\'ascensore','2026-01-03 15:24:38',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Guasto dell\'ascensore risolto','2026-01-03 15:23:17',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Guasto dell\'ascensore risolto','2026-01-03 15:24:38',1,1,1,'APPROVED','ADMIN',NULL,NULL),('La manifestazione chiude alle 18 a Repubblica.','2025-12-29 13:31:30',1,1,1,'APPROVED','ADMIN',NULL,NULL),('papapapapapa','2026-01-05 14:07:39',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Prova di Notifica','2025-12-20 18:33:25',1,1,1,'APPROVED','ADMIN',NULL,NULL),('prova di segnalazione','2026-01-05 14:22:08',0,1,1,'APPROVED','ADMIN',NULL,NULL),('Prove tecniche','2026-01-05 13:41:48',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Rotta la scala mobile alla stazione Colosseo MB','2025-12-28 15:23:59',1,1,1,'APPROVED','ADMIN',NULL,NULL),('segnalazione 2026','2026-01-05 15:41:55',1,1,1,'APPROVED','ADMIN',NULL,NULL);
 /*!40000 ALTER TABLE `comunicazioni` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -144,12 +157,12 @@ DROP TABLE IF EXISTS `listaregistrati`;
 CREATE TABLE `listaregistrati` (
   `id` int NOT NULL AUTO_INCREMENT,
   `email` varchar(100) NOT NULL,
-  `codicefiscale` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `codicefiscale` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `codice_fiscale` (`codicefiscale`),
   UNIQUE KEY `uq_email_cf` (`email`,`codicefiscale`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -174,7 +187,7 @@ CREATE TABLE `London` (
   `disabile` varchar(100) DEFAULT NULL,
   `linea` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -200,7 +213,7 @@ CREATE TABLE `Mastercard` (
   `data_scadenza` date NOT NULL,
   `cvv` char(3) NOT NULL,
   PRIMARY KEY (`id_Mastercard`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -226,7 +239,7 @@ CREATE TABLE `Milan` (
   `disabile` varchar(100) DEFAULT NULL,
   `linea` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -252,7 +265,7 @@ CREATE TABLE `Naples` (
   `disabile` varchar(100) DEFAULT NULL,
   `linea` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -283,7 +296,7 @@ CREATE TABLE `Pagamenti` (
   `codici_biglietti` text,
   `data_pagamento` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=217 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=217 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -309,8 +322,8 @@ CREATE TABLE `PathInfo` (
   `City` varchar(100) NOT NULL,
   `TipoViaggiatore` varchar(100) NOT NULL,
   `NCambi` int DEFAULT '0',
-  `ListaCambi` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '"Cambi non presenti"',
-  `StazioneDiInterscambio` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '"Non presente"',
+  `ListaCambi` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '"Cambi non presenti"',
+  `StazioneDiInterscambio` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '"Non presente"',
   `NStazioniAttraversate` int DEFAULT '0',
   `TempoDiArrivo` double DEFAULT '0',
   `NStazioniCitta` int DEFAULT '0',
@@ -318,7 +331,7 @@ CREATE TABLE `PathInfo` (
   `Utente` varchar(16) DEFAULT NULL,
   KEY `fk_utente_codicefiscale` (`Utente`),
   CONSTRAINT `fk_utente_codicefiscale` FOREIGN KEY (`Utente`) REFERENCES `User` (`CODICEFISCALE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -343,7 +356,7 @@ CREATE TABLE `Paypal` (
   `email_Paypal` varchar(150) NOT NULL,
   `codice_transazione` varchar(100) NOT NULL,
   PRIMARY KEY (`id_Paypal`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -372,7 +385,7 @@ CREATE TABLE `Permessi` (
   `Ruolo` varchar(100) DEFAULT NULL,
   `Codice_Fiscale` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -398,7 +411,7 @@ CREATE TABLE `Rome` (
   `disabile` varchar(3) DEFAULT NULL,
   `linea` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -425,7 +438,7 @@ CREATE TABLE `segnalazioni` (
   `data` timestamp NOT NULL,
   PRIMARY KEY (`id`,`numero_segnalazione`),
   CONSTRAINT `fk_Segnalazioni_Permessi` FOREIGN KEY (`id`) REFERENCES `worker` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -450,7 +463,7 @@ CREATE TABLE `Stockholm` (
   `disabile` varchar(100) DEFAULT NULL,
   `linea` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=205 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=205 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -480,7 +493,7 @@ CREATE TABLE `User` (
   `DISABILE` tinyint(1) DEFAULT NULL,
   `RUOLO` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`CODICEFISCALE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -507,7 +520,7 @@ CREATE TABLE `worker` (
   `luogoDiLavoro` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_worker_permessi` FOREIGN KEY (`id`) REFERENCES `permessi` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -533,7 +546,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -593,7 +606,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -625,7 +638,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -651,7 +664,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -698,7 +711,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -745,7 +758,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -771,7 +784,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -801,7 +814,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -810,7 +823,20 @@ BEGIN
     SELECT
         testo,
         data,
-        risolto
+        risolto,
+        approvato,
+        letto,
+        status,
+        sender_role,
+        sender_cf,
+        recipient_cf,
+        city,
+        pickpocket_alert,
+        fight_alert,
+        crowd_alert,
+        general_alert,
+        station_name,
+        suspect_clothing
     FROM comunicazioni
     ORDER BY data DESC;
 END ;;
@@ -825,7 +851,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -872,7 +898,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -907,7 +933,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -934,7 +960,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -981,7 +1007,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1025,13 +1051,159 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `DeleteRouteBySignature` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `DeleteRouteBySignature`(
+    IN p_cf VARCHAR(16),
+    IN p_startStation VARCHAR(100),
+    IN p_endStation VARCHAR(100),
+    IN p_city VARCHAR(100),
+    IN p_tipoViaggiatore VARCHAR(100),
+    IN p_nCambi INT,
+    IN p_listaCambi VARCHAR(200),
+    IN p_stazioneDiInterscambio VARCHAR(100),
+    IN p_nStazioniAttraversate INT,
+    IN p_tempoDiArrivo DOUBLE,
+    IN p_nStazioniCitta INT,
+    IN p_percTerrenoUtilizzato DOUBLE,
+    OUT p_deleted INT
+)
+BEGIN
+    DELETE FROM PathInfo
+    WHERE Utente = p_cf
+      AND StartStation = p_startStation
+      AND EndStation = p_endStation
+      AND City = p_city
+      AND TipoViaggiatore = p_tipoViaggiatore
+      AND NCambi = p_nCambi
+      AND ListaCambi = p_listaCambi
+      AND StazioneDiInterscambio = p_stazioneDiInterscambio
+      AND NStazioniAttraversate = p_nStazioniAttraversate
+      AND TempoDiArrivo = p_tempoDiArrivo
+      AND NStazioniCitta = p_nStazioniCitta
+      AND PercTerrenoUtilizzato = p_percTerrenoUtilizzato
+    LIMIT 1;
+
+    SET p_deleted = ROW_COUNT();
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `DeleteAllRoutes` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `DeleteAllRoutes`(
+    IN p_cf VARCHAR(16),
+    OUT p_deleted INT
+)
+BEGIN
+    SELECT COUNT(*)
+    INTO p_deleted
+    FROM PathInfo
+    WHERE Utente = p_cf;
+
+    DELETE FROM PathInfo
+    WHERE Utente = p_cf;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `DeleteTicketByCode` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `DeleteTicketByCode`(
+    IN p_cf VARCHAR(50),
+    IN p_codice VARCHAR(255),
+    OUT p_deleted INT
+)
+BEGIN
+    SELECT COUNT(*)
+    INTO p_deleted
+    FROM Pagamenti
+    WHERE codice_fiscale = p_cf
+      AND FIND_IN_SET(p_codice, REPLACE(codici_biglietti, ' ', '')) > 0;
+
+    UPDATE Pagamenti
+    SET codici_biglietti = TRIM(BOTH ',' FROM REPLACE(
+        CONCAT(',', REPLACE(codici_biglietti, ' ', ''), ','),
+        CONCAT(',', p_codice, ','),
+        ','
+    ))
+    WHERE codice_fiscale = p_cf
+      AND FIND_IN_SET(p_codice, REPLACE(codici_biglietti, ' ', '')) > 0;
+
+    DELETE FROM Pagamenti
+    WHERE codice_fiscale = p_cf
+      AND (codici_biglietti IS NULL OR codici_biglietti = '');
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `DeleteAllTickets` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `DeleteAllTickets`(
+    IN p_cf VARCHAR(50),
+    OUT p_deleted INT
+)
+BEGIN
+    SELECT COALESCE(SUM(1 + LENGTH(codici_biglietti) - LENGTH(REPLACE(codici_biglietti, ',', ''))), 0)
+    INTO p_deleted
+    FROM Pagamenti
+    WHERE codice_fiscale = p_cf
+      AND codici_biglietti IS NOT NULL
+      AND codici_biglietti <> '';
+
+    DELETE FROM Pagamenti
+    WHERE codice_fiscale = p_cf;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `login_User` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1073,13 +1245,155 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `ListAdmins` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ListAdmins`()
+BEGIN
+    SELECT
+        Nome AS nome,
+        Cognome AS cognome,
+        Email AS email,
+        Codice_Fiscale AS codice_fiscale
+    FROM RouteX_Update.Permessi
+    WHERE Ruolo = '2'
+    ORDER BY Nome, Cognome, Email;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `CreateAdmin` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CreateAdmin`(
+    IN p_nome VARCHAR(100),
+    IN p_cognome VARCHAR(100),
+    IN p_email VARCHAR(100),
+    IN p_password VARCHAR(100),
+    IN p_codice_fiscale VARCHAR(100)
+)
+BEGIN
+    INSERT INTO RouteX_Update.Permessi (
+        Nome,
+        Cognome,
+        Email,
+        Password,
+        Ruolo,
+        Codice_Fiscale
+    ) VALUES (
+        p_nome,
+        p_cognome,
+        p_email,
+        p_password,
+        '2',
+        p_codice_fiscale
+    );
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `DeleteAdminByCodiceFiscale` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `DeleteAdminByCodiceFiscale`(
+    IN p_codice_fiscale VARCHAR(100)
+)
+BEGIN
+    DELETE FROM RouteX_Update.Permessi
+    WHERE Codice_Fiscale = p_codice_fiscale
+      AND Ruolo = '2';
+
+    SELECT ROW_COUNT() AS deleted_rows;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `ListWorkers` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ListWorkers`()
+BEGIN
+    SELECT
+        Nome AS nome,
+        Cognome AS cognome,
+        Email AS email,
+        Codice_Fiscale AS codice_fiscale
+    FROM RouteX_Update.Permessi
+    WHERE Ruolo = '1'
+    ORDER BY Nome, Cognome, Email;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `ListTravelers` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ListTravelers`()
+BEGIN
+    SELECT
+        NOME AS nome,
+        COGNOME AS cognome,
+        EMAIL AS email,
+        CODICEFISCALE AS codice_fiscale
+    FROM RouteX_Update.User
+    WHERE RUOLO = '3'
+    ORDER BY NOME, COGNOME, EMAIL;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `register` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1101,13 +1415,62 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `DeleteWorkerByCodiceFiscale` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `DeleteWorkerByCodiceFiscale`(
+    IN p_codice_fiscale VARCHAR(100)
+)
+BEGIN
+    DELETE FROM RouteX_Update.Permessi
+    WHERE Codice_Fiscale = p_codice_fiscale
+      AND Ruolo = '1';
+
+    SELECT ROW_COUNT() AS deleted_rows;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `DeleteCommunication` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `DeleteCommunication`(
+    IN p_message VARCHAR(500),
+    IN p_data TIMESTAMP
+)
+BEGIN
+    DELETE FROM RouteX_Update.comunicazioni
+    WHERE testo = p_message
+      AND data = p_data;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `register_User` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1119,7 +1482,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `register_User`(
     IN p_email VARCHAR(100),
     IN p_data_nascita DATE,
     IN p_disabile INT,
-    IN p_permesso INT
+    IN p_ruolo INT
 )
 BEGIN
     INSERT INTO RouteX_Update.User (
@@ -1130,7 +1493,7 @@ BEGIN
         email,
         datadinascita,
         disabile,
-        permesso
+        ruolo
     ) VALUES (
         p_nome,
         p_cognome,
@@ -1139,8 +1502,42 @@ BEGIN
         p_email,
         p_data_nascita,
         p_disabile,
-        p_permesso
+        p_ruolo
     );
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `DeleteTravelerByCodiceFiscale` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `DeleteTravelerByCodiceFiscale`(
+    IN p_codice_fiscale VARCHAR(16)
+)
+BEGIN
+    DELETE FROM RouteX_Update.PathInfo
+    WHERE Utente = p_codice_fiscale;
+
+    DELETE FROM RouteX_Update.Pagamenti
+    WHERE codice_fiscale = p_codice_fiscale;
+
+    DELETE FROM RouteX_Update.listaregistrati
+    WHERE codicefiscale = p_codice_fiscale;
+
+    DELETE FROM RouteX_Update.User
+    WHERE CODICEFISCALE = p_codice_fiscale
+      AND RUOLO = '3';
+
+    SELECT ROW_COUNT() AS deleted_rows;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1153,7 +1550,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1202,7 +1599,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1241,7 +1638,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1284,7 +1681,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1342,25 +1739,173 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spCommunication`(
     IN p_message VARCHAR(500),
     IN p_data TIMESTAMP,
-    IN p_risolto BOOLEAN
+    IN p_risolto BOOLEAN,
+    IN p_approvato BOOLEAN,
+    IN p_letto BOOLEAN,
+    IN p_status VARCHAR(20),
+    IN p_senderRole VARCHAR(20),
+    IN p_senderCf VARCHAR(16),
+    IN p_recipientCf VARCHAR(16),
+    IN p_city VARCHAR(100),
+    IN p_pickpocketAlert BOOLEAN,
+    IN p_fightAlert BOOLEAN,
+    IN p_crowdAlert BOOLEAN,
+    IN p_generalAlert BOOLEAN,
+    IN p_stationName VARCHAR(120),
+    IN p_suspectClothing VARCHAR(180)
 )
 BEGIN
     INSERT INTO RouteX_Update.comunicazioni (
         testo,
         data,
-        risolto
+        risolto,
+        approvato,
+        letto,
+        status,
+        sender_role,
+        sender_cf,
+        recipient_cf,
+        city,
+        pickpocket_alert,
+        fight_alert,
+        crowd_alert,
+        general_alert,
+        station_name,
+        suspect_clothing
     ) VALUES (
         p_message,
         p_data,
-        p_risolto
+        p_risolto,
+        p_approvato,
+        p_letto,
+        p_status,
+        p_senderRole,
+        p_senderCf,
+        p_recipientCf,
+        p_city,
+        p_pickpocketAlert,
+        p_fightAlert,
+        p_crowdAlert,
+        p_generalAlert,
+        p_stationName,
+        p_suspectClothing
     );
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `ApproveCommunication` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ApproveCommunication`(
+    IN p_message VARCHAR(500),
+    IN p_data TIMESTAMP
+)
+BEGIN
+    UPDATE RouteX_Update.comunicazioni
+    SET approvato = 1,
+        status = 'APPROVED'
+    WHERE testo = p_message
+      AND data = p_data;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `ApproveTravelerCommunication` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ApproveTravelerCommunication`(
+    IN p_message VARCHAR(500),
+    IN p_data TIMESTAMP
+)
+BEGIN
+    UPDATE RouteX_Update.comunicazioni
+    SET approvato = 1,
+        status = 'APPROVED'
+    WHERE testo = p_message
+      AND data = p_data
+      AND status = 'PENDING';
+
+    SELECT ROW_COUNT() AS updated_rows;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `RejectTravelerCommunication` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `RejectTravelerCommunication`(
+    IN p_message VARCHAR(500),
+    IN p_data TIMESTAMP
+)
+BEGIN
+    UPDATE RouteX_Update.comunicazioni
+    SET approvato = 0,
+        status = 'REJECTED'
+    WHERE testo = p_message
+      AND data = p_data
+      AND status = 'PENDING';
+
+    SELECT ROW_COUNT() AS updated_rows;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `MarkCommunicationAsRead` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `MarkCommunicationAsRead`(
+    IN p_message VARCHAR(500),
+    IN p_data TIMESTAMP
+)
+BEGIN
+    UPDATE RouteX_Update.comunicazioni
+    SET letto = 1
+    WHERE testo = p_message
+      AND data = p_data;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1373,7 +1918,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1399,7 +1944,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -1447,7 +1992,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -89,6 +89,7 @@
             transform: translateY(-2px);
         }
     </style>
+    <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 <body>
 <%
@@ -99,13 +100,13 @@
     <h1>Admin operation failed</h1>
 
     <% if (errore != null) { %>
-        <p>Si e' verificato un errore durante un'operazione amministrativa.</p>
+        <p>An error occurred during an administrative operation.</p>
         <div class="details">
             <strong>Details:</strong><br>
             <%= org.apache.commons.lang3.StringEscapeUtils.escapeHtml4(errore) %>
         </div>
     <% } else { %>
-        <p>Si e' verificato un errore amministrativo inatteso. Riprova piu' tardi.</p>
+        <p>An unexpected administrative error occurred. Please try again later.</p>
     <% } %>
 
     <a href="indexAdmin.jsp" class="btn-home">

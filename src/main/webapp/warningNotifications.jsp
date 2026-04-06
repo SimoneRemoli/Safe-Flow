@@ -84,6 +84,7 @@
             transform: translateY(-2px);
         }
     </style>
+    <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 <body>
 <div class="warning-container">

@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>Tutte le Segnalazioni</title>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/lib/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 <body class="bg-light">
 <div class="container mt-5">

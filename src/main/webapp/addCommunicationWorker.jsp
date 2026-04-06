@@ -247,6 +247,7 @@
     }
 
 </style>
+<link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 <body>
 <div class="background-blur"></div>

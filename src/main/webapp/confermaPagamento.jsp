@@ -5,10 +5,10 @@
     response.setDateHeader("Expires", 0);
 %>
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>RouteX - Conferma Pagamento</title>
+    <title>RouteX - Payment Confirmation</title>
     <style>
         :root {
             --bg-1: #04111f;
@@ -318,6 +318,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="css/minimal-ui.css">
     <script>
         function updatePaymentMethodUI() {
             const mastercard = document.getElementById("mastercard");
@@ -366,20 +367,20 @@
 <div class="shell">
     <div class="eyebrow">Payment Gateway</div>
     <h1>Simple checkout.<br>Futuristic mood.</h1>
-    <p class="subtitle">Una schermata più pulita per completare l’acquisto, con dettagli Mastercard ordinati e leggibili.</p>
+    <p class="subtitle">A cleaner screen to complete your purchase, with orderly and readable payment details.</p>
 
     <div class="summary-grid">
         <div class="summary-card">
             <strong><%= city %></strong>
-            <span>Città selezionata</span>
+            <span>Selected city</span>
         </div>
         <div class="summary-card">
             <strong><%= quantity %></strong>
-            <span>Numero di biglietti</span>
+            <span>Number of tickets</span>
         </div>
         <div class="summary-card">
             <strong>€ <%= String.format("%.2f", prezzo) %></strong>
-            <span>Totale da pagare</span>
+            <span>Total to pay</span>
         </div>
     </div>
 
@@ -389,31 +390,31 @@
         <input type="hidden" name="totale" value="<%= prezzo %>">
 
         <section class="section">
-            <h2>Metodo di pagamento</h2>
-            <p>Scegli il canale e inserisci solo i dati necessari.</p>
+            <h2>Payment method</h2>
+            <p>Choose the channel and enter only the required details.</p>
 
             <div class="method-grid">
                 <label class="method-card" id="mastercard-card">
                     <input type="radio" name="metodoPagamento" id="mastercard" value="mastercard">
                     <strong>Mastercard</strong>
-                    <span>Pagamento con carta in layout semplice e diretto.</span>
+                    <span>Card payment in a simple and direct layout.</span>
                 </label>
 
                 <label class="method-card" id="paypal-card">
                     <input type="radio" name="metodoPagamento" id="paypal" value="paypal">
                     <strong>PayPal</strong>
-                    <span>Accesso rapido tramite email e codice transazione.</span>
+                    <span>Quick access through email and transaction code.</span>
                 </label>
             </div>
 
             <div id="mastercard-details" class="payment-details">
                 <div class="field-grid">
                     <div class="field-group full">
-                        <label for="numeroCarta">Numero carta</label>
+                        <label for="numeroCarta">Card number</label>
                         <input type="text" id="numeroCarta" name="numeroCarta" placeholder="1234 5678 9012 3456">
                     </div>
                     <div class="field-group">
-                        <label for="scadenza">Scadenza</label>
+                        <label for="scadenza">Expiry date</label>
                         <input type="text" id="scadenza" name="scadenza" placeholder="MM/AA">
                     </div>
                     <div class="field-group">
@@ -430,7 +431,7 @@
                         <input type="text" id="emailPaypal" name="emailPaypal" placeholder="name@example.com">
                     </div>
                     <div class="field-group full">
-                        <label for="codiceTransazione">Codice transazione</label>
+                        <label for="codiceTransazione">Transaction code</label>
                         <input type="text" id="codiceTransazione" name="codiceTransazione" placeholder="PAYPAL123">
                     </div>
                 </div>
@@ -438,27 +439,27 @@
         </section>
 
         <section class="section">
-            <h2>Persistenza</h2>
-            <p>Scegli dove registrare l’operazione.</p>
+            <h2>Persistence</h2>
+            <p>Choose where the operation should be recorded.</p>
 
             <div class="persist-grid">
                 <label class="persist-card active">
                     <input type="radio" name="persistence" id="persistenceJDBC" value="JDBC" checked>
                     <strong>Database (JDBC)</strong>
-                    <span>Salvataggio strutturato nel sistema principale.</span>
+                    <span>Structured storage in the main system.</span>
                 </label>
 
                 <label class="persist-card">
                     <input type="radio" name="persistence" id="persistenceFile" value="FileSystem">
                     <strong>File System (CSV)</strong>
-                    <span>Persistenza locale in formato semplice.</span>
+                    <span>Local persistence in a simple format.</span>
                 </label>
             </div>
         </section>
 
         <div class="actions">
-            <a href="buyTicket" class="btn-link">Annulla</a>
-            <button type="submit" class="btn-submit">Conferma Pagamento</button>
+            <a href="buyTicket" class="btn-link">Cancel</a>
+            <button type="submit" class="btn-submit">Confirm Payment</button>
         </div>
     </form>
 </div>

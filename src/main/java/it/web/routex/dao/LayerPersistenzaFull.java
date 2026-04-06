@@ -17,6 +17,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LayerPersistenzaFull extends LayerPersistenza
@@ -33,7 +34,7 @@ public class LayerPersistenzaFull extends LayerPersistenza
             ResultSet rs = cs.executeQuery();
 
             if (!rs.next()) {
-                throw new LoginNotFoundRemoli("Credenziali non valide per l'autenticazione.", email, password);
+                throw new LoginNotFoundRemoli("Invalid credentials.", email, password);
             }
 
             Credentials c = new Credentials();
@@ -50,6 +51,48 @@ public class LayerPersistenzaFull extends LayerPersistenza
 
         } catch (SQLException e) {
             throw new DAOExceptionRemoli("Errore durante il login: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void registerTraveler(String nome,
+                                 String cognome,
+                                 String codiceFiscale,
+                                 String email,
+                                 String password,
+                                 java.sql.Date dataDiNascita,
+                                 boolean disabile) throws DAOExceptionRemoli {
+
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            conn.setAutoCommit(false);
+
+            try (CallableStatement registerRegistry = conn.prepareCall("{ CALL RouteX_Update.register(?, ?) }");
+                 CallableStatement registerUser = conn.prepareCall("{ CALL RouteX_Update.register_User(?, ?, ?, ?, ?, ?, ?, ?) }")) {
+
+                registerRegistry.setString(1, codiceFiscale);
+                registerRegistry.setString(2, email);
+                registerRegistry.execute();
+
+                registerUser.setString(1, nome);
+                registerUser.setString(2, cognome);
+                registerUser.setString(3, codiceFiscale);
+                registerUser.setString(4, password);
+                registerUser.setString(5, email);
+                registerUser.setDate(6, dataDiNascita);
+                registerUser.setBoolean(7, disabile);
+                registerUser.setInt(8, Ruolo.TRAVELER.getId());
+                registerUser.execute();
+
+                conn.commit();
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            } finally {
+                conn.setAutoCommit(true);
+            }
+
+        } catch (SQLException e) {
+            throw new DAOExceptionRemoli("Error while creating the traveler account: " + e.getMessage(), e);
         }
     }
 
@@ -230,7 +273,20 @@ public class LayerPersistenzaFull extends LayerPersistenza
                         Notification notification = new Notification(
                                 rs.getString("testo"),
                                 rs.getTimestamp("data"),
-                                rs.getBoolean("risolto")
+                                rs.getBoolean("risolto"),
+                                rs.getBoolean("approvato"),
+                                rs.getBoolean("letto"),
+                                rs.getString("status"),
+                                rs.getString("sender_role"),
+                                rs.getString("sender_cf"),
+                                rs.getString("recipient_cf"),
+                                rs.getString("city"),
+                                rs.getBoolean("pickpocket_alert"),
+                                rs.getBoolean("fight_alert"),
+                                rs.getBoolean("crowd_alert"),
+                                rs.getBoolean("general_alert"),
+                                rs.getString("station_name"),
+                                rs.getString("suspect_clothing")
                         );
                         result.add(notification);
                     }
@@ -317,13 +373,27 @@ public class LayerPersistenzaFull extends LayerPersistenza
 
         try (Connection conn = ConnectionFactory.getConnection()) {
 
-            CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.spCommunication(?, ?, ?) }");
+            CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.spCommunication(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) }");
 
             cs.setString(1, n.getMessage());
             cs.setTimestamp(2, n.getDate());
             cs.setBoolean(3, n.isRisolto());
+            cs.setBoolean(4, n.isApprovato());
+            cs.setBoolean(5, n.isLetto());
+            cs.setString(6, n.getStatus());
+            cs.setString(7, n.getSenderRole());
+            cs.setString(8, n.getSenderCf());
+            cs.setString(9, n.getRecipientCf());
+            cs.setString(10, n.getCity());
+            cs.setBoolean(11, n.isPickpocketAlert());
+            cs.setBoolean(12, n.isFightAlert());
+            cs.setBoolean(13, n.isCrowdAlert());
+            cs.setBoolean(14, n.isGeneralAlert());
+            cs.setString(15, n.getStationName());
+            cs.setString(16, n.getSuspectClothing());
 
             cs.execute();
+            invalidateNotificationsCache();
 
         } catch (Exception e) {
             throw new DAOExceptionRemoli(
@@ -345,12 +415,122 @@ public class LayerPersistenzaFull extends LayerPersistenza
             cs.setBoolean(3, n.isRisolto());
 
             cs.execute();
+            invalidateNotificationsCache();
 
         } catch (Exception e) {
             throw new DAOExceptionRemoli(
                     "Errore durante l'aggiornamento della notifica",
                     e
             );
+        }
+    }
+
+    @Override
+    public void approveNotification(Notification n) throws DAOExceptionRemoli {
+
+        try (Connection conn = ConnectionFactory.getConnection()) {
+
+            CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.ApproveCommunication(?, ?) }");
+
+            cs.setString(1, n.getMessage());
+            cs.setTimestamp(2, n.getDate());
+
+            cs.execute();
+            invalidateNotificationsCache();
+
+        } catch (Exception e) {
+            throw new DAOExceptionRemoli(
+                    "Error while approving the notification",
+                    e
+            );
+        }
+    }
+
+    @Override
+    public void deleteNotification(Notification n) throws DAOExceptionRemoli {
+
+        try (Connection conn = ConnectionFactory.getConnection()) {
+
+            CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.DeleteCommunication(?, ?) }");
+
+            cs.setString(1, n.getMessage());
+            cs.setTimestamp(2, n.getDate());
+
+            cs.execute();
+            invalidateNotificationsCache();
+
+        } catch (Exception e) {
+            throw new DAOExceptionRemoli(
+                    "Error while deleting the notification",
+                    e
+            );
+        }
+    }
+
+    @Override
+    public void markNotificationAsRead(Notification n) throws DAOExceptionRemoli {
+
+        try (Connection conn = ConnectionFactory.getConnection()) {
+
+            CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.MarkCommunicationAsRead(?, ?) }");
+
+            cs.setString(1, n.getMessage());
+            cs.setTimestamp(2, n.getDate());
+
+            cs.execute();
+            invalidateNotificationsCache();
+
+        } catch (Exception e) {
+            throw new DAOExceptionRemoli(
+                    "Error while marking the notification as read",
+                    e
+            );
+        }
+    }
+
+    @Override
+    public boolean approvePendingTravelerNotification(Notification n) throws DAOExceptionRemoli {
+        try (Connection conn = ConnectionFactory.getConnection();
+             CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.ApproveTravelerCommunication(?, ?) }")) {
+
+            cs.setString(1, n.getMessage());
+            cs.setTimestamp(2, n.getDate());
+
+            if (cs.execute()) {
+                try (ResultSet rs = cs.getResultSet()) {
+                    boolean updated = rs.next() && rs.getInt("updated_rows") > 0;
+                    if (updated) {
+                        invalidateNotificationsCache();
+                    }
+                    return updated;
+                }
+            }
+            return false;
+        } catch (Exception e) {
+            throw new DAOExceptionRemoli("Error while approving the traveler report", e);
+        }
+    }
+
+    @Override
+    public boolean rejectPendingTravelerNotification(Notification n) throws DAOExceptionRemoli {
+        try (Connection conn = ConnectionFactory.getConnection();
+             CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.RejectTravelerCommunication(?, ?) }")) {
+
+            cs.setString(1, n.getMessage());
+            cs.setTimestamp(2, n.getDate());
+
+            if (cs.execute()) {
+                try (ResultSet rs = cs.getResultSet()) {
+                    boolean updated = rs.next() && rs.getInt("updated_rows") > 0;
+                    if (updated) {
+                        invalidateNotificationsCache();
+                    }
+                    return updated;
+                }
+            }
+            return false;
+        } catch (Exception e) {
+            throw new DAOExceptionRemoli("Error while rejecting the traveler report", e);
         }
     }
     @Override
@@ -395,6 +575,173 @@ public class LayerPersistenzaFull extends LayerPersistenza
         }
 
         return resultList;
+    }
+
+    @Override
+    public List<Credentials> listAdmins() throws DAOExceptionRemoli {
+        List<Credentials> admins = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.ListAdmins() }");
+             ResultSet rs = cs.executeQuery()) {
+
+            while (rs.next()) {
+                Credentials admin = new Credentials();
+                admin.setNome(rs.getString("nome"));
+                admin.setCognome(rs.getString("cognome"));
+                admin.setEmail(rs.getString("email"));
+                admin.setCodiceFiscale(rs.getString("codice_fiscale"));
+                admin.setRuolo(Ruolo.ADMIN);
+                admins.add(admin);
+            }
+
+            return admins;
+        } catch (SQLException e) {
+            throw new DAOExceptionRemoli("Error while loading admin accounts: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void createAdmin(String nome,
+                            String cognome,
+                            String email,
+                            String password,
+                            String codiceFiscale) throws DAOExceptionRemoli {
+        try (Connection conn = ConnectionFactory.getConnection();
+             CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.CreateAdmin(?, ?, ?, ?, ?) }")) {
+
+            cs.setString(1, nome);
+            cs.setString(2, cognome);
+            cs.setString(3, email);
+            cs.setString(4, password);
+            cs.setString(5, codiceFiscale);
+            cs.execute();
+        } catch (SQLException e) {
+            throw new DAOExceptionRemoli("Error while creating the admin account: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public int deleteAdmins(List<String> codiceFiscali) throws DAOExceptionRemoli {
+        int deleted = 0;
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.DeleteAdminByCodiceFiscale(?) }")) {
+
+            for (String codiceFiscale : codiceFiscali) {
+                cs.setString(1, codiceFiscale);
+                try (ResultSet rs = cs.executeQuery()) {
+                    if (rs.next()) {
+                        deleted += rs.getInt("deleted_rows");
+                    }
+                }
+            }
+
+            return deleted;
+        } catch (SQLException e) {
+            throw new DAOExceptionRemoli("Error while deleting admin accounts: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<Credentials> listWorkers() throws DAOExceptionRemoli {
+        return listPermessiByRole("ListWorkers");
+    }
+
+    @Override
+    public int deleteWorkers(List<String> codiceFiscali) throws DAOExceptionRemoli {
+        return deletePermessiByProcedure(codiceFiscali, "DeleteWorkerByCodiceFiscale", "worker");
+    }
+
+    @Override
+    public List<Credentials> listTravelers() throws DAOExceptionRemoli {
+        List<Credentials> travelers = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.ListTravelers() }");
+             ResultSet rs = cs.executeQuery()) {
+
+            while (rs.next()) {
+                Credentials traveler = new Credentials();
+                traveler.setNome(rs.getString("nome"));
+                traveler.setCognome(rs.getString("cognome"));
+                traveler.setEmail(rs.getString("email"));
+                traveler.setCodiceFiscale(rs.getString("codice_fiscale"));
+                traveler.setRuolo(Ruolo.TRAVELER);
+                travelers.add(traveler);
+            }
+
+            return travelers;
+        } catch (SQLException e) {
+            throw new DAOExceptionRemoli("Error while loading traveler accounts: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public int deleteTravelers(List<String> codiceFiscali) throws DAOExceptionRemoli {
+        int deleted = 0;
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update.DeleteTravelerByCodiceFiscale(?) }")) {
+
+            for (String codiceFiscale : codiceFiscali) {
+                cs.setString(1, codiceFiscale);
+                try (ResultSet rs = cs.executeQuery()) {
+                    if (rs.next()) {
+                        deleted += rs.getInt("deleted_rows");
+                    }
+                }
+            }
+
+            return deleted;
+        } catch (SQLException e) {
+            throw new DAOExceptionRemoli("Error while deleting traveler accounts: " + e.getMessage(), e);
+        }
+    }
+
+    private List<Credentials> listPermessiByRole(String procedureName) throws DAOExceptionRemoli {
+        List<Credentials> users = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update." + procedureName + "() }");
+             ResultSet rs = cs.executeQuery()) {
+
+            while (rs.next()) {
+                Credentials user = new Credentials();
+                user.setNome(rs.getString("nome"));
+                user.setCognome(rs.getString("cognome"));
+                user.setEmail(rs.getString("email"));
+                user.setCodiceFiscale(rs.getString("codice_fiscale"));
+                users.add(user);
+            }
+
+            return users;
+        } catch (SQLException e) {
+            throw new DAOExceptionRemoli("Error while loading accounts: " + e.getMessage(), e);
+        }
+    }
+
+    private int deletePermessiByProcedure(List<String> codiceFiscali,
+                                          String procedureName,
+                                          String accountLabel) throws DAOExceptionRemoli {
+        int deleted = 0;
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             CallableStatement cs = conn.prepareCall("{ CALL RouteX_Update." + procedureName + "(?) }")) {
+
+            for (String codiceFiscale : codiceFiscali) {
+                cs.setString(1, codiceFiscale);
+                try (ResultSet rs = cs.executeQuery()) {
+                    if (rs.next()) {
+                        deleted += rs.getInt("deleted_rows");
+                    }
+                }
+            }
+
+            return deleted;
+        } catch (SQLException e) {
+            throw new DAOExceptionRemoli("Error while deleting " + accountLabel + " accounts: " + e.getMessage(), e);
+        }
     }
 
     @Override
@@ -448,6 +795,58 @@ public class LayerPersistenzaFull extends LayerPersistenza
                     "Errore durante la connessione al database",
                     e
             );
+        }
+    }
+
+    @Override
+    public int deleteRoutesBySignatures(String cf, List<String> routeSignatures) throws DAOExceptionRemoli {
+        int deleted = 0;
+        String procedure = "{ CALL RouteX_Update.DeleteRouteBySignature(?,?,?,?,?,?,?,?,?,?,?,?,?) }";
+
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            for (String signature : routeSignatures) {
+                String[] parts = signature.split("\\Q||\\E", -1);
+                if (parts.length != 11) {
+                    continue;
+                }
+
+                try (CallableStatement cs = conn.prepareCall(procedure)) {
+                    cs.setString(1, cf);
+                    cs.setString(2, parts[0]);
+                    cs.setString(3, parts[1]);
+                    cs.setString(4, parts[2]);
+                    cs.setString(5, parts[3]);
+                    cs.setInt(6, Integer.parseInt(parts[4]));
+                    cs.setString(7, parts[5]);
+                    cs.setString(8, parts[6]);
+                    cs.setInt(9, Integer.parseInt(parts[7]));
+                    cs.setDouble(10, Double.parseDouble(parts[8]));
+                    cs.setInt(11, Integer.parseInt(parts[9]));
+                    cs.setDouble(12, Double.parseDouble(parts[10]));
+                    cs.registerOutParameter(13, java.sql.Types.INTEGER);
+                    cs.execute();
+                    deleted += cs.getInt(13);
+                }
+            }
+
+            return deleted;
+        } catch (SQLException | NumberFormatException ex) {
+            throw new DAOExceptionRemoli("Errore durante l'eliminazione dei percorsi", ex);
+        }
+    }
+
+    @Override
+    public int deleteAllRoutes(String cf) throws DAOExceptionRemoli {
+        String procedure = "{ CALL RouteX_Update.DeleteAllRoutes(?, ?) }";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             CallableStatement cs = conn.prepareCall(procedure)) {
+            cs.setString(1, cf);
+            cs.registerOutParameter(2, java.sql.Types.INTEGER);
+            cs.execute();
+            return cs.getInt(2);
+        } catch (SQLException ex) {
+            throw new DAOExceptionRemoli("Errore durante l'eliminazione completa dei percorsi", ex);
         }
     }
 

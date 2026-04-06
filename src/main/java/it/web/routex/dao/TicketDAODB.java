@@ -55,6 +55,43 @@ public class TicketDAODB extends TicketDAOLayer {
         }
     }
 
+    @Override
+    public int deleteTicketsByCodes(String cf, List<String> ticketCodes) throws DAOExceptionRemoli {
+        int deleted = 0;
+        String procedure = "{ CALL RouteX_Update.DeleteTicketByCode(?, ?, ?) }";
+
+        try (Connection conn = ConnectionFactory.getConnection()) {
+            for (String ticketCode : ticketCodes) {
+                try (CallableStatement cs = conn.prepareCall(procedure)) {
+                    cs.setString(1, cf);
+                    cs.setString(2, ticketCode);
+                    cs.registerOutParameter(3, java.sql.Types.INTEGER);
+                    cs.execute();
+                    deleted += cs.getInt(3);
+                }
+            }
+            return deleted;
+        } catch (SQLException ex) {
+            throw new DAOExceptionRemoli("Errore DB durante l'eliminazione dei biglietti", ex);
+        }
+    }
+
+    @Override
+    public int deleteAllTickets(String cf) throws DAOExceptionRemoli {
+        String procedure = "{ CALL RouteX_Update.DeleteAllTickets(?, ?) }";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             CallableStatement cs = conn.prepareCall(procedure)) {
+
+            cs.setString(1, cf);
+            cs.registerOutParameter(2, java.sql.Types.INTEGER);
+            cs.execute();
+            return cs.getInt(2);
+        } catch (SQLException ex) {
+            throw new DAOExceptionRemoli("Errore DB durante l'eliminazione completa dei biglietti", ex);
+        }
+    }
+
 
     @Override
     public void salvataggio(Credentials cred, List<String> codiciBiglietti, String metodopayment, String city) throws CredentialsExceptionRemoli {

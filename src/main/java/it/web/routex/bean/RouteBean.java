@@ -12,6 +12,7 @@ public class RouteBean
     private Double tempoDiArrivo;
     private int nStazioniCitta;
     private Double percTerrenoUtilizzato;
+    private String signature;
 
     public String getCitta() {
         return citta;
@@ -53,6 +54,10 @@ public class RouteBean
         return stazInterscambio;
     }
 
+    public String getSignature() {
+        return signature;
+    }
+
     public void setArrivo(String arrivo) {
         this.arrivo = arrivo;
     }
@@ -91,5 +96,9 @@ public class RouteBean
 
     public void setTempoDiArrivo(Double tempoDiArrivo) {
         this.tempoDiArrivo = tempoDiArrivo;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
     }
 }

@@ -34,6 +34,11 @@ public final class ViewNotificationsCLI
         System.out.println("           NOTIFICHE");
         System.out.println("====================================");
 
+        if (notifiche == null || notifiche.isEmpty()) {
+            System.out.println("No notifications available.");
+            return;
+        }
+
         int index = 1;
 
         for (MessageBean msg : notifiche)

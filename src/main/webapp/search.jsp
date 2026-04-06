@@ -13,17 +13,15 @@
     <title>RouteX - Metro Finder</title>
     <style>
         :root {
-            --bg-deep: #04111f;
-            --bg-mid: #0b1f36;
-            --panel: rgba(6, 18, 33, 0.76);
-            --panel-strong: rgba(8, 24, 44, 0.9);
-            --line: rgba(120, 214, 255, 0.24);
-            --text: #ecf7ff;
-            --muted: #8ba5be;
-            --accent: #6ff7ff;
-            --accent-2: #53a9ff;
-            --success: #a8ffbf;
-            --shadow: 0 30px 80px rgba(0, 0, 0, 0.42);
+            --bg: #f3f5f8;
+            --surface: #ffffff;
+            --surface-soft: #f8fafc;
+            --border: #d8e0ea;
+            --text: #16202a;
+            --muted: #64748b;
+            --accent: #0f6dff;
+            --accent-dark: #0b5fe0;
+            --shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
         }
 
         * {
@@ -33,397 +31,275 @@
         body {
             margin: 0;
             min-height: 100vh;
-            overflow-x: hidden;
+            background: var(--bg);
             color: var(--text);
-            font-family: "Trebuchet MS", "Gill Sans", sans-serif;
-            background:
-                radial-gradient(circle at top left, rgba(111, 247, 255, 0.16), transparent 28%),
-                radial-gradient(circle at 80% 20%, rgba(83, 169, 255, 0.18), transparent 20%),
-                radial-gradient(circle at bottom center, rgba(50, 120, 255, 0.18), transparent 32%),
-                linear-gradient(135deg, var(--bg-deep), var(--bg-mid) 55%, #050b16);
-            position: relative;
-        }
-
-        body::before,
-        body::after {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-        }
-
-        body::before {
-            background-image:
-                radial-gradient(circle, rgba(255, 255, 255, 0.7) 1px, transparent 1px),
-                radial-gradient(circle, rgba(111, 247, 255, 0.4) 1px, transparent 1px);
-            background-size: 140px 140px, 220px 220px;
-            background-position: 0 0, 40px 80px;
-            opacity: 0.22;
-            animation: drift 22s linear infinite;
-        }
-
-        body::after {
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 22%, transparent 78%, rgba(111, 247, 255, 0.06));
+            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
         }
 
         .top-nav {
-            position: absolute;
-            top: 24px;
-            right: 32px;
+            width: min(1180px, calc(100% - 32px));
+            margin: 20px auto 0;
             display: flex;
-            gap: 12px;
-            z-index: 5;
+            justify-content: flex-end;
+            gap: 10px;
         }
 
         .top-nav a {
             text-decoration: none;
             color: var(--text);
-            padding: 10px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 999px;
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(14px);
-            transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
-        }
-
-        .top-nav a:hover {
-            transform: translateY(-2px);
-            border-color: rgba(111, 247, 255, 0.48);
-            background: rgba(111, 247, 255, 0.1);
+            padding: 10px 16px;
+            font-weight: 600;
         }
 
         .page-shell {
-            width: min(1320px, calc(100% - 32px));
-            margin: 88px auto 32px;
-            padding: 28px;
-            border: 1px solid var(--line);
-            border-radius: 32px;
-            background: linear-gradient(180deg, rgba(8, 24, 44, 0.82), rgba(4, 13, 25, 0.88));
+            width: min(1180px, calc(100% - 32px));
+            margin: 16px auto 24px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
             box-shadow: var(--shadow);
-            backdrop-filter: blur(16px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .page-shell::before {
-            content: "";
-            position: absolute;
-            inset: auto -15% -35% auto;
-            width: 420px;
-            height: 420px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(111, 247, 255, 0.14), transparent 62%);
-            filter: blur(12px);
+            padding: 28px;
         }
 
         .hero {
             display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 28px;
-            align-items: stretch;
+            grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.95fr);
+            gap: 24px;
+            align-items: start;
         }
 
-        .hero-copy,
-        .preview-panel {
-            position: relative;
-            z-index: 1;
+        .hero-copy {
+            padding-right: 8px;
         }
 
         .eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 14px;
+            display: inline-block;
+            padding: 7px 12px;
             border-radius: 999px;
-            background: rgba(111, 247, 255, 0.08);
-            border: 1px solid rgba(111, 247, 255, 0.22);
+            border: 1px solid #cfe0ff;
+            background: #eaf1ff;
             color: var(--accent);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
-            letter-spacing: 0.18em;
-            font-size: 11px;
         }
 
         .hero h1 {
             margin: 18px 0 14px;
-            font-size: clamp(2.5rem, 4vw, 4.8rem);
-            line-height: 0.95;
-            letter-spacing: 0.02em;
+            font-size: clamp(2.3rem, 4vw, 3.8rem);
+            line-height: 1.02;
+            letter-spacing: -0.03em;
         }
 
         .hero p {
             margin: 0;
-            max-width: 720px;
+            max-width: 620px;
             color: var(--muted);
-            font-size: 1.05rem;
+            font-size: 1rem;
             line-height: 1.7;
         }
 
         .preview-panel {
-            border-radius: 28px;
-            border: 1px solid rgba(111, 247, 255, 0.16);
-            background:
-                linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent),
-                radial-gradient(circle at top, rgba(111, 247, 255, 0.16), transparent 54%),
-                var(--panel);
-            padding: 22px;
-            min-height: 280px;
+            background: var(--surface-soft);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 18px;
         }
 
         .preview-meta {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             gap: 12px;
-            margin-bottom: 18px;
+            margin-bottom: 14px;
         }
 
         .preview-meta strong {
             display: block;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
         }
 
         .preview-meta span {
             color: var(--muted);
-            font-size: 0.9rem;
+            line-height: 1.5;
+            font-size: 0.92rem;
         }
 
         .status-pill {
             padding: 8px 12px;
             border-radius: 999px;
-            border: 1px solid rgba(168, 255, 191, 0.24);
-            color: var(--success);
-            background: rgba(168, 255, 191, 0.08);
+            border: 1px solid #cfe0ff;
+            background: #eaf1ff;
+            color: var(--accent);
             white-space: nowrap;
             font-size: 0.85rem;
+            font-weight: 600;
         }
 
         .map-frame {
             position: relative;
-            border-radius: 24px;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(0, 0, 0, 0.24);
-            min-height: 220px;
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            background: #eef3f8;
+            aspect-ratio: 1.25 / 1;
         }
 
         .map-frame img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
             display: block;
-            filter: saturate(1.12) contrast(1.04);
+            background: #eef3f8;
         }
 
         .map-overlay {
             position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(135deg, rgba(3, 10, 21, 0.1), rgba(3, 10, 21, 0.72)),
-                radial-gradient(circle at 20% 20%, rgba(111, 247, 255, 0.16), transparent 34%);
+            left: 0;
+            right: 0;
+            bottom: 0;
             display: flex;
-            align-items: flex-end;
             justify-content: space-between;
-            padding: 18px;
-        }
-
-        .map-overlay span {
-            font-size: 0.95rem;
-            color: #d8f8ff;
-            text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+            gap: 12px;
+            padding: 12px 14px;
+            background: linear-gradient(180deg, transparent, rgba(255,255,255,0.92));
+            font-size: 0.86rem;
+            color: var(--muted);
         }
 
         .orbit-section {
-            margin-top: 30px;
             display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 28px;
-            align-items: start;
+            grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+            gap: 20px;
+            margin-top: 24px;
         }
 
         .city-panel,
         .form-panel {
-            background: var(--panel);
-            border: 1px solid var(--line);
-            border-radius: 28px;
-            padding: 24px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .city-panel::before,
-        .form-panel::before {
-            content: "";
-            position: absolute;
-            inset: -40% auto auto 55%;
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(83, 169, 255, 0.1), transparent 70%);
+            background: var(--surface-soft);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
         }
 
         .section-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 22px;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 16px;
         }
 
         .section-title h2 {
-            margin: 0;
+            margin: 0 0 6px;
             font-size: 1.4rem;
         }
 
         .section-title p {
-            margin: 6px 0 0;
+            margin: 0;
             color: var(--muted);
-            font-size: 0.94rem;
+            line-height: 1.6;
         }
 
         .city-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 20px;
-            position: relative;
-            z-index: 1;
+            gap: 14px;
         }
 
         .city-card {
-            position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
-            min-height: 220px;
-            padding: 20px;
-            background:
-                linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)),
-                rgba(7, 18, 32, 0.78);
+            border: 1px solid var(--border);
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 18px;
+            text-align: left;
             cursor: pointer;
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-            overflow: hidden;
+            min-height: 0;
         }
 
         .city-card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(111, 247, 255, 0.4);
-            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.28);
+            border-color: #bfd1e4;
+            background: #fcfdff;
         }
 
         .city-card.active {
-            border-color: rgba(111, 247, 255, 0.8);
-            box-shadow: 0 0 0 1px rgba(111, 247, 255, 0.18), 0 24px 54px rgba(21, 124, 255, 0.22);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(15, 109, 255, 0.08);
         }
 
         .planet-wrap {
-            position: relative;
-            height: 116px;
+            width: 48px;
+            height: 48px;
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 16px;
-        }
-
-        .orbit-ring,
-        .orbit-ring::before {
-            position: absolute;
-            border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            content: "";
         }
 
         .orbit-ring {
-            width: 122px;
-            height: 122px;
-            animation: rotateRing 18s linear infinite;
-        }
-
-        .orbit-ring::before {
-            inset: 10px;
-            border-color: rgba(111, 247, 255, 0.22);
-            animation: pulse 5s ease-in-out infinite;
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid #d4dfeb;
         }
 
         .planet {
-            width: 76px;
-            height: 76px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), var(--planet-core) 38%, var(--planet-edge));
-            box-shadow:
-                0 0 0 8px rgba(255, 255, 255, 0.03),
-                0 0 36px var(--planet-glow);
-            position: relative;
-            animation: levitate 5.5s ease-in-out infinite;
-        }
-
-        .planet::before,
-        .planet::after {
-            content: "";
-            position: absolute;
-            border-radius: 50%;
-        }
-
-        .planet::before {
-            inset: 12px 10px 24px 18px;
-            background: rgba(255, 255, 255, 0.2);
-            filter: blur(6px);
-        }
-
-        .planet::after {
-            width: 108px;
-            height: 18px;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%) rotate(-18deg);
-            border: 2px solid rgba(255, 255, 255, 0.22);
-            opacity: 0.7;
+            background: var(--planet-edge, #0f6dff);
         }
 
         .city-card h3 {
-            margin: 0;
-            font-size: 1.28rem;
+            margin: 0 0 8px;
+            font-size: 1.08rem;
         }
 
-        .city-card p {
-            margin: 8px 0 0;
+        .city-description {
+            margin: 0;
             color: var(--muted);
-            line-height: 1.5;
-            font-size: 0.92rem;
+            line-height: 1.55;
+            font-size: 0.93rem;
+            min-height: 44px;
         }
 
         .city-stats {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 10px;
             margin-top: 14px;
-            font-size: 0.84rem;
-            color: #d9eeff;
         }
 
         .city-badge {
+            display: inline-block;
             padding: 6px 10px;
             border-radius: 999px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: #eef4fb;
+            color: var(--accent);
+            font-size: 0.82rem;
+            font-weight: 600;
         }
 
-        .form-panel form {
-            position: relative;
-            z-index: 1;
+        .city-count {
+            color: var(--muted);
+            font-size: 0.84rem;
         }
 
         .selected-city-banner {
-            margin-bottom: 18px;
-            padding: 16px 18px;
-            border-radius: 20px;
-            border: 1px solid rgba(111, 247, 255, 0.18);
-            background: linear-gradient(135deg, rgba(111, 247, 255, 0.08), rgba(83, 169, 255, 0.06));
+            margin-bottom: 16px;
+            padding: 14px 16px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: #ffffff;
         }
 
         .selected-city-banner strong {
             display: block;
-            font-size: 1rem;
             margin-bottom: 4px;
+            font-size: 1rem;
         }
 
         .selected-city-banner span {
@@ -439,31 +315,28 @@
         .field-group label {
             display: block;
             margin-bottom: 8px;
-            color: #dff8ff;
             font-size: 0.92rem;
-            letter-spacing: 0.04em;
+            font-weight: 600;
         }
 
         .field-group input {
             width: 100%;
-            padding: 16px 18px;
-            border-radius: 18px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            background: rgba(255, 255, 255, 0.05);
+            padding: 14px 16px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: #ffffff;
             color: var(--text);
-            font-size: 1rem;
+            font-size: 0.98rem;
             outline: none;
-            transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
-        }
-
-        .field-group input::placeholder {
-            color: #6f87a1;
         }
 
         .field-group input:focus {
-            border-color: rgba(111, 247, 255, 0.55);
-            box-shadow: 0 0 0 4px rgba(111, 247, 255, 0.08);
-            transform: translateY(-1px);
+            border-color: #9ab8f8;
+            box-shadow: 0 0 0 3px rgba(15, 109, 255, 0.08);
+        }
+
+        .field-group input::placeholder {
+            color: #8b98a8;
         }
 
         .suggestions-box {
@@ -474,11 +347,10 @@
             margin: 0;
             padding: 8px;
             list-style: none;
-            border-radius: 18px;
-            border: 1px solid rgba(111, 247, 255, 0.18);
-            background: rgba(7, 18, 32, 0.96);
-            backdrop-filter: blur(16px);
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: #ffffff;
+            box-shadow: var(--shadow);
             max-height: 220px;
             overflow-y: auto;
             z-index: 20;
@@ -491,127 +363,92 @@
 
         .suggestion-item {
             width: 100%;
-            padding: 12px 14px;
+            padding: 10px 12px;
             border: none;
-            border-radius: 14px;
+            border-radius: 10px;
             background: transparent;
             color: var(--text);
             text-align: left;
             cursor: pointer;
-            transition: background 0.2s ease, transform 0.2s ease;
         }
 
         .suggestion-item:hover,
         .suggestion-item.active {
-            background: rgba(111, 247, 255, 0.12);
-            transform: translateX(2px);
+            background: #eef4fb;
         }
 
         .suggestion-item mark {
-            color: #04111f;
-            background: linear-gradient(90deg, #6ff7ff, #a9ffe8);
-            padding: 0 4px;
-            border-radius: 6px;
+            color: var(--accent);
+            background: transparent;
+            font-weight: 700;
         }
 
         .hint-row {
             display: flex;
             justify-content: space-between;
-            gap: 16px;
-            margin: 12px 0 22px;
+            gap: 12px;
+            margin: 10px 0 18px;
             color: var(--muted);
             font-size: 0.84rem;
         }
 
         .submit-btn {
             width: 100%;
-            padding: 17px 24px;
-            border: none;
+            padding: 15px 18px;
+            border: 1px solid var(--accent);
             border-radius: 999px;
-            color: #04111f;
+            background: var(--accent);
+            color: #ffffff;
+            font-size: 0.96rem;
             font-weight: 700;
-            font-size: 1rem;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.04em;
             text-transform: uppercase;
-            background: linear-gradient(90deg, var(--accent), #89ffd1 52%, #8dd8ff);
             cursor: pointer;
-            box-shadow: 0 20px 34px rgba(111, 247, 255, 0.22);
-            transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
         }
 
         .submit-btn:hover:not(:disabled) {
-            transform: translateY(-3px) scale(1.01);
-            box-shadow: 0 24px 42px rgba(111, 247, 255, 0.28);
+            background: var(--accent-dark);
+            border-color: var(--accent-dark);
         }
 
         .submit-btn:disabled {
             opacity: 0.45;
             cursor: not-allowed;
-            filter: grayscale(0.2);
-            box-shadow: none;
         }
 
         .logo-mark {
-            margin-top: 22px;
+            margin-top: 18px;
             text-align: center;
-            opacity: 0.86;
         }
 
         .logo-mark img {
-            max-width: 210px;
+            max-width: 170px;
             width: 100%;
+            opacity: 0.9;
         }
 
-        @keyframes drift {
-            from { transform: translateY(0); }
-            50% { transform: translateY(-16px); }
-            to { transform: translateY(0); }
-        }
-
-        @keyframes levitate {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-9px) scale(1.03); }
-        }
-
-        @keyframes rotateRing {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.35; transform: scale(1); }
-            50% { opacity: 0.9; transform: scale(1.04); }
-        }
-
-        @media (max-width: 1080px) {
+        @media (max-width: 980px) {
             .hero,
             .orbit-section {
                 grid-template-columns: 1fr;
             }
-
-            .city-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
         }
 
         @media (max-width: 720px) {
+            .top-nav,
             .page-shell {
-                width: min(100% - 16px, 1320px);
-                margin-top: 92px;
+                width: min(100% - 16px, 1180px);
+            }
+
+            .page-shell {
                 padding: 18px;
-                border-radius: 24px;
+                border-radius: 18px;
+                margin-top: 8px;
             }
 
             .top-nav {
-                top: 18px;
-                right: 16px;
-                left: 16px;
-                justify-content: flex-end;
                 flex-wrap: wrap;
-            }
-
-            .hero h1 {
-                line-height: 1;
+                justify-content: flex-end;
             }
 
             .city-grid {
@@ -619,8 +456,7 @@
             }
 
             .preview-meta,
-            .hint-row,
-            .section-title {
+            .hint-row {
                 flex-direction: column;
                 align-items: flex-start;
             }
@@ -643,26 +479,26 @@
 <div class="top-nav">
     <a href="indexLogged.jsp">Home</a>
     <a href="logout">Logout</a>
-    <a href="areaRiservata">Area riservata</a>
+    <a href="areaRiservata">Reserved Area</a>
 </div>
 <% } %>
 
 <div class="page-shell">
     <section class="hero">
         <div class="hero-copy">
-            <div class="eyebrow">Urban Metro Nexus</div>
-            <h1>Choose a city.<br>Launch the network.</h1>
+            <div class="eyebrow">Metro Search</div>
+            <h1>Choose a city. Launch the network.</h1>
             <p>
-                Entra in una mappa urbana immersiva: seleziona il nodo metropolitano come se fosse un pianeta,
-                visualizza subito la rete disponibile e prepara il tuo percorso nel cuore della mobilita urbana.
+                Select a metro network, preview the map instantly, and build your route
+                with a cleaner, more readable interface and no unnecessary visual noise.
             </p>
         </div>
 
         <aside class="preview-panel">
             <div class="preview-meta">
                 <div>
-                    <strong id="previewTitle">Metro constellation ready</strong>
-                    <span id="previewSubtitle">Select a city planet to activate its map.</span>
+                    <strong id="previewTitle">Metro network ready</strong>
+                    <span id="previewSubtitle">Select a city to activate its map.</span>
                 </div>
                 <div class="status-pill" id="previewStatus">Awaiting selection</div>
             </div>
@@ -680,10 +516,8 @@
     <section class="orbit-section">
         <div class="city-panel">
             <div class="section-title">
-                <div>
-                    <h2>City Galaxy</h2>
-                    <p>Clicca su un pianeta per scegliere la rete metropolitana da esplorare.</p>
-                </div>
+                <h2>Select city</h2>
+                <p>Choose the metro network you want to explore.</p>
             </div>
 
             <div class="city-grid">
@@ -691,18 +525,15 @@
                     if (cities != null && !cities.isEmpty()) {
                         for (CityBean c : cities) {
                 %>
-                <button
-                        type="button"
-                        class="city-card"
-                        data-city="<%= c.getName() %>">
+                <button type="button" class="city-card" data-city="<%= c.getName() %>">
                     <div class="planet-wrap">
                         <div class="orbit-ring"></div>
                         <div class="planet"></div>
                     </div>
                     <h3><%= c.getName() %></h3>
-                    <p class="city-description">Interconnected metro system ready for route exploration.</p>
+                    <p class="city-description">Metro network ready for route exploration.</p>
                     <div class="city-stats">
-                        <span class="city-badge">Click to activate</span>
+                        <span class="city-badge">Select</span>
                         <span class="city-count">0 stations</span>
                     </div>
                 </button>
@@ -716,7 +547,7 @@
                         <div class="planet"></div>
                     </div>
                     <h3>No cities available</h3>
-                    <p class="city-description">Il catalogo delle reti metropolitane non e disponibile al momento.</p>
+                    <p class="city-description">The metro network catalog is currently unavailable.</p>
                     <div class="city-stats">
                         <span class="city-badge">Unavailable</span>
                         <span class="city-count">0 stations</span>
@@ -730,10 +561,8 @@
 
         <div class="form-panel">
             <div class="section-title">
-                <div>
-                    <h2>Build Route</h2>
-                    <p>Una volta selezionata la citta, inserisci stazione di partenza e arrivo.</p>
-                </div>
+                <h2>Build route</h2>
+                <p>Enter your departure and arrival stations after choosing a city.</p>
             </div>
 
             <form action="PathControllerGrafico" method="post" name="select" autocomplete="off">
@@ -741,7 +570,7 @@
 
                 <div class="selected-city-banner">
                     <strong id="selectedCityLabel">No city selected</strong>
-                    <span id="selectedCityHint">Select one of the animated planets to unlock the route builder.</span>
+                    <span id="selectedCityHint">Select a city to unlock the route builder.</span>
                 </div>
 
                 <div class="field-group">
@@ -758,7 +587,7 @@
 
                 <div class="hint-row">
                     <span id="stationsHint">No station catalog loaded.</span>
-                    <span>Tip: i suggerimenti appaiono sotto mentre scrivi.</span>
+                    <span>Suggestions appear while you type.</span>
                 </div>
 
                 <button type="submit" id="submitBtn" class="submit-btn" disabled>Find Route</button>
@@ -1013,6 +842,7 @@
             planet.style.setProperty("--planet-core", theme.core);
             planet.style.setProperty("--planet-edge", theme.edge);
             planet.style.setProperty("--planet-glow", theme.glow);
+            planet.style.background = theme.edge;
         }
 
         if (description && theme) {

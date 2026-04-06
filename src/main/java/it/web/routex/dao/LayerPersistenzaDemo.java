@@ -1,8 +1,10 @@
 package it.web.routex.dao;
 
 import it.web.routex.demo.*;
+import it.web.routex.enumerator.Ruolo;
 import it.web.routex.exception.*;
 import it.web.routex.model.*;
+import it.web.routex.utility.builder.UserBuilder;
 import it.web.routex.utility.builder.RouteBuilder;
 import it.web.routex.utility.singleton.Credentials;
 import org.slf4j.Logger;
@@ -11,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class LayerPersistenzaDemo extends LayerPersistenza{
@@ -38,7 +42,7 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
                 }
             }
 
-            throw new LoginNotFoundRemoli("Credenziali non valide.", email, password);
+            throw new LoginNotFoundRemoli("Invalid credentials.", email, password);
 
         } catch (LoginNotFoundRemoli e) {
             throw e;
@@ -47,6 +51,44 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
                     "Errore durante il login in modalità DEMO: " + e.getMessage(),
                     e
             );
+        }
+    }
+
+    @Override
+    public void registerTraveler(String nome,
+                                 String cognome,
+                                 String codiceFiscale,
+                                 String email,
+                                 String password,
+                                 java.sql.Date dataDiNascita,
+                                 boolean disabile) throws DAOExceptionRemoli {
+
+        try {
+            for (User user : DemoStorage.getUsers()) {
+                if (user.getEmail().equalsIgnoreCase(email)) {
+                    throw new DAOExceptionRemoli("An account with this email already exists.");
+                }
+                if (user.getCodiceFiscale().equalsIgnoreCase(codiceFiscale)) {
+                    throw new DAOExceptionRemoli("An account with this tax code already exists.");
+                }
+            }
+
+            User newTraveler = new UserBuilder(codiceFiscale)
+                    .nome(nome)
+                    .cognome(cognome)
+                    .dataDiNascita(dataDiNascita)
+                    .disabile(disabile)
+                    .ruolo(Ruolo.TRAVELER)
+                    .email(email)
+                    .password(password)
+                    .build();
+
+            DemoStorage.getUsers().add(newTraveler);
+
+        } catch (DAOExceptionRemoli e) {
+            throw e;
+        } catch (Exception e) {
+            throw new DAOExceptionRemoli("Error while creating the traveler account.", e);
         }
     }
 
@@ -223,7 +265,20 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
                 Notification copy = new Notification(
                         n.getMessage(),
                         n.getDate(),
-                        n.isRisolto()
+                        n.isRisolto(),
+                        n.isApprovato(),
+                        n.isLetto(),
+                        n.getStatus(),
+                        n.getSenderRole(),
+                        n.getSenderCf(),
+                        n.getRecipientCf(),
+                        n.getCity(),
+                        n.isPickpocketAlert(),
+                        n.isFightAlert(),
+                        n.isCrowdAlert(),
+                        n.isGeneralAlert(),
+                        n.getStationName(),
+                        n.getSuspectClothing()
                 );
 
                 result.add(copy);
@@ -237,6 +292,137 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
                     "Errore nel recupero delle notifiche (DEMO)",
                     e
             );
+        }
+    }
+
+    @Override
+    public List<Credentials> listAdmins() throws DAOExceptionRemoli {
+        try {
+            List<Credentials> admins = new ArrayList<>();
+
+            for (User user : DemoStorage.getUsers()) {
+                if (user.getRuolo() == Ruolo.ADMIN) {
+                    Credentials admin = new Credentials();
+                    admin.setNome(user.getNome());
+                    admin.setCognome(user.getCognome());
+                    admin.setEmail(user.getEmail());
+                    admin.setCodiceFiscale(user.getCodiceFiscale());
+                    admin.setPassword(user.getPassword());
+                    admin.setRuolo(user.getRuolo());
+                    admins.add(admin);
+                }
+            }
+
+            return admins;
+        } catch (Exception e) {
+            throw new DAOExceptionRemoli("Error while loading admin accounts in demo mode: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void createAdmin(String nome,
+                            String cognome,
+                            String email,
+                            String password,
+                            String codiceFiscale) throws DAOExceptionRemoli {
+        try {
+            DemoStorage.getUsers().add(
+                    new UserBuilder(codiceFiscale)
+                            .nome(nome)
+                            .cognome(cognome)
+                            .dataDiNascita(java.sql.Date.valueOf("2000-01-01"))
+                            .disabile(false)
+                            .ruolo(Ruolo.ADMIN)
+                            .email(email)
+                            .password(password)
+                            .build()
+            );
+        } catch (Exception e) {
+            throw new DAOExceptionRemoli("Error while creating the admin account in demo mode: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public int deleteAdmins(List<String> codiceFiscali) throws DAOExceptionRemoli {
+        try {
+            int deleted = 0;
+            Iterator<User> iterator = DemoStorage.getUsers().iterator();
+
+            while (iterator.hasNext()) {
+                User user = iterator.next();
+                if (user.getRuolo() == Ruolo.ADMIN && codiceFiscali.contains(user.getCodiceFiscale().toUpperCase())) {
+                    iterator.remove();
+                    deleted++;
+                }
+            }
+
+            return deleted;
+        } catch (Exception e) {
+            throw new DAOExceptionRemoli("Error while deleting admin accounts in demo mode: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<Credentials> listWorkers() throws DAOExceptionRemoli {
+        return listUsersByRole(Ruolo.WORKER);
+    }
+
+    @Override
+    public int deleteWorkers(List<String> codiceFiscali) throws DAOExceptionRemoli {
+        return deleteUsersByRole(codiceFiscali, Ruolo.WORKER, "worker");
+    }
+
+    @Override
+    public List<Credentials> listTravelers() throws DAOExceptionRemoli {
+        return listUsersByRole(Ruolo.TRAVELER);
+    }
+
+    @Override
+    public int deleteTravelers(List<String> codiceFiscali) throws DAOExceptionRemoli {
+        return deleteUsersByRole(codiceFiscali, Ruolo.TRAVELER, "traveler");
+    }
+
+    private List<Credentials> listUsersByRole(Ruolo ruolo) throws DAOExceptionRemoli {
+        try {
+            List<Credentials> users = new ArrayList<>();
+
+            for (User user : DemoStorage.getUsers()) {
+                if (user.getRuolo() == ruolo) {
+                    Credentials cred = new Credentials();
+                    cred.setNome(user.getNome());
+                    cred.setCognome(user.getCognome());
+                    cred.setEmail(user.getEmail());
+                    cred.setCodiceFiscale(user.getCodiceFiscale());
+                    cred.setPassword(user.getPassword());
+                    cred.setRuolo(user.getRuolo());
+                    users.add(cred);
+                }
+            }
+
+            return users;
+        } catch (Exception e) {
+            throw new DAOExceptionRemoli("Error while loading demo accounts: " + e.getMessage(), e);
+        }
+    }
+
+    private int deleteUsersByRole(List<String> codiceFiscali,
+                                  Ruolo ruolo,
+                                  String label) throws DAOExceptionRemoli {
+        try {
+            int deleted = 0;
+            Iterator<User> iterator = DemoStorage.getUsers().iterator();
+
+            while (iterator.hasNext()) {
+                User user = iterator.next();
+                if (user.getRuolo() == ruolo && codiceFiscali.contains(user.getCodiceFiscale().toUpperCase())) {
+                    iterator.remove();
+                    deleted++;
+                }
+            }
+
+            return deleted;
+        } catch (Exception e) {
+            throw new DAOExceptionRemoli("Error while deleting " + label + " accounts in demo mode: " + e.getMessage(), e);
         }
     }
 
@@ -313,10 +499,24 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
             Notification copy = new Notification(
                     n.getMessage(),
                     n.getDate(),
-                    n.isRisolto()
+                    n.isRisolto(),
+                    n.isApprovato(),
+                    n.isLetto(),
+                    n.getStatus(),
+                    n.getSenderRole(),
+                    n.getSenderCf(),
+                    n.getRecipientCf(),
+                    n.getCity(),
+                    n.isPickpocketAlert(),
+                    n.isFightAlert(),
+                    n.isCrowdAlert(),
+                    n.isGeneralAlert(),
+                    n.getStationName(),
+                    n.getSuspectClothing()
             );
 
             DemoStorage.getNotifications().add(copy);
+            invalidateNotificationsCache();
 
         } catch (DAOExceptionRemoli e) {
             throw e;
@@ -360,6 +560,8 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
                 );
             }
 
+            invalidateNotificationsCache();
+
         } catch (DAOExceptionRemoli e) {
             throw e;
 
@@ -368,6 +570,155 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
                     "Errore durante l'aggiornamento della notifica",
                     e
             );
+        }
+    }
+
+    @Override
+    public void approveNotification(Notification n) throws DAOExceptionRemoli {
+
+        try {
+            if (n == null) {
+                throw new DAOExceptionRemoli(
+                        "Error while approving the notification"
+                );
+            }
+
+            boolean updated = false;
+
+            for (Notification stored : DemoStorage.getNotifications()) {
+                if (stored.getMessage().equals(n.getMessage()) && stored.getDate().equals(n.getDate())) {
+                    stored.setApprovato(true);
+                    updated = true;
+                    break;
+                }
+            }
+
+            if (!updated) {
+                throw new DAOExceptionRemoli(
+                        "Error while approving the notification"
+                );
+            }
+
+            invalidateNotificationsCache();
+
+        } catch (DAOExceptionRemoli e) {
+            throw e;
+
+        } catch (Exception e) {
+            throw new DAOExceptionRemoli(
+                    "Error while approving the notification in demo mode",
+                    e
+            );
+        }
+    }
+
+    @Override
+    public void deleteNotification(Notification n) throws DAOExceptionRemoli {
+
+        try {
+            if (n == null) {
+                throw new DAOExceptionRemoli("Error while deleting the notification");
+            }
+
+            boolean deleted = DemoStorage.getNotifications().removeIf(
+                    stored -> stored.getMessage().equals(n.getMessage()) && stored.getDate().equals(n.getDate())
+            );
+
+            if (!deleted) {
+                throw new DAOExceptionRemoli("Error while deleting the notification");
+            }
+
+            invalidateNotificationsCache();
+
+        } catch (DAOExceptionRemoli e) {
+            throw e;
+        } catch (Exception e) {
+            throw new DAOExceptionRemoli(
+                    "Error while deleting the notification in demo mode",
+                    e
+            );
+        }
+    }
+
+    @Override
+    public void markNotificationAsRead(Notification n) throws DAOExceptionRemoli {
+        try {
+            if (n == null) {
+                throw new DAOExceptionRemoli("Error while marking the notification as read");
+            }
+
+            boolean updated = false;
+            for (Notification stored : DemoStorage.getNotifications()) {
+                if (stored.getMessage().equals(n.getMessage()) && stored.getDate().equals(n.getDate())) {
+                    stored.setLetto(true);
+                    updated = true;
+                    break;
+                }
+            }
+
+            if (!updated) {
+                throw new DAOExceptionRemoli("Error while marking the notification as read");
+            }
+
+            invalidateNotificationsCache();
+        } catch (DAOExceptionRemoli e) {
+            throw e;
+        } catch (Exception e) {
+            throw new DAOExceptionRemoli("Error while marking the notification as read in demo mode", e);
+        }
+    }
+
+    @Override
+    public boolean approvePendingTravelerNotification(Notification n) throws DAOExceptionRemoli {
+        try {
+            if (n == null) {
+                throw new DAOExceptionRemoli("Error while approving the traveler report");
+            }
+
+            for (Notification stored : DemoStorage.getNotifications()) {
+                if (stored.getMessage().equals(n.getMessage()) && stored.getDate().equals(n.getDate())) {
+                    if (!"PENDING".equalsIgnoreCase(stored.getStatus())) {
+                        return false;
+                    }
+                    stored.setStatus("APPROVED");
+                    stored.setApprovato(true);
+                    invalidateNotificationsCache();
+                    return true;
+                }
+            }
+
+            return false;
+        } catch (DAOExceptionRemoli e) {
+            throw e;
+        } catch (Exception e) {
+            throw new DAOExceptionRemoli("Error while approving the traveler report in demo mode", e);
+        }
+    }
+
+    @Override
+    public boolean rejectPendingTravelerNotification(Notification n) throws DAOExceptionRemoli {
+        try {
+            if (n == null) {
+                throw new DAOExceptionRemoli("Error while rejecting the traveler report");
+            }
+
+            for (Notification stored : DemoStorage.getNotifications()) {
+                if (stored.getMessage().equals(n.getMessage()) && stored.getDate().equals(n.getDate())) {
+                    if (!"PENDING".equalsIgnoreCase(stored.getStatus())) {
+                        return false;
+                    }
+                    stored.setStatus("REJECTED");
+                    stored.setApprovato(false);
+                    invalidateNotificationsCache();
+                    return true;
+                }
+            }
+
+            return false;
+        } catch (DAOExceptionRemoli e) {
+            throw e;
+        } catch (Exception e) {
+            throw new DAOExceptionRemoli("Error while rejecting the traveler report in demo mode", e);
         }
     }
 
@@ -509,5 +860,62 @@ public class LayerPersistenzaDemo extends LayerPersistenza{
                     "Errore durante il recupero dei percorsi in modalità DEMO: " + e.getMessage()
             );
         }
+    }
+
+    @Override
+    public int deleteRoutesBySignatures(String cf, List<String> routeSignatures) throws DAOExceptionRemoli {
+        int deleted = 0;
+
+        try {
+            for (String signature : routeSignatures) {
+                Iterator<Route> iterator = DemoStorage.getRoutes().iterator();
+                while (iterator.hasNext()) {
+                    Route route = iterator.next();
+                    if (cf.equals(route.getUtente()) && signature.equals(buildRouteSignature(route))) {
+                        iterator.remove();
+                        deleted++;
+                        break;
+                    }
+                }
+            }
+            return deleted;
+        } catch (Exception e) {
+            throw new DAOExceptionRemoli("Errore durante l'eliminazione dei percorsi in modalità DEMO: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public int deleteAllRoutes(String cf) throws DAOExceptionRemoli {
+        int deleted = 0;
+
+        try {
+            Iterator<Route> iterator = DemoStorage.getRoutes().iterator();
+            while (iterator.hasNext()) {
+                Route route = iterator.next();
+                if (cf.equals(route.getUtente())) {
+                    iterator.remove();
+                    deleted++;
+                }
+            }
+            return deleted;
+        } catch (Exception e) {
+            throw new DAOExceptionRemoli("Errore durante l'eliminazione completa dei percorsi in modalità DEMO: " + e.getMessage(), e);
+        }
+    }
+
+    private String buildRouteSignature(Route route) {
+        return String.join("||", Arrays.asList(
+                route.getPartenza(),
+                route.getArrivo(),
+                route.getCitta(),
+                route.getTipoViaggiatore(),
+                String.valueOf(route.getnCambi()),
+                route.getListaCambi(),
+                route.getStazInterscambio(),
+                String.valueOf(route.getnStazAttraversate()),
+                String.valueOf(route.getTempoDiArrivo()),
+                String.valueOf(route.getnStazioniCitta()),
+                String.valueOf(route.getPercTerrenoUtilizzato())
+        ));
     }
 }

@@ -61,6 +61,7 @@
             background-color: #0056b3;
         }
     </style>
+    <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 
 <body>

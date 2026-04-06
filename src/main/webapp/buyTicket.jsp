@@ -8,22 +8,22 @@
     response.setDateHeader("Expires", 0);
 %>
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>RouteX - Buy Ticket</title>
     <style>
         :root {
-            --bg-1: #04111f;
-            --bg-2: #0a1f37;
-            --panel: rgba(7, 20, 36, 0.82);
-            --panel-soft: rgba(10, 26, 47, 0.9);
-            --line: rgba(111, 247, 255, 0.2);
-            --text: #ecf7ff;
-            --muted: #8ba5be;
-            --accent: #6ff7ff;
-            --accent-2: #53a9ff;
-            --accent-3: #89ffd1;
+            --bg-1: #f4f7fb;
+            --bg-2: #ecf2f8;
+            --panel: #ffffff;
+            --panel-soft: #f8fbfe;
+            --line: #d8e1eb;
+            --text: #17212b;
+            --muted: #66788c;
+            --accent: #0f6dff;
+            --accent-2: #4fa2ff;
+            --accent-3: #76d8ff;
         }
 
         * { box-sizing: border-box; }
@@ -32,12 +32,11 @@
             margin: 0;
             min-height: 100vh;
             color: var(--text);
-            font-family: "Trebuchet MS", "Gill Sans", sans-serif;
+            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
             background:
-                radial-gradient(circle at 15% 18%, rgba(111, 247, 255, 0.16), transparent 24%),
-                radial-gradient(circle at 82% 18%, rgba(83, 169, 255, 0.18), transparent 22%),
-                radial-gradient(circle at bottom center, rgba(67, 112, 255, 0.16), transparent 32%),
-                linear-gradient(135deg, var(--bg-1), var(--bg-2) 58%, #040913);
+                radial-gradient(circle at top left, rgba(15, 109, 255, 0.05), transparent 24%),
+                radial-gradient(circle at top right, rgba(79, 162, 255, 0.05), transparent 24%),
+                linear-gradient(180deg, var(--bg-1), var(--bg-2));
             overflow-x: hidden;
             position: relative;
         }
@@ -48,10 +47,10 @@
             inset: 0;
             background-image:
                 radial-gradient(circle, rgba(255,255,255,0.72) 1px, transparent 1px),
-                radial-gradient(circle, rgba(111,247,255,0.45) 1px, transparent 1px);
+                radial-gradient(circle, rgba(15,109,255,0.12) 1px, transparent 1px);
             background-size: 150px 150px, 230px 230px;
             background-position: 0 0, 60px 90px;
-            opacity: 0.18;
+            opacity: 0.14;
             pointer-events: none;
             animation: drift 18s linear infinite;
         }
@@ -63,9 +62,8 @@
             padding: 28px;
             border-radius: 32px;
             border: 1px solid var(--line);
-            background: linear-gradient(180deg, rgba(7, 20, 36, 0.86), rgba(4, 12, 23, 0.92));
-            box-shadow: 0 32px 84px rgba(0, 0, 0, 0.42);
-            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
             position: relative;
             overflow: hidden;
         }
@@ -78,7 +76,7 @@
             right: -120px;
             bottom: -160px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(111, 247, 255, 0.12), transparent 66%);
+            background: radial-gradient(circle, rgba(15, 109, 255, 0.08), transparent 66%);
             filter: blur(12px);
         }
 
@@ -112,14 +110,14 @@
             color: var(--text);
             padding: 10px 16px;
             border-radius: 999px;
-            border: 1px solid rgba(255,255,255,0.12);
-            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--line);
+            background: #ffffff;
             transition: transform 0.25s ease, border-color 0.25s ease;
         }
 
         .nav-actions a:hover {
             transform: translateY(-2px);
-            border-color: rgba(111,247,255,0.4);
+            border-color: #b7c9dd;
         }
 
         .hero {
@@ -138,8 +136,8 @@
             padding: 8px 14px;
             border-radius: 999px;
             color: var(--accent);
-            border: 1px solid rgba(111,247,255,0.2);
-            background: rgba(111,247,255,0.08);
+            border: 1px solid #cfe0ff;
+            background: #eaf1ff;
             text-transform: uppercase;
             letter-spacing: 0.18em;
             font-size: 11px;
@@ -156,32 +154,6 @@
             color: var(--muted);
             line-height: 1.8;
             max-width: 700px;
-        }
-
-        .signal-grid {
-            margin-top: 28px;
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 14px;
-        }
-
-        .signal-card {
-            padding: 18px;
-            border-radius: 24px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-
-        .signal-card strong {
-            display: block;
-            font-size: 1.4rem;
-            margin-bottom: 6px;
-        }
-
-        .signal-card span {
-            color: var(--muted);
-            line-height: 1.6;
-            font-size: 0.9rem;
         }
 
         .ticket-panel {
@@ -204,106 +176,47 @@
 
         .city-grid {
             margin-top: 22px;
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
         .city-card {
-            position: relative;
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 24px;
-            min-height: 210px;
-            padding: 18px;
-            background:
-                linear-gradient(160deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)),
-                rgba(7, 18, 32, 0.78);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            min-height: 0;
+            padding: 10px 16px;
+            background: #ffffff;
             cursor: pointer;
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-            overflow: hidden;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            overflow: visible;
+            width: auto;
+            min-width: 0;
         }
 
         .city-card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(111,247,255,0.4);
-            box-shadow: 0 24px 48px rgba(0,0,0,0.28);
+            transform: translateY(-1px);
+            border-color: #b7c9dd;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
         }
 
         .city-card.active {
-            border-color: rgba(111,247,255,0.8);
-            box-shadow: 0 0 0 1px rgba(111,247,255,0.18), 0 24px 54px rgba(21,124,255,0.22);
+            border-color: var(--accent);
+            background: #eef4ff;
+            box-shadow: 0 0 0 3px rgba(15,109,255,0.10);
         }
 
+        .city-card h3 {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .city-description,
+        .city-meta,
         .planet-wrap {
-            position: relative;
-            height: 110px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 14px;
-        }
-
-        .orbit-ring,
-        .orbit-ring::before {
-            position: absolute;
-            border-radius: 50%;
-            border: 1px solid rgba(255,255,255,0.14);
-            content: "";
-        }
-
-        .orbit-ring {
-            width: 118px;
-            height: 118px;
-            animation: rotateRing 18s linear infinite;
-        }
-
-        .orbit-ring::before {
-            inset: 10px;
-            border-color: rgba(111,247,255,0.22);
-            animation: pulse 5s ease-in-out infinite;
-        }
-
-        .planet {
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), var(--planet-core) 38%, var(--planet-edge));
-            box-shadow: 0 0 0 8px rgba(255,255,255,0.03), 0 0 36px var(--planet-glow);
-            position: relative;
-            animation: levitate 5.5s ease-in-out infinite;
-        }
-
-        .planet::after {
-            content: "";
-            position: absolute;
-            width: 102px;
-            height: 18px;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%) rotate(-18deg);
-            border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.22);
-            opacity: 0.72;
-        }
-
-        .city-card h3 { margin: 0; font-size: 1.24rem; }
-        .city-card p { margin: 8px 0 0; color: var(--muted); line-height: 1.5; font-size: 0.92rem; }
-
-        .city-meta {
-            margin-top: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            font-size: 0.84rem;
-            color: #d9eeff;
-        }
-
-        .city-badge {
-            padding: 6px 10px;
-            border-radius: 999px;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.08);
+            display: none !important;
         }
 
         .purchase-form {
@@ -315,8 +228,8 @@
         .selected-banner {
             padding: 16px 18px;
             border-radius: 20px;
-            border: 1px solid rgba(111,247,255,0.18);
-            background: linear-gradient(135deg, rgba(111,247,255,0.08), rgba(83,169,255,0.06));
+            border: 1px solid #d8e6fb;
+            background: #f4f8ff;
         }
 
         .selected-banner strong {
@@ -333,7 +246,7 @@
         .field-group label {
             display: block;
             margin-bottom: 8px;
-            color: #dff8ff;
+            color: var(--text);
             font-size: 0.92rem;
             letter-spacing: 0.04em;
         }
@@ -349,8 +262,8 @@
             width: 100%;
             padding: 16px 18px;
             border-radius: 18px;
-            border: 1px solid rgba(255,255,255,0.12);
-            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--line);
+            background: #ffffff;
             color: var(--text);
             font-size: 1rem;
             text-align: center;
@@ -359,15 +272,15 @@
         }
 
         .quantity-shell input:focus {
-            border-color: rgba(111,247,255,0.55);
-            box-shadow: 0 0 0 4px rgba(111,247,255,0.08);
+            border-color: rgba(15,109,255,0.55);
+            box-shadow: 0 0 0 4px rgba(15,109,255,0.08);
         }
 
         .quantity-btn {
             height: 56px;
-            border: 1px solid rgba(255,255,255,0.12);
+            border: 1px solid var(--line);
             border-radius: 18px;
-            background: rgba(255,255,255,0.06);
+            background: #ffffff;
             color: var(--text);
             font-size: 1.5rem;
             cursor: pointer;
@@ -376,8 +289,8 @@
 
         .quantity-btn:hover {
             transform: translateY(-2px);
-            border-color: rgba(111,247,255,0.4);
-            background: rgba(111,247,255,0.08);
+            border-color: #b7c9dd;
+            background: #f6f9fd;
         }
 
         .hint-row {
@@ -393,20 +306,20 @@
             padding: 17px 24px;
             border: none;
             border-radius: 999px;
-            color: #04111f;
+            color: #ffffff;
             font-weight: 700;
             font-size: 1rem;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            background: linear-gradient(90deg, var(--accent), var(--accent-3) 52%, #8dd8ff);
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
             cursor: pointer;
-            box-shadow: 0 20px 34px rgba(111,247,255,0.22);
+            box-shadow: 0 16px 28px rgba(15,109,255,0.18);
             transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
         }
 
         .submit-btn:hover:not(:disabled) {
             transform: translateY(-3px) scale(1.01);
-            box-shadow: 0 24px 42px rgba(111,247,255,0.28);
+            box-shadow: 0 20px 34px rgba(15,109,255,0.24);
         }
 
         .submit-btn:disabled {
@@ -422,23 +335,8 @@
             100% { transform: translateY(0); }
         }
 
-        @keyframes levitate {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-9px) scale(1.03); }
-        }
-
-        @keyframes rotateRing {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.35; transform: scale(1); }
-            50% { opacity: 0.9; transform: scale(1.04); }
-        }
-
         @media (max-width: 1080px) {
-            .hero, .signal-grid {
+            .hero {
                 grid-template-columns: 1fr;
             }
         }
@@ -458,7 +356,7 @@
             }
 
             .city-grid {
-                grid-template-columns: 1fr;
+                gap: 10px;
             }
 
             .quantity-shell {
@@ -466,6 +364,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 <body>
 <%@ include file="header.jspf" %>
@@ -498,31 +397,16 @@
             <div class="eyebrow">Ticket Nexus</div>
             <h1>Choose a city planet.<br>Generate your ride pass.</h1>
             <p>
-                La selezione del biglietto entra nello stesso universo visivo di RouteX:
-                scegli la rete metropolitana tramite pianeti interattivi, imposta la quantità e conferma l'acquisto
-                con un flusso più coerente, più scenico e più urbano.
+                Ticket selection now follows the same visual language as RouteX:
+                choose a metro network through interactive planets, set the quantity,
+                and confirm your purchase with a cleaner and more coherent flow.
             </p>
-
-            <div class="signal-grid">
-                <div class="signal-card">
-                    <strong>City Driven</strong>
-                    <span>La città non si sceglie più da una select, ma da un hub orbitale interattivo.</span>
-                </div>
-                <div class="signal-card">
-                    <strong>Quick Purchase</strong>
-                    <span>Conferma diretta del numero di biglietti senza cambiare il contratto lato server.</span>
-                </div>
-                <div class="signal-card">
-                    <strong>Unified Design</strong>
-                    <span>Stesso linguaggio visivo delle pagine di esplorazione e routing.</span>
-                </div>
-            </div>
         </div>
 
         <aside class="ticket-panel">
             <div class="section-eyebrow">Metro Ticket Builder</div>
             <h2>Buy Your Ticket</h2>
-            <p>Attiva una città, imposta la quantità e conferma l'operazione.</p>
+            <p>Select a city, set the quantity, and confirm the purchase.</p>
 
             <div class="city-grid">
                 <%
@@ -549,7 +433,7 @@
                         <div class="planet"></div>
                     </div>
                     <h3>No cities available</h3>
-                    <p class="city-description">Il catalogo città non è disponibile al momento.</p>
+                    <p class="city-description">The city catalog is currently unavailable.</p>
                     <div class="city-meta">
                         <span class="city-badge">Unavailable</span>
                         <span>0 networks</span>
@@ -577,7 +461,7 @@
 
                 <div class="hint-row">
                     <span id="purchaseHint">Choose a city to unlock the ticket amount.</span>
-                    <span>Tip: puoi anche digitare il numero manualmente.</span>
+                    <span>Tip: you can also type the number manually.</span>
                 </div>
 
                 <button type="submit" class="submit-btn" id="submitBtn" disabled>Confirm Purchase</button>

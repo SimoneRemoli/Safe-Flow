@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.List;
 import it.web.routex.exception.PathNotFoundExceptionRemoli;
 import it.web.routex.exception.DAOExceptionRemoli;
@@ -26,7 +27,7 @@ public class AreaRiservataControllerGrafico extends LoggedHttpServlet
                     AreaRiservata reserved = new AreaRiservata();
 
                     if (cf != null) {
-
+                        moveFlashMessages(request, session);
                         List<RouteBean> listaPercorsi = reserved.runPath(cf);
                         List<TicketBean> tickets = reserved.runTicket(cf);
                         request.setAttribute("listaPercorsi", listaPercorsi);
@@ -56,6 +57,80 @@ public class AreaRiservataControllerGrafico extends LoggedHttpServlet
             }
 
     }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            final HttpSession session = request.getSession(false);
+            if (!SessionAuthUtil.isLoggedIn(session)) {
+                redirectToLogin(request, response);
+                return;
+            }
+
+            Credentials cred = Credentials.getInstanceSingleton();
+            String cf = cred.getCodiceFiscale();
+            if (cf == null) {
+                redirectToLogin(request, response);
+                return;
+            }
+
+            AreaRiservata reserved = new AreaRiservata();
+            String action = request.getParameter("action");
+
+            if ("deleteAll".equals(action)) {
+                int deleted = reserved.deleteAllTickets(cf);
+                session.setAttribute("successMessage", deleted > 0
+                        ? "Eliminati " + deleted + " biglietti."
+                        : "Non ci sono biglietti da eliminare.");
+            } else if ("deleteAllRoutes".equals(action)) {
+                int deleted = reserved.deleteAllRoutes(cf);
+                session.setAttribute("successMessage", deleted > 0
+                        ? "Eliminati " + deleted + " percorsi."
+                        : "Non ci sono percorsi da eliminare.");
+            } else if ("deleteSelected".equals(action)) {
+                String[] selectedTickets = request.getParameterValues("selectedTickets");
+                if (selectedTickets == null || selectedTickets.length == 0) {
+                    session.setAttribute("errorMessage", "Seleziona almeno un biglietto da eliminare.");
+                } else {
+                    int deleted = reserved.deleteSelectedTickets(cf, Arrays.asList(selectedTickets));
+                    session.setAttribute("successMessage", deleted > 0
+                            ? "Eliminati " + deleted + " biglietti selezionati."
+                            : "Nessun biglietto eliminato.");
+                }
+            } else if ("deleteSelectedRoutes".equals(action)) {
+                String[] selectedRoutes = request.getParameterValues("selectedRoutes");
+                if (selectedRoutes == null || selectedRoutes.length == 0) {
+                    session.setAttribute("errorMessage", "Seleziona almeno un percorso da eliminare.");
+                } else {
+                    int deleted = reserved.deleteSelectedRoutes(cf, Arrays.asList(selectedRoutes));
+                    session.setAttribute("successMessage", deleted > 0
+                            ? "Eliminati " + deleted + " percorsi selezionati."
+                            : "Nessun percorso eliminato.");
+                }
+            } else {
+                session.setAttribute("errorMessage", "Azione non valida.");
+            }
+
+            response.sendRedirect(request.getContextPath() + "/areaRiservata");
+        } catch (DAOExceptionRemoli remoli) {
+            logger.error("Errore DAOExceptionRemoli durante l'eliminazione ticket. Messaggio={} Causa={}", remoli.getMessage(), remoli.getCause());
+            request.setAttribute("errore", remoli.getMessage());
+            try {
+                request.getRequestDispatcher("/error.jsp").forward(request, response);
+            } catch (Exception e) {
+                logger.error("Errore durante il forward alla pagina di errore", e);
+            }
+        } catch (Exception e) {
+            logger.error("Errore inatteso durante la gestione POST dell'area riservata", e);
+            request.setAttribute("errore", "Errore durante la gestione dell'operazione sui biglietti.");
+            try {
+                request.getRequestDispatcher("/error.jsp").forward(request, response);
+            } catch (Exception ex) {
+                logger.error("Errore durante il forward alla pagina di errore", ex);
+            }
+        }
+    }
+
     private void forwardAreaRiservata(HttpServletRequest request, HttpServletResponse response) {
         try {
             request.getRequestDispatcher("/areaRiservata.jsp").forward(request, response);
@@ -71,5 +146,23 @@ public class AreaRiservataControllerGrafico extends LoggedHttpServlet
         }
     }
 
+    private void moveFlashMessages(HttpServletRequest request, HttpSession session) {
+        if (session == null) {
+            return;
+        }
+
+        Object successMessage = session.getAttribute("successMessage");
+        Object errorMessage = session.getAttribute("errorMessage");
+
+        if (successMessage != null) {
+            request.setAttribute("successMessage", successMessage);
+            session.removeAttribute("successMessage");
+        }
+
+        if (errorMessage != null) {
+            request.setAttribute("errorMessage", errorMessage);
+            session.removeAttribute("errorMessage");
+        }
+    }
 
 }

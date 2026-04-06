@@ -9,11 +9,10 @@
     response.setDateHeader("Expires", 0);
 %>
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>RouteX - Area Riservata</title>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <title>RouteX - Reserved Area</title>
     <style>
         :root {
             --bg-1: #04111f;
@@ -212,6 +211,85 @@
             gap: 12px;
         }
 
+        .routes-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .route-card {
+            padding: 18px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .route-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .route-title {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .route-title strong {
+            font-size: 1rem;
+        }
+
+        .route-subtitle {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .route-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px 18px;
+        }
+
+        .route-item span {
+            display: block;
+        }
+
+        .route-item span:first-child {
+            color: var(--muted);
+            font-size: 0.8rem;
+            margin-bottom: 3px;
+        }
+
+        .ticket-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .action-btn {
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 999px;
+            padding: 10px 16px;
+            color: var(--text);
+            background: rgba(255,255,255,0.06);
+            cursor: pointer;
+            transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            border-color: rgba(111,247,255,0.38);
+        }
+
+        .action-btn.danger {
+            background: rgba(255, 92, 92, 0.12);
+            border-color: rgba(255, 92, 92, 0.28);
+        }
+
         .ticket-card {
             padding: 16px 18px;
             border-radius: 20px;
@@ -219,10 +297,26 @@
             border: 1px solid rgba(255,255,255,0.08);
         }
 
+        .ticket-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+
         .ticket-card strong {
             display: block;
             margin-bottom: 6px;
             font-size: 1rem;
+        }
+
+        .ticket-selector {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 0.88rem;
         }
 
         .ticket-meta {
@@ -241,85 +335,35 @@
             color: var(--muted);
         }
 
+        .flash-message {
+            margin-top: 18px;
+            padding: 14px 16px;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .flash-message.success {
+            background: rgba(68, 227, 164, 0.12);
+            border-color: rgba(68, 227, 164, 0.28);
+        }
+
+        .flash-message.error {
+            background: rgba(255, 92, 92, 0.12);
+            border-color: rgba(255, 92, 92, 0.28);
+        }
+
         .table-shell {
             overflow-x: auto;
             border-radius: 20px;
         }
 
-        table.dataTable {
-            width: 100% !important;
-            border-collapse: separate !important;
-            border-spacing: 0 10px !important;
-            color: var(--text);
-            background: transparent;
-        }
-
-        table.dataTable thead th {
-            background: rgba(255,255,255,0.05) !important;
-            color: #dff8ff !important;
-            border: none !important;
-            padding: 14px 12px !important;
-        }
-
-        table.dataTable tbody tr {
-            background: rgba(255,255,255,0.04) !important;
-        }
-
-        table.dataTable tbody td {
-            border-top: 1px solid rgba(255,255,255,0.08) !important;
-            border-bottom: 1px solid rgba(255,255,255,0.08) !important;
-            padding: 14px 12px !important;
-            color: var(--text) !important;
-        }
-
-        table.dataTable tbody td:first-child {
-            border-left: 1px solid rgba(255,255,255,0.08) !important;
-            border-top-left-radius: 14px;
-            border-bottom-left-radius: 14px;
-        }
-
-        table.dataTable tbody td:last-child {
-            border-right: 1px solid rgba(255,255,255,0.08) !important;
-            border-top-right-radius: 14px;
-            border-bottom-right-radius: 14px;
-        }
-
-        .dataTables_wrapper {
-            color: var(--muted);
-        }
-
-        .dataTables_wrapper .dataTables_filter input,
-        .dataTables_wrapper .dataTables_length select {
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.12);
-            color: var(--text);
-            padding: 6px 10px;
-            border-radius: 10px;
-        }
-
-        .dataTables_wrapper .dataTables_paginate .paginate_button {
-            color: var(--text) !important;
-            background: rgba(255,255,255,0.06) !important;
-            border: 1px solid rgba(255,255,255,0.12) !important;
-            border-radius: 10px !important;
-            margin: 0 4px;
-        }
-
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-            background: rgba(111,247,255,0.14) !important;
-            border-color: rgba(111,247,255,0.34) !important;
-            color: #dff8ff !important;
-        }
-
-        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-            background: rgba(111,247,255,0.1) !important;
-            border-color: rgba(111,247,255,0.34) !important;
-            color: #dff8ff !important;
-        }
-
         @media (max-width: 1180px) {
             .summary-grid,
             .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .route-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -339,14 +383,18 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 <body>
+<%@ include file="header.jspf" %>
 <%
     List<RouteBean> listaPercorsi = (List<RouteBean>) request.getAttribute("listaPercorsi");
     List<TicketBean> tickets = (List<TicketBean>) request.getAttribute("tickets");
     boolean loggedIn = SessionAuthUtil.isLoggedIn(session);
     int routeCount = (listaPercorsi != null) ? listaPercorsi.size() : 0;
     int ticketCount = (tickets != null) ? tickets.size() : 0;
+    String successMessage = (String) request.getAttribute("successMessage");
+    String errorMessage = (String) request.getAttribute("errorMessage");
 %>
 
 <div class="shell">
@@ -373,116 +421,136 @@
     <section class="hero">
         <div class="eyebrow">Reserved Area</div>
         <h1>Your metro activity,<br>organized like a control room.</h1>
-        <p>Qui trovi i percorsi salvati e i biglietti acquistati in una dashboard più pulita, leggibile e coerente con l’estetica futuristica di RouteX.</p>
+        <p>Here you can find your saved routes and purchased tickets in a cleaner, more readable dashboard that stays consistent with the RouteX visual style.</p>
 
         <div class="summary-grid">
             <div class="summary-card">
                 <strong><%= routeCount %></strong>
-                <span>Percorsi salvati</span>
+                <span>Saved routes</span>
             </div>
             <div class="summary-card">
                 <strong><%= ticketCount %></strong>
-                <span>Biglietti acquistati</span>
+                <span>Purchased tickets</span>
             </div>
             <div class="summary-card">
                 <strong><%= loggedIn ? "Active" : "Guest" %></strong>
-                <span>Stato sessione</span>
+                <span>Session status</span>
             </div>
             <div class="summary-card">
                 <strong>RouteX</strong>
-                <span>Monitoraggio personale della mobilità urbana</span>
+                <span>Personal urban mobility overview</span>
             </div>
         </div>
+
+        <% if (successMessage != null) { %>
+        <div class="flash-message success"><%= successMessage %></div>
+        <% } %>
+
+        <% if (errorMessage != null) { %>
+        <div class="flash-message error"><%= errorMessage %></div>
+        <% } %>
     </section>
 
     <section class="content-grid">
         <div class="panel">
             <h2>Saved Routes</h2>
-            <p class="section-copy">Storico dei percorsi generati, con dettagli su cambi, stazioni percorse e tempo medio di arrivo.</p>
+            <p class="section-copy">A history of generated routes, including line changes, crossed stations, and estimated arrival time.</p>
 
             <% if (listaPercorsi != null && !listaPercorsi.isEmpty()) { %>
-            <div class="table-shell">
-                <table id="routesTable" class="display">
-                    <thead>
-                    <tr>
-                        <th>Partenza</th>
-                        <th>Arrivo</th>
-                        <th>Città</th>
-                        <th>Cambi</th>
-                        <th>Lista cambi</th>
-                        <th>Interscambi</th>
-                        <th>Stazioni</th>
-                        <th>Tempo</th>
-                        <th>Stazioni città</th>
-                        <th>Terreno %</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+            <form method="post" action="areaRiservata">
+                <div class="table-actions">
+                    <button type="submit" class="action-btn" name="action" value="deleteSelectedRoutes">Delete selected</button>
+                    <button type="submit" class="action-btn danger" name="action" value="deleteAllRoutes" onclick="return confirm('Do you want to delete all saved routes?');">Delete all</button>
+                </div>
+
+                <div class="routes-list">
                     <% for (RouteBean r : listaPercorsi) { %>
-                    <tr>
-                        <td><%= r.getPartenza() %></td>
-                        <td><%= r.getArrivo() %></td>
-                        <td><%= r.getCitta() %></td>
-                        <td><%= r.getnCambi() %></td>
-                        <td><%= r.getListaCambi() %></td>
-                        <td><%= r.getStazInterscambio() %></td>
-                        <td><%= r.getnStazAttraversate() %></td>
-                        <td><%= r.getTempoDiArrivo() %></td>
-                        <td><%= r.getnStazioniCitta() %></td>
-                        <td><%= r.getPercTerrenoUtilizzato() %></td>
-                    </tr>
+                    <div class="route-card">
+                        <div class="route-card-header">
+                            <div class="route-title">
+                                <strong><%= r.getPartenza() %> -> <%= r.getArrivo() %></strong>
+                                <span class="route-subtitle"><%= r.getCitta() %></span>
+                            </div>
+                            <label class="ticket-selector">
+                                <input type="checkbox" name="selectedRoutes" value="<%= r.getSignature() %>">
+                                <span>Select</span>
+                            </label>
+                        </div>
+
+                        <div class="route-grid">
+                            <div class="route-item">
+                                <span>Line changes</span>
+                                <span><%= r.getnCambi() %></span>
+                            </div>
+                            <div class="route-item">
+                                <span>Change list</span>
+                                <span><%= r.getListaCambi() %></span>
+                            </div>
+                            <div class="route-item">
+                                <span>Interchanges</span>
+                                <span><%= r.getStazInterscambio() %></span>
+                            </div>
+                            <div class="route-item">
+                                <span>Stations crossed</span>
+                                <span><%= r.getnStazAttraversate() %></span>
+                            </div>
+                            <div class="route-item">
+                                <span>Arrival time</span>
+                                <span><%= r.getTempoDiArrivo() %></span>
+                            </div>
+                            <div class="route-item">
+                                <span>City stations</span>
+                                <span><%= r.getnStazioniCitta() %></span>
+                            </div>
+                            <div class="route-item">
+                                <span>Land used</span>
+                                <span><%= r.getPercTerrenoUtilizzato() %>%</span>
+                            </div>
+                        </div>
+                    </div>
                     <% } %>
-                    </tbody>
-                </table>
-            </div>
+                </div>
+            </form>
             <% } else { %>
-            <div class="empty-state">Nessun percorso salvato disponibile.</div>
+            <div class="empty-state">No saved routes available.</div>
             <% } %>
         </div>
 
         <div class="panel">
             <h2>Purchased Tickets</h2>
-            <p class="section-copy">Archivio rapido dei titoli di viaggio già acquistati e associati al tuo profilo.</p>
+            <p class="section-copy">A quick archive of tickets already purchased and linked to your profile.</p>
 
             <% if (tickets != null && !tickets.isEmpty()) { %>
-            <div class="tickets-list">
-                <% for (TicketBean t : tickets) { %>
-                <div class="ticket-card">
-                    <strong><%= t.getCodice() %></strong>
-                    <div class="ticket-meta">
-                        <span><%= t.getCitta() %></span>
-                        <span><%= t.getDataAcquisto() %></span>
-                    </div>
+            <form method="post" action="areaRiservata">
+                <div class="ticket-actions">
+                    <button type="submit" class="action-btn" name="action" value="deleteSelected">Delete selected</button>
+                    <button type="submit" class="action-btn danger" name="action" value="deleteAll" onclick="return confirm('Do you want to delete all purchased tickets?');">Delete all</button>
                 </div>
-                <% } %>
-            </div>
+
+                <div class="tickets-list">
+                    <% for (TicketBean t : tickets) { %>
+                    <div class="ticket-card">
+                        <div class="ticket-card-header">
+                            <strong><%= t.getCodice() %></strong>
+                            <label class="ticket-selector">
+                                <input type="checkbox" name="selectedTickets" value="<%= t.getCodice() %>">
+                                <span>Select</span>
+                            </label>
+                        </div>
+                        <div class="ticket-meta">
+                            <span><%= t.getCitta() %></span>
+                            <span><%= t.getDataAcquisto() %></span>
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
+            </form>
             <% } else { %>
-            <div class="empty-state">Nessun biglietto acquistato disponibile.</div>
+            <div class="empty-state">No purchased tickets available.</div>
             <% } %>
         </div>
     </section>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script>
-    $(document).ready(function () {
-        const table = $('#routesTable');
-        if (table.length) {
-            table.DataTable({
-                pageLength: 8,
-                lengthChange: false,
-                language: {
-                    paginate: {
-                        previous: "Precedente",
-                        next: "Successiva"
-                    },
-                    info: "Pagina _PAGE_ di _PAGES_",
-                    search: "Cerca:"
-                }
-            });
-        }
-    });
-</script>
 </body>
 </html>

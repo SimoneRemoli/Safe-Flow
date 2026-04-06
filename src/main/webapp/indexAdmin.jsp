@@ -1,20 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="it.web.routex.domain.SessionAuthUtil" %>
+<%@ page import="it.web.routex.controller.applicativo.ReviewTravelerCommunicationsControllerApplicativo" %>
+<%@ page import="it.web.routex.exception.DAOExceptionRemoli" %>
 <%
     HttpSession currentSession = request.getSession(false);
     String nomeAdmin = null;
     String cognomeAdmin = null;
     String ruoloAdmin = null;
+    int pendingTravelerReports = 0;
 
     if (SessionAuthUtil.isLoggedIn(currentSession)) {
         nomeAdmin = (String) currentSession.getAttribute("nome");
         cognomeAdmin = (String) currentSession.getAttribute("cognome");
         Object ruoloObj = currentSession.getAttribute("ruolo");
         ruoloAdmin = ruoloObj != null ? ruoloObj.toString() : null;
+
+        try {
+            ReviewTravelerCommunicationsControllerApplicativo reviewService =
+                    new ReviewTravelerCommunicationsControllerApplicativo();
+            pendingTravelerReports = reviewService.pendingMessages().size();
+        } catch (DAOExceptionRemoli ignored) {
+            pendingTravelerReports = 0;
+        }
     }
 %>
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -147,16 +158,41 @@
             border-color: rgba(111, 247, 255, 0.42);
         }
 
+        .notification-link {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notification-link.has-alert {
+            color: #04111f;
+            background: linear-gradient(90deg, #6ff7ff, #89ffd1 52%, #8dd8ff);
+            border-color: transparent;
+            box-shadow: 0 16px 28px rgba(111, 247, 255, 0.22);
+        }
+
+        .notification-badge {
+            min-width: 22px;
+            height: 22px;
+            padding: 0 6px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(4, 17, 31, 0.92);
+            color: #f8fcff;
+            font-size: 0.78rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
         .hero {
             margin-top: 28px;
-            display: grid;
-            grid-template-columns: 1.08fr 0.92fr;
-            gap: 28px;
-            align-items: stretch;
+            display: block;
         }
 
         .hero-copy,
-        .hero-panel,
         .action-card,
         .status-card,
         .alert-panel {
@@ -167,7 +203,6 @@
         }
 
         .hero-copy,
-        .hero-panel,
         .action-card,
         .status-card,
         .alert-panel {
@@ -202,61 +237,6 @@
             line-height: 1.75;
         }
 
-        .admin-pill {
-            margin-top: 22px;
-            display: inline-flex;
-            gap: 10px;
-            align-items: center;
-            padding: 12px 18px;
-            border-radius: 999px;
-            background: rgba(111, 247, 255, 0.08);
-            border: 1px solid rgba(111, 247, 255, 0.16);
-            color: #dffbff;
-        }
-
-        .hero-panel {
-            background:
-                linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent),
-                rgba(8, 24, 43, 0.9);
-            border-color: rgba(111, 247, 255, 0.18);
-        }
-
-        .status-label {
-            display: inline-flex;
-            margin-bottom: 14px;
-            padding: 8px 12px;
-            border-radius: 999px;
-            background: rgba(111, 247, 255, 0.08);
-            border: 1px solid rgba(111, 247, 255, 0.16);
-            color: var(--accent);
-            font-size: 0.84rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .signal-list {
-            margin: 18px 0 0;
-            padding: 0;
-            list-style: none;
-            display: grid;
-            gap: 14px;
-        }
-
-        .signal-list li {
-            display: flex;
-            gap: 14px;
-            align-items: flex-start;
-            padding: 14px 16px;
-            border-radius: 18px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .signal-list i {
-            color: var(--accent);
-            margin-top: 2px;
-        }
-
         .quick-actions,
         .status-grid {
             display: grid;
@@ -265,7 +245,7 @@
         }
 
         .quick-actions {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: repeat(3, minmax(0, 1fr));
         }
 
         .status-grid {
@@ -350,7 +330,6 @@
         }
 
         @media (max-width: 980px) {
-            .hero,
             .quick-actions,
             .status-grid {
                 grid-template-columns: 1fr;
@@ -380,20 +359,28 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 <body>
+<%@ include file="header.jspf" %>
 <div class="shell">
     <header class="topbar">
         <div class="brand">
             <img src="images/logo-no-background.png" alt="RouteX logo">
             <div>
                 <strong>RouteX Admin Hub</strong>
-                <span>Governance, comunicazioni e osservabilita' della piattaforma</span>
+                <span>Governance, communications, and platform observability</span>
             </div>
         </div>
 
         <nav class="nav-actions">
             <a href="indexAdmin.jsp"><i class="fas fa-home"></i> Home</a>
+            <a href="reviewTravelerCommunications" class="notification-link <%= pendingTravelerReports > 0 ? "has-alert" : "" %>">
+                <i class="fas fa-bell"></i> Notifications
+                <% if (pendingTravelerReports > 0) { %>
+                <span class="notification-badge"><%= pendingTravelerReports %></span>
+                <% } %>
+            </a>
             <a href="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </nav>
     </header>
@@ -401,56 +388,12 @@
     <section class="hero">
         <div class="hero-copy">
             <span class="eyebrow">Admin Access</span>
-            <h1>Control deck per l'area amministrativa</h1>
+            <h1>Control deck for the administrative area</h1>
             <p>
-                L'admin ora usa lo stesso layout futuristico dell'area worker:
-                accessi rapidi, pannelli glass e priorita' operative leggibili in una singola vista.
+                The admin area now uses the same visual language as the updated worker hub:
+                quick access, glass panels, and readable operational priorities in a single view.
             </p>
-
-            <div class="admin-pill">
-                <i class="fas fa-user-shield"></i>
-                <span>
-                    <%= nomeAdmin != null ? nomeAdmin : "Admin" %>
-                    <%= cognomeAdmin != null ? cognomeAdmin : "" %>
-                    <% if (ruoloAdmin != null) { %>
-                        | <%= ruoloAdmin %>
-                    <% } %>
-                </span>
-            </div>
         </div>
-
-        <aside class="hero-panel">
-            <span class="status-label">Mission status</span>
-            <h2>Centro di coordinamento sincronizzato</h2>
-            <p>
-                Da qui puoi distribuire comunicazioni ai worker e monitorare report, trend d'uso
-                e statistiche senza uscire dal nuovo impianto visivo RouteX.
-            </p>
-
-            <ul class="signal-list">
-                <li>
-                    <i class="fas fa-bullhorn"></i>
-                    <div>
-                        <strong>Broadcast operativo</strong>
-                        <div>Invia messaggi di coordinamento verso il personale della piattaforma.</div>
-                    </div>
-                </li>
-                <li>
-                    <i class="fas fa-chart-line"></i>
-                    <div>
-                        <strong>Analytics panel</strong>
-                        <div>Analizza viaggi, distanza complessiva e tempi aggregati di utilizzo.</div>
-                    </div>
-                </li>
-                <li>
-                    <i class="fas fa-shield-alt"></i>
-                    <div>
-                        <strong>Secure governance</strong>
-                        <div>Sessione amministrativa pronta per operazioni ad alto privilegio.</div>
-                    </div>
-                </li>
-            </ul>
-        </aside>
     </section>
 
     <section class="quick-actions">
@@ -458,12 +401,25 @@
             <div class="action-icon">
                 <i class="fas fa-bullhorn"></i>
             </div>
-            <h3>Invia comunicazione</h3>
+            <h3>Send communication</h3>
             <p>
-                Apri il composer per distribuire rapidamente aggiornamenti e istruzioni ai worker.
+                Open the composer to quickly distribute updates and instructions to workers.
             </p>
             <a href="sendCommunicationn.jsp">
-                Apri composer <i class="fas fa-arrow-right"></i>
+                Open composer <i class="fas fa-arrow-right"></i>
+            </a>
+        </article>
+
+        <article class="action-card">
+            <div class="action-icon">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <h3>Manage admins</h3>
+            <p>
+                Create new administrator accounts or remove existing ones directly from the platform control area.
+            </p>
+            <a href="manageAdmins">
+                Open admin manager <i class="fas fa-arrow-right"></i>
             </a>
         </article>
 
@@ -473,10 +429,23 @@
             </div>
             <h3>Reports & statistics</h3>
             <p>
-                Consulta i percorsi tracciati, i dati aggregati e la fotografia operativa della piattaforma.
+                Review tracked routes, aggregated data, and the operational picture of the platform.
             </p>
             <a href="PathInfoRAS">
-                Apri report <i class="fas fa-arrow-right"></i>
+                Open reports <i class="fas fa-arrow-right"></i>
+            </a>
+        </article>
+
+        <article class="action-card">
+            <div class="action-icon">
+                <i class="fas fa-user-check"></i>
+            </div>
+            <h3>Approve traveler reports</h3>
+            <p>
+                Review pending traveler submissions and approve the messages that should become visible in the platform notifications.
+            </p>
+            <a href="reviewTravelerCommunications">
+                Review reports <i class="fas fa-arrow-right"></i>
             </a>
         </article>
     </section>
@@ -484,15 +453,15 @@
     <section class="status-grid">
         <article class="status-card">
             <strong>Unified UI</strong>
-            <span>L'area admin condivide lo stesso linguaggio visuale del nuovo hub worker, senza pagine scollegate.</span>
+            <span>The admin area shares the same visual language as the updated worker hub, without disconnected pages.</span>
         </article>
         <article class="status-card">
             <strong>Decision speed</strong>
-            <span>Le azioni amministrative principali sono accessibili subito, senza passaggi intermedi superflui.</span>
+            <span>The main administrative actions are immediately accessible, without unnecessary intermediate steps.</span>
         </article>
         <article class="status-card">
             <strong>Operational clarity</strong>
-            <span>Metriche, messaggi e strumenti di coordinamento sono esposti con priorita' e gerarchia piu' nette.</span>
+            <span>Metrics, messages, and coordination tools are exposed with clearer priority and hierarchy.</span>
         </article>
     </section>
 

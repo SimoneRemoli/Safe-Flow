@@ -14,6 +14,14 @@ public abstract class LayerPersistenza {
 
     public abstract Credentials login(String email, String password) throws DAOExceptionRemoli, LoginNotFoundRemoli;
 
+    public abstract void registerTraveler(String nome,
+                                          String cognome,
+                                          String codiceFiscale,
+                                          String email,
+                                          String password,
+                                          java.sql.Date dataDiNascita,
+                                          boolean disabile) throws DAOExceptionRemoli;
+
     public abstract Mastercard getPaymentMastercard(String nC, String sc, String cvv) throws DAOExceptionRemoli, PaymentValidationExceptionRemoli;
 
     public abstract Paypal getPaymentPaypal(String email, String codice) throws DAOExceptionRemoli, PaymentValidationExceptionRemoli;
@@ -60,9 +68,41 @@ public abstract class LayerPersistenza {
 
     public abstract void solvedNotification(Notification notification) throws DAOExceptionRemoli;
 
+    public abstract void approveNotification(Notification notification) throws DAOExceptionRemoli;
+
+    public abstract void deleteNotification(Notification notification) throws DAOExceptionRemoli;
+
+    public abstract void markNotificationAsRead(Notification notification) throws DAOExceptionRemoli;
+
+    public abstract boolean approvePendingTravelerNotification(Notification notification) throws DAOExceptionRemoli;
+
+    public abstract boolean rejectPendingTravelerNotification(Notification notification) throws DAOExceptionRemoli;
+
     public abstract List<Route> getAllPathInfo() throws DAOExceptionRemoli;
 
+    public abstract List<Credentials> listAdmins() throws DAOExceptionRemoli;
+
+    public abstract void createAdmin(String nome,
+                                     String cognome,
+                                     String email,
+                                     String password,
+                                     String codiceFiscale) throws DAOExceptionRemoli;
+
+    public abstract int deleteAdmins(List<String> codiceFiscali) throws DAOExceptionRemoli;
+
+    public abstract List<Credentials> listWorkers() throws DAOExceptionRemoli;
+
+    public abstract int deleteWorkers(List<String> codiceFiscali) throws DAOExceptionRemoli;
+
+    public abstract List<Credentials> listTravelers() throws DAOExceptionRemoli;
+
+    public abstract int deleteTravelers(List<String> codiceFiscali) throws DAOExceptionRemoli;
+
     public abstract List<Route> getData(String cf) throws PathNotFoundExceptionRemoli, DAOExceptionRemoli;
+
+    public abstract int deleteRoutesBySignatures(String cf, List<String> routeSignatures) throws DAOExceptionRemoli;
+
+    public abstract int deleteAllRoutes(String cf) throws DAOExceptionRemoli;
 
     public abstract void salvataggio(
             Credentials cred,

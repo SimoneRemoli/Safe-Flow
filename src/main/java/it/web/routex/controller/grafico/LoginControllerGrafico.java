@@ -100,7 +100,7 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
     private void gestisciErroreLogin(HttpServletRequest request, HttpServletResponse response, DAOExceptionRemoli ex)
     {
         try {
-            request.setAttribute(ATTR_MESSAGGIO_ERRORE, "Errore nella connessione al DB [500 internal error]");
+            request.setAttribute(ATTR_MESSAGGIO_ERRORE, "Database connection error [500 internal error]");
             request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
             logger.error("Errore DAO durante il login: message={}", ex.getMessage());
         }catch(Exception e) {
@@ -130,6 +130,7 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
             session.setAttribute("nome", utente.getNome());
             session.setAttribute("cognome", utente.getCognome());
             session.setAttribute("ruolo", utente.getRuolo());
+            session.setAttribute("codiceFiscale", utente.getCodicefiscale());
 
             logger.info("Utente perfettamente autenticato: nome={}, cognome={}, ruolo={}", utente.getNome(), utente.getCognome(), utente.getRuolo());
 

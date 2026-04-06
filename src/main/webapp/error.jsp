@@ -73,6 +73,7 @@
             white-space: pre-wrap;
         }
     </style>
+    <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 
 <body>

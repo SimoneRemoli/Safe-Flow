@@ -149,14 +149,10 @@
 
         .hero {
             margin-top: 28px;
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 28px;
-            align-items: stretch;
+            display: block;
         }
 
         .hero-copy,
-        .hero-panel,
         .action-card,
         .status-card {
             border-radius: 28px;
@@ -194,84 +190,6 @@
             line-height: 1.8;
             font-size: 1.02rem;
             max-width: 680px;
-        }
-
-        .worker-pill {
-            margin-top: 22px;
-            display: inline-flex;
-            gap: 10px;
-            align-items: center;
-            padding: 12px 18px;
-            border-radius: 999px;
-            background: rgba(111, 247, 255, 0.08);
-            border: 1px solid rgba(111, 247, 255, 0.16);
-            color: #dffbff;
-        }
-
-        .hero-panel {
-            padding: 24px;
-            background:
-                linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent),
-                rgba(8, 24, 43, 0.9);
-            border-color: rgba(111, 247, 255, 0.18);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-panel::before {
-            content: "";
-            position: absolute;
-            inset: 18px;
-            border-radius: 24px;
-            border: 1px solid rgba(111, 247, 255, 0.15);
-            pointer-events: none;
-        }
-
-        .status-label {
-            display: inline-flex;
-            margin-bottom: 14px;
-            padding: 8px 12px;
-            border-radius: 999px;
-            background: rgba(111, 247, 255, 0.08);
-            border: 1px solid rgba(111, 247, 255, 0.16);
-            color: var(--accent);
-            font-size: 0.84rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .hero-panel h2 {
-            margin: 0 0 12px;
-            font-size: 1.6rem;
-        }
-
-        .hero-panel p {
-            margin: 0 0 18px;
-            color: var(--muted);
-            line-height: 1.7;
-        }
-
-        .signal-list {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            display: grid;
-            gap: 14px;
-        }
-
-        .signal-list li {
-            display: flex;
-            gap: 14px;
-            align-items: flex-start;
-            padding: 14px 16px;
-            border-radius: 18px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .signal-list i {
-            color: var(--accent);
-            margin-top: 2px;
         }
 
         .quick-actions,
@@ -371,7 +289,6 @@
         }
 
         @media (max-width: 980px) {
-            .hero,
             .quick-actions,
             .status-grid {
                 grid-template-columns: 1fr;
@@ -401,20 +318,23 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 <body>
+<%@ include file="header.jspf" %>
 <div class="shell">
     <header class="topbar">
         <div class="brand">
             <img src="images/logo-no-background.png" alt="RouteX logo">
             <div>
                 <strong>RouteX Worker Hub</strong>
-                <span>Operativita' in tempo reale per il presidio della rete</span>
+                <span>Real-time operations for metro network support</span>
             </div>
         </div>
 
         <nav class="nav-actions">
             <a href="dashboardWorker.jsp"><i class="fas fa-home"></i> Home</a>
+            <a href="viewNotifications"><i class="fas fa-bell"></i> Notifications</a>
             <a href="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </nav>
     </header>
@@ -422,56 +342,13 @@
     <section class="hero">
         <div class="hero-copy">
             <span class="eyebrow">Worker Access</span>
-            <h1>Control room per il personale RouteX</h1>
+            <h1>Control room for RouteX staff<br>and anti-pickpocket operations</h1>
             <p>
-                L'accesso worker ora usa lo stesso linguaggio visuale della versione futuristica:
-                pannelli operativi, stato della sessione e ingressi rapidi alle funzioni essenziali.
+                RouteX stands against pickpockets. If you notice any pickpocket activity, it should be reported immediately.
+                The worker access now uses the same visual language as the updated RouteX experience, with operational panels,
+                session awareness, and quick entry points to essential tools.
             </p>
-
-            <div class="worker-pill">
-                <i class="fas fa-user-astronaut"></i>
-                <span>
-                    <%= nomeWorker != null ? nomeWorker : "Operatore" %>
-                    <%= cognomeWorker != null ? cognomeWorker : "" %>
-                    <% if (ruoloWorker != null) { %>
-                        | <%= ruoloWorker %>
-                    <% } %>
-                </span>
-            </div>
         </div>
-
-        <aside class="hero-panel">
-            <span class="status-label">Mission status</span>
-            <h2>Nodo operativo sincronizzato</h2>
-            <p>
-                Dal pannello puoi controllare notifiche, monitorare il turno attivo e
-                rientrare rapidamente nella dashboard senza passare da layout legacy.
-            </p>
-
-            <ul class="signal-list">
-                <li>
-                    <i class="fas fa-bell"></i>
-                    <div>
-                        <strong>Alert management</strong>
-                        <div>Consulta e aggiorna le segnalazioni ricevute dal sistema.</div>
-                    </div>
-                </li>
-                <li>
-                    <i class="fas fa-clock"></i>
-                    <div>
-                        <strong>Shift overview</strong>
-                        <div>Visualizza orario di inizio, fine turno e sede assegnata.</div>
-                    </div>
-                </li>
-                <li>
-                    <i class="fas fa-shield-alt"></i>
-                    <div>
-                        <strong>Secure session</strong>
-                        <div>Sessione autenticata pronta per operazioni worker dedicate.</div>
-                    </div>
-                </li>
-            </ul>
-        </aside>
     </section>
 
     <section class="quick-actions">
@@ -479,12 +356,12 @@
             <div class="action-icon">
                 <i class="fas fa-bell"></i>
             </div>
-            <h3>Notifiche di sistema</h3>
+            <h3>System notifications</h3>
             <p>
-                Apri la coda delle notifiche, marca quelle risolte e mantieni allineato il flusso operativo.
+                Open the notification queue, mark resolved items, and keep the operational flow aligned.
             </p>
             <a href="viewNotifications">
-                Apri notifiche <i class="fas fa-arrow-right"></i>
+                Open notifications <i class="fas fa-arrow-right"></i>
             </a>
         </article>
 
@@ -492,12 +369,12 @@
             <div class="action-icon">
                 <i class="fas fa-business-time"></i>
             </div>
-            <h3>Orario di lavoro</h3>
+            <h3>Work schedule</h3>
             <p>
-                Controlla rapidamente fascia oraria, durata del turno e luogo di servizio assegnato.
+                Quickly check your time slot, shift duration, and assigned work location.
             </p>
             <a href="viewWorkSchedule">
-                Apri orario <i class="fas fa-arrow-right"></i>
+                Open schedule <i class="fas fa-arrow-right"></i>
             </a>
         </article>
     </section>
@@ -505,15 +382,15 @@
     <section class="status-grid">
         <article class="status-card">
             <strong>Realtime UI</strong>
-            <span>Il worker autenticato resta nello stesso ecosistema visuale glass e neon della nuova esperienza RouteX.</span>
+            <span>The authenticated worker stays inside the same clean RouteX interface used across the updated experience.</span>
         </article>
         <article class="status-card">
             <strong>Fast access</strong>
-            <span>Le azioni principali sono esposte in prima vista, senza menu intermedi o schermate datate.</span>
+            <span>The main actions are visible at first glance, without intermediate menus or outdated screens.</span>
         </article>
         <article class="status-card">
             <strong>Operational focus</strong>
-            <span>Il layout privilegia leggibilita', stato della sessione e priorita' delle attivita' di presidio.</span>
+            <span>The layout prioritizes readability, session awareness, and the most important operational tasks.</span>
         </article>
     </section>
 </div>

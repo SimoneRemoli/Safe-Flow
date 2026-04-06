@@ -4,5 +4,12 @@ import java.sql.Timestamp;
 
 public record CommunicationInput(
         String message,
-        Timestamp date
+        Timestamp date,
+        String city,
+        boolean pickpocketAlert,
+        boolean fightAlert,
+        boolean crowdAlert,
+        boolean generalAlert,
+        String stationName,
+        String suspectClothing
 ) {}

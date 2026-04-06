@@ -25,7 +25,7 @@ public final class CommunicationInputExtractorCLI {
         // Controllo input vuoto
         if (testo == null || testo.trim().isEmpty()) {
             throw new BrondiInvalidCommunicationInputException(
-                    "Il messaggio della comunicazione non può essere vuoto."
+                    "The report message cannot be empty."
             );
         }
 
@@ -37,7 +37,7 @@ public final class CommunicationInputExtractorCLI {
         for (String forbidden : FORBIDDEN_WORDS) {
             if (normalized.contains(forbidden)) {
                 throw new BrondiInvalidCommunicationInputException(
-                        "Il messaggio contiene linguaggio non consentito."
+                        "The message contains disallowed language."
                 );
             }
         }
@@ -45,7 +45,14 @@ public final class CommunicationInputExtractorCLI {
         // Input valido
         return new CommunicationInput(
                 cleanText,
-                new Timestamp(System.currentTimeMillis())
+                new Timestamp(System.currentTimeMillis()),
+                "Rome",
+                false,
+                false,
+                false,
+                false,
+                null,
+                null
         );
     }
 

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import it.web.routex.exception.PathNotFoundExceptionRemoli;
 import it.web.routex.exception.DAOExceptionRemoli;
@@ -84,6 +85,103 @@ public class TicketDAOFile extends TicketDAOLayer
         return tickets;
     }
 
+    @Override
+    public int deleteTicketsByCodes(String cf, List<String> ticketCodes) throws DAOExceptionRemoli {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            return 0;
+        }
+
+        List<String> rewrittenLines = new ArrayList<>();
+        int deleted = 0;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String header = br.readLine();
+            if (header == null) {
+                throw new DAOExceptionRemoli("File tickets CSV vuoto o corrotto");
+            }
+            rewrittenLines.add(header);
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length < 8) {
+                    continue;
+                }
+
+                if (!parts[0].trim().equals(cf)) {
+                    rewrittenLines.add(line);
+                    continue;
+                }
+
+                List<String> remainingCodes = new ArrayList<>();
+                int removedForLine = 0;
+                for (String code : parts[6].split(";")) {
+                    String normalizedCode = code.trim();
+                    if (ticketCodes.contains(normalizedCode)) {
+                        removedForLine++;
+                    } else if (!normalizedCode.isEmpty()) {
+                        remainingCodes.add(normalizedCode);
+                    }
+                }
+
+                deleted += removedForLine;
+                if (!remainingCodes.isEmpty()) {
+                    parts[6] = String.join(";", remainingCodes);
+                    rewrittenLines.add(String.join(",", Arrays.copyOf(parts, 8)));
+                }
+            }
+        } catch (IOException e) {
+            throw new DAOExceptionRemoli("Errore lettura CSV: " + e.getMessage(), e);
+        }
+
+        rewriteTicketFile(rewrittenLines);
+        return deleted;
+    }
+
+    @Override
+    public int deleteAllTickets(String cf) throws DAOExceptionRemoli {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            return 0;
+        }
+
+        List<String> rewrittenLines = new ArrayList<>();
+        int deleted = 0;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String header = br.readLine();
+            if (header == null) {
+                throw new DAOExceptionRemoli("File tickets CSV vuoto o corrotto");
+            }
+            rewrittenLines.add(header);
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length < 8) {
+                    continue;
+                }
+
+                if (parts[0].trim().equals(cf)) {
+                    for (String code : parts[6].split(";")) {
+                        if (!code.trim().isEmpty()) {
+                            deleted++;
+                        }
+                    }
+                    continue;
+                }
+
+                rewrittenLines.add(line);
+            }
+        } catch (IOException e) {
+            throw new DAOExceptionRemoli("Errore lettura CSV: " + e.getMessage(), e);
+        }
+
+        rewriteTicketFile(rewrittenLines);
+        return deleted;
+    }
+
 
     @Override
     public void salvataggio(Credentials cred, List<String> codiciBiglietti, String metodopayment, String city) throws CredentialsExceptionRemoli
@@ -128,6 +226,17 @@ public class TicketDAOFile extends TicketDAOLayer
                     "Timestamp non valido nel CSV: " + timestamp,
                     e
             );
+        }
+    }
+
+    private void rewriteTicketFile(List<String> lines) throws DAOExceptionRemoli {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, false))) {
+            for (String rewrittenLine : lines) {
+                bw.write(rewrittenLine);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            throw new DAOExceptionRemoli("Errore scrittura CSV: " + e.getMessage(), e);
         }
     }
 

@@ -2,27 +2,32 @@
 <%@ page import="it.web.routex.domain.SessionAuthUtil" %>
 <%
     // Recupera la sessione senza crearne una nuova
-    HttpSession currentSession = request.getSession(false);
+    HttpSession routexHeaderSession = request.getSession(false);
 
     // Variabili locali (nomi diversi da "nome" per evitare conflitti)
-    String nomeHeader = null;
-    String cognomeHeader = null;
-    String ruoloHeader = null;
+    String routexHeaderNome = null;
+    String routexHeaderCognome = null;
+    String routexHeaderRuolo = null;
+    String routexHeaderPage = request.getServletPath();
+    String routexHeaderNormalizedPage = routexHeaderPage != null ? routexHeaderPage.toLowerCase() : "";
+    boolean routexHeaderHideBanner = routexHeaderNormalizedPage.contains("error")
+            || routexHeaderNormalizedPage.contains("errore")
+            || routexHeaderNormalizedPage.contains("warning");
 
     // Recupera i dati se la sessione esiste
-    if (SessionAuthUtil.isLoggedIn(currentSession)) {
-        nomeHeader = (String) currentSession.getAttribute("nome");
-        cognomeHeader = (String) currentSession.getAttribute("cognome");
-        Object ruoloObj = currentSession.getAttribute("ruolo");
+    if (SessionAuthUtil.isLoggedIn(routexHeaderSession)) {
+        routexHeaderNome = (String) routexHeaderSession.getAttribute("nome");
+        routexHeaderCognome = (String) routexHeaderSession.getAttribute("cognome");
+        Object ruoloObj = routexHeaderSession.getAttribute("ruolo");
         if (ruoloObj != null) {
-            ruoloHeader = ruoloObj.toString();
+            routexHeaderRuolo = ruoloObj.toString();
         }
     }
 %>
 
-<%-- Mostra l'intestazione solo se l'utente è loggato --%>
-<% if (nomeHeader != null && cognomeHeader != null && ruoloHeader != null) { %>
-    <div style="position:absolute;top:10px;left:25px;color:white;font-weight:bold;">
-        <%= nomeHeader %> <%= cognomeHeader %> (<%= ruoloHeader %>)
+<%-- Mostra il riepilogo sessione solo se l'utente è loggato --%>
+<% if (!routexHeaderHideBanner && routexHeaderNome != null && routexHeaderCognome != null && routexHeaderRuolo != null) { %>
+    <div class="app-session-banner">
+        Welcome, <strong><%= routexHeaderNome %> <%= routexHeaderCognome %></strong>. Role: <strong><%= routexHeaderRuolo %></strong>
     </div>
 <% } %>

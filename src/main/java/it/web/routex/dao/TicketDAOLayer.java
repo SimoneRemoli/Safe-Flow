@@ -8,5 +8,7 @@ import it.web.routex.utility.singleton.Credentials;
 
 public abstract class TicketDAOLayer {
     public abstract List<Ticket> getTicketByCF(String cf) throws DAOExceptionRemoli, PathNotFoundExceptionRemoli;
+    public abstract int deleteTicketsByCodes(String cf, List<String> ticketCodes) throws DAOExceptionRemoli;
+    public abstract int deleteAllTickets(String cf) throws DAOExceptionRemoli;
     public abstract void salvataggio(Credentials cred, List<String> codiciBiglietti, String metodopayment, String city) throws CredentialsExceptionRemoli;
 }

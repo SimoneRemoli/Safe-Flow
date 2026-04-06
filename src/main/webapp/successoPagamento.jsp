@@ -55,6 +55,7 @@
             overflow-y: auto;
         }
     </style>
+    <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 
 <body>

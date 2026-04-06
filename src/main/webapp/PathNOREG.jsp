@@ -551,6 +551,22 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="css/minimal-ui.css">
+    <style>
+        .detail-panel h3,
+        .detail-panel .detail-label,
+        .detail-panel .detail-value {
+            color: #101828 !important;
+        }
+
+        .detail-panel .detail-label {
+            font-weight: 500;
+        }
+
+        .detail-panel .detail-value {
+            font-weight: 700;
+        }
+    </style>
 </head>
 <body>
 <%
@@ -595,7 +611,7 @@
         <aside class="panel route-panel">
             <div class="eyebrow">Shortest Path Sequence</div>
             <h1>Best Route</h1>
-            <p>Le fermate si accendono in sequenza come una linea metropolitana in attivazione progressiva.</p>
+            <p>Stations light up in sequence like a metro line activating progressively.</p>
 
             <% if (dati != null && !dati.isEmpty()) { %>
             <ul class="route-list">
@@ -620,8 +636,8 @@
                     <div class="eyebrow">Metro Route Scan</div>
                     <h2><%= startStation %> to<br><%= endStation %></h2>
                     <p>
-                        Il percorso e visualizzato come una linea urbana in scansione continua.
-                        Ogni nodo rappresenta una stazione del tracciato e i punti chiave evidenziano i cambi linea.
+                        The route is displayed as an urban line in continuous scan mode.
+                        Each node represents a station on the path, while key points highlight line changes.
                     </p>
                 </div>
 
@@ -729,8 +745,8 @@
 
             <div class="download-card">
                 <p>
-                    Scarica la mappa metropolitana di <strong><%= city %></strong> per confrontare visivamente il percorso
-                    appena generato con la rete completa della città.
+                    Download the metro map of <strong><%= city %></strong> to visually compare the newly generated route
+                    with the city's full network.
                 </p>
                 <a href="images/metro-<%= newcity %>.jpg" class="download-btn" download="<%= city %>_Map.jpg">Download Metro Map</a>
             </div>

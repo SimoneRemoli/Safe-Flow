@@ -1,4 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="it.web.routex.controller.applicativo.ViewInternalNotificationsControllerApplicativo" %>
+<%@ page import="it.web.routex.exception.BrondiException" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
+<%
+    int internalNotificationsCount = 0;
+    HttpSession internalSession = request.getSession(false);
+    if (internalSession != null && internalSession.getAttribute("codiceFiscale") != null) {
+        try {
+            ViewInternalNotificationsControllerApplicativo internalNotificationsService =
+                    new ViewInternalNotificationsControllerApplicativo();
+            internalNotificationsCount = internalNotificationsService
+                    .unreadCount(internalSession.getAttribute("codiceFiscale").toString());
+        } catch (BrondiException ignored) {
+            internalNotificationsCount = 0;
+        }
+    }
+%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -121,12 +138,38 @@
             border-color: rgba(111, 247, 255, 0.4);
         }
 
+        .notification-link {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notification-link.has-alert {
+            color: #04111f;
+            background: linear-gradient(90deg, #6ff7ff, #89ffd1 52%, #8dd8ff);
+            border-color: transparent;
+            box-shadow: 0 16px 28px rgba(111, 247, 255, 0.22);
+        }
+
+        .notification-badge {
+            min-width: 22px;
+            height: 22px;
+            padding: 0 6px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(4, 17, 31, 0.92);
+            color: #f8fcff;
+            font-size: 0.78rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
         .hero {
             margin-top: 28px;
-            display: grid;
-            grid-template-columns: 1.08fr 0.92fr;
-            gap: 28px;
-            align-items: stretch;
+            display: block;
         }
 
         .hero-copy {
@@ -226,142 +269,13 @@
             line-height: 1.6;
         }
 
-        .visual-panel {
-            border-radius: 30px;
-            padding: 22px;
-            background:
-                linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent),
-                rgba(8, 24, 43, 0.9);
-            border: 1px solid rgba(111, 247, 255, 0.18);
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .status-bar {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-        }
-
-        .status-pill {
-            padding: 8px 12px;
-            border-radius: 999px;
-            background: rgba(111, 247, 255, 0.08);
-            border: 1px solid rgba(111, 247, 255, 0.16);
-            color: #dffbff;
-            font-size: 0.88rem;
-        }
-
-        .network-stage {
-            min-height: 420px;
-            border-radius: 26px;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            background:
-                radial-gradient(circle at 20% 18%, rgba(111, 247, 255, 0.14), transparent 30%),
-                linear-gradient(180deg, rgba(8, 18, 32, 0.86), rgba(6, 14, 25, 0.96));
-            position: relative;
-            overflow: hidden;
-        }
-
-        .route-node {
-            position: absolute;
-            border-radius: 50%;
-            box-shadow: 0 0 26px rgba(111, 247, 255, 0.28);
-            animation: pulse 4.8s ease-in-out infinite;
-        }
-
-        .route-node.main {
-            width: 92px;
-            height: 92px;
-            top: 90px;
-            right: 98px;
-            background: radial-gradient(circle at 30% 30%, #ffffff, #7cf5ff 34%, #0a93ff);
-        }
-
-        .route-node.side-a {
-            width: 26px;
-            height: 26px;
-            top: 212px;
-            right: 190px;
-            background: radial-gradient(circle at 30% 30%, #fff8bf, #ffd66b 42%, #ff8f3c);
-            animation-delay: 0.6s;
-        }
-
-        .route-node.side-b {
-            width: 22px;
-            height: 22px;
-            top: 260px;
-            right: 78px;
-            background: radial-gradient(circle at 30% 30%, #fbe0ff, #c794ff 42%, #7354ff);
-            animation-delay: 1.2s;
-        }
-
-        .route-lines span {
-            position: absolute;
-            display: block;
-            height: 2px;
-            border-radius: 999px;
-            background: linear-gradient(90deg, transparent, rgba(111, 247, 255, 0.55), transparent);
-        }
-
-        .route-lines span:nth-child(1) {
-            width: 180px;
-            left: 36px;
-            top: 96px;
-        }
-
-        .route-lines span:nth-child(2) {
-            width: 220px;
-            left: 88px;
-            top: 186px;
-            transform: rotate(-12deg);
-        }
-
-        .route-lines span:nth-child(3) {
-            width: 170px;
-            left: 110px;
-            bottom: 110px;
-            transform: rotate(22deg);
-        }
-
-        .stage-copy {
-            position: absolute;
-            left: 24px;
-            bottom: 24px;
-            max-width: 280px;
-        }
-
-        .stage-copy strong {
-            display: block;
-            font-size: 1.2rem;
-            margin-bottom: 6px;
-        }
-
-        .stage-copy span {
-            color: var(--muted);
-            line-height: 1.6;
-        }
-
         @keyframes drift {
             0% { transform: translateY(0); }
             50% { transform: translateY(-14px); }
             100% { transform: translateY(0); }
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-8px) scale(1.04); }
-        }
-
         @media (max-width: 1024px) {
-            .hero {
-                grid-template-columns: 1fr;
-            }
-
             .info-grid {
                 grid-template-columns: 1fr;
             }
@@ -382,6 +296,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 <body>
 <%@ include file="header.jspf" %>
@@ -397,7 +312,13 @@
 
         <div class="nav-actions">
             <a href="indexLogged.jsp">Home</a>
-            <a href="areaRiservata">Area Riservata</a>
+            <a href="areaRiservata">Reserved Area</a>
+            <a href="internalNotifications" class="notification-link <%= internalNotificationsCount > 0 ? "has-alert" : "" %>">
+                Notifications
+                <% if (internalNotificationsCount > 0) { %>
+                <span class="notification-badge"><%= internalNotificationsCount %></span>
+                <% } %>
+            </a>
             <a href="logout">Logout</a>
         </div>
     </div>
@@ -407,9 +328,7 @@
             <div class="eyebrow">Connected User Console</div>
             <h1>Your urban network<br>is ready to move.</h1>
             <p>
-                La home autenticata ora parla la stessa lingua della sezione esplorazione:
-                interfaccia futuristica, accessi rapidi e una scena visiva piu forte per navigare percorsi,
-                aree riservate e servizi collegati alla mobilita urbana.
+                You now have access to your features on the platform. Choose what you want to do.
             </p>
 
             <div class="cta-row">
@@ -419,47 +338,28 @@
                 <form action="buyTicket" method="get" style="margin:0;">
                     <button class="secondary-cta" type="submit">Buy Ticket</button>
                 </form>
+                <a class="secondary-cta" href="sendTravelerCommunication.jsp">Send Report</a>
             </div>
 
             <div class="info-grid">
                 <div class="info-card">
                     <strong>Path Search</strong>
-                    <span>Accesso immediato alla nuova selezione città con pianeti animati.</span>
+                    <span>Quick access to city selection and route building.</span>
                 </div>
                 <div class="info-card">
                     <strong>Reserved Area</strong>
-                    <span>Ingresso rapido ai moduli personali e alle funzionalita utente.</span>
+                    <span>Open your personal area to review saved routes and purchased tickets.</span>
                 </div>
                 <div class="info-card">
                     <strong>Ticket Flow</strong>
-                    <span>Punto di partenza coerente anche per acquisto e servizi collegati.</span>
+                    <span>Move directly to ticket services and related traveler actions.</span>
+                </div>
+                <div class="info-card">
+                    <strong>Notifications</strong>
+                    <span>Open your private notification center and track the outcome of your traveler reports.</span>
                 </div>
             </div>
         </div>
-
-        <aside class="visual-panel">
-            <div class="status-bar">
-                <div class="status-pill">Session active</div>
-                <div class="status-pill">Transit systems online</div>
-            </div>
-
-            <div class="network-stage">
-                <div class="route-node main"></div>
-                <div class="route-node side-a"></div>
-                <div class="route-node side-b"></div>
-
-                <div class="route-lines">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-
-                <div class="stage-copy">
-                    <strong>Operational metro dashboard</strong>
-                    <span>Da qui entri direttamente nella parte piu scenica del progetto: scelta rete, preview mappa e costruzione del percorso.</span>
-                </div>
-            </div>
-        </aside>
     </section>
 </div>
 </body>

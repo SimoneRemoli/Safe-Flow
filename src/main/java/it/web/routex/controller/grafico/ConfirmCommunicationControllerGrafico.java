@@ -24,6 +24,13 @@ public class ConfirmCommunicationControllerGrafico extends LoggedHttpServlet {
             MessageBean mess = new MessageBean();
             mess.setMessage(input.message());
             mess.setDate(input.date());
+            mess.setCity(input.city());
+            mess.setPickpocketAlert(input.pickpocketAlert());
+            mess.setFightAlert(input.fightAlert());
+            mess.setCrowdAlert(input.crowdAlert());
+            mess.setGeneralAlert(input.generalAlert());
+            mess.setStationName(input.stationName());
+            mess.setSuspectClothing(input.suspectClothing());
 
             // Chiamata applicativa
             ConfirmCommunicationControllerApplicativo service = new ConfirmCommunicationControllerApplicativo();
@@ -31,11 +38,13 @@ public class ConfirmCommunicationControllerGrafico extends LoggedHttpServlet {
             service.communication(mess);
 
             // Successo
-            request.setAttribute("successTitle", "Comunicazione inviata");
+            request.setAttribute("successTitle", "Report published");
             request.setAttribute(
                     "successMessage",
-                    "La comunicazione è stata correttamente inviata a tutti i lavoratori del sistema."
+                    "Your report has been published successfully and is now visible to all users on the platform."
             );
+            request.setAttribute("successHomeLabel", "Back to Admin Hub");
+            request.setAttribute("successHomeTarget", "indexAdmin.jsp");
 
             request.getRequestDispatcher("/successCommunication.jsp").forward(request, response);
 
@@ -53,7 +62,7 @@ public class ConfirmCommunicationControllerGrafico extends LoggedHttpServlet {
             // ERRORE TECNICO / APPLICATIVO
             request.setAttribute(
                     "errore",
-                    "Errore durante l'invio della comunicazione."
+                    "Error while publishing the report."
             );
             try {
             request.getRequestDispatcher("/adminError.jsp").forward(request, response);

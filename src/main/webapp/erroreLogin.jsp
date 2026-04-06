@@ -2,7 +2,7 @@
 <%@ page isELIgnored="false" %>
 <html>
 <head>
-    <title>Errore di login</title>
+    <title>Login Error</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -26,13 +26,14 @@
             font-weight: bold;
         }
     </style>
+    <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 <body>
 <%@ include file="header.jspf" %>
 <div class="box">
-    <h2>Accesso non riuscito</h2>
+    <h2>Login failed</h2>
     <p>${messaggioErrore}</p>
-    <a href="login.jsp">Torna al login</a>
+    <a href="login.jsp">Back to login</a>
 </div>
 
 </body>
