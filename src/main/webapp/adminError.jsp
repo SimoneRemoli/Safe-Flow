@@ -109,7 +109,7 @@
         <p>An unexpected administrative error occurred. Please try again later.</p>
     <% } %>
 
-    <a href="indexAdmin.jsp" class="btn-home">
+    <a href="adminHub" class="btn-home">
         <i class="fas fa-home"></i> Back to Admin Home
     </a>
 </div>

@@ -388,9 +388,9 @@
         </div>
 
         <div class="nav-actions">
-            <a href="<%= isTravelerView ? "indexLogged.jsp" : "dashboardWorker.jsp" %>">Home</a>
+            <a href="<%= isTravelerView ? "travelerHome" : "workerHub" %>">Home</a>
             <% if (isTravelerView) { %>
-            <a href="sendTravelerCommunication.jsp">Send report</a>
+            <a href="travelerReport">Send report</a>
             <% } %>
             <a href="logout">Logout</a>
         </div>

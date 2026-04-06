@@ -586,7 +586,7 @@
     String newcity = city.toLowerCase();
     int routeSize = (dati != null) ? dati.size() : 0;
     boolean loggedIn = SessionAuthUtil.isLoggedIn(session);
-    String homePage = loggedIn ? "indexLogged.jsp" : "index.jsp";
+    String homePage = loggedIn ? "travelerHome" : "index.jsp";
 %>
 
 <div class="shell">

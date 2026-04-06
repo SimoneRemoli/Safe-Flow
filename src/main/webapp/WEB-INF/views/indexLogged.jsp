@@ -299,7 +299,7 @@
     <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 <body>
-<%@ include file="header.jspf" %>
+<%@ include file="/header.jspf" %>
 <div class="shell">
     <div class="topbar">
         <div class="brand">
@@ -311,7 +311,7 @@
         </div>
 
         <div class="nav-actions">
-            <a href="indexLogged.jsp">Home</a>
+            <a href="travelerHome">Home</a>
             <a href="areaRiservata">Reserved Area</a>
             <a href="internalNotifications" class="notification-link <%= internalNotificationsCount > 0 ? "has-alert" : "" %>">
                 Notifications
@@ -338,7 +338,7 @@
                 <form action="buyTicket" method="get" style="margin:0;">
                     <button class="secondary-cta" type="submit">Buy Ticket</button>
                 </form>
-                <a class="secondary-cta" href="sendTravelerCommunication.jsp">Send Report</a>
+                <a class="secondary-cta" href="travelerReport">Send Report</a>
             </div>
 
             <div class="info-grid">

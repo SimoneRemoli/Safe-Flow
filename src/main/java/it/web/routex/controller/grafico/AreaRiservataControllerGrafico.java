@@ -133,7 +133,7 @@ public class AreaRiservataControllerGrafico extends LoggedHttpServlet
 
     private void forwardAreaRiservata(HttpServletRequest request, HttpServletResponse response) {
         try {
-            request.getRequestDispatcher("/areaRiservata.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/areaRiservata.jsp").forward(request, response);
         } catch (Exception e) {
             logger.error("Errore durante il forward alla pagina dell'area riservata", e);
         }

@@ -285,7 +285,7 @@
     </style>
 </head>
 <body>
-<%@ include file="header.jspf" %>
+<%@ include file="/header.jspf" %>
 <main class="page">
     <div class="topbar">
         <div class="brand">

@@ -123,7 +123,7 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
                                     HttpServletResponse response,
                                     int size) {
         try {
-            request.getRequestDispatcher("buyTicket.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/buyTicket.jsp").forward(request, response);
             logger.info("Visualizzata la pagina di acquisto biglietti con size={} città disponibili.", size);
         } catch (Exception e) {
             logger.error("Errore nella visualizzazione della pagina di acquisto biglietti.", e);
@@ -147,7 +147,7 @@ public class BuyTicketControllerGrafico extends LoggedHttpServlet {
     private void forwardingConferma(HttpServletRequest request, HttpServletResponse response)
     {
         try {
-            request.getRequestDispatcher("/confermaPagamento.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/confermaPagamento.jsp").forward(request, response);
         }catch(Exception e){
             logger.error("Errore durante il redirect alla pagina di conferma pagamento",e);
         }

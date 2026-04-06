@@ -477,7 +477,7 @@
 </div>
 <% } else { %>
 <div class="top-nav">
-    <a href="indexLogged.jsp">Home</a>
+    <a href="travelerHome">Home</a>
     <a href="logout">Logout</a>
     <a href="areaRiservata">Reserved Area</a>
 </div>

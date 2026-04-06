@@ -1,0 +1,10 @@
+<footer class="app-footer-credit">
+    <div class="app-footer-credit__inner">
+        <span class="app-footer-prefix">dev</span>
+        <span class="app-footer-names">
+            <a href="https://github.com/iPalateee" target="_blank" rel="noopener noreferrer">lorenzo brondi</a>
+            <span class="app-footer-separator">/</span>
+            <a href="https://github.com/SimoneRemoli" target="_blank" rel="noopener noreferrer">simone remoli</a>
+        </span>
+    </div>
+</footer>

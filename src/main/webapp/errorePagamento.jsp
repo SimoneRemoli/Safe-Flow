@@ -66,7 +66,7 @@
 
 <body>
 
-<%@ include file="header.jspf" %>
+<%@ include file="/header.jspf" %>
 
 <div class="box">
     <h2>Pagamento non riuscito</h2>
@@ -76,7 +76,7 @@
 
     <div class="links">
         <a href="buyTicket" class="retry-btn">Riprova pagamento</a>
-        <a href="indexLogged.jsp" class="home-btn">Torna alla Home</a>
+        <a href="travelerHome" class="home-btn">Torna alla Home</a>
     </div>
 </div>
 

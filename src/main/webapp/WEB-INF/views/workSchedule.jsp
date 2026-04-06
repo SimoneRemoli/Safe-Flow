@@ -179,7 +179,7 @@
     </div>
 
     <div class="actions">
-        <a href="<%= request.getContextPath() %>/dashboardWorker.jsp" class="primary">Torna alla dashboard</a>
+        <a href="<%= request.getContextPath() %>/workerHub" class="primary">Torna alla dashboard</a>
         <a href="<%= request.getContextPath() %>/logout" class="secondary">Logout</a>
     </div>
 </div>

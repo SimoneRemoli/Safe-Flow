@@ -44,7 +44,7 @@ public class ConfirmCommunicationControllerGrafico extends LoggedHttpServlet {
                     "Your report has been published successfully and is now visible to all users on the platform."
             );
             request.setAttribute("successHomeLabel", "Back to Admin Hub");
-            request.setAttribute("successHomeTarget", "indexAdmin.jsp");
+            request.setAttribute("successHomeTarget", "adminHub");
 
             request.getRequestDispatcher("/successCommunication.jsp").forward(request, response);
 

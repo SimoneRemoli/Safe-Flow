@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 <body>
-<%@ include file="header.jspf" %>
+<%@ include file="/header.jspf" %>
 <div class="box">
     <h2>Login failed</h2>
     <p>${messaggioErrore}</p>

@@ -386,7 +386,7 @@
     <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 <body>
-<%@ include file="header.jspf" %>
+<%@ include file="/header.jspf" %>
 <%
     List<RouteBean> listaPercorsi = (List<RouteBean>) request.getAttribute("listaPercorsi");
     List<TicketBean> tickets = (List<TicketBean>) request.getAttribute("tickets");
@@ -409,7 +409,7 @@
 
         <div class="nav-actions">
             <% if (loggedIn) { %>
-            <a href="indexLogged.jsp">Home</a>
+            <a href="travelerHome">Home</a>
             <a href="logout">Logout</a>
             <% } else { %>
             <a href="index.jsp">Home</a>

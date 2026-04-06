@@ -264,7 +264,7 @@
     <div class="right-content">
         <!-- Pulsanti -->
         <div class="button-container">
-            <a href="dashboardWorker.jsp">Home</a>
+            <a href="workerHub">Home</a>
             <a href="logout" class="logout-link">Logout</a>
         </div>
 
@@ -279,7 +279,7 @@
                 <button class="send-btn" type="button" id="sendBtn" disabled>Send message</button>
             </form>
 
-            <form action="dashboardWorker.jsp" method="get">
+            <form action="workerHub" method="get">
                 <button class="send-btn" type="submit">Back</button>
             </form>
         </div>

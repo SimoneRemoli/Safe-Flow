@@ -201,7 +201,7 @@
         </div>
 
         <div class="nav-actions">
-            <a href="indexAdmin.jsp">Home</a>
+            <a href="adminHub">Home</a>
             <a href="logout">Logout</a>
         </div>
     </div>

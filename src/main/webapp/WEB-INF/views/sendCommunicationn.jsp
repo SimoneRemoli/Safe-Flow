@@ -270,7 +270,7 @@
 
         <div class="actions">
             <button type="submit" class="btn">Send message</button>
-            <a href="indexAdmin.jsp" class="btn-link">Back to home</a>
+            <a href="adminHub" class="btn-link">Back to home</a>
         </div>
     </form>
 </div>

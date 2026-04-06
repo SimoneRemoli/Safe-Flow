@@ -29,7 +29,7 @@ public class ViewNotificationsControllerGrafico extends LoggedHttpServlet {
             request.setAttribute("notifiche", notifiche);
             request.setAttribute("isWorkerView", "WORKER".equalsIgnoreCase(ruolo));
             request.setAttribute("isTravelerView", "TRAVELER".equalsIgnoreCase(ruolo));
-            request.getRequestDispatcher("/viewNotifications.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/viewNotifications.jsp").forward(request, response);
 
         } catch (BrondiException e) {
             logger.error(

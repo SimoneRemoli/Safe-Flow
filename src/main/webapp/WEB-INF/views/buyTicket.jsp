@@ -367,7 +367,7 @@
     <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 <body>
-<%@ include file="header.jspf" %>
+<%@ include file="/header.jspf" %>
 <%
     boolean loggedIn = SessionAuthUtil.isLoggedIn(session);
     List<CityBean> cities = (List<CityBean>) request.getAttribute("cities");
@@ -383,7 +383,7 @@
         </div>
 
         <div class="nav-actions">
-            <a href="<%= loggedIn ? "indexLogged.jsp" : "index.jsp" %>">Home</a>
+            <a href="<%= loggedIn ? "travelerHome" : "index.jsp" %>">Home</a>
             <% if (loggedIn) { %>
             <a href="logout">Logout</a>
             <% } else { %>

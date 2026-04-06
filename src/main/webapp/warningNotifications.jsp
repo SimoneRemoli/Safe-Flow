@@ -95,7 +95,7 @@
         <%= org.apache.commons.lang3.StringEscapeUtils.escapeHtml4(
                 (String) request.getAttribute("warningMessage")) %>
     </div>
-    <a href="dashboardWorker.jsp" class="btn-home">
+    <a href="workerHub" class="btn-home">
         <i class="fas fa-home"></i> Torna alla Home
     </a>
 </div>

@@ -77,7 +77,7 @@
 </head>
 
 <body>
-<%@ include file="header.jspf" %>
+<%@ include file="/header.jspf" %>
 
 <div class="error-container">
     <i class="fas fa-exclamation-triangle error-icon"></i>

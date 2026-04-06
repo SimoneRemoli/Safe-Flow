@@ -2,6 +2,7 @@ package it.web.routex.controller.grafico;
 import it.web.routex.bean.WorkerScheduleBean;
 import it.web.routex.controller.applicativo.ViewWorkScheduleControllerApplicativo;
 import it.web.routex.domain.LoggedHttpServlet;
+import it.web.routex.domain.SessionAuthUtil;
 import it.web.routex.exception.BrondiException;
 import it.web.routex.utility.singleton.Credentials;
 
@@ -14,7 +15,7 @@ public class ViewWorkScheduleControllerGrafico extends LoggedHttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         try {
             HttpSession session = request.getSession(false);
-            if (session == null) {
+            if (!isWorker(session)) {
                 redirectToLogin(response);
                 return;
             }
@@ -33,7 +34,7 @@ public class ViewWorkScheduleControllerGrafico extends LoggedHttpServlet {
             request.setAttribute("luogoDiLavoro", schedule.getLuogoDiLavoro());
             request.setAttribute("durataTurno", schedule.getDurataTurno());
 
-            request.getRequestDispatcher("/workSchedule.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/workSchedule.jsp").forward(request, response);
 
         } catch (BrondiException e) {
             logger.error(
@@ -68,5 +69,11 @@ public class ViewWorkScheduleControllerGrafico extends LoggedHttpServlet {
         } catch (Exception e) {
             logger.error("Errore redirect login", e);
         }
+    }
+
+    private boolean isWorker(HttpSession session) {
+        return SessionAuthUtil.isLoggedIn(session)
+                && session.getAttribute("ruolo") != null
+                && "WORKER".equalsIgnoreCase(session.getAttribute("ruolo").toString());
     }
 }

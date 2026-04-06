@@ -346,7 +346,7 @@
     </script>
 </head>
 <body>
-<%@ include file="header.jspf" %>
+<%@ include file="/header.jspf" %>
 <%
     String city = (String) request.getAttribute("city");
     String quantity = (String) request.getAttribute("quantity");

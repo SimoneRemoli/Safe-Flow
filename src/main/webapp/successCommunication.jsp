@@ -95,11 +95,11 @@
     String successHomeLabel = successHomeLabelAttr != null ? successHomeLabelAttr : "Back to Home";
 
     if (successHomeTargetAttr == null && "ADMIN".equalsIgnoreCase(successRole)) {
-        successHomeTarget = "indexAdmin.jsp";
+        successHomeTarget = "adminHub";
     } else if (successHomeTargetAttr == null && "TRAVELER".equalsIgnoreCase(successRole)) {
-        successHomeTarget = "indexLogged.jsp";
+        successHomeTarget = "travelerHome";
     } else if (successHomeTargetAttr == null && "WORKER".equalsIgnoreCase(successRole)) {
-        successHomeTarget = "dashboardWorker.jsp";
+        successHomeTarget = "workerHub";
     }
 %>
 <div class="success-container">

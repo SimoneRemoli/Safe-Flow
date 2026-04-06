@@ -77,7 +77,7 @@
 </head>
 
 <body>
-<%@ include file="header.jspf" %>
+<%@ include file="/header.jspf" %>
 
 <div class="error-container">
     <i class="fas fa-exclamation-triangle error-icon"></i>
@@ -98,7 +98,7 @@
         <p>We encountered an unexpected error. Please try again later.</p>
     <% } %>
 
-    <a href="indexLogged.jsp" class="btn-home"><i class="fas fa-home"></i> Back to Home</a>
+    <a href="travelerHome" class="btn-home"><i class="fas fa-home"></i> Back to Home</a>
 </div>
 
 </body>
