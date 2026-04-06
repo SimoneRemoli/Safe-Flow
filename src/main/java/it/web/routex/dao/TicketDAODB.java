@@ -13,9 +13,8 @@ import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.utility.singleton.Credentials;
 import it.web.routex.exception.CredentialsExceptionRemoli;
 
-public class TicketDAODB extends TicketDAOLayer {
+public class TicketDAODB {
 
-    @Override
     public List<Ticket> getTicketByCF(String cf)
             throws DAOExceptionRemoli, PathNotFoundExceptionRemoli {
 
@@ -55,7 +54,6 @@ public class TicketDAODB extends TicketDAOLayer {
         }
     }
 
-    @Override
     public int deleteTicketsByCodes(String cf, List<String> ticketCodes) throws DAOExceptionRemoli {
         int deleted = 0;
         String procedure = "{ CALL RouteX_Update.DeleteTicketByCode(?, ?, ?) }";
@@ -76,7 +74,6 @@ public class TicketDAODB extends TicketDAOLayer {
         }
     }
 
-    @Override
     public int deleteAllTickets(String cf) throws DAOExceptionRemoli {
         String procedure = "{ CALL RouteX_Update.DeleteAllTickets(?, ?) }";
 
@@ -92,8 +89,6 @@ public class TicketDAODB extends TicketDAOLayer {
         }
     }
 
-
-    @Override
     public void salvataggio(Credentials cred, List<String> codiciBiglietti, String metodopayment, String city) throws CredentialsExceptionRemoli {
         try {
             Connection conn = ConnectionFactory.getConnection();

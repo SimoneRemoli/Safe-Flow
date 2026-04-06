@@ -3,7 +3,7 @@ package it.web.routex.controller.applicativo;
 import it.web.routex.bean.RouteBean;
 import it.web.routex.bean.TicketBean;
 import it.web.routex.dao.LayerPersistenza;
-import it.web.routex.dao.TicketDAOLayer;
+import it.web.routex.dao.TicketDAODB;
 import it.web.routex.model.Route;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +14,6 @@ import it.web.routex.exception.PathNotFoundExceptionRemoli;
 import it.web.routex.model.Ticket;
 import it.web.routex.utility.decorator.decoratorpath.*;
 import it.web.routex.utility.factory.FactoryLayerPersistenza;
-import it.web.routex.utility.factory.FactoryPersistence;
 
 public class AreaRiservata
 {
@@ -25,7 +24,7 @@ public class AreaRiservata
         List<Ticket> tickets;
 
         try {
-            TicketDAOLayer dao = FactoryPersistence.createTicketDAO();
+            TicketDAODB dao = new TicketDAODB();
             tickets = dao.getTicketByCF(cf);
         } catch (PathNotFoundExceptionRemoli e) {
             return beans;
@@ -62,12 +61,12 @@ public class AreaRiservata
             return 0;
         }
 
-        TicketDAOLayer dao = FactoryPersistence.createTicketDAO();
+        TicketDAODB dao = new TicketDAODB();
         return dao.deleteTicketsByCodes(cf, ticketCodes);
     }
 
     public int deleteAllTickets(String cf) throws DAOExceptionRemoli {
-        TicketDAOLayer dao = FactoryPersistence.createTicketDAO();
+        TicketDAODB dao = new TicketDAODB();
         return dao.deleteAllTickets(cf);
     }
 
