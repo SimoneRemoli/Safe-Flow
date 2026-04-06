@@ -62,8 +62,6 @@ public abstract class LayerPersistenza {
 
     public abstract void save(Route route) throws DAOExceptionRemoli;
 
-    public abstract WorkerSchedule getWorkerSchedule(String codiceFiscale) throws DAOExceptionRemoli;
-
     public abstract void sendMessage(Notification notification) throws DAOExceptionRemoli;
 
     public abstract void solvedNotification(Notification notification) throws DAOExceptionRemoli;
@@ -89,10 +87,6 @@ public abstract class LayerPersistenza {
                                      String codiceFiscale) throws DAOExceptionRemoli;
 
     public abstract int deleteAdmins(List<String> codiceFiscali) throws DAOExceptionRemoli;
-
-    public abstract List<Credentials> listWorkers() throws DAOExceptionRemoli;
-
-    public abstract int deleteWorkers(List<String> codiceFiscali) throws DAOExceptionRemoli;
 
     public abstract List<Credentials> listTravelers() throws DAOExceptionRemoli;
 

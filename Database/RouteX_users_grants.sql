@@ -5,7 +5,6 @@
 DROP USER IF EXISTS `login_User`@`%`;
 DROP USER IF EXISTS `traveler`@`%`;
 DROP USER IF EXISTS `admin_amministratore_routex`@`%`;
-DROP USER IF EXISTS `worker`@`%`;
 
 -- ===============================
 -- CREATE USERS WITH PASSWORDS
@@ -19,9 +18,6 @@ IDENTIFIED BY 'traveler';
 
 CREATE USER `admin_amministratore_routex`@`%`
 IDENTIFIED BY 'adminroute';
-
-CREATE USER `worker`@`%`
-IDENTIFIED BY 'worker';
 
 -- ===============================
 -- LOGIN USER
@@ -64,21 +60,11 @@ GRANT EXECUTE ON PROCEDURE `RouteX_Update`.`spsolvedmessage` TO `admin_amministr
 GRANT EXECUTE ON PROCEDURE `RouteX_Update`.`ListAdmins` TO `admin_amministratore_routex`@`%`;
 GRANT EXECUTE ON PROCEDURE `RouteX_Update`.`CreateAdmin` TO `admin_amministratore_routex`@`%`;
 GRANT EXECUTE ON PROCEDURE `RouteX_Update`.`DeleteAdminByCodiceFiscale` TO `admin_amministratore_routex`@`%`;
-GRANT EXECUTE ON PROCEDURE `RouteX_Update`.`ListWorkers` TO `admin_amministratore_routex`@`%`;
-GRANT EXECUTE ON PROCEDURE `RouteX_Update`.`DeleteWorkerByCodiceFiscale` TO `admin_amministratore_routex`@`%`;
 GRANT EXECUTE ON PROCEDURE `RouteX_Update`.`ListTravelers` TO `admin_amministratore_routex`@`%`;
 GRANT EXECUTE ON PROCEDURE `RouteX_Update`.`DeleteTravelerByCodiceFiscale` TO `admin_amministratore_routex`@`%`;
 GRANT EXECUTE ON PROCEDURE `RouteX_Update`.`ApproveCommunication` TO `admin_amministratore_routex`@`%`;
 GRANT EXECUTE ON PROCEDURE `RouteX_Update`.`ApproveTravelerCommunication` TO `admin_amministratore_routex`@`%`;
 GRANT EXECUTE ON PROCEDURE `RouteX_Update`.`RejectTravelerCommunication` TO `admin_amministratore_routex`@`%`;
 GRANT EXECUTE ON PROCEDURE `RouteX_Update`.`DeleteCommunication` TO `admin_amministratore_routex`@`%`;
-
--- ===============================
--- WORKER
--- ===============================
-GRANT USAGE ON *.* TO `worker`@`%`;
-GRANT EXECUTE ON PROCEDURE `RouteX_Update`.`getmessages` TO `worker`@`%`;
-GRANT EXECUTE ON PROCEDURE `RouteX_Update`.`spsolvedmessage` TO `worker`@`%`;
-GRANT EXECUTE ON PROCEDURE `RouteX_Update`.`viewworkschedule` TO `worker`@`%`;
 
 FLUSH PRIVILEGES;

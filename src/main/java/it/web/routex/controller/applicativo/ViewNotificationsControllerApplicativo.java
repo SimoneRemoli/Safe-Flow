@@ -20,9 +20,7 @@ public class ViewNotificationsControllerApplicativo {
             for (Notification n : notifications) {
                 boolean include = false;
 
-                if ("WORKER".equalsIgnoreCase(ruolo)) {
-                    include = "APPROVED".equalsIgnoreCase(n.getStatus()) && !n.isRisolto() && n.getRecipientCf() == null;
-                } else if ("TRAVELER".equalsIgnoreCase(ruolo)) {
+                if ("TRAVELER".equalsIgnoreCase(ruolo)) {
                     include = "APPROVED".equalsIgnoreCase(n.getStatus()) && n.getRecipientCf() == null;
                 }
 

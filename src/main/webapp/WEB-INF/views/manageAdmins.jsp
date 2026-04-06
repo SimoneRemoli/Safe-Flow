@@ -248,7 +248,6 @@
 <%@ include file="/header.jspf" %>
 <%
     List<AdminUserBean> admins = (List<AdminUserBean>) request.getAttribute("admins");
-    List<AdminUserBean> workers = (List<AdminUserBean>) request.getAttribute("workers");
     List<AdminUserBean> travelers = (List<AdminUserBean>) request.getAttribute("travelers");
     String inlineError = (String) request.getAttribute("inlineError");
     String successMessage = null;
@@ -351,38 +350,6 @@
     </div>
 
     <div class="grid">
-        <section class="panel">
-            <h2>Worker accounts</h2>
-            <p>Overview of worker accounts with the option to remove selected profiles.</p>
-
-            <% if (workers != null && !workers.isEmpty()) { %>
-            <form action="manageAdmins" method="post">
-                <input type="hidden" name="action" value="deleteWorkers">
-                <div class="admin-list">
-                    <% for (AdminUserBean worker : workers) { %>
-                    <div class="admin-row">
-                        <div class="admin-meta">
-                            <strong><%= worker.getNome() %> <%= worker.getCognome() %></strong>
-                            <span><%= worker.getEmail() %></span>
-                            <span><%= worker.getCodiceFiscale() %></span>
-                        </div>
-                        <label class="selector">
-                            <input type="checkbox" name="selectedWorkers" value="<%= worker.getCodiceFiscale() %>">
-                            <span>Select</span>
-                        </label>
-                    </div>
-                    <% } %>
-                </div>
-
-                <div class="actions">
-                    <button type="submit" class="btn danger" onclick="return confirm('Do you want to delete the selected worker accounts?');">Delete selected workers</button>
-                </div>
-            </form>
-            <% } else { %>
-            <div class="empty-state">No worker accounts available.</div>
-            <% } %>
-        </section>
-
         <section class="panel">
             <h2>Traveler accounts</h2>
             <p>Overview of traveler accounts with the option to remove selected users and their linked travel data.</p>

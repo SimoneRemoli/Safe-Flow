@@ -98,8 +98,6 @@
         successHomeTarget = "adminHub";
     } else if (successHomeTargetAttr == null && "TRAVELER".equalsIgnoreCase(successRole)) {
         successHomeTarget = "travelerHome";
-    } else if (successHomeTargetAttr == null && "WORKER".equalsIgnoreCase(successRole)) {
-        successHomeTarget = "workerHub";
     }
 %>
 <div class="success-container">

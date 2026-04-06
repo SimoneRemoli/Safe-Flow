@@ -8,7 +8,6 @@
 <%
     List<MessageBean> notifiche = (List<MessageBean>) request.getAttribute("notifiche");
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-    boolean isWorkerView = Boolean.TRUE.equals(request.getAttribute("isWorkerView"));
     boolean isTravelerView = Boolean.TRUE.equals(request.getAttribute("isTravelerView"));
     List<String> supportedNotificationCities = List.of("Rome", "Naples", "Athens", "Budapest");
     Map<String, List<MessageBean>> notificationsByCity = new LinkedHashMap<>();
@@ -381,14 +380,12 @@
             <span class="eyebrow"><%= isTravelerView ? "Traveler alerts" : "Alert management" %></span>
             <h1>System notifications</h1>
             <p class="subtitle">
-                <%= isTravelerView
-                        ? "Review the approved RouteX notifications and stay informed about important travel-related updates."
-                        : "Review the operational messages you have received and mark the ones already handled without leaving the updated worker layout." %>
+                Review the approved RouteX notifications and stay informed about important travel-related updates.
             </p>
         </div>
 
         <div class="nav-actions">
-            <a href="<%= isTravelerView ? "travelerHome" : "workerHub" %>">Home</a>
+            <a href="travelerHome">Home</a>
             <% if (isTravelerView) { %>
             <a href="travelerReport">Send report</a>
             <% } %>
@@ -413,16 +410,15 @@
                     <table>
                         <thead>
                         <tr>
-                            <th style="width: 44%">Message</th>
-                            <th style="width: 18%">Report type</th>
-                            <th style="width: 22%">Date</th>
-                            <th style="width: 16%; text-align: center;"><%= isTravelerView ? "Status" : "Resolved" %></th>
+                            <th style="width: 56%">Message</th>
+                            <th style="width: 20%">Report type</th>
+                            <th style="width: 24%">Date</th>
                         </tr>
                         </thead>
                         <tbody>
                         <% if (cityEntry.getValue().isEmpty()) { %>
                         <tr>
-                            <td colspan="4" class="empty-state">No notifications available for this city.</td>
+                            <td colspan="3" class="empty-state">No notifications available for this city.</td>
                         </tr>
                         <% } else {
                             for (MessageBean m : cityEntry.getValue()) {
@@ -454,14 +450,6 @@
                                 </span>
                             </td>
                             <td class="date-cell"><%= sdf.format(m.getDate()) %></td>
-                            <td class="check-cell">
-                                <% if (isTravelerView) { %>
-                                <span><%= Boolean.TRUE.equals(m.getRisolto()) ? "Resolved" : "Active" %></span>
-                                <% } else { %>
-                                <input type="checkbox" name="risolte"
-                                       value="<%= m.getDate().getTime() + "|" + m.getMessage() %>">
-                                <% } %>
-                            </td>
                         </tr>
                         <% }
                         } %>

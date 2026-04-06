@@ -194,7 +194,7 @@
 <div class="shell">
     <span class="eyebrow">Traveler moderation</span>
     <h1>Review traveler reports</h1>
-    <p class="subtitle">Approve pending traveler messages before they become visible to workers and travelers.</p>
+    <p class="subtitle">Approve pending traveler messages before they become visible in the public report feed.</p>
 
     <div class="nav-actions">
         <a href="adminHub">Home</a>

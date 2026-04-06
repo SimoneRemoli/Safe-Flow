@@ -36,13 +36,22 @@ public class LayerPersistenzaFull extends LayerPersistenza
                 throw new LoginNotFoundRemoli("Invalid credentials.", email, password);
             }
 
+            Ruolo ruolo = Ruolo.fromint(rs.getInt("ruolo"));
+            if (ruolo == null) {
+                throw new LoginNotFoundRemoli(
+                        "This account type is no longer supported.",
+                        email,
+                        password
+                );
+            }
+
             Credentials c = new Credentials();
             c.setCodiceFiscale(rs.getString("p_codiceFiscale"));
             c.setNome(rs.getString("p_nome"));
             c.setCognome(rs.getString("p_cognome"));
             c.setDataDiNascita(rs.getDate("p_dataDiNascita"));
             c.setDisabile(rs.getBoolean("p_disabile"));
-            c.setRuolo(Ruolo.fromint(rs.getInt("ruolo")));
+            c.setRuolo(ruolo);
             c.setEmail(email);
             c.setPassword(password);
 
@@ -328,45 +337,6 @@ public class LayerPersistenzaFull extends LayerPersistenza
         }
     }
 
-
-    @Override
-    public WorkerSchedule getWorkerSchedule(String codiceFiscale)
-            throws DAOExceptionRemoli {
-
-        String sp = "{ CALL RouteX_Update.viewWorkSchedule(?) }";
-
-        try (Connection conn = ConnectionFactory.getConnection();
-             CallableStatement cs = conn.prepareCall(sp)) {
-
-            cs.setString(1, codiceFiscale);
-
-            try (ResultSet rs = cs.executeQuery()) {
-
-                //  NESSUNA ECCEZIONE: se non c'è risultato, ritorno null
-                if (!rs.next()) {
-                    return null;
-                }
-
-                int oraInizio = rs.getInt("oraInizio");
-                int oraFine   = rs.getInt("oraFine");
-                String luogo  = rs.getString("luogoDiLavoro");
-
-                return new WorkerSchedule(
-                        oraInizio,
-                        oraFine,
-                        luogo
-                );
-            }
-
-        } catch (SQLException e) {
-            throw new DAOExceptionRemoli(
-                    "Errore durante la chiamata a viewWorkSchedule",
-                    e
-            );
-        }
-    }
-
-
     @Override
     public void sendMessage(Notification n) throws DAOExceptionRemoli {
 
@@ -640,16 +610,6 @@ public class LayerPersistenzaFull extends LayerPersistenza
         } catch (SQLException e) {
             throw new DAOExceptionRemoli("Error while deleting admin accounts: " + e.getMessage(), e);
         }
-    }
-
-    @Override
-    public List<Credentials> listWorkers() throws DAOExceptionRemoli {
-        return listPermessiByRole("ListWorkers");
-    }
-
-    @Override
-    public int deleteWorkers(List<String> codiceFiscali) throws DAOExceptionRemoli {
-        return deletePermessiByProcedure(codiceFiscali, "DeleteWorkerByCodiceFiscale", "worker");
     }
 
     @Override

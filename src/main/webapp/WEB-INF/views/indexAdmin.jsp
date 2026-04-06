@@ -390,8 +390,8 @@
             <span class="eyebrow">Admin Access</span>
             <h1>Control deck for the administrative area</h1>
             <p>
-                The admin area now uses the same visual language as the updated worker hub:
-                quick access, glass panels, and readable operational priorities in a single view.
+                The admin area uses the same clean visual language as the rest of the platform:
+                quick access, readable priorities, and direct administrative control in a single view.
             </p>
         </div>
     </section>
@@ -403,7 +403,7 @@
             </div>
             <h3>Send communication</h3>
             <p>
-                Open the composer to quickly distribute updates and instructions to workers.
+                Open the composer to quickly distribute updates and instructions across the platform.
             </p>
             <a href="adminReport">
                 Open composer <i class="fas fa-arrow-right"></i>
@@ -453,7 +453,7 @@
     <section class="status-grid">
         <article class="status-card">
             <strong>Unified UI</strong>
-            <span>The admin area shares the same visual language as the updated worker hub, without disconnected pages.</span>
+            <span>The admin area shares the same visual language as the rest of the platform, without disconnected pages.</span>
         </article>
         <article class="status-card">
             <strong>Decision speed</strong>

@@ -27,7 +27,6 @@ public class ViewNotificationsControllerGrafico extends LoggedHttpServlet {
             ViewNotificationsControllerApplicativo notifications = new ViewNotificationsControllerApplicativo();
             List<MessageBean> notifiche = notifications.messages(ruolo, codiceFiscale);
             request.setAttribute("notifiche", notifiche);
-            request.setAttribute("isWorkerView", "WORKER".equalsIgnoreCase(ruolo));
             request.setAttribute("isTravelerView", "TRAVELER".equalsIgnoreCase(ruolo));
             request.getRequestDispatcher("/WEB-INF/views/viewNotifications.jsp").forward(request, response);
 

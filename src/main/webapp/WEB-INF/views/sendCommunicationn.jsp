@@ -235,7 +235,7 @@
     <span class="eyebrow">Broadcast center</span>
     <h1>Send communication</h1>
     <p class="subtitle">
-        Write an operational message to distribute to the platform workers while keeping the same updated admin layout.
+        Write an operational message to distribute across the platform while keeping the same updated admin layout.
     </p>
 
     <form action="confirmCommunication" method="post">
@@ -266,7 +266,7 @@
                 <datalist id="stationSuggestions"></datalist>
             </div>
         </div>
-        <textarea id="message" name="message" maxlength="250" placeholder="Write the message you want to send to workers..."></textarea>
+        <textarea id="message" name="message" maxlength="250" placeholder="Write the message you want to publish on the platform..."></textarea>
 
         <div class="actions">
             <button type="submit" class="btn">Send message</button>

@@ -425,32 +425,6 @@ INSERT INTO `Rome` VALUES (0,'Rebibbia','no','MB'),(1,'Ponte Mammolo','si','MB')
 UNLOCK TABLES;
 
 --
--- Table structure for table `segnalazioni`
---
-
-DROP TABLE IF EXISTS `segnalazioni`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `segnalazioni` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `numero_segnalazione` int NOT NULL,
-  `testo` text NOT NULL,
-  `data` timestamp NOT NULL,
-  PRIMARY KEY (`id`,`numero_segnalazione`),
-  CONSTRAINT `fk_Segnalazioni_Permessi` FOREIGN KEY (`id`) REFERENCES `worker` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `segnalazioni`
---
-
-LOCK TABLES `segnalazioni` WRITE;
-/*!40000 ALTER TABLE `segnalazioni` DISABLE KEYS */;
-/*!40000 ALTER TABLE `segnalazioni` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `Stockholm`
 --
 
@@ -504,33 +478,6 @@ LOCK TABLES `User` WRITE;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
 INSERT INTO `User` VALUES ('BCCSLL98','Giulio','Andreotti','1918-10-10','andreotti@gmail.com','mammina',1,'3'),('RMLSMN00RO2H501D','Simone','Remoli','2000-10-02','simoneremoli00@gmail.com','ste952r456!',0,'3');
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `worker`
---
-
-DROP TABLE IF EXISTS `worker`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `worker` (
-  `id` int NOT NULL,
-  `oraInizio` int NOT NULL,
-  `oraFine` int NOT NULL,
-  `luogoDiLavoro` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `fk_worker_permessi` FOREIGN KEY (`id`) REFERENCES `permessi` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `worker`
---
-
-LOCK TABLES `worker` WRITE;
-/*!40000 ALTER TABLE `worker` DISABLE KEYS */;
-INSERT INTO `worker` VALUES (1,16,18,'Santa Maria Del Soccorso'),(3,8,16,'Battistini');
-/*!40000 ALTER TABLE `worker` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1335,32 +1282,6 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `ListWorkers` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ListWorkers`()
-BEGIN
-    SELECT
-        Nome AS nome,
-        Cognome AS cognome,
-        Email AS email,
-        Codice_Fiscale AS codice_fiscale
-    FROM RouteX_Update.Permessi
-    WHERE Ruolo = '1'
-    ORDER BY Nome, Cognome, Email;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `ListTravelers` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1409,31 +1330,6 @@ BEGIN
         p_codice_fiscale,
         p_email
     );
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `DeleteWorkerByCodiceFiscale` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `DeleteWorkerByCodiceFiscale`(
-    IN p_codice_fiscale VARCHAR(100)
-)
-BEGIN
-    DELETE FROM RouteX_Update.Permessi
-    WHERE Codice_Fiscale = p_codice_fiscale
-      AND Ruolo = '1';
-
-    SELECT ROW_COUNT() AS deleted_rows;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1538,55 +1434,6 @@ BEGIN
       AND RUOLO = '3';
 
     SELECT ROW_COUNT() AS deleted_rows;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `register_Worker` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `register_Worker`(
-    IN p_nome VARCHAR(100),
-    IN p_cognome VARCHAR(100),
-    IN p_email VARCHAR(100),
-    IN p_password VARCHAR(100),
-    IN p_ruolo INT,
-    IN p_codice_fiscale VARCHAR(16),
-    IN p_oraInizio INT,
-    IN p_oraFine INT,
-    in p_luogoDiLavoro varchar(100)
-)
-BEGIN
-    INSERT INTO RouteX_Update.Worker (
-        nome,
-        cognome,
-        email,
-        password,
-        ruolo,
-        codice_fiscale,
-		oraInizio,
-        oraFine,
-        luogoDiLavoro
-) VALUES (
-        p_nome,
-        p_cognome,
-        p_email,
-        p_password,
-        p_ruolo,
-        p_codice_fiscale,
-        p_oraInizio,
-        p_oraFine,
-        p_luogoDiLavoro
-    );
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1980,35 +1827,6 @@ BEGIN
     SELECT
         temp_start > 0 AS p_startExists,
         temp_end > 0 AS p_endExists;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `viewWorkSchedule` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `viewWorkSchedule`(
-    IN p_codiceFiscale VARCHAR(16)
-)
-BEGIN
-    SELECT
-        w.oraInizio,
-        w.oraFine,
-        w.luogoDiLavoro
-    FROM permessi p
-    JOIN worker w
-        ON w.id = p.id
-    WHERE p.Codice_Fiscale = p_codiceFiscale
-    LIMIT 1;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;

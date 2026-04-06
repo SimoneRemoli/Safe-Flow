@@ -64,14 +64,17 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
     private void gestisciReindirizzamento(UtenteBeanGenerico utente, HttpServletResponse response)
     {
         try {
+            if (utente.getRuolo() == null) {
+                safeRedirect(response, "erroreLogin.jsp");
+                return;
+            }
+
             // Imposta la connessione corretta in base al ruolo
             ConnectionFactory.cambioDiRuolo(utente.getRuolo());
 
             switch (utente.getRuolo().toString().toUpperCase()) {
 
                 case "TRAVELER" -> safeRedirect(response, "travelerHome");
-
-                case "WORKER" -> safeRedirect(response, "workerHub");
 
                 case "ADMIN" -> safeRedirect(response, "adminHub");
 
