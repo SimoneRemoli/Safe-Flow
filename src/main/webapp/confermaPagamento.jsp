@@ -337,21 +337,10 @@
             paypalCard.classList.toggle("active", paypalSelected);
         }
 
-        function updatePersistenceUI() {
-            document.querySelectorAll(".persist-card").forEach((card) => {
-                const input = card.querySelector("input");
-                card.classList.toggle("active", input.checked);
-            });
-        }
-
         document.addEventListener("DOMContentLoaded", () => {
             updatePaymentMethodUI();
-            updatePersistenceUI();
             document.querySelectorAll('input[name="metodoPagamento"]').forEach((input) => {
                 input.addEventListener("change", updatePaymentMethodUI);
-            });
-            document.querySelectorAll('input[name="persistence"]').forEach((input) => {
-                input.addEventListener("change", updatePersistenceUI);
             });
         });
     </script>
@@ -435,25 +424,6 @@
                         <input type="text" id="codiceTransazione" name="codiceTransazione" placeholder="PAYPAL123">
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <h2>Persistence</h2>
-            <p>Choose where the operation should be recorded.</p>
-
-            <div class="persist-grid">
-                <label class="persist-card active">
-                    <input type="radio" name="persistence" id="persistenceJDBC" value="JDBC" checked>
-                    <strong>Database (JDBC)</strong>
-                    <span>Structured storage in the main system.</span>
-                </label>
-
-                <label class="persist-card">
-                    <input type="radio" name="persistence" id="persistenceFile" value="FileSystem">
-                    <strong>File System (CSV)</strong>
-                    <span>Local persistence in a simple format.</span>
-                </label>
             </div>
         </section>
 

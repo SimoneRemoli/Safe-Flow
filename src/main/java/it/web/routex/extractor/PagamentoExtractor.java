@@ -21,8 +21,7 @@ public final class PagamentoExtractor {
                 request.getParameter("city"),
                 request.getParameter("quantity"),
                 request.getParameter("totale"),
-                request.getParameter("metodoPagamento"),
-                request.getParameter("persistence")
+                request.getParameter("metodoPagamento")
         );
     }
 }

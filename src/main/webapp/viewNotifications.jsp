@@ -301,13 +301,13 @@
         }
 
         .report-badge.admin {
-            color: #fff1f2;
+            color: #111111;
             background: rgba(239, 68, 68, 0.22);
             border: 1px solid rgba(239, 68, 68, 0.4);
         }
 
         .report-badge.user {
-            color: #fffbeb;
+            color: #111111;
             background: rgba(249, 115, 22, 0.22);
             border: 1px solid rgba(249, 115, 22, 0.38);
         }

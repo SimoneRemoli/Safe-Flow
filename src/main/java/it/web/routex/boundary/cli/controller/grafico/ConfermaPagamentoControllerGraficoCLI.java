@@ -12,13 +12,11 @@ import it.web.routex.controller.applicativo.PagamentoPaypal;
 import it.web.routex.controller.applicativo.RegistrazionePagamentoController;
 import it.web.routex.record.MastercardRecord;
 import it.web.routex.record.PaymentRecord;
-import it.web.routex.enumerator.TypesOfPersistenceLayer;
 import it.web.routex.record.PaypalRecord;
 import it.web.routex.utility.singleton.Credentials;
 import it.web.routex.exception.PaymentValidationExceptionRemoli;
 import it.web.routex.exception.CredentialsExceptionRemoli;
 import it.web.routex.exception.DAOExceptionRemoli;
-import it.web.routex.utility.singleton.PersistenceMode;
 import it.web.routex.exception.InvalidPaymentInputExceptionRemoli;
 import it.web.routex.exception.InvalidCardInputExceptionRemoli;
 
@@ -32,8 +30,6 @@ public class ConfermaPagamentoControllerGraficoCLI extends LoggedCLI {
 
         PaymentRecord paymentRecord = estraiPagamento();
         if (paymentRecord == null) return;
-
-        impostaPersistenza(paymentRecord);
 
         RegistrazionePagamentoController controllerPagamento = creaControllerPagamento(paymentRecord,cred);
 
@@ -59,11 +55,6 @@ public class ConfermaPagamentoControllerGraficoCLI extends LoggedCLI {
     private void logUtente(Credentials cred) {
         logger.info("[PROCESSAMENTO PAGAMENTO] Utente loggato: nome={}, cognome={}, ruolo={}",
                 cred.getNome(), cred.getCognome(), cred.getRuolo());
-    }
-    private void impostaPersistenza(PaymentRecord paymentRecord) {
-        TypesOfPersistenceLayer persistenceLayer = paymentRecord.persistenceLayer();
-        logger.info("Tipo di persistenza scelto {}", persistenceLayer);
-        PersistenceMode.getSingletonInstance().setTipo(persistenceLayer);
     }
     private RegistrazionePagamentoController creaControllerPagamento(PaymentRecord paymentRecord, Credentials cred) {
 

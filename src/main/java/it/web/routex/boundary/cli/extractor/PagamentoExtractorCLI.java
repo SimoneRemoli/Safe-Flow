@@ -18,8 +18,7 @@ public final class PagamentoExtractorCLI {
                 ConfermaPagamentoCLI.getCity(),
                 ConfermaPagamentoCLI.getQuantity(),
                 String.valueOf(ConfermaPagamentoCLI.getPrezzoTotale()),
-                ConfermaPagamentoCLI.getMetodoPagamento(),
-                ConfermaPagamentoCLI.getPersistenza()
+                ConfermaPagamentoCLI.getMetodoPagamento()
         );
     }
 

@@ -11,7 +11,6 @@ public final class ConfermaPagamentoCLI
     private static String quantity;
     private static double prezzoTotale;
     private static String metodoPagamento;
-    private static String persistenza;
 
     private ConfermaPagamentoCLI() {}
 
@@ -37,10 +36,6 @@ public final class ConfermaPagamentoCLI
         return metodoPagamento;
     }
 
-    public static String getPersistenza() {
-        return persistenza;
-    }
-
     public static void stampa() {
 
         Scanner scanner = new Scanner(System.in);
@@ -54,8 +49,6 @@ public final class ConfermaPagamentoCLI
 
         metodoPagamento = scegliMetodoPagamento(scanner);
         gestisciDatiPagamento(scanner, metodoPagamento);
-
-        persistenza = scegliPersistenza(scanner);
 
         ConfermaPagamentoControllerGraficoCLI pay =
                 new ConfermaPagamentoControllerGraficoCLI();
@@ -120,24 +113,4 @@ public final class ConfermaPagamentoCLI
                     .build();
         }
     }
-    private static String scegliPersistenza(Scanner scanner) {
-
-        while (true) {
-            System.out.println("* Modalità di persistenza *");
-            System.out.println("1. JDBC");
-            System.out.println("2. FILE_SYSTEM");
-            System.out.print("Scegli la modalità di persistenza: ");
-
-            int value = scanner.nextInt();
-
-            if (value == 1) return "JDBC";
-            if (value == 2) return "FileSystem";
-        }
-    }
-
-
-
-
-
-
 }

@@ -1,6 +1,5 @@
 package it.web.routex.validator;
 
-import it.web.routex.enumerator.TypesOfPersistenceLayer;
 import it.web.routex.exception.InvalidPaymentInputExceptionRemoli;
 import it.web.routex.record.PaymentRecord;
 
@@ -12,15 +11,13 @@ public final class PaymentValidator {
             String city,
             String quantityParam,
             String totaleParam,
-            String metodo,
-            String persistence
+            String metodo
     ) throws InvalidPaymentInputExceptionRemoli {
 
         checkNotNull(city, "city");
         checkNotNull(quantityParam, "quantity");
         checkNotNull(totaleParam, "totale");
         checkNotNull(metodo, "metodoPagamento");
-        checkNotNull(persistence, "persistence");
 
         int quantity = parseQuantity(quantityParam);
         double totale = parseTotale(totaleParam);
@@ -29,14 +26,11 @@ public final class PaymentValidator {
             error("Metodo di pagamento vuoto.");
         }
 
-        TypesOfPersistenceLayer persistenceLayer = parsePersistence(persistence);
-
         return new PaymentRecord(
                 city,
                 quantity,
                 totale,
-                metodo,
-                persistenceLayer
+                metodo
         );
     }
 
@@ -87,20 +81,6 @@ public final class PaymentValidator {
         }
 
         return totale;
-    }
-
-    private static TypesOfPersistenceLayer parsePersistence(String persistence)
-            throws InvalidPaymentInputExceptionRemoli {
-
-        return switch (persistence) {
-            case "JDBC" -> TypesOfPersistenceLayer.JDBC;
-            case "FileSystem" -> TypesOfPersistenceLayer.FILE_SYSTEM;
-            default -> throw new InvalidPaymentInputExceptionRemoli(
-                    "Tipo di persistenza non valido.",
-                    "Parametro persistence='" + persistence + "' non riconosciuto.",
-                    InvalidPaymentInputExceptionRemoli.Severity.HIGH
-            );
-        };
     }
 
     private static void error(String msg)
