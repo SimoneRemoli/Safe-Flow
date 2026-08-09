@@ -1,20 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Safe Flow - Public Transport Safety CRM</title>
     <style>
         :root {
-            --bg: #f3f5f8;
+            --bg: #f3f6f4;
             --surface: #ffffff;
-            --surface-soft: #f8fafc;
-            --border: #d8e0ea;
-            --text: #16202a;
-            --muted: #64748b;
-            --accent: #0f6dff;
-            --accent-dark: #0b5fe0;
-            --shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+            --surface-soft: #f7faf8;
+            --border: #d8e4de;
+            --text: #14241d;
+            --muted: #607267;
+            --accent: #0e7c66;
+            --accent-dark: #075f4e;
+            --danger: #b42318;
+            --warning: #8a4b08;
+            --shadow: 0 18px 42px rgba(20, 36, 29, 0.08);
         }
 
         * {
@@ -35,92 +37,93 @@
             min-height: calc(100vh - 48px);
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 24px;
+            border-radius: 16px;
             box-shadow: var(--shadow);
             padding: 28px;
         }
 
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .brand img {
-            width: 64px;
-            height: auto;
-        }
-
-        .brand strong {
-            display: block;
-            font-size: 1.2rem;
-        }
-
-        .brand span {
-            display: block;
-            margin-top: 2px;
-            color: var(--muted);
-            font-size: 0.94rem;
-        }
-
-        .topbar a {
-            text-decoration: none;
-            color: var(--text);
-            background: var(--surface-soft);
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            padding: 10px 16px;
-            font-weight: 600;
-        }
-
         .hero {
-            margin-top: 40px;
-            display: grid;
-            grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
-            gap: 28px;
-            align-items: start;
+            min-height: calc(100vh - 104px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 34px 0 26px;
         }
 
-        .eyebrow {
-            display: inline-block;
-            padding: 7px 12px;
-            border-radius: 999px;
-            border: 1px solid #cfe0ff;
-            background: #eaf1ff;
-            color: var(--accent);
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
+        .hero-logo {
+            width: min(760px, 100%);
+            height: auto;
+            display: block;
+            margin: 0 auto 28px;
+            filter: drop-shadow(0 18px 30px rgba(20, 36, 29, 0.12));
         }
 
         h1 {
-            margin: 18px 0 14px;
-            font-size: clamp(2.3rem, 4vw, 3.8rem);
-            line-height: 1.02;
-            letter-spacing: -0.03em;
+            margin: 0 0 14px;
+            font-size: clamp(2rem, 4vw, 3.25rem);
+            line-height: 1.06;
+            letter-spacing: 0;
         }
 
         .hero p {
             margin: 0;
             max-width: 620px;
             color: var(--muted);
-            font-size: 1rem;
+            font-size: 1.05rem;
             line-height: 1.7;
         }
 
-        .actions {
+        .alert-badges {
             display: flex;
-            gap: 14px;
+            justify-content: center;
+            gap: 8px;
             flex-wrap: wrap;
-            margin-top: 26px;
+            margin-top: 22px;
+        }
+
+        .alert-badge {
+            display: inline-flex;
+            align-items: center;
+            min-height: 30px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 850;
+            text-transform: uppercase;
+        }
+
+        .alert-badge.pickpocket {
+            color: #8f1f17;
+            background: #fff0ee;
+            border: 1px solid #fac7c2;
+        }
+
+        .alert-badge.fight {
+            color: var(--warning);
+            background: #fff5df;
+            border: 1px solid #f4d58a;
+        }
+
+        .alert-badge.crowd {
+            color: #075f4e;
+            background: #e8f7ef;
+            border: 1px solid #bfe8cf;
+        }
+
+        .alert-badge.general {
+            color: #405147;
+            background: #f4f7f5;
+            border: 1px solid #d8e4de;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            width: min(680px, 100%);
+            margin-top: 30px;
         }
 
         .actions form {
@@ -129,41 +132,51 @@
 
         .actions button,
         .actions a {
-            border-radius: 999px;
-            padding: 14px 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            border-radius: 8px;
+            padding: 13px 16px;
             font-size: 0.96rem;
-            font-weight: 600;
+            font-weight: 850;
             text-decoration: none;
             cursor: pointer;
+            transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
         }
 
-        .actions button {
+        .actions .primary-action {
             border: 1px solid var(--accent);
             background: var(--accent);
             color: #ffffff;
+            box-shadow: 0 10px 18px rgba(14, 124, 102, 0.16);
         }
 
-        .actions button:hover {
+        .actions .primary-action:hover {
             background: var(--accent-dark);
             border-color: var(--accent-dark);
         }
 
-        .actions a {
+        .actions .secondary-action,
+        .actions .info-button {
             border: 1px solid var(--border);
             background: var(--surface-soft);
             color: var(--text);
         }
 
         .actions .info-button {
-            border: 1px solid var(--border);
-            background: transparent;
             color: var(--muted);
         }
 
+        .actions button:hover,
+        .actions a:hover {
+            transform: translateY(-1px);
+        }
+
         .actions .info-button:hover {
-            border-color: #c5d2e0;
+            border-color: #c8e2d8;
             color: var(--text);
-            background: #f9fbfd;
+            background: #ffffff;
         }
 
         .travel-note {
@@ -179,9 +192,9 @@
         }
 
         .travel-note-section {
-            margin-top: 44px;
+            margin-top: 0;
             padding-top: 24px;
-            border-top: 1px solid rgba(216, 224, 234, 0.8);
+            border-top: 1px solid rgba(216, 228, 222, 0.8);
         }
 
         .about-modal {
@@ -262,12 +275,6 @@
             font-size: 0.98rem;
         }
 
-        @media (max-width: 920px) {
-            .hero {
-                grid-template-columns: 1fr;
-            }
-        }
-
         @media (max-width: 720px) {
             .page {
                 width: min(100% - 16px, 1120px);
@@ -277,9 +284,13 @@
                 border-radius: 18px;
             }
 
-            .topbar {
-                flex-direction: column;
-                align-items: flex-start;
+            .hero {
+                min-height: auto;
+                padding-top: 28px;
+            }
+
+            .actions {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -288,31 +299,23 @@
 <body>
 <%@ include file="/header.jspf" %>
 <main class="page">
-    <div class="topbar">
-        <div class="brand">
-            <img src="images/logo-no-background.png" alt="Safe Flow">
-            <div>
-                <strong>Safe Flow</strong>
-                <span>Public transport safety CRM</span>
-            </div>
+    <section class="hero">
+        <img class="hero-logo" src="images/safe-flow-logo.svg" alt="Safe Flow">
+        <h1>Report public transport safety events clearly.</h1>
+        <p>
+            A focused CRM for traveler reports, admin moderation, and city-based safety alerts.
+        </p>
+        <div class="alert-badges" aria-label="Alert categories">
+            <span class="alert-badge pickpocket">Pickpocket alert</span>
+            <span class="alert-badge fight">Fight alert</span>
+            <span class="alert-badge crowd">Crowd alert</span>
+            <span class="alert-badge general">General alert</span>
         </div>
 
-        <a href="login.jsp">Login</a>
-    </div>
-
-    <section class="hero">
-        <div>
-            <div class="eyebrow">Safe Flow CRM</div>
-            <h1>Report public transport safety events clearly.</h1>
-            <p>
-                Safe Flow helps travelers report pickpockets and criminal events on public transport,
-                while administrators review, approve, and publish relevant alerts.
-            </p>
-
-            <div class="actions">
-                <a href="login.jsp">Open Reserved Area</a>
-                <button type="button" class="info-button" data-open-about>What is Safe Flow?</button>
-            </div>
+        <div class="actions">
+            <a class="primary-action" href="login.jsp">Open Reserved Area</a>
+            <a class="secondary-action" href="registerTraveler">Create Traveler Account</a>
+            <button type="button" class="info-button" data-open-about>What is Safe Flow?</button>
         </div>
     </section>
 

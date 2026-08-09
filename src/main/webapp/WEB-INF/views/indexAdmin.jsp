@@ -366,7 +366,6 @@
 <div class="shell">
     <header class="topbar">
         <div class="brand">
-            <img src="images/logo-no-background.png" alt="Safe Flow logo">
             <div>
                 <strong>Safe Flow Admin Hub</strong>
                 <span>Reports, communications, and platform governance</span>

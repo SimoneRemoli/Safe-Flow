@@ -303,7 +303,6 @@
 <div class="shell">
     <div class="topbar">
         <div class="brand">
-            <img src="images/logo-no-background.png" alt="Safe Flow">
             <div>
                 <strong>Safe Flow</strong>
                 <span>Traveler safety console</span>

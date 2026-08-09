@@ -1,28 +1,50 @@
-<svg width="960" height="260" viewBox="0 0 960 260" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-  <title id="title">Safe Flow logo</title>
-  <desc id="desc">A shield, transit route, and alert signal mark for the Safe Flow public transport safety CRM.</desc>
-  <rect width="960" height="260" rx="32" fill="#F3F6F4"/>
-  <g transform="translate(72 42)">
-    <path d="M92 0L164 27V79C164 123 136 159 92 176C48 159 20 123 20 79V27L92 0Z" fill="#0E7C66"/>
-    <path d="M92 17L146 37V78C146 112 124 140 92 154C60 140 38 112 38 78V37L92 17Z" fill="#E8F7EF"/>
-    <path d="M61 91C75 68 93 56 116 56H131" stroke="#0E7C66" stroke-width="12" stroke-linecap="round"/>
-    <circle cx="61" cy="91" r="12" fill="#0E7C66"/>
-    <circle cx="131" cy="56" r="12" fill="#B42318"/>
-    <path d="M131 33V47" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
-    <path d="M131 65V66" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+<svg width="1200" height="420" viewBox="0 0 1200 420" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Safe Flow futuristic logo</title>
+  <desc id="desc">A futuristic Safe Flow logo using a shield, signal core, and transit grid visual language on a white background.</desc>
+  <rect width="1200" height="420" rx="44" fill="#FFFFFF"/>
+  <path d="M50 335H247C291 335 308 304 333 276L378 226C403 199 426 189 466 189H1148" stroke="#C8E2D8" stroke-width="2" stroke-dasharray="10 14"/>
+  <path d="M52 91H250C290 91 310 117 337 143L383 187C410 213 434 225 474 225H1148" stroke="#E5F3EE" stroke-width="2" stroke-dasharray="6 18"/>
+  <g transform="translate(84 52)">
+    <path d="M162 0L283 45V133C283 211 236 270 162 304C88 270 41 211 41 133V45L162 0Z" fill="#F7FAF8" stroke="#0E7C66" stroke-width="7"/>
+    <path d="M162 30L248 62V130C248 187 215 229 162 255C109 229 76 187 76 130V62L162 30Z" fill="#FFFFFF" stroke="#BFE8CF" stroke-width="4"/>
+    <circle cx="162" cy="143" r="58" fill="#E8F7EF"/>
+    <circle cx="162" cy="143" r="38" fill="#0E7C66"/>
+    <circle cx="162" cy="143" r="18" fill="#FFFFFF"/>
+    <path d="M162 81V48" stroke="#0E7C66" stroke-width="10" stroke-linecap="round"/>
+    <path d="M162 238V205" stroke="#0E7C66" stroke-width="10" stroke-linecap="round"/>
+    <path d="M100 143H67" stroke="#0E7C66" stroke-width="10" stroke-linecap="round"/>
+    <path d="M257 143H224" stroke="#0E7C66" stroke-width="10" stroke-linecap="round"/>
+    <path d="M118 99L95 76" stroke="#22C55E" stroke-width="8" stroke-linecap="round"/>
+    <path d="M229 210L206 187" stroke="#22C55E" stroke-width="8" stroke-linecap="round"/>
+    <path d="M206 99L229 76" stroke="#22C55E" stroke-width="8" stroke-linecap="round"/>
+    <path d="M95 210L118 187" stroke="#22C55E" stroke-width="8" stroke-linecap="round"/>
+    <rect x="126" y="105" width="72" height="76" rx="18" fill="#14241D"/>
+    <path d="M143 135H181" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/>
+    <path d="M143 155H181" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="143" cy="123" r="5" fill="#B42318"/>
+    <circle cx="181" cy="123" r="5" fill="#22C55E"/>
   </g>
-  <g transform="translate(278 73)">
-    <text x="0" y="72" fill="#14241D" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="72" font-weight="850" letter-spacing="0">Safe Flow</text>
-    <text x="4" y="118" fill="#607267" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" letter-spacing="0">Public transport safety CRM</text>
-    <g transform="translate(4 144)">
-      <rect width="112" height="34" rx="8" fill="#FFF0EE" stroke="#FAC7C2"/>
-      <text x="16" y="23" fill="#8F1F17" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="850">PICKPOCKET</text>
-      <rect x="128" width="78" height="34" rx="8" fill="#FFF5DF" stroke="#F4D58A"/>
-      <text x="144" y="23" fill="#8A4B08" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="850">FIGHT</text>
-      <rect x="222" width="84" height="34" rx="8" fill="#E8F7EF" stroke="#BFE8CF"/>
-      <text x="238" y="23" fill="#075F4E" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="850">CROWD</text>
-      <rect x="322" width="94" height="34" rx="8" fill="#F4F7F5" stroke="#D8E4DE"/>
-      <text x="338" y="23" fill="#405147" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="850">GENERAL</text>
+  <g transform="translate(430 104)">
+    <text x="0" y="88" fill="#14241D" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="96" font-weight="900" letter-spacing="0">Safe Flow</text>
+    <text x="5" y="138" fill="#607267" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="27" font-weight="700" letter-spacing="0">urban safety intelligence for public transport</text>
+    <g transform="translate(6 182)">
+      <rect width="134" height="38" rx="10" fill="#FFF0EE" stroke="#FAC7C2"/>
+      <text x="20" y="25" fill="#8F1F17" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="900">PICKPOCKET</text>
+      <rect x="150" width="88" height="38" rx="10" fill="#FFF5DF" stroke="#F4D58A"/>
+      <text x="170" y="25" fill="#8A4B08" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="900">FIGHT</text>
+      <rect x="254" width="96" height="38" rx="10" fill="#E8F7EF" stroke="#BFE8CF"/>
+      <text x="274" y="25" fill="#075F4E" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="900">CROWD</text>
+      <rect x="366" width="112" height="38" rx="10" fill="#F4F7F5" stroke="#D8E4DE"/>
+      <text x="386" y="25" fill="#405147" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="900">GENERAL</text>
     </g>
+  </g>
+  <g opacity="0.9">
+    <path d="M1045 86L1100 118V182L1045 214L990 182V118L1045 86Z" stroke="#0E7C66" stroke-width="4"/>
+    <circle cx="1045" cy="150" r="22" fill="#0E7C66"/>
+    <circle cx="1045" cy="150" r="9" fill="#FFFFFF"/>
+    <path d="M1045 64V38" stroke="#BFE8CF" stroke-width="7" stroke-linecap="round"/>
+    <path d="M1045 262V236" stroke="#BFE8CF" stroke-width="7" stroke-linecap="round"/>
+    <path d="M960 150H934" stroke="#BFE8CF" stroke-width="7" stroke-linecap="round"/>
+    <path d="M1156 150H1130" stroke="#BFE8CF" stroke-width="7" stroke-linecap="round"/>
   </g>
 </svg>
