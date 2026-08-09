@@ -150,7 +150,7 @@
     <h1>Create your Safe Flow account</h1>
     <p>Register as a traveler to access your reserved area, reports, and platform notifications.</p>
 
-    <form action="registerTraveler" method="post">
+    <form action="registerTraveler" method="post" accept-charset="UTF-8">
         <div class="grid">
             <div class="field-group">
                 <label for="firstName">First name</label>

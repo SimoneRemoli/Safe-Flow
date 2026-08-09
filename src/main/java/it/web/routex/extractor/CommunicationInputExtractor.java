@@ -54,7 +54,7 @@ public final class CommunicationInputExtractor {
 
         if (!SUPPORTED_NOTIFICATION_CITIES.contains(cleanCity)) {
             throw new BrondiInvalidCommunicationInputException(
-                    "The selected city is not supported by RouteX notifications."
+                    "The selected city is not supported by Safe Flow notifications."
             );
         }
 

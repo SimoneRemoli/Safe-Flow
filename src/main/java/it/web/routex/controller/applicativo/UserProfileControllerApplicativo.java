@@ -4,8 +4,10 @@ import it.web.routex.exception.BrondiException;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.dao.LayerPersistenza;
 import it.web.routex.model.Credentials;
+import it.web.routex.model.Notification;
 import it.web.routex.model.UserProfile;
 import it.web.routex.model.UserProfileSummary;
+import it.web.routex.model.UserProfileStats;
 import it.web.routex.utility.factory.FactoryLayerPersistenza;
 
 import javax.servlet.http.Part;
@@ -20,6 +22,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.LinkedHashSet;
 
 public class UserProfileControllerApplicativo {
 
@@ -31,7 +34,12 @@ public class UserProfileControllerApplicativo {
         String cf = normalizeCf(codiceFiscale);
         Properties properties = loadProperties();
         String bio = properties.getProperty(key(cf, "bio"), "");
-        return new UserProfile(cf, bio, avatarPath(cf, properties).map(Files::exists).orElse(false));
+        return new UserProfile(
+                cf,
+                bio,
+                avatarPath(cf, properties).map(Files::exists).orElse(false),
+                profileStats(Set.of(cf)).getOrDefault(cf, new UserProfileStats(0, 0, 0))
+        );
     }
 
     public UserProfileSummary getPublicProfile(String codiceFiscale) throws BrondiException {
@@ -54,8 +62,9 @@ public class UserProfileControllerApplicativo {
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         Properties properties = loadProperties();
         try {
-            addMatchingProfiles(profiles, requested, layer.listAdmins(), properties);
-            addMatchingProfiles(profiles, requested, layer.listTravelers(), properties);
+            Map<String, UserProfileStats> stats = profileStats(requested);
+            addMatchingProfiles(profiles, requested, layer.listAdmins(), properties, stats);
+            addMatchingProfiles(profiles, requested, layer.listTravelers(), properties, stats);
             return profiles;
         } catch (DAOExceptionRemoli e) {
             throw new BrondiException("Unable to load user profiles.", "PROFILE_USERS_LOAD", "Profile user lookup error", e);
@@ -194,7 +203,8 @@ public class UserProfileControllerApplicativo {
     private void addMatchingProfiles(Map<String, UserProfileSummary> profiles,
                                      Set<String> requested,
                                      Collection<Credentials> users,
-                                     Properties properties) {
+                                     Properties properties,
+                                     Map<String, UserProfileStats> stats) {
         for (Credentials user : users) {
             if (user.getCodiceFiscale() == null) {
                 continue;
@@ -213,8 +223,74 @@ public class UserProfileControllerApplicativo {
                     user.getCognome(),
                     role,
                     properties.getProperty(key(cf, "bio"), ""),
-                    avatarPresent
+                    avatarPresent,
+                    stats.getOrDefault(cf, new UserProfileStats(0, 0, 0))
             ));
         }
+    }
+
+    private Map<String, UserProfileStats> profileStats(Set<String> requested) throws BrondiException {
+        Map<String, MutableStats> mutableStats = new HashMap<>();
+        Map<String, String> likeKeyOwners = new HashMap<>();
+        Set<String> likeKeys = new HashSet<>();
+        for (String cf : requested) {
+            mutableStats.put(cf, new MutableStats());
+        }
+
+        if (mutableStats.isEmpty()) {
+            return Map.of();
+        }
+
+        LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
+        try {
+            for (Notification notification : layer.getMessagesRAM()) {
+                if (!"TRAVELER".equalsIgnoreCase(notification.getSenderRole()) || notification.getSenderCf() == null) {
+                    continue;
+                }
+
+                String senderCf = notification.getSenderCf().trim().toUpperCase(Locale.ROOT);
+                MutableStats stats = mutableStats.get(senderCf);
+                if (stats == null) {
+                    continue;
+                }
+
+                stats.reportCount++;
+                String likeKey = NotificationLikeControllerApplicativo.keyFor(notification);
+                likeKeys.add(likeKey);
+                likeKeyOwners.put(likeKey, senderCf);
+                if (notification.getCity() != null && !notification.getCity().isBlank()) {
+                    stats.cities.add(notification.getCity().trim());
+                }
+            }
+        } catch (DAOExceptionRemoli e) {
+            throw new BrondiException("Unable to load profile statistics.", "PROFILE_STATS_LOAD", "Profile stats lookup error", e);
+        }
+
+        Map<String, it.web.routex.model.NotificationLikeState> likeStates =
+                new NotificationLikeControllerApplicativo().statesFor(likeKeys, null);
+        for (Map.Entry<String, it.web.routex.model.NotificationLikeState> entry : likeStates.entrySet()) {
+            String ownerCf = likeKeyOwners.get(entry.getKey());
+            MutableStats stats = ownerCf == null ? null : mutableStats.get(ownerCf);
+            if (stats != null) {
+                stats.approvalCount += entry.getValue().getLikeCount();
+            }
+        }
+
+        Map<String, UserProfileStats> result = new HashMap<>();
+        for (Map.Entry<String, MutableStats> entry : mutableStats.entrySet()) {
+            MutableStats stats = entry.getValue();
+            result.put(entry.getKey(), new UserProfileStats(
+                    stats.reportCount,
+                    stats.cities.size(),
+                    stats.approvalCount
+            ));
+        }
+        return result;
+    }
+
+    private static class MutableStats {
+        private int reportCount;
+        private int approvalCount;
+        private final Set<String> cities = new LinkedHashSet<>();
     }
 }

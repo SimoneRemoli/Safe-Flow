@@ -61,7 +61,7 @@ public class ReviewTravelerCommunicationsControllerApplicativo {
             }
 
             Notification adminNotification = new Notification(
-                    "Your traveler report has been approved by the RouteX admin team.",
+                    "Your traveler report has been approved by the Safe Flow admin team.",
                     new Timestamp(System.currentTimeMillis()),
                     false,
                     true,

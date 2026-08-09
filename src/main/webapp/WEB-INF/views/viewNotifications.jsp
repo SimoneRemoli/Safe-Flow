@@ -711,6 +711,53 @@
             line-height: 1.2 !important;
         }
 
+        .safe-flow-notifications .like-cell {
+            white-space: nowrap !important;
+            text-align: center !important;
+            vertical-align: middle !important;
+        }
+
+        .safe-flow-notifications .like-button {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 7px !important;
+            min-width: 72px !important;
+            min-height: 38px !important;
+            padding: 8px 11px !important;
+            border-radius: 999px !important;
+            color: #405147 !important;
+            background: #ffffff !important;
+            border: 1px solid #d8e4de !important;
+            cursor: pointer !important;
+            font: inherit !important;
+            font-weight: 850 !important;
+            transition: transform 0.18s ease, border-color 0.18s ease, color 0.18s ease, background 0.18s ease !important;
+        }
+
+        .safe-flow-notifications .like-button:hover {
+            transform: translateY(-1px) !important;
+            border-color: #f2a6b3 !important;
+            color: #be123c !important;
+        }
+
+        .safe-flow-notifications .like-button.is-liked {
+            color: #be123c !important;
+            background: #fff1f2 !important;
+            border-color: #fecdd3 !important;
+        }
+
+        .safe-flow-notifications .like-heart {
+            font-size: 1.08rem !important;
+            line-height: 1 !important;
+        }
+
+        .safe-flow-notifications .admin-like-placeholder {
+            color: #8a9a91 !important;
+            font-size: 0.82rem !important;
+            font-weight: 800 !important;
+        }
+
         .safe-flow-notifications .empty-state {
             padding: 34px 18px !important;
             color: #607267 !important;
@@ -790,15 +837,16 @@
                     <table>
                         <thead>
                         <tr>
-		                            <th style="width: 58%">Alert details</th>
-		                            <th style="width: 24%">Source</th>
-		                            <th style="width: 18%">Published</th>
-                        </tr>
+			                            <th style="width: 50%">Alert details</th>
+			                            <th style="width: 24%">Source</th>
+			                            <th style="width: 16%">Published</th>
+			                            <th style="width: 10%">Likes</th>
+	                        </tr>
                         </thead>
                         <tbody>
                         <% if (cityEntry.getValue().isEmpty()) { %>
                         <tr>
-                            <td colspan="3" class="empty-state">No notifications available for this city.</td>
+	                            <td colspan="4" class="empty-state">No notifications available for this city.</td>
                         </tr>
 	                        <% } else {
 	                            for (MessageBean m : cityEntry.getValue()) {
@@ -810,10 +858,13 @@
 	                            String encodedSenderCf = senderCf == null ? "" : URLEncoder.encode(senderCf, StandardCharsets.UTF_8);
 	                            String authorHref = currentUserSender ? "profile" : "publicProfile?cf=" + encodedSenderCf;
 	                            String authorAvatarSrc = currentUserSender ? "profileAvatar?t=" + System.currentTimeMillis() : "publicProfileAvatar?cf=" + encodedSenderCf + "&amp;t=" + System.currentTimeMillis();
-	                            String authorName = StringEscapeUtils.escapeHtml4(m.getSenderDisplayName() == null ? "Safe Flow Team" : m.getSenderDisplayName());
-	                            String authorInitials = StringEscapeUtils.escapeHtml4(m.getSenderInitials() == null ? "SF" : m.getSenderInitials());
-	                            String authorRole = StringEscapeUtils.escapeHtml4(adminReport ? "Admin" : "Traveler");
-	                        %>
+		                            String authorName = StringEscapeUtils.escapeHtml4(m.getSenderDisplayName() == null ? "Safe Flow Team" : m.getSenderDisplayName());
+		                            String authorInitials = StringEscapeUtils.escapeHtml4(m.getSenderInitials() == null ? "SF" : m.getSenderInitials());
+		                            String authorRole = StringEscapeUtils.escapeHtml4(adminReport ? "Admin" : "Traveler");
+		                            String notificationKey = StringEscapeUtils.escapeHtml4(m.getNotificationKey() == null ? "" : m.getNotificationKey());
+		                            int likeCount = m.getLikeCount() == null ? 0 : m.getLikeCount();
+		                            boolean likedByCurrentUser = Boolean.TRUE.equals(m.getLikedByCurrentUser());
+		                        %>
 	                        <tr>
 	                            <td class="message-cell <%= adminReport ? "admin-message" : "" %>">
 	                                <div><%= StringEscapeUtils.escapeHtml4(m.getMessage()) %></div>
@@ -867,9 +918,24 @@
 	                                <span class="report-badge <%= adminReport ? "admin" : "user" %>">
 	                                    <%= adminReport ? "Admin report" : "User report" %>
 	                                </span>
-                            </td>
-                            <td class="date-cell"><%= sdf.format(m.getDate()) %></td>
-                        </tr>
+	                            </td>
+	                            <td class="date-cell"><%= sdf.format(m.getDate()) %></td>
+	                            <td class="like-cell">
+	                                <% if (!adminReport && isTravelerView && !notificationKey.isBlank()) { %>
+	                                <button
+	                                        type="button"
+	                                        class="like-button <%= likedByCurrentUser ? "is-liked" : "" %>"
+	                                        data-like-button
+	                                        data-notification-key="<%= notificationKey %>"
+	                                        aria-label="<%= likedByCurrentUser ? "Unlike report" : "Like report" %>">
+	                                    <span class="like-heart" aria-hidden="true">&#9829;</span>
+	                                    <span data-like-count><%= likeCount %></span>
+	                                </button>
+	                                <% } else { %>
+	                                <span class="admin-like-placeholder">-</span>
+	                                <% } %>
+	                            </td>
+	                        </tr>
                         <% }
                         } %>
                         </tbody>
@@ -899,12 +965,67 @@
             });
         }
 
-        switches.forEach((button) => {
-            button.addEventListener('click', () => selectCity(button.dataset.citySwitch));
-        });
+	        switches.forEach((button) => {
+	            button.addEventListener('click', () => selectCity(button.dataset.citySwitch));
+	        });
 
-        selectCity(switches[0].dataset.citySwitch);
-    }());
-</script>
+	        selectCity(switches[0].dataset.citySwitch);
+	    }());
+
+	    (function () {
+	        const likeButtons = Array.from(document.querySelectorAll('[data-like-button]'));
+	        if (!likeButtons.length) {
+	            return;
+	        }
+
+	        likeButtons.forEach((button) => {
+	            button.addEventListener('click', async () => {
+	                if (button.disabled) {
+	                    return;
+	                }
+
+	                const counter = button.querySelector('[data-like-count]');
+	                const previousCount = counter ? counter.textContent : '0';
+	                const wasLiked = button.classList.contains('is-liked');
+
+	                button.disabled = true;
+	                button.classList.toggle('is-liked', !wasLiked);
+	                if (counter) {
+	                    counter.textContent = String(Math.max(0, Number(previousCount) + (wasLiked ? -1 : 1)));
+	                }
+
+	                try {
+	                    const response = await fetch('toggleNotificationLike', {
+	                        method: 'POST',
+	                        headers: {
+	                            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+	                        },
+	                        body: new URLSearchParams({
+	                            notificationKey: button.dataset.notificationKey
+	                        })
+	                    });
+
+	                    if (!response.ok) {
+	                        throw new Error('Like update failed');
+	                    }
+
+	                    const payload = await response.json();
+	                    button.classList.toggle('is-liked', Boolean(payload.liked));
+	                    button.setAttribute('aria-label', payload.liked ? 'Unlike report' : 'Like report');
+	                    if (counter) {
+	                        counter.textContent = String(payload.likeCount);
+	                    }
+	                } catch (error) {
+	                    button.classList.toggle('is-liked', wasLiked);
+	                    if (counter) {
+	                        counter.textContent = previousCount;
+	                    }
+	                } finally {
+	                    button.disabled = false;
+	                }
+	            });
+	        });
+	    }());
+	</script>
 </body>
 </html>

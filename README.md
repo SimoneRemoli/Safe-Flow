@@ -60,7 +60,7 @@ Safe Flow follows a layered MVC structure:
 mvn package
 ```
 
-Deploy `target/RouteX_MVC_Project.war` on Tomcat after loading the SQL files in `Database/`.
+Deploy the generated WAR on Tomcat after loading the SQL files in `Database/`.
 
 ## Ownership
 

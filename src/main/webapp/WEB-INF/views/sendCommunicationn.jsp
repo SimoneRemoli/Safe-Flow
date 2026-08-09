@@ -239,7 +239,7 @@
         Write an operational message to distribute across the platform while keeping the same updated admin layout.
     </p>
 
-    <form action="confirmCommunication" method="post">
+    <form action="confirmCommunication" method="post" accept-charset="UTF-8">
         <div class="field">
             <label for="city">City</label>
             <select id="city" name="city" required>

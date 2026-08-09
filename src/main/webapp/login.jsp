@@ -193,7 +193,7 @@
         <h1>Access the safety desk.</h1>
         <p>Enter the reserved area to manage traveler reports, public alerts, and administrative review flows.</p>
 
-        <form action="login" method="post">
+        <form action="login" method="post" accept-charset="UTF-8">
             <div class="field-group">
                 <label for="email">Email</label>
                 <input id="email" type="text" name="Email" placeholder="Email Address">

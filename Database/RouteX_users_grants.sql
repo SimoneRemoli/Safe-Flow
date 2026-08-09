@@ -1,5 +1,5 @@
 -- ===============================
--- RouteX - Users & Permissions
+-- Safe Flow - Users & Permissions
 -- ===============================
 
 DROP USER IF EXISTS `login_User`@`%`;

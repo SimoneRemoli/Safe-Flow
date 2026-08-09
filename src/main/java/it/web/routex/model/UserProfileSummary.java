@@ -8,6 +8,7 @@ public class UserProfileSummary {
     private final String role;
     private final String bio;
     private final boolean avatarPresent;
+    private final UserProfileStats stats;
 
     public UserProfileSummary(String codiceFiscale,
                               String nome,
@@ -15,12 +16,23 @@ public class UserProfileSummary {
                               String role,
                               String bio,
                               boolean avatarPresent) {
+        this(codiceFiscale, nome, cognome, role, bio, avatarPresent, new UserProfileStats(0, 0, 0));
+    }
+
+    public UserProfileSummary(String codiceFiscale,
+                              String nome,
+                              String cognome,
+                              String role,
+                              String bio,
+                              boolean avatarPresent,
+                              UserProfileStats stats) {
         this.codiceFiscale = codiceFiscale;
         this.nome = nome == null ? "" : nome;
         this.cognome = cognome == null ? "" : cognome;
         this.role = role == null ? "" : role;
         this.bio = bio == null ? "" : bio;
         this.avatarPresent = avatarPresent;
+        this.stats = stats == null ? new UserProfileStats(0, 0, 0) : stats;
     }
 
     public String getCodiceFiscale() {
@@ -45,6 +57,10 @@ public class UserProfileSummary {
 
     public boolean isAvatarPresent() {
         return avatarPresent;
+    }
+
+    public UserProfileStats getStats() {
+        return stats;
     }
 
     public String getDisplayName() {

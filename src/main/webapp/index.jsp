@@ -6,7 +6,7 @@
     <title>Safe Flow - Public Transport Safety CRM</title>
     <style>
         :root {
-            --bg: #f3f6f4;
+            --bg: #ffffff;
             --surface: #ffffff;
             --surface-soft: #f7faf8;
             --border: #d8e4de;
@@ -16,7 +16,6 @@
             --accent-dark: #075f4e;
             --danger: #b42318;
             --warning: #8a4b08;
-            --shadow: 0 18px 42px rgba(20, 36, 29, 0.08);
         }
 
         * {
@@ -33,17 +32,14 @@
 
         .page {
             width: min(1120px, calc(100% - 32px));
-            margin: 24px auto;
-            min-height: calc(100vh - 48px);
+            margin: 0 auto;
+            min-height: 100vh;
             background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            box-shadow: var(--shadow);
             padding: 28px;
         }
 
         .hero {
-            min-height: calc(100vh - 104px);
+            min-height: calc(100vh - 112px);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -53,11 +49,10 @@
         }
 
         .hero-logo {
-            width: min(760px, 100%);
+            width: min(680px, 100%);
             height: auto;
             display: block;
-            margin: 0 auto 28px;
-            filter: drop-shadow(0 18px 30px rgba(20, 36, 29, 0.12));
+            margin: 0 auto 24px;
         }
 
         h1 {
@@ -146,15 +141,14 @@
         }
 
         .actions .primary-action {
-            border: 1px solid var(--accent);
-            background: var(--accent);
-            color: #ffffff;
-            box-shadow: 0 10px 18px rgba(14, 124, 102, 0.16);
+            border: 1px solid var(--border);
+            background: var(--surface-soft);
+            color: var(--text);
         }
 
         .actions .primary-action:hover {
-            background: var(--accent-dark);
-            border-color: var(--accent-dark);
+            background: #ffffff;
+            border-color: #c8e2d8;
         }
 
         .actions .secondary-action,
@@ -184,7 +178,7 @@
             color: var(--muted);
             font-size: 0.93rem;
             line-height: 1.6;
-            max-width: 620px;
+            width: 100%;
         }
 
         .travel-note strong {
@@ -278,10 +272,8 @@
         @media (max-width: 720px) {
             .page {
                 width: min(100% - 16px, 1120px);
-                margin: 8px auto;
-                min-height: calc(100vh - 16px);
+                min-height: 100vh;
                 padding: 18px;
-                border-radius: 18px;
             }
 
             .hero {
@@ -300,7 +292,7 @@
 <%@ include file="/header.jspf" %>
 <main class="page">
     <section class="hero">
-        <img class="hero-logo" src="images/safe-flow-logo.svg" alt="Safe Flow">
+        <img class="hero-logo" src="images/safe-flow-home-logo.svg" alt="Safe Flow">
         <h1>Report public transport safety events clearly.</h1>
         <p>
             A focused CRM for traveler reports, admin moderation, and city-based safety alerts.
@@ -321,7 +313,7 @@
 
     <section class="travel-note-section" aria-label="travel advice">
         <p class="travel-note">
-            <strong>Travel tip:</strong> stay aware of pickpockets while using public transport, especially in crowded stations and trains.
+            For any information, write to <strong>simoneremoli00@gmail.com</strong>. Every improvement proposal is welcome.
         </p>
     </section>
 

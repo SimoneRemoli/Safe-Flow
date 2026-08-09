@@ -23,6 +23,7 @@ public class ViewNotificationsControllerApplicativo {
         try {
             List<Notification> notifications = layer.getMessagesRAM();
             Set<String> senderCodiciFiscali = new HashSet<>();
+            Set<String> notificationLikeKeys = new HashSet<>();
             for (Notification n : notifications) {
                 boolean include = false;
 
@@ -43,17 +44,23 @@ public class ViewNotificationsControllerApplicativo {
                     bean.setPickpocketAlert(n.isPickpocketAlert());
                     bean.setFightAlert(n.isFightAlert());
                     bean.setCrowdAlert(n.isCrowdAlert());
-                    bean.setGeneralAlert(n.isGeneralAlert());
-                    bean.setStationName(n.getStationName());
-                    bean.setSuspectClothing(n.getSuspectClothing());
-                    if (n.getSenderCf() != null && !n.getSenderCf().isBlank()) {
-                        senderCodiciFiscali.add(n.getSenderCf());
-                    }
+	                    bean.setGeneralAlert(n.isGeneralAlert());
+	                    bean.setStationName(n.getStationName());
+	                    bean.setSuspectClothing(n.getSuspectClothing());
+	                    if ("TRAVELER".equalsIgnoreCase(n.getSenderRole())) {
+	                        String notificationKey = NotificationLikeControllerApplicativo.keyFor(n);
+	                        bean.setNotificationKey(notificationKey);
+	                        notificationLikeKeys.add(notificationKey);
+	                    }
+	                    if (n.getSenderCf() != null && !n.getSenderCf().isBlank()) {
+	                        senderCodiciFiscali.add(n.getSenderCf());
+	                    }
                     result.add(bean);
                 }
             }
 
             enrichSenderProfiles(result, codiceFiscale, senderCodiciFiscali);
+            enrichLikes(result, codiceFiscale, notificationLikeKeys);
             return result;
 
         } catch (DAOExceptionRemoli e) {
@@ -100,6 +107,20 @@ public class ViewNotificationsControllerApplicativo {
                 message.setSenderAvatarPresent(false);
                 message.setSenderProfileAvailable(false);
             }
+        }
+    }
+
+    private void enrichLikes(List<MessageBean> messages,
+                             String currentUserCf,
+                             Set<String> notificationLikeKeys) throws BrondiException {
+        Map<String, it.web.routex.model.NotificationLikeState> states =
+                new NotificationLikeControllerApplicativo().statesFor(notificationLikeKeys, currentUserCf);
+
+        for (MessageBean message : messages) {
+            String notificationKey = message.getNotificationKey();
+            it.web.routex.model.NotificationLikeState state = notificationKey == null ? null : states.get(notificationKey);
+            message.setLikeCount(state == null ? 0 : state.getLikeCount());
+            message.setLikedByCurrentUser(state != null && state.isLikedByCurrentUser());
         }
     }
 }

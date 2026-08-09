@@ -10,6 +10,9 @@
     String role = profile == null ? "" : StringEscapeUtils.escapeHtml4(profile.getRole());
     String bio = profile == null ? "" : StringEscapeUtils.escapeHtml4(profile.getBio());
     String initials = profile == null ? "SF" : StringEscapeUtils.escapeHtml4(profile.getInitials());
+    int reportCount = profile == null ? 0 : profile.getStats().getReportCount();
+    int cityCount = profile == null ? 0 : profile.getStats().getCityCount();
+    int approvalCount = profile == null ? 0 : profile.getStats().getApprovalCount();
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -102,6 +105,38 @@
             line-height: 1.65;
         }
 
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            padding: 20px 26px;
+            border-bottom: 1px solid #d8e4de;
+            background: #f7faf8;
+        }
+
+        .profile-stat {
+            padding: 14px;
+            border-radius: 12px;
+            background: #ffffff;
+            border: 1px solid #d8e4de;
+        }
+
+        .profile-stat-label {
+            display: block;
+            color: #607267;
+            font-size: 0.74rem;
+            font-weight: 850;
+            text-transform: uppercase;
+        }
+
+        .profile-stat-value {
+            display: block;
+            margin-top: 4px;
+            color: #14241d;
+            font-size: 1.35rem;
+            font-weight: 900;
+        }
+
         .public-profile-actions {
             padding: 0 26px 26px;
         }
@@ -122,6 +157,10 @@
                 align-items: flex-start;
                 flex-direction: column;
             }
+
+            .profile-stats {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -140,10 +179,24 @@
             <h1><%= displayName %></h1>
             <span class="role-pill"><%= role %></span>
         </div>
-    </section>
-    <section class="public-profile-body">
-        <h2>Bio</h2>
-        <p><%= bio.isBlank() ? "No bio available." : bio %></p>
+	    </section>
+	    <section class="profile-stats" aria-label="Profile statistics">
+	        <div class="profile-stat">
+	            <span class="profile-stat-label">Reports made</span>
+	            <span class="profile-stat-value"><%= reportCount %></span>
+	        </div>
+	        <div class="profile-stat">
+	            <span class="profile-stat-label">Cities reported</span>
+	            <span class="profile-stat-value"><%= cityCount %></span>
+	        </div>
+	        <div class="profile-stat">
+	            <span class="profile-stat-label">Approvals received</span>
+	            <span class="profile-stat-value"><%= approvalCount %></span>
+	        </div>
+	    </section>
+	    <section class="public-profile-body">
+	        <h2>Bio</h2>
+	        <p><%= bio.isBlank() ? "No bio available." : bio %></p>
     </section>
     <div class="public-profile-actions">
         <a href="viewNotifications">Back to notifications</a>

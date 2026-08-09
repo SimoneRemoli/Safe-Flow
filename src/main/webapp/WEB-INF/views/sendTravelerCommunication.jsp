@@ -219,7 +219,7 @@
         Write a message for the Safe Flow admin team. Traveler reports are reviewed by admins before they become visible in the notification system.
     </p>
 
-    <form action="submitTravelerCommunication" method="post">
+    <form action="submitTravelerCommunication" method="post" accept-charset="UTF-8">
         <div class="field">
             <label for="city">City</label>
             <select id="city" name="city" required>

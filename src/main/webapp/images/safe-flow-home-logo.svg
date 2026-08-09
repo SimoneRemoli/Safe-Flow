@@ -1,0 +1,28 @@
+<svg width="820" height="240" viewBox="0 0 820 240" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Safe Flow home logo</title>
+  <desc id="desc">A pure Safe Flow logo mark and wordmark for white backgrounds.</desc>
+  <g transform="translate(38 18)">
+    <path d="M102 0L178 29V85C178 134 148 172 102 194C56 172 26 134 26 85V29L102 0Z" fill="#F7FAF8" stroke="#0E7C66" stroke-width="6"/>
+    <path d="M102 22L153 42V84C153 117 134 143 102 160C70 143 51 117 51 84V42L102 22Z" fill="#FFFFFF" stroke="#BFE8CF" stroke-width="3"/>
+    <circle cx="102" cy="96" r="39" fill="#E8F7EF"/>
+    <circle cx="102" cy="96" r="25" fill="#0E7C66"/>
+    <circle cx="102" cy="96" r="11" fill="#FFFFFF"/>
+    <path d="M102 54V34" stroke="#0E7C66" stroke-width="8" stroke-linecap="round"/>
+    <path d="M102 158V138" stroke="#0E7C66" stroke-width="8" stroke-linecap="round"/>
+    <path d="M60 96H40" stroke="#0E7C66" stroke-width="8" stroke-linecap="round"/>
+    <path d="M164 96H144" stroke="#0E7C66" stroke-width="8" stroke-linecap="round"/>
+    <path d="M73 67L59 53" stroke="#22C55E" stroke-width="7" stroke-linecap="round"/>
+    <path d="M145 139L131 125" stroke="#22C55E" stroke-width="7" stroke-linecap="round"/>
+    <path d="M131 67L145 53" stroke="#22C55E" stroke-width="7" stroke-linecap="round"/>
+    <path d="M59 139L73 125" stroke="#22C55E" stroke-width="7" stroke-linecap="round"/>
+    <rect x="78" y="72" width="48" height="51" rx="13" fill="#14241D"/>
+    <path d="M90 92H114" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+    <path d="M90 106H114" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="90" cy="82" r="4" fill="#B42318"/>
+    <circle cx="114" cy="82" r="4" fill="#22C55E"/>
+  </g>
+  <g transform="translate(272 62)">
+    <text x="0" y="74" fill="#14241D" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="86" font-weight="900" letter-spacing="0">Safe Flow</text>
+    <text x="4" y="118" fill="#607267" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="0">urban safety intelligence</text>
+  </g>
+</svg>

@@ -1,6 +1,6 @@
 package it.web.routex.model;
 /**
- * Classe di dominio che rappresenta una città all'interno del sistema RouteX.
+ * Classe di dominio che rappresenta una città all'interno del sistema Safe Flow.
  *
  * Questa classe fa parte del Model e incapsula le principali regole di dominio
  * legate al concetto di città supportata dal sistema di segnalazioni.

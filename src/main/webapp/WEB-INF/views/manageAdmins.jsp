@@ -284,7 +284,7 @@
             <h2>Create new admin</h2>
             <p>Fill in the required data to add a new administrator account to the platform.</p>
 
-            <form action="manageAdmins" method="post">
+            <form action="manageAdmins" method="post" accept-charset="UTF-8">
                 <input type="hidden" name="action" value="createAdmin">
                 <div class="form-grid">
                     <div class="field-group">
@@ -320,7 +320,7 @@
             <p>Select one or more administrator accounts to remove them from the platform.</p>
 
             <% if (admins != null && !admins.isEmpty()) { %>
-            <form action="manageAdmins" method="post">
+            <form action="manageAdmins" method="post" accept-charset="UTF-8">
                 <input type="hidden" name="action" value="deleteAdmins">
                 <div class="admin-list">
                     <% for (AdminUserBean admin : admins) { %>
@@ -354,7 +354,7 @@
             <p>Overview of traveler accounts with the option to remove selected users and their linked travel data.</p>
 
             <% if (travelers != null && !travelers.isEmpty()) { %>
-            <form action="manageAdmins" method="post">
+            <form action="manageAdmins" method="post" accept-charset="UTF-8">
                 <input type="hidden" name="action" value="deleteTravelers">
                 <div class="admin-list">
                     <% for (AdminUserBean traveler : travelers) { %>

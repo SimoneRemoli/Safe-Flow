@@ -27,6 +27,9 @@ public class MessageBean
     private Boolean senderAvatarPresent;
     private Boolean senderProfileAvailable;
     private Boolean currentUserSender;
+    private String notificationKey;
+    private Integer likeCount;
+    private Boolean likedByCurrentUser;
 
     public MessageBean(){}
 
@@ -215,6 +218,30 @@ public class MessageBean
 
     public void setCurrentUserSender(Boolean currentUserSender) {
         this.currentUserSender = currentUserSender;
+    }
+
+    public String getNotificationKey() {
+        return notificationKey;
+    }
+
+    public void setNotificationKey(String notificationKey) {
+        this.notificationKey = notificationKey;
+    }
+
+    public Integer getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(Integer likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public Boolean getLikedByCurrentUser() {
+        return likedByCurrentUser;
+    }
+
+    public void setLikedByCurrentUser(Boolean likedByCurrentUser) {
+        this.likedByCurrentUser = likedByCurrentUser;
     }
 
 }
