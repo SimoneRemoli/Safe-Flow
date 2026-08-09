@@ -4,9 +4,14 @@ import it.web.routex.dao.LayerPersistenza;
 import it.web.routex.exception.BrondiException;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.model.Notification;
+import it.web.routex.model.UserProfileSummary;
 import it.web.routex.utility.factory.FactoryLayerPersistenza;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Collections;
 
 public class ViewNotificationsControllerApplicativo {
 
@@ -17,6 +22,7 @@ public class ViewNotificationsControllerApplicativo {
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         try {
             List<Notification> notifications = layer.getMessagesRAM();
+            Set<String> senderCodiciFiscali = new HashSet<>();
             for (Notification n : notifications) {
                 boolean include = false;
 
@@ -40,10 +46,14 @@ public class ViewNotificationsControllerApplicativo {
                     bean.setGeneralAlert(n.isGeneralAlert());
                     bean.setStationName(n.getStationName());
                     bean.setSuspectClothing(n.getSuspectClothing());
+                    if (n.getSenderCf() != null && !n.getSenderCf().isBlank()) {
+                        senderCodiciFiscali.add(n.getSenderCf());
+                    }
                     result.add(bean);
                 }
             }
 
+            enrichSenderProfiles(result, codiceFiscale, senderCodiciFiscali);
             return result;
 
         } catch (DAOExceptionRemoli e) {
@@ -53,6 +63,43 @@ public class ViewNotificationsControllerApplicativo {
                     "ViewNotificationsControllerApplicativo.messages",
                     e
             );
+        }
+    }
+
+    private void enrichSenderProfiles(List<MessageBean> messages,
+                                      String currentUserCf,
+                                      Set<String> senderCodiciFiscali) {
+        Map<String, UserProfileSummary> profiles;
+        try {
+            UserProfileControllerApplicativo profileController = new UserProfileControllerApplicativo();
+            profiles = profileController.getProfilesByCodiceFiscale(senderCodiciFiscali);
+        } catch (BrondiException e) {
+            profiles = Collections.emptyMap();
+        }
+
+        for (MessageBean message : messages) {
+            String senderCf = message.getSenderCf();
+            boolean currentUserSender = senderCf != null
+                    && currentUserCf != null
+                    && senderCf.equalsIgnoreCase(currentUserCf);
+
+            UserProfileSummary profile = senderCf == null ? null : profiles.get(senderCf.trim().toUpperCase());
+            message.setCurrentUserSender(currentUserSender);
+
+            if (profile != null) {
+                message.setSenderName(profile.getNome());
+                message.setSenderSurname(profile.getCognome());
+                message.setSenderDisplayName(currentUserSender ? "me" : profile.getDisplayName());
+                message.setSenderInitials(profile.getInitials());
+                message.setSenderAvatarPresent(profile.isAvatarPresent());
+                message.setSenderProfileAvailable(true);
+            } else {
+                boolean missingSender = senderCf == null || senderCf.isBlank();
+                message.setSenderDisplayName(currentUserSender ? "me" : missingSender ? "Safe Flow Team" : "Unknown user");
+                message.setSenderInitials(currentUserSender ? "ME" : missingSender ? "SF" : "U");
+                message.setSenderAvatarPresent(false);
+                message.setSenderProfileAvailable(false);
+            }
         }
     }
 }

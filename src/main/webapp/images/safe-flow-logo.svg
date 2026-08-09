@@ -1,0 +1,28 @@
+<svg width="960" height="260" viewBox="0 0 960 260" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Safe Flow logo</title>
+  <desc id="desc">A shield, transit route, and alert signal mark for the Safe Flow public transport safety CRM.</desc>
+  <rect width="960" height="260" rx="32" fill="#F3F6F4"/>
+  <g transform="translate(72 42)">
+    <path d="M92 0L164 27V79C164 123 136 159 92 176C48 159 20 123 20 79V27L92 0Z" fill="#0E7C66"/>
+    <path d="M92 17L146 37V78C146 112 124 140 92 154C60 140 38 112 38 78V37L92 17Z" fill="#E8F7EF"/>
+    <path d="M61 91C75 68 93 56 116 56H131" stroke="#0E7C66" stroke-width="12" stroke-linecap="round"/>
+    <circle cx="61" cy="91" r="12" fill="#0E7C66"/>
+    <circle cx="131" cy="56" r="12" fill="#B42318"/>
+    <path d="M131 33V47" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+    <path d="M131 65V66" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(278 73)">
+    <text x="0" y="72" fill="#14241D" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="72" font-weight="850" letter-spacing="0">Safe Flow</text>
+    <text x="4" y="118" fill="#607267" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="25" font-weight="700" letter-spacing="0">Public transport safety CRM</text>
+    <g transform="translate(4 144)">
+      <rect width="112" height="34" rx="8" fill="#FFF0EE" stroke="#FAC7C2"/>
+      <text x="16" y="23" fill="#8F1F17" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="850">PICKPOCKET</text>
+      <rect x="128" width="78" height="34" rx="8" fill="#FFF5DF" stroke="#F4D58A"/>
+      <text x="144" y="23" fill="#8A4B08" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="850">FIGHT</text>
+      <rect x="222" width="84" height="34" rx="8" fill="#E8F7EF" stroke="#BFE8CF"/>
+      <text x="238" y="23" fill="#075F4E" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="850">CROWD</text>
+      <rect x="322" width="94" height="34" rx="8" fill="#F4F7F5" stroke="#D8E4DE"/>
+      <text x="338" y="23" fill="#405147" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="850">GENERAL</text>
+    </g>
+  </g>
+</svg>

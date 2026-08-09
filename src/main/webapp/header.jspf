@@ -41,6 +41,27 @@
 %>
 
 <% if (routexHeaderNome != null && routexHeaderCognome != null && routexHeaderRuolo != null) { %>
+    <style>
+        body .topbar,
+        body header.topbar {
+            padding-right: 300px !important;
+        }
+
+        body .nav-actions {
+            margin-right: 290px !important;
+        }
+
+        @media (max-width: 900px) {
+            body .topbar,
+            body header.topbar {
+                padding-right: 0 !important;
+            }
+
+            body .nav-actions {
+                margin-right: 0 !important;
+            }
+        }
+    </style>
     <div class="app-user-menu"
          style="position:fixed;top:14px;right:16px;z-index:3000;">
         <button class="app-user-avatar-button"
@@ -70,7 +91,7 @@
                         <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm0 1.5c-3.1 0-5.5 1.4-5.5 3.2 0 .5.4.8.9.8h9.2c.5 0 .9-.3.9-.8 0-1.8-2.4-3.2-5.5-3.2Z"></path>
                     </svg>
                 </span>
-                <span>Impostazioni profilo</span>
+                <span>Profile settings</span>
             </a>
             <div class="app-user-dropdown__divider" style="height:1px!important;margin:6px 0!important;background:#d8dee4!important;"></div>
             <a href="logout" class="app-user-dropdown__item app-user-dropdown__logout" style="display:flex!important;align-items:center!important;gap:10px!important;padding:8px 12px!important;color:#24292f!important;background:#fff!important;text-decoration:none!important;font-size:14px!important;line-height:20px!important;font-weight:400!important;">

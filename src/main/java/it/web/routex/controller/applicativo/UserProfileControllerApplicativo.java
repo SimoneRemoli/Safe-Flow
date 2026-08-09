@@ -1,15 +1,25 @@
 package it.web.routex.controller.applicativo;
 
 import it.web.routex.exception.BrondiException;
+import it.web.routex.exception.DAOExceptionRemoli;
+import it.web.routex.dao.LayerPersistenza;
+import it.web.routex.model.Credentials;
 import it.web.routex.model.UserProfile;
+import it.web.routex.model.UserProfileSummary;
+import it.web.routex.utility.factory.FactoryLayerPersistenza;
 
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 public class UserProfileControllerApplicativo {
 
@@ -21,7 +31,35 @@ public class UserProfileControllerApplicativo {
         String cf = normalizeCf(codiceFiscale);
         Properties properties = loadProperties();
         String bio = properties.getProperty(key(cf, "bio"), "");
-        return new UserProfile(cf, bio, avatarPath(cf).map(Files::exists).orElse(false));
+        return new UserProfile(cf, bio, avatarPath(cf, properties).map(Files::exists).orElse(false));
+    }
+
+    public UserProfileSummary getPublicProfile(String codiceFiscale) throws BrondiException {
+        String cf = normalizeCf(codiceFiscale);
+        UserProfileSummary summary = getProfilesByCodiceFiscale(Set.of(cf)).get(cf);
+        if (summary == null) {
+            throw new BrondiException("User profile not found.", "PROFILE_NOT_FOUND", cf);
+        }
+        return summary;
+    }
+
+    public Map<String, UserProfileSummary> getProfilesByCodiceFiscale(Collection<String> codiciFiscali)
+            throws BrondiException {
+        Set<String> requested = normalizeCodiciFiscali(codiciFiscali);
+        Map<String, UserProfileSummary> profiles = new HashMap<>();
+        if (requested.isEmpty()) {
+            return profiles;
+        }
+
+        LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
+        Properties properties = loadProperties();
+        try {
+            addMatchingProfiles(profiles, requested, layer.listAdmins(), properties);
+            addMatchingProfiles(profiles, requested, layer.listTravelers(), properties);
+            return profiles;
+        } catch (DAOExceptionRemoli e) {
+            throw new BrondiException("Unable to load user profiles.", "PROFILE_USERS_LOAD", "Profile user lookup error", e);
+        }
     }
 
     public void saveProfile(String codiceFiscale, String bio, Part avatarPart) throws BrondiException {
@@ -29,7 +67,7 @@ public class UserProfileControllerApplicativo {
         String normalizedBio = bio == null ? "" : bio.trim();
 
         if (normalizedBio.length() > 500) {
-            throw new BrondiException("La bio può contenere al massimo 500 caratteri.", "PROFILE_VALIDATION", "Bio too long");
+            throw new BrondiException("Bio can contain up to 500 characters.", "PROFILE_VALIDATION", "Bio too long");
         }
 
         Properties properties = loadProperties();
@@ -45,10 +83,27 @@ public class UserProfileControllerApplicativo {
                 }
                 properties.setProperty(key(cf, "avatar"), avatarPath.getFileName().toString());
             } catch (IOException e) {
-                throw new BrondiException("Impossibile salvare la foto profilo.", "PROFILE_IO", "Avatar write error", e);
+                throw new BrondiException("Unable to save the profile image.", "PROFILE_IO", "Avatar write error", e);
             }
         }
 
+        storeProperties(properties);
+    }
+
+    public void removeAvatar(String codiceFiscale) throws BrondiException {
+        String cf = normalizeCf(codiceFiscale);
+        Properties properties = loadProperties();
+        String avatar = properties.getProperty(key(cf, "avatar"));
+
+        if (avatar != null && !avatar.isBlank()) {
+            try {
+                Files.deleteIfExists(PROFILE_DIR.resolve(avatar));
+            } catch (IOException e) {
+                throw new BrondiException("Unable to remove the profile image.", "PROFILE_IO", "Avatar delete error", e);
+            }
+        }
+
+        properties.remove(key(cf, "avatar"));
         storeProperties(properties);
     }
 
@@ -56,11 +111,14 @@ public class UserProfileControllerApplicativo {
         String cf = normalizeCf(codiceFiscale);
         return avatarPath(cf)
                 .filter(Files::exists)
-                .orElseThrow(() -> new BrondiException("Avatar non disponibile.", "PROFILE_AVATAR_NOT_FOUND", cf));
+                .orElseThrow(() -> new BrondiException("Profile image is not available.", "PROFILE_AVATAR_NOT_FOUND", cf));
     }
 
     private java.util.Optional<Path> avatarPath(String cf) throws BrondiException {
-        Properties properties = loadProperties();
+        return avatarPath(cf, loadProperties());
+    }
+
+    private java.util.Optional<Path> avatarPath(String cf, Properties properties) {
         String avatar = properties.getProperty(key(cf, "avatar"));
         if (avatar == null || avatar.isBlank()) {
             return java.util.Optional.empty();
@@ -70,14 +128,14 @@ public class UserProfileControllerApplicativo {
 
     private String normalizeCf(String codiceFiscale) throws BrondiException {
         if (codiceFiscale == null || codiceFiscale.trim().isEmpty()) {
-            throw new BrondiException("Sessione utente non valida.", "PROFILE_SESSION", "Missing codice fiscale");
+            throw new BrondiException("Invalid user session.", "PROFILE_SESSION", "Missing codice fiscale");
         }
         return codiceFiscale.trim().toUpperCase(Locale.ROOT);
     }
 
     private String resolveExtension(Part avatarPart) throws BrondiException {
         if (avatarPart.getSize() > MAX_AVATAR_SIZE) {
-            throw new BrondiException("La foto profilo non può superare 2 MB.", "PROFILE_VALIDATION", "Avatar too large");
+            throw new BrondiException("Profile image cannot exceed 2 MB.", "PROFILE_VALIDATION", "Avatar too large");
         }
 
         String contentType = avatarPart.getContentType() == null ? "" : avatarPart.getContentType().toLowerCase(Locale.ROOT);
@@ -86,7 +144,7 @@ public class UserProfileControllerApplicativo {
             case "image/png" -> ".png";
             case "image/webp" -> ".webp";
             case "image/gif" -> ".gif";
-            default -> throw new BrondiException("Carica una foto in formato JPG, PNG, WEBP o GIF.", "PROFILE_VALIDATION", "Invalid avatar type: " + contentType);
+            default -> throw new BrondiException("Upload a JPG, PNG, WEBP, or GIF image.", "PROFILE_VALIDATION", "Invalid avatar type: " + contentType);
         };
     }
 
@@ -100,7 +158,7 @@ public class UserProfileControllerApplicativo {
             properties.load(input);
             return properties;
         } catch (IOException e) {
-            throw new BrondiException("Impossibile leggere il profilo utente.", "PROFILE_IO", "Profile store read error", e);
+            throw new BrondiException("Unable to read the user profile.", "PROFILE_IO", "Profile store read error", e);
         }
     }
 
@@ -111,11 +169,52 @@ public class UserProfileControllerApplicativo {
                 properties.store(output, "Safe Flow user profiles");
             }
         } catch (IOException e) {
-            throw new BrondiException("Impossibile salvare il profilo utente.", "PROFILE_IO", "Profile store write error", e);
+            throw new BrondiException("Unable to save the user profile.", "PROFILE_IO", "Profile store write error", e);
         }
     }
 
     private String key(String cf, String field) {
         return cf + "." + field;
+    }
+
+    private Set<String> normalizeCodiciFiscali(Collection<String> codiciFiscali) {
+        Set<String> normalized = new HashSet<>();
+        if (codiciFiscali == null) {
+            return normalized;
+        }
+
+        for (String codiceFiscale : codiciFiscali) {
+            if (codiceFiscale != null && !codiceFiscale.isBlank()) {
+                normalized.add(codiceFiscale.trim().toUpperCase(Locale.ROOT));
+            }
+        }
+        return normalized;
+    }
+
+    private void addMatchingProfiles(Map<String, UserProfileSummary> profiles,
+                                     Set<String> requested,
+                                     Collection<Credentials> users,
+                                     Properties properties) {
+        for (Credentials user : users) {
+            if (user.getCodiceFiscale() == null) {
+                continue;
+            }
+
+            String cf = user.getCodiceFiscale().trim().toUpperCase(Locale.ROOT);
+            if (!requested.contains(cf) || profiles.containsKey(cf)) {
+                continue;
+            }
+
+            String role = user.getRuolo() == null ? "" : user.getRuolo().name();
+            boolean avatarPresent = avatarPath(cf, properties).map(Files::exists).orElse(false);
+            profiles.put(cf, new UserProfileSummary(
+                    cf,
+                    user.getNome(),
+                    user.getCognome(),
+                    role,
+                    properties.getProperty(key(cf, "bio"), ""),
+                    avatarPresent
+            ));
+        }
     }
 }

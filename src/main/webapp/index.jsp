@@ -341,9 +341,6 @@
                 platform notifications.
             </p>
             <p>
-                Safe Flow was developed by Lorenzo Brondi and Simone Remoli.
-            </p>
-            <p>
                 The idea behind Safe Flow was conceived by Simone Remoli, a computer engineering student at the
                 University of Rome Tor Vergata.
             </p>

@@ -5,6 +5,9 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="it.web.routex.bean.MessageBean" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.nio.charset.StandardCharsets" %>
+<%@ page import="org.apache.commons.lang3.StringEscapeUtils" %>
 <%
     List<MessageBean> notifiche = (List<MessageBean>) request.getAttribute("notifiche");
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -639,6 +642,75 @@
             white-space: nowrap !important;
         }
 
+        .safe-flow-notifications .source-cell {
+            white-space: normal !important;
+        }
+
+        .safe-flow-notifications .author-link,
+        .safe-flow-notifications .author-static {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            min-width: 0 !important;
+            margin-bottom: 10px !important;
+            color: #14241d !important;
+            text-decoration: none !important;
+        }
+
+        .safe-flow-notifications .author-link:hover .author-name {
+            color: #0e7c66 !important;
+            text-decoration: underline !important;
+        }
+
+        .safe-flow-notifications .author-avatar {
+            width: 38px !important;
+            height: 38px !important;
+            flex: 0 0 38px !important;
+            border-radius: 50% !important;
+            overflow: hidden !important;
+            display: grid !important;
+            place-items: center !important;
+            color: #ffffff !important;
+            background: #0e7c66 !important;
+            border: 2px solid #e5f3ee !important;
+            font-size: 0.72rem !important;
+            font-weight: 850 !important;
+            line-height: 1 !important;
+        }
+
+        .safe-flow-notifications .author-avatar img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            display: block !important;
+        }
+
+        .safe-flow-notifications .author-copy {
+            min-width: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 2px !important;
+        }
+
+        .safe-flow-notifications .author-name {
+            max-width: 180px !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            white-space: nowrap !important;
+            color: #14241d !important;
+            font-size: 0.92rem !important;
+            font-weight: 850 !important;
+            line-height: 1.2 !important;
+        }
+
+        .safe-flow-notifications .author-role {
+            color: #607267 !important;
+            font-size: 0.74rem !important;
+            font-weight: 800 !important;
+            text-transform: uppercase !important;
+            line-height: 1.2 !important;
+        }
+
         .safe-flow-notifications .empty-state {
             padding: 34px 18px !important;
             color: #607267 !important;
@@ -718,9 +790,9 @@
                     <table>
                         <thead>
                         <tr>
-	                            <th style="width: 58%">Alert details</th>
-	                            <th style="width: 18%">Source</th>
-	                            <th style="width: 24%">Published</th>
+		                            <th style="width: 58%">Alert details</th>
+		                            <th style="width: 24%">Source</th>
+		                            <th style="width: 18%">Published</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -728,15 +800,25 @@
                         <tr>
                             <td colspan="3" class="empty-state">No notifications available for this city.</td>
                         </tr>
-                        <% } else {
-                            for (MessageBean m : cityEntry.getValue()) {
-                            boolean adminReport = "ADMIN".equalsIgnoreCase(m.getSenderRole());
-                        %>
-                        <tr>
-                            <td class="message-cell <%= adminReport ? "admin-message" : "" %>">
-                                <div><%= m.getMessage() %></div>
-	                                <% if (Boolean.TRUE.equals(m.getPickpocketAlert()) || Boolean.TRUE.equals(m.getFightAlert()) || Boolean.TRUE.equals(m.getCrowdAlert()) || Boolean.TRUE.equals(m.getGeneralAlert()) || (m.getStationName() != null && !m.getStationName().isBlank()) || (m.getSuspectClothing() != null && !m.getSuspectClothing().isBlank())) { %>
-                                <div class="message-meta stack">
+	                        <% } else {
+	                            for (MessageBean m : cityEntry.getValue()) {
+	                            boolean adminReport = "ADMIN".equalsIgnoreCase(m.getSenderRole());
+	                            boolean senderProfileAvailable = Boolean.TRUE.equals(m.getSenderProfileAvailable());
+	                            boolean currentUserSender = Boolean.TRUE.equals(m.getCurrentUserSender());
+	                            boolean senderHasAvatar = Boolean.TRUE.equals(m.getSenderAvatarPresent());
+	                            String senderCf = m.getSenderCf();
+	                            String encodedSenderCf = senderCf == null ? "" : URLEncoder.encode(senderCf, StandardCharsets.UTF_8);
+	                            String authorHref = currentUserSender ? "profile" : "publicProfile?cf=" + encodedSenderCf;
+	                            String authorAvatarSrc = currentUserSender ? "profileAvatar?t=" + System.currentTimeMillis() : "publicProfileAvatar?cf=" + encodedSenderCf + "&amp;t=" + System.currentTimeMillis();
+	                            String authorName = StringEscapeUtils.escapeHtml4(m.getSenderDisplayName() == null ? "Safe Flow Team" : m.getSenderDisplayName());
+	                            String authorInitials = StringEscapeUtils.escapeHtml4(m.getSenderInitials() == null ? "SF" : m.getSenderInitials());
+	                            String authorRole = StringEscapeUtils.escapeHtml4(adminReport ? "Admin" : "Traveler");
+	                        %>
+	                        <tr>
+	                            <td class="message-cell <%= adminReport ? "admin-message" : "" %>">
+	                                <div><%= StringEscapeUtils.escapeHtml4(m.getMessage()) %></div>
+		                                <% if (Boolean.TRUE.equals(m.getPickpocketAlert()) || Boolean.TRUE.equals(m.getFightAlert()) || Boolean.TRUE.equals(m.getCrowdAlert()) || Boolean.TRUE.equals(m.getGeneralAlert()) || (m.getStationName() != null && !m.getStationName().isBlank()) || (m.getSuspectClothing() != null && !m.getSuspectClothing().isBlank())) { %>
+	                                <div class="message-meta stack">
                                     <% if (Boolean.TRUE.equals(m.getPickpocketAlert())) { %>
                                     <span class="report-badge pickpocket">Pickpocket alert</span>
                                     <% } %>
@@ -749,19 +831,42 @@
 	                                    <% if (Boolean.TRUE.equals(m.getGeneralAlert())) { %>
 	                                    <span class="report-badge general">General alert</span>
 	                                    <% } %>
-                                        <% if (m.getStationName() != null && !m.getStationName().isBlank()) { %>
-                                        <span class="message-detail">Station: <%= m.getStationName() %></span>
-                                        <% } %>
-                                        <% if (m.getSuspectClothing() != null && !m.getSuspectClothing().isBlank()) { %>
-                                        <span class="message-detail">Details: <%= m.getSuspectClothing() %></span>
-                                        <% } %>
+	                                        <% if (m.getStationName() != null && !m.getStationName().isBlank()) { %>
+	                                        <span class="message-detail">Station: <%= StringEscapeUtils.escapeHtml4(m.getStationName()) %></span>
+	                                        <% } %>
+	                                        <% if (m.getSuspectClothing() != null && !m.getSuspectClothing().isBlank()) { %>
+	                                        <span class="message-detail">Details: <%= StringEscapeUtils.escapeHtml4(m.getSuspectClothing()) %></span>
+	                                        <% } %>
+		                                </div>
+	                                <% } %>
+	                            </td>
+	                            <td class="type-cell source-cell">
+	                                <% if (senderProfileAvailable || currentUserSender) { %>
+	                                <a class="author-link" href="<%= authorHref %>">
+	                                    <span class="author-avatar">
+	                                        <% if (senderHasAvatar) { %>
+	                                        <img src="<%= authorAvatarSrc %>" alt="">
+	                                        <% } else { %>
+	                                        <span><%= authorInitials %></span>
+	                                        <% } %>
+	                                    </span>
+	                                    <span class="author-copy">
+	                                        <strong class="author-name"><%= authorName %></strong>
+	                                        <small class="author-role"><%= authorRole %></small>
+	                                    </span>
+	                                </a>
+	                                <% } else { %>
+	                                <div class="author-static">
+	                                    <span class="author-avatar"><span><%= authorInitials %></span></span>
+	                                    <span class="author-copy">
+	                                        <strong class="author-name"><%= authorName %></strong>
+	                                        <small class="author-role"><%= authorRole %></small>
+	                                    </span>
 	                                </div>
-                                <% } %>
-                            </td>
-                            <td class="type-cell">
-                                <span class="report-badge <%= adminReport ? "admin" : "user" %>">
-                                    <%= adminReport ? "Admin report" : "User report" %>
-                                </span>
+	                                <% } %>
+	                                <span class="report-badge <%= adminReport ? "admin" : "user" %>">
+	                                    <%= adminReport ? "Admin report" : "User report" %>
+	                                </span>
                             </td>
                             <td class="date-cell"><%= sdf.format(m.getDate()) %></td>
                         </tr>

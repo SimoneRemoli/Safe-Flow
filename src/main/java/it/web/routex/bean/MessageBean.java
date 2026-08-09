@@ -20,6 +20,13 @@ public class MessageBean
     private Boolean generalAlert;
     private String stationName;
     private String suspectClothing;
+    private String senderName;
+    private String senderSurname;
+    private String senderDisplayName;
+    private String senderInitials;
+    private Boolean senderAvatarPresent;
+    private Boolean senderProfileAvailable;
+    private Boolean currentUserSender;
 
     public MessageBean(){}
 
@@ -152,6 +159,62 @@ public class MessageBean
 
     public void setSuspectClothing(String suspectClothing) {
         this.suspectClothing = suspectClothing;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String getSenderSurname() {
+        return senderSurname;
+    }
+
+    public void setSenderSurname(String senderSurname) {
+        this.senderSurname = senderSurname;
+    }
+
+    public String getSenderDisplayName() {
+        return senderDisplayName;
+    }
+
+    public void setSenderDisplayName(String senderDisplayName) {
+        this.senderDisplayName = senderDisplayName;
+    }
+
+    public String getSenderInitials() {
+        return senderInitials;
+    }
+
+    public void setSenderInitials(String senderInitials) {
+        this.senderInitials = senderInitials;
+    }
+
+    public Boolean getSenderAvatarPresent() {
+        return senderAvatarPresent;
+    }
+
+    public void setSenderAvatarPresent(Boolean senderAvatarPresent) {
+        this.senderAvatarPresent = senderAvatarPresent;
+    }
+
+    public Boolean getSenderProfileAvailable() {
+        return senderProfileAvailable;
+    }
+
+    public void setSenderProfileAvailable(Boolean senderProfileAvailable) {
+        this.senderProfileAvailable = senderProfileAvailable;
+    }
+
+    public Boolean getCurrentUserSender() {
+        return currentUserSender;
+    }
+
+    public void setCurrentUserSender(Boolean currentUserSender) {
+        this.currentUserSender = currentUserSender;
     }
 
 }

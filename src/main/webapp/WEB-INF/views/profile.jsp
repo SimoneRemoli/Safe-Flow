@@ -9,11 +9,12 @@
     String bio = profile != null && profile.getBio() != null ? StringEscapeUtils.escapeHtml4(profile.getBio()) : "";
     boolean hasAvatar = profile != null && profile.isAvatarPresent();
     boolean saved = "1".equals(request.getParameter("saved"));
-    String errore = (String) request.getAttribute("errore");
+    boolean imageRemoved = "1".equals(request.getParameter("imageRemoved"));
+    String profileError = (String) request.getAttribute("profileError");
     String homeTarget = "ADMIN".equalsIgnoreCase(ruolo) ? "adminHub" : "travelerHome";
 %>
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -106,8 +107,7 @@
             font-weight: 800;
         }
 
-        textarea,
-        input[type="file"] {
+        textarea {
             width: 100%;
             border: 1px solid #d8e4de;
             border-radius: 12px;
@@ -122,6 +122,21 @@
             resize: vertical;
         }
 
+        .profile-file-input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+        }
+
+        .selected-file {
+            margin-top: 10px;
+            color: #607267;
+            font-size: 0.92rem;
+            font-weight: 700;
+        }
+
         .profile-actions {
             display: flex;
             gap: 10px;
@@ -130,7 +145,8 @@
         }
 
         .profile-actions button,
-        .profile-actions a {
+        .profile-actions a,
+        .image-action-button {
             border-radius: 8px;
             padding: 11px 15px;
             font-weight: 800;
@@ -139,10 +155,17 @@
             cursor: pointer;
         }
 
-        .profile-actions button {
+        .profile-actions button,
+        .image-action-button.primary {
             color: #ffffff;
             background: #0e7c66;
             border-color: #0e7c66;
+        }
+
+        .image-action-button.danger {
+            color: #b42318;
+            background: #fff0ee;
+            border-color: #fac7c2;
         }
 
         .profile-actions a {
@@ -195,21 +218,32 @@
 
     <section class="profile-form">
         <% if (saved) { %>
-        <div class="profile-alert success">Profilo aggiornato correttamente.</div>
+        <div class="profile-alert success">Profile updated successfully.</div>
         <% } %>
-        <% if (errore != null && !errore.isBlank()) { %>
-        <div class="profile-alert error"><%= errore %></div>
+        <% if (imageRemoved) { %>
+        <div class="profile-alert success">Profile image removed successfully.</div>
+        <% } %>
+        <% if (profileError != null && !profileError.isBlank()) { %>
+        <div class="profile-alert error"><%= profileError %></div>
         <% } %>
 
-        <h2>Profilo personale</h2>
-        <p>Carica una foto profilo e scrivi una breve bio visibile nella tua area personale.</p>
+        <h2>Personal profile</h2>
+        <p>Manage your profile image and write a short bio for your personal area.</p>
 
         <form action="profile" method="post" enctype="multipart/form-data">
-            <label for="avatar">Foto profilo</label>
-            <input id="avatar" name="avatar" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+            <label for="avatar">Profile image</label>
+            <input class="profile-file-input" id="avatar" name="avatar" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+            <div class="profile-actions">
+                <% if (hasAvatar) { %>
+                <button class="image-action-button danger" type="submit" name="action" value="removeAvatar" formnovalidate>Remove profile image</button>
+                <% } else { %>
+                <button class="image-action-button primary" type="button" onclick="document.getElementById('avatar').click();">Add profile image</button>
+                <% } %>
+            </div>
+            <div class="selected-file" id="selectedFile" aria-live="polite"></div>
 
             <label for="bio">Bio</label>
-            <textarea id="bio" name="bio" maxlength="500" placeholder="Scrivi una breve descrizione..."><%= bio %></textarea>
+            <textarea id="bio" name="bio" maxlength="500" placeholder="Write a short description..."><%= bio %></textarea>
 
             <div class="profile-actions">
                 <button type="submit">Save profile</button>
@@ -218,5 +252,17 @@
         </form>
     </section>
 </main>
+<script>
+    const avatarInput = document.getElementById('avatar');
+    const selectedFile = document.getElementById('selectedFile');
+
+    if (avatarInput && selectedFile) {
+        avatarInput.addEventListener('change', () => {
+            selectedFile.textContent = avatarInput.files.length > 0
+                ? `Selected file: ${avatarInput.files[0].name}`
+                : '';
+        });
+    }
+</script>
 </body>
 </html>

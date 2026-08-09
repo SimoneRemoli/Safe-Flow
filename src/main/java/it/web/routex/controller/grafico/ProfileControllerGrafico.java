@@ -30,7 +30,7 @@ public class ProfileControllerGrafico extends LoggedHttpServlet {
             request.setAttribute("profile", controller.getProfile(codiceFiscale));
             forward(request, response, "/WEB-INF/views/profile.jsp");
         } catch (BrondiException e) {
-            logger.error("Errore durante il caricamento del profilo", e);
+            logger.error("Error while loading the profile", e);
             forwardError(request, response, e.getMessage(), "/errorLogged.jsp");
         }
     }
@@ -45,17 +45,23 @@ public class ProfileControllerGrafico extends LoggedHttpServlet {
         }
 
         try {
-            Part avatarPart = request.getPart("avatar");
             UserProfileControllerApplicativo controller = new UserProfileControllerApplicativo();
+            if ("removeAvatar".equals(request.getParameter("action"))) {
+                controller.removeAvatar(codiceFiscale);
+                response.sendRedirect(request.getContextPath() + "/profile?imageRemoved=1");
+                return;
+            }
+
+            Part avatarPart = request.getPart("avatar");
             controller.saveProfile(codiceFiscale, request.getParameter("bio"), avatarPart);
             response.sendRedirect(request.getContextPath() + "/profile?saved=1");
         } catch (BrondiException e) {
-            logger.warn("Profilo non valido: {}", e.getDetails());
-            request.setAttribute("errore", e.getMessage());
+            logger.warn("Invalid profile data: {}", e.getDetails());
+            request.setAttribute("profileError", e.getMessage());
             doGet(request, response);
         } catch (Exception e) {
-            logger.error("Errore durante il salvataggio del profilo", e);
-            forwardError(request, response, "Impossibile salvare il profilo.", "/errorLogged.jsp");
+            logger.error("Error while saving the profile", e);
+            forwardError(request, response, "Unable to save the profile.", "/errorLogged.jsp");
         }
     }
 }
