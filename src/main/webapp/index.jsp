@@ -3,7 +3,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>RouteX - Metro Finder</title>
+    <title>Safe Flow - Public Transport Safety CRM</title>
     <style>
         :root {
             --bg: #f3f5f8;
@@ -283,16 +283,17 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 <body>
 <%@ include file="/header.jspf" %>
 <main class="page">
     <div class="topbar">
         <div class="brand">
-            <img src="images/logo-no-background.png" alt="RouteX">
+            <img src="images/logo-no-background.png" alt="Safe Flow">
             <div>
-                <strong>RouteX</strong>
-                <span>Metro route planning, kept simple.</span>
+                <strong>Safe Flow</strong>
+                <span>Public transport safety CRM</span>
             </div>
         </div>
 
@@ -301,20 +302,16 @@
 
     <section class="hero">
         <div>
-            <div class="eyebrow">Metro Navigation</div>
-            <h1>Find the shortest metro path with a cleaner interface.</h1>
+            <div class="eyebrow">Safe Flow CRM</div>
+            <h1>Report public transport safety events clearly.</h1>
             <p>
-                RouteX lets you search for a route between two stations in a direct way,
-                without visual distractions. Select the city, enter departure and arrival,
-                and view the route.
+                Safe Flow helps travelers report pickpockets and criminal events on public transport,
+                while administrators review, approve, and publish relevant alerts.
             </p>
 
             <div class="actions">
-                <form action="PathControllerGrafico" method="get">
-                    <button type="submit">Start Exploring</button>
-                </form>
                 <a href="login.jsp">Open Reserved Area</a>
-                <button type="button" class="info-button" data-open-about>What is RouteX?</button>
+                <button type="button" class="info-button" data-open-about>What is Safe Flow?</button>
             </div>
         </div>
     </section>
@@ -331,30 +328,30 @@
     <div class="about-modal__panel" role="dialog" aria-modal="true" aria-labelledby="aboutModalTitle">
         <div class="about-modal__topbar">
             <div>
-                <span class="about-modal__eyebrow">About RouteX</span>
-                <h2 class="about-modal__title" id="aboutModalTitle">RouteX, explained clearly.</h2>
+                <span class="about-modal__eyebrow">About Safe Flow</span>
+                <h2 class="about-modal__title" id="aboutModalTitle">Safe Flow, explained clearly.</h2>
             </div>
             <button type="button" class="about-modal__close" data-close-about aria-label="Close dialog">&times;</button>
         </div>
 
         <div class="about-modal__content">
             <p>
-                RouteX is a powerful route finder that allows users to search for stations in real-time,
-                select a city, and view an interactive metro map. Featuring dynamic autocomplete, RouteX
-                helps travelers quickly find the best routes with ease.
+                Safe Flow is a safety-focused CRM for public transport. Travelers can submit reports about
+                pickpockets and criminal events, while administrators can review communications and manage
+                platform notifications.
             </p>
             <p>
-                RouteX was developed by Lorenzo Brondi and Simone Remoli.
+                Safe Flow was developed by Lorenzo Brondi and Simone Remoli.
             </p>
             <p>
-                The idea behind RouteX was conceived by Simone Remoli, a computer engineering student at the
+                The idea behind Safe Flow was conceived by Simone Remoli, a computer engineering student at the
                 University of Rome Tor Vergata.
             </p>
             <p>
                 As someone who has relied on public transportation for most of his daily commuting and has rarely
                 used a car, he began to reflect on a simple yet meaningful question:
                 "What would the world look like if every commuter had access to an easy-to-use application
-                designed to simplify metropolitan travel?"
+                designed to report risky situations on metropolitan travel?"
             </p>
         </div>
     </div>

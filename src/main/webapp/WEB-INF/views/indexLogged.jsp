@@ -20,7 +20,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>RouteX - Metro Finder</title>
+    <title>Safe Flow - Traveler Console</title>
     <style>
         :root {
             --bg-1: #04111f;
@@ -303,10 +303,10 @@
 <div class="shell">
     <div class="topbar">
         <div class="brand">
-            <img src="images/logo-no-background.png" alt="RouteX">
+            <img src="images/logo-no-background.png" alt="Safe Flow">
             <div>
-                <strong>RouteX</strong>
-                <span>Metro intelligence for urban exploration</span>
+                <strong>Safe Flow</strong>
+                <span>Traveler safety console</span>
             </div>
         </div>
 
@@ -325,34 +325,25 @@
 
     <section class="hero">
         <div class="hero-copy">
-            <div class="eyebrow">Connected User Console</div>
-            <h1>Your urban network<br>is ready to move.</h1>
+            <div class="eyebrow">Traveler Console</div>
+            <h1>Report incidents and track alerts.</h1>
             <p>
-                You now have access to your features on the platform. Choose what you want to do.
+                Use Safe Flow to send verified safety reports and review notifications about events on public transport.
             </p>
 
             <div class="cta-row">
-                <form action="PathControllerGrafico" method="get" style="margin:0;">
-                    <button class="primary-cta" type="submit">Start Exploring</button>
-                </form>
-                <form action="buyTicket" method="get" style="margin:0;">
-                    <button class="secondary-cta" type="submit">Buy Ticket</button>
-                </form>
-                <a class="secondary-cta" href="travelerReport">Send Report</a>
+                <a class="primary-cta" href="travelerReport">Send Report</a>
+                <a class="secondary-cta" href="viewNotifications">Notifications</a>
             </div>
 
             <div class="info-grid">
                 <div class="info-card">
-                    <strong>Path Search</strong>
-                    <span>Quick access to city selection and route building.</span>
+                    <strong>Traveler reports</strong>
+                    <span>Submit safety communications about public transport incidents.</span>
                 </div>
                 <div class="info-card">
-                    <strong>Reserved Area</strong>
-                    <span>Open your personal area to review saved routes and purchased tickets.</span>
-                </div>
-                <div class="info-card">
-                    <strong>Ticket Flow</strong>
-                    <span>Move directly to ticket services and related traveler actions.</span>
+                    <strong>Reserved area</strong>
+                    <span>Open your personal area to review notifications and safety reports.</span>
                 </div>
                 <div class="info-card">
                     <strong>Notifications</strong>

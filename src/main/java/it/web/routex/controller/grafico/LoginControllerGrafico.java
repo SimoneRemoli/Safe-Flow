@@ -6,11 +6,9 @@ import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.domain.LoggedHttpServlet;
 import it.web.routex.extractor.LoginExtractor;
 import it.web.routex.record.LoginRecord;
-import it.web.routex.utility.factory.ConnectionFactory;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.sql.SQLException;
 import it.web.routex.exception.LoginNotFoundRemoli;
 import it.web.routex.exception.InvalidLoginInputExceptionRemoli;
 
@@ -32,21 +30,10 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
 
 
 
-    private AutenticazioneBean creaBeanAutenticazione(HttpServletRequest request, HttpServletResponse response) {
+    private AutenticazioneBean creaBeanAutenticazione(HttpServletRequest request)
+            throws InvalidLoginInputExceptionRemoli {
         AutenticazioneBean aut = new AutenticazioneBean();
-        LoginRecord login = null;
-
-        try {
-            login = LoginExtractor.from(request);
-        } catch (InvalidLoginInputExceptionRemoli e) {
-            request.setAttribute(ATTR_MESSAGGIO_ERRORE, e.getUserMessage());
-            try {
-                request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
-            }catch(Exception ex){
-                logger.error(FORWARDING,ex);
-            }
-            logger.error("Errore di validazione input login: {}", e.toString());
-        }
+        LoginRecord login = LoginExtractor.from(request);
         aut.setEmail(login.email());
         aut.setPassword(login.password());
         logger.info(
@@ -63,29 +50,18 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
      */
     private void gestisciReindirizzamento(UtenteBeanGenerico utente, HttpServletResponse response)
     {
-        try {
-            if (utente.getRuolo() == null) {
-                safeRedirect(response, "erroreLogin.jsp");
-                return;
-            }
+        if (utente.getRuolo() == null) {
+            safeRedirect(response, "erroreLogin.jsp");
+            return;
+        }
 
-            // Imposta la connessione corretta in base al ruolo
-            ConnectionFactory.cambioDiRuolo(utente.getRuolo());
+        switch (utente.getRuolo().toString().toUpperCase()) {
 
-            switch (utente.getRuolo().toString().toUpperCase()) {
+            case "TRAVELER" -> safeRedirect(response, "travelerHome");
 
-                case "TRAVELER" -> safeRedirect(response, "travelerHome");
+            case "ADMIN" -> safeRedirect(response, "adminHub");
 
-                case "ADMIN" -> safeRedirect(response, "adminHub");
-
-                default -> safeRedirect(response, "erroreLogin.jsp");
-            }
-        } catch (SQLException e) {
-            try {
-                response.sendRedirect("erroreLogin.jsp");
-            }catch(Exception ex){
-                logger.error(FORWARDING,ex);
-            }
+            default -> safeRedirect(response, "erroreLogin.jsp");
         }
     }
     private void safeRedirect(HttpServletResponse response, String pagina) {
@@ -124,15 +100,20 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
             session.setMaxInactiveInterval(180); // 3 minuti di inattività
 
             //  Costruisce il bean con i dati del form
-            AutenticazioneBean credenziali = creaBeanAutenticazione(request,response);
+            AutenticazioneBean credenziali = creaBeanAutenticazione(request);
 
             //  Delegazione al controller applicativo
             LoginController loginController = new LoginController(credenziali);
             UtenteBeanGenerico utente = loginController.autenticaUtente();
 
+            if (utente.getRuolo() == null) {
+                safeRedirect(response, "erroreLogin.jsp");
+                return;
+            }
+
             session.setAttribute("nome", utente.getNome());
             session.setAttribute("cognome", utente.getCognome());
-            session.setAttribute("ruolo", utente.getRuolo());
+            session.setAttribute("ruolo", utente.getRuolo().name());
             session.setAttribute("codiceFiscale", utente.getCodicefiscale());
 
             logger.info("Utente perfettamente autenticato: nome={}, cognome={}, ruolo={}", utente.getNome(), utente.getCognome(), utente.getRuolo());
@@ -151,6 +132,14 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
                 logger.error(FORWARDING,e);
             }
             logger.error("Tentativo di login fallito: email={}, Maskedpassw={}, message={}", ex.getEmail(), ex.getMaskedPassword(), ex.getMessage());
+        } catch (InvalidLoginInputExceptionRemoli ex) {
+            request.setAttribute(ATTR_MESSAGGIO_ERRORE, ex.getUserMessage());
+            try {
+                request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
+            } catch (Exception e) {
+                logger.error(FORWARDING, e);
+            }
+            logger.error("Errore di validazione input login: {}", ex.toString());
         }
 
 

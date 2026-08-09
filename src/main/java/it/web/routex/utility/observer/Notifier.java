@@ -17,8 +17,4 @@ public class Notifier extends Subject {
     public void comunicazioneInviata() {
         notifyObservers(EventType.COMUNICAZIONE_CORRETTAMENTE_INVIATA);
     }
-
-    public void comunicazioneRisolta() {
-        notifyObservers(EventType.COMUNICAZIONE_CORRETTAMENTE_RISOLTA);
-    }
 }

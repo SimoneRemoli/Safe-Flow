@@ -18,14 +18,12 @@ public class ViewInternalNotificationsControllerGrafico extends LoggedHttpServle
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false);
-        if (!isTraveler(session)) {
-            redirectToLogin(response);
+        if (!SessionAuthUtil.hasRole(session, "TRAVELER")) {
+            redirectToLogin(request, response);
             return;
         }
 
-        String codiceFiscale = session != null && session.getAttribute("codiceFiscale") != null
-                ? session.getAttribute("codiceFiscale").toString()
-                : null;
+        String codiceFiscale = SessionAuthUtil.codiceFiscale(session).orElse(null);
 
         try {
             ViewInternalNotificationsControllerApplicativo controller = new ViewInternalNotificationsControllerApplicativo();
@@ -49,17 +47,4 @@ public class ViewInternalNotificationsControllerGrafico extends LoggedHttpServle
         }
     }
 
-    private boolean isTraveler(HttpSession session) {
-        return SessionAuthUtil.isLoggedIn(session)
-                && session.getAttribute("ruolo") != null
-                && "TRAVELER".equalsIgnoreCase(session.getAttribute("ruolo").toString());
-    }
-
-    private void redirectToLogin(HttpServletResponse response) {
-        try {
-            response.sendRedirect("login.jsp");
-        } catch (Exception e) {
-            logger.error("Internal notifications redirect error", e);
-        }
-    }
 }

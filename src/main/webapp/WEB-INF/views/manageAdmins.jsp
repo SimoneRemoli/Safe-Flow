@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RouteX - Manage Admins</title>
+    <title>Safe Flow - Manage Admins</title>
     <style>
         :root {
             --bg-1: #04111f;

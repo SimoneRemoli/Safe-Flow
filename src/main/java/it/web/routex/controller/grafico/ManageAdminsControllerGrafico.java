@@ -18,8 +18,8 @@ public class ManageAdminsControllerGrafico extends LoggedHttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        if (!isAdmin(request.getSession(false))) {
-            redirectToLogin(response);
+        if (!hasRole(request, "ADMIN")) {
+            redirectToLogin(request, response);
             return;
         }
         loadPage(request, response);
@@ -27,8 +27,9 @@ public class ManageAdminsControllerGrafico extends LoggedHttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        if (!isAdmin(request.getSession(false))) {
-            redirectToLogin(response);
+        HttpSession session = request.getSession(false);
+        if (!SessionAuthUtil.hasRole(session, "ADMIN")) {
+            redirectToLogin(request, response);
             return;
         }
 
@@ -51,8 +52,7 @@ public class ManageAdminsControllerGrafico extends LoggedHttpServlet {
 
             if ("deleteAdmins".equals(action)) {
                 String[] selectedAdmins = request.getParameterValues("selectedAdmins");
-                HttpSession session = request.getSession(false);
-                String currentAdminCf = session != null ? (String) session.getAttribute("codiceFiscale") : null;
+                String currentAdminCf = SessionAuthUtil.codiceFiscale(session).orElse(null);
                 int deleted = controller.deleteAdmins(
                         selectedAdmins != null ? Arrays.asList(selectedAdmins) : Collections.emptyList(),
                         currentAdminCf
@@ -111,20 +111,6 @@ public class ManageAdminsControllerGrafico extends LoggedHttpServlet {
             } catch (Exception ex) {
                 logger.error("Forward error while handling unexpected admin management error", ex);
             }
-        }
-    }
-
-    private boolean isAdmin(HttpSession session) {
-        return SessionAuthUtil.isLoggedIn(session)
-                && session.getAttribute("ruolo") != null
-                && "ADMIN".equalsIgnoreCase(session.getAttribute("ruolo").toString());
-    }
-
-    private void redirectToLogin(HttpServletResponse response) {
-        try {
-            response.sendRedirect("login.jsp");
-        } catch (Exception e) {
-            logger.error("Admin management redirect error", e);
         }
     }
 }

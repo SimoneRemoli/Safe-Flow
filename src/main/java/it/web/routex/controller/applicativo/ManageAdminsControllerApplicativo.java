@@ -4,7 +4,7 @@ import it.web.routex.bean.AdminUserBean;
 import it.web.routex.dao.LayerPersistenza;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.utility.factory.FactoryLayerPersistenza;
-import it.web.routex.utility.singleton.Credentials;
+import it.web.routex.model.Credentials;
 
 import java.util.ArrayList;
 import java.util.List;

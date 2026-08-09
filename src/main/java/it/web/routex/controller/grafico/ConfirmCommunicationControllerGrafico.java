@@ -3,12 +3,14 @@ package it.web.routex.controller.grafico;
 import it.web.routex.bean.MessageBean;
 import it.web.routex.controller.applicativo.ConfirmCommunicationControllerApplicativo;
 import it.web.routex.domain.LoggedHttpServlet;
+import it.web.routex.domain.SessionAuthUtil;
 import it.web.routex.exception.BrondiInvalidCommunicationInputException;
 import it.web.routex.extractor.CommunicationInputExtractor;
 import it.web.routex.record.CommunicationInput;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet("/confirmCommunication")
 public class ConfirmCommunicationControllerGrafico extends LoggedHttpServlet {
@@ -17,6 +19,12 @@ public class ConfirmCommunicationControllerGrafico extends LoggedHttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     {
         try {
+            HttpSession session = request.getSession(false);
+            if (!SessionAuthUtil.hasRole(session, "ADMIN")) {
+                redirectToLogin(request, response);
+                return;
+            }
+
             //Estrazione + validazione input
             CommunicationInput input = CommunicationInputExtractor.extract(request);
 
@@ -35,7 +43,7 @@ public class ConfirmCommunicationControllerGrafico extends LoggedHttpServlet {
             // Chiamata applicativa
             ConfirmCommunicationControllerApplicativo service = new ConfirmCommunicationControllerApplicativo();
 
-            service.communication(mess);
+            service.communication(mess, SessionAuthUtil.codiceFiscale(session).orElse(null));
 
             // Successo
             request.setAttribute("successTitle", "Report published");

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RouteX - Traveler Registration</title>
+    <title>Safe Flow - Traveler Registration</title>
     <style>
         :root {
             --bg-1: #04111f;
@@ -146,8 +146,8 @@
 <body>
 <div class="panel">
     <span class="eyebrow">Traveler Registration</span>
-    <h1>Create your RouteX account</h1>
-    <p>Register as a traveler to access your reserved area, saved routes, purchased tickets, and platform notifications.</p>
+    <h1>Create your Safe Flow account</h1>
+    <p>Register as a traveler to access your reserved area, reports, and platform notifications.</p>
 
     <form action="registerTraveler" method="post">
         <div class="grid">

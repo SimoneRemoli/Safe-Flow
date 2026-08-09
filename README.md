@@ -1,19 +1,16 @@
 # Safe Flow
 
-**Safe Flow** is a metro safety and route support web application built for urban travelers.
-It combines route exploration, ticket-oriented flows, traveler reporting, and admin moderation in a single Java web platform.
+**Safe Flow** is a metro safety CRM built for urban travelers and administrators.
+It combines traveler reporting, internal notifications, and admin moderation in a single Java web platform.
 
 The project focuses on a simple idea:
 
-> make metropolitan travel easier to navigate and safer to report
+> make risky situations on public transport easier to report and manage
 
 ## Overview
 
 Safe Flow lets users:
 
-- explore supported metro networks
-- search routes between stations
-- purchase and manage simulated metro tickets
 - access a reserved traveler area
 - submit safety reports tied to a city
 - classify reports through alert badges such as `Pickpocket alert`, `Fight alert`, `Crowd alert`, and `General alert`
@@ -26,25 +23,12 @@ Administrators can:
 - publish platform-wide communications
 - create or remove admin accounts
 - manage traveler accounts
-- monitor saved route data
-
-## Supported Cities
-
-The application currently supports the metro networks implemented in the routing engine:
-
-- Rome
-- Naples
-- Athens
-- Budapest
 
 ## Main Features
 
 ### Traveler Experience
 
-- route search between origin and destination stations
-- metro map preview by city
-- ticket purchase flow
-- reserved area with saved routes and purchased tickets
+- reserved traveler area with notifications and safety report access
 - internal notifications for report approval outcomes
 - traveler registration
 
@@ -166,7 +150,6 @@ The flow is:
 
 ## Notes
 
-- ticket purchase is currently simulated inside the platform
 - only supported cities should be used in route and reporting flows
 - if you update the SQL schema, redeploy the application after reloading the database
 

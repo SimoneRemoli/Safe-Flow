@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <title>RouteX - Login</title>
+    <title>Safe Flow - Login</title>
     <style>
         :root {
             --bg-1: #04111f;
@@ -188,9 +188,9 @@
     <a href="index.jsp" class="home-link">Home</a>
 
     <div class="login-panel">
-        <div class="eyebrow">RouteX Access</div>
-        <h1>Minimal login.<br>Future ready.</h1>
-        <p>Access the RouteX control room through an interface that is essential, clean, and consistent with the project.</p>
+        <div class="eyebrow">Safe Flow Access</div>
+        <h1>Access the safety desk.</h1>
+        <p>Enter the reserved area to manage traveler reports, public alerts, and administrative review flows.</p>
 
         <form action="login" method="post">
             <div class="field-group">

@@ -5,7 +5,7 @@ import it.web.routex.exception.InvalidLoginInputExceptionRemoli;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static it.web.routex.extractor.RouteInputExtractor.sanitize;
+import static it.web.routex.extractor.RequestSanitizer.sanitize;
 
 public final class LoginExtractor {
 
@@ -19,7 +19,6 @@ public final class LoginExtractor {
         String rawEmail = request.getParameter("Email");
         String rawPassword = request.getParameter("Password");
 
-        // PARAMETRI NULL
         if (rawEmail == null)
             throw new InvalidLoginInputExceptionRemoli(
                     "Il campo email non è stato inviato dal form.",
@@ -54,21 +53,21 @@ public final class LoginExtractor {
 
         if (email.isBlank())
             throw new InvalidLoginInputExceptionRemoli(
-                    "Come pensi di autenticarti senza email? Io boh",
+                    "Inserisci l'email per accedere.",
                     "Email è blank dopo sanitizzazione.",
                     InvalidLoginInputExceptionRemoli.Severity.MEDIUM
             );
 
         if (!email.matches("^[\\w.%+-]+@[\\w.-]+\\.[A-Za-z]{2,}$")) {
             throw new InvalidLoginInputExceptionRemoli(
-                    "Ok che l'utente è scemo, ma non così tanto. Inserisci una email valida.",
+                    "Inserisci una email valida.",
                     "Regex email non rispettata: " + email,
                     InvalidLoginInputExceptionRemoli.Severity.MEDIUM
             );
         }
         if (password.isBlank())
             throw new InvalidLoginInputExceptionRemoli(
-                    "Secondo te, la password può essere vuota? Sei uno scemo!",
+                    "Inserisci la password per accedere.",
                     "Password blank dopo sanitizzazione.",
                     InvalidLoginInputExceptionRemoli.Severity.MEDIUM
             );

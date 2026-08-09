@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RouteX - Report Guide</title>
+    <title>Safe Flow - Report Guide</title>
     <style>
         :root {
             --bg: #f4f7fb;
@@ -164,7 +164,7 @@
     <span class="eyebrow">Reporting Guide</span>
     <h1>How to send a traveler report</h1>
     <p class="intro">
-        Use this page to understand how RouteX reports work. Every report must include a city, a clear written message, and at least one alert badge. Your report is reviewed by the RouteX admin team before it becomes visible in the shared report feed.
+        Use this page to understand how Safe Flow reports work. Every report must include a city, a clear written message, and at least one alert badge. Your report is reviewed by the Safe Flow admin team before it becomes visible in the shared report feed.
     </p>
 
     <section class="section">

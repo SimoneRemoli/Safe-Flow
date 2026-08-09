@@ -6,14 +6,14 @@ import it.web.routex.dao.LayerPersistenza;
 import it.web.routex.utility.factory.FactoryLayerPersistenza;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import it.web.routex.utility.singleton.Credentials;
+import it.web.routex.model.Credentials;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.exception.LoginNotFoundRemoli;
 
 
 /**
  * Controller applicativo responsabile della logica di autenticazione utente.
- * Interagisce con il DAO per verificare le credenziali e costruisce il singleton Credentials.
+ * Interagisce con il DAO per verificare le credenziali e costruisce il bean utente di sessione.
  */
 public class LoginController {
 
@@ -24,7 +24,7 @@ public class LoginController {
     }
 
     /**
-     * Esegue l’autenticazione dell’utente, crea (o aggiorna) il singleton `Credentials`
+     * Esegue l’autenticazione dell’utente e costruisce il bean usato dal livello grafico.
      * e restituisce un `UtenteBeanGenerico` per la parte grafica.
      */
     public UtenteBeanGenerico autenticaUtente() throws DAOExceptionRemoli, LoginNotFoundRemoli {
@@ -35,28 +35,15 @@ public class LoginController {
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         Credentials credFromDb = layer.login(autenticazione.getEmail(), autenticazione.getPassword());
         
-        // Ottieni l'istanza singleton delle credenziali
-        Credentials sessionCred = Credentials.getInstanceSingleton();
-
-        sessionCred.setCodiceFiscale(credFromDb.getCodiceFiscale());
-        sessionCred.setNome(credFromDb.getNome());
-        sessionCred.setCognome(credFromDb.getCognome());
-        sessionCred.setDataDiNascita(credFromDb.getDataDiNascita());
-        sessionCred.setDisabile(credFromDb.getDisabile());
-        sessionCred.setRuolo(credFromDb.getRuolo());
-        sessionCred.setEmail(credFromDb.getEmail());
-        sessionCred.setPassword(credFromDb.getPassword());
-
-
-        logger.info("Funzione autenticaUtente() dentro LoginController.java con autenticazione {} e {}", sessionCred.getNome(), sessionCred.getCognome());
+        logger.info("Funzione autenticaUtente() dentro LoginController.java con autenticazione {} e {}", credFromDb.getNome(), credFromDb.getCognome());
 
         // Popola anche il bean (solo per il layer grafico)
         UtenteBeanGenerico utente = new UtenteBeanGenerico();
-        utente.setNome(sessionCred.getNome());
-        utente.setCognome(sessionCred.getCognome());
-        utente.setCodiceFiscale(sessionCred.getCodiceFiscale());
-        utente.setDisable(sessionCred.getDisabile());
-        utente.setRuolo(sessionCred.getRuolo());
+        utente.setNome(credFromDb.getNome());
+        utente.setCognome(credFromDb.getCognome());
+        utente.setCodiceFiscale(credFromDb.getCodiceFiscale());
+        utente.setDisable(credFromDb.getDisabile());
+        utente.setRuolo(credFromDb.getRuolo());
 
         return utente;
     }

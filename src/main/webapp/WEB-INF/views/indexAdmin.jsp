@@ -29,7 +29,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RouteX - Admin Hub</title>
+    <title>Safe Flow - Admin Hub</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         :root {
@@ -366,10 +366,10 @@
 <div class="shell">
     <header class="topbar">
         <div class="brand">
-            <img src="images/logo-no-background.png" alt="RouteX logo">
+            <img src="images/logo-no-background.png" alt="Safe Flow logo">
             <div>
-                <strong>RouteX Admin Hub</strong>
-                <span>Governance, communications, and platform observability</span>
+                <strong>Safe Flow Admin Hub</strong>
+                <span>Reports, communications, and platform governance</span>
             </div>
         </div>
 
@@ -388,10 +388,9 @@
     <section class="hero">
         <div class="hero-copy">
             <span class="eyebrow">Admin Access</span>
-            <h1>Control deck for the administrative area</h1>
+            <h1>Review reports and publish safety alerts.</h1>
             <p>
-                The admin area uses the same clean visual language as the rest of the platform:
-                quick access, readable priorities, and direct administrative control in a single view.
+                Manage traveler submissions, publish official communications, and keep the public alert feed clean.
             </p>
         </div>
     </section>
@@ -403,7 +402,7 @@
             </div>
             <h3>Send communication</h3>
             <p>
-                Open the composer to quickly distribute updates and instructions across the platform.
+                Open the composer to distribute official updates and instructions across the platform.
             </p>
             <a href="adminReport">
                 Open composer <i class="fas fa-arrow-right"></i>
@@ -425,24 +424,11 @@
 
         <article class="action-card">
             <div class="action-icon">
-                <i class="fas fa-chart-area"></i>
-            </div>
-            <h3>Reports & statistics</h3>
-            <p>
-                Review tracked routes, aggregated data, and the operational picture of the platform.
-            </p>
-            <a href="PathInfoRAS">
-                Open reports <i class="fas fa-arrow-right"></i>
-            </a>
-        </article>
-
-        <article class="action-card">
-            <div class="action-icon">
                 <i class="fas fa-user-check"></i>
             </div>
             <h3>Approve traveler reports</h3>
             <p>
-                Review pending traveler submissions and approve the messages that should become visible in the platform notifications.
+                Review pending traveler submissions and approve the messages that should become visible in public notifications.
             </p>
             <a href="reviewTravelerCommunications">
                 Review reports <i class="fas fa-arrow-right"></i>
@@ -452,8 +438,8 @@
 
     <section class="status-grid">
         <article class="status-card">
-            <strong>Unified UI</strong>
-            <span>The admin area shares the same visual language as the rest of the platform, without disconnected pages.</span>
+            <strong>Unified workflow</strong>
+            <span>Reports, communications, and account controls stay in one coherent operational console.</span>
         </article>
         <article class="status-card">
             <strong>Decision speed</strong>

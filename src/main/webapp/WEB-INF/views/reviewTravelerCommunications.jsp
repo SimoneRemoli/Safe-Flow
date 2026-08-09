@@ -19,7 +19,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RouteX - Review Traveler Reports</title>
+    <title>Safe Flow - Review Traveler Reports</title>
     <style>
         :root {
             --bg-1: #04111f;

@@ -9,6 +9,7 @@
     List<MessageBean> notifiche = (List<MessageBean>) request.getAttribute("notifiche");
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     boolean isTravelerView = Boolean.TRUE.equals(request.getAttribute("isTravelerView"));
+    int totalNotifications = notifiche == null ? 0 : notifiche.size();
     List<String> supportedNotificationCities = List.of("Rome", "Naples", "Athens", "Budapest");
     Map<String, List<MessageBean>> notificationsByCity = new LinkedHashMap<>();
     for (String supportedCity : supportedNotificationCities) {
@@ -30,7 +31,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RouteX - Notifications</title>
+    <title>Safe Flow - Notifications</title>
     <style>
         :root {
             --bg-1: #04111f;
@@ -125,6 +126,13 @@
         .save-button {
             color: #04111f;
             background: linear-gradient(90deg, #6ff7ff, #89ffd1 52%, #8dd8ff);
+            box-shadow: 0 18px 32px rgba(111, 247, 255, 0.2);
+        }
+
+        .nav-actions a.primary-action {
+            color: #04111f;
+            background: linear-gradient(90deg, #6ff7ff, #89ffd1 52%, #8dd8ff);
+            border-color: rgba(137, 255, 209, 0.48);
             box-shadow: 0 18px 32px rgba(111, 247, 255, 0.2);
         }
 
@@ -372,35 +380,335 @@
         }
     </style>
     <link rel="stylesheet" href="css/minimal-ui.css">
+    <style>
+        body.safe-flow-notifications {
+            background: #f3f6f4 !important;
+            color: #14241d !important;
+            font-family: "Inter", "Segoe UI", Arial, sans-serif !important;
+        }
+
+        .safe-flow-notifications .shell {
+            width: min(1240px, calc(100% - 40px)) !important;
+            margin: 22px auto !important;
+            padding: 0 !important;
+            border-radius: 16px !important;
+            border: 1px solid #d8e4de !important;
+            background: #ffffff !important;
+            box-shadow: 0 18px 42px rgba(20, 36, 29, 0.08) !important;
+            overflow: hidden !important;
+        }
+
+        .safe-flow-notifications .topbar {
+            padding: 24px 28px !important;
+            align-items: flex-start !important;
+            border-bottom: 1px solid #d8e4de !important;
+            background: linear-gradient(180deg, #ffffff, #fbfdfc) !important;
+        }
+
+        .safe-flow-notifications .eyebrow {
+            padding: 6px 10px !important;
+            border-radius: 6px !important;
+            color: #0e6f5d !important;
+            background: #e5f3ee !important;
+            border: 1px solid #c8e2d8 !important;
+            font-size: 0.72rem !important;
+            font-weight: 800 !important;
+            text-transform: uppercase !important;
+        }
+
+        .safe-flow-notifications h1 {
+            margin: 12px 0 8px !important;
+            font-size: clamp(1.9rem, 3vw, 2.55rem) !important;
+            line-height: 1.08 !important;
+            color: #14241d !important;
+        }
+
+        .safe-flow-notifications .subtitle {
+            max-width: 680px !important;
+            color: #5c6f65 !important;
+            line-height: 1.6 !important;
+        }
+
+        .safe-flow-notifications .nav-actions {
+            justify-content: flex-end !important;
+        }
+
+        .safe-flow-notifications .nav-actions a {
+            min-height: 38px !important;
+            padding: 9px 13px !important;
+            border-radius: 8px !important;
+            color: #31443a !important;
+            background: #ffffff !important;
+            border: 1px solid #d8e4de !important;
+            font-size: 0.9rem !important;
+            font-weight: 750 !important;
+        }
+
+        .safe-flow-notifications .nav-actions a.primary-action {
+            color: #ffffff !important;
+            background: #0e7c66 !important;
+            border-color: #0e7c66 !important;
+            box-shadow: 0 10px 18px rgba(14, 124, 102, 0.16) !important;
+        }
+
+        .safe-flow-notifications .alerts-summary {
+            display: grid !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            gap: 12px !important;
+            padding: 18px 28px !important;
+            background: #f7faf8 !important;
+            border-bottom: 1px solid #d8e4de !important;
+        }
+
+        .safe-flow-notifications .summary-item {
+            padding: 14px 16px !important;
+            border-radius: 12px !important;
+            background: #ffffff !important;
+            border: 1px solid #d8e4de !important;
+        }
+
+        .safe-flow-notifications .summary-label {
+            display: block !important;
+            color: #607267 !important;
+            font-size: 0.78rem !important;
+            font-weight: 800 !important;
+            text-transform: uppercase !important;
+        }
+
+        .safe-flow-notifications .summary-value {
+            display: block !important;
+            margin-top: 6px !important;
+            color: #14241d !important;
+            font-size: 1.2rem !important;
+            font-weight: 850 !important;
+        }
+
+        .safe-flow-notifications .city-switcher {
+            margin: 0 !important;
+            padding: 18px 28px 0 !important;
+            gap: 8px !important;
+            background: #ffffff !important;
+        }
+
+        .safe-flow-notifications .city-switch {
+            border-radius: 8px !important;
+            padding: 9px 13px !important;
+            background: #f7faf8 !important;
+            color: #405147 !important;
+            border: 1px solid #d8e4de !important;
+            font-size: 0.9rem !important;
+            font-weight: 800 !important;
+        }
+
+        .safe-flow-notifications .city-switch.active {
+            background: #14241d !important;
+            border-color: #14241d !important;
+            color: #ffffff !important;
+        }
+
+        .safe-flow-notifications .city-group {
+            margin: 0 !important;
+            padding: 22px 28px 28px !important;
+        }
+
+        .safe-flow-notifications .city-title {
+            margin: 0 0 12px !important;
+            color: #14241d !important;
+            font-size: 1.05rem !important;
+            font-weight: 850 !important;
+        }
+
+        .safe-flow-notifications .city-title-badge {
+            border-radius: 6px !important;
+            color: #607267 !important;
+            background: #f7faf8 !important;
+            border: 1px solid #d8e4de !important;
+            font-size: 0.68rem !important;
+        }
+
+        .safe-flow-notifications .table-panel {
+            margin-top: 0 !important;
+            border-radius: 12px !important;
+            background: #ffffff !important;
+            border: 1px solid #d8e4de !important;
+            box-shadow: none !important;
+        }
+
+        .safe-flow-notifications table {
+            table-layout: fixed !important;
+            border-collapse: separate !important;
+            border-spacing: 0 !important;
+        }
+
+        .safe-flow-notifications th {
+            padding: 12px 14px !important;
+            color: #607267 !important;
+            background: #f7faf8 !important;
+            border-bottom: 1px solid #d8e4de !important;
+            font-size: 0.74rem !important;
+            font-weight: 850 !important;
+            text-transform: uppercase !important;
+        }
+
+        .safe-flow-notifications td {
+            padding: 15px 14px !important;
+            color: #14241d !important;
+            border-bottom: 1px solid #edf2ef !important;
+            background: #ffffff !important;
+            vertical-align: top !important;
+        }
+
+        .safe-flow-notifications tbody tr:last-child td {
+            border-bottom: none !important;
+        }
+
+        .safe-flow-notifications tr:hover td {
+            background: #fbfdfc !important;
+        }
+
+        .safe-flow-notifications .message-cell {
+            color: #14241d !important;
+            line-height: 1.55 !important;
+            font-weight: 500 !important;
+        }
+
+        .safe-flow-notifications .message-cell.admin-message {
+            font-weight: 650 !important;
+        }
+
+        .safe-flow-notifications .message-meta {
+            margin-top: 10px !important;
+            display: flex !important;
+            flex-direction: row !important;
+            gap: 6px !important;
+        }
+
+        .safe-flow-notifications .report-badge,
+        .safe-flow-notifications .message-detail {
+            border-radius: 6px !important;
+            padding: 5px 8px !important;
+            font-size: 0.68rem !important;
+            font-weight: 850 !important;
+            text-transform: uppercase !important;
+        }
+
+        .safe-flow-notifications .report-badge.admin {
+            color: #8f1f17 !important;
+            background: #fff0ee !important;
+            border: 1px solid #fac7c2 !important;
+        }
+
+        .safe-flow-notifications .report-badge.user {
+            color: #075f4e !important;
+            background: #e5f3ee !important;
+            border: 1px solid #c8e2d8 !important;
+        }
+
+        .safe-flow-notifications .report-badge.pickpocket {
+            color: #8f1f17 !important;
+            background: #fff0ee !important;
+            border: 1px solid #fac7c2 !important;
+        }
+
+        .safe-flow-notifications .report-badge.fight {
+            color: #8a4b08 !important;
+            background: #fff5df !important;
+            border: 1px solid #f4d58a !important;
+        }
+
+        .safe-flow-notifications .report-badge.crowd {
+            color: #075f4e !important;
+            background: #e8f7ef !important;
+            border: 1px solid #bfe8cf !important;
+        }
+
+        .safe-flow-notifications .report-badge.general,
+        .safe-flow-notifications .message-detail {
+            color: #405147 !important;
+            background: #f4f7f5 !important;
+            border: 1px solid #d8e4de !important;
+        }
+
+        .safe-flow-notifications .date-cell {
+            color: #607267 !important;
+            font-size: 0.92rem !important;
+            white-space: nowrap !important;
+        }
+
+        .safe-flow-notifications .type-cell {
+            white-space: nowrap !important;
+        }
+
+        .safe-flow-notifications .empty-state {
+            padding: 34px 18px !important;
+            color: #607267 !important;
+            background: #ffffff !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+
+        @media (max-width: 760px) {
+            .safe-flow-notifications .shell {
+                width: min(100% - 16px, 1240px) !important;
+            }
+
+            .safe-flow-notifications .alerts-summary {
+                grid-template-columns: 1fr !important;
+            }
+
+            .safe-flow-notifications .nav-actions {
+                width: 100% !important;
+                justify-content: flex-start !important;
+            }
+
+            .safe-flow-notifications table {
+                min-width: 760px !important;
+            }
+        }
+    </style>
 </head>
-<body>
+<body class="safe-flow-notifications">
 <div class="shell">
     <div class="topbar">
         <div>
             <span class="eyebrow"><%= isTravelerView ? "Traveler alerts" : "Alert management" %></span>
-            <h1>System notifications</h1>
+            <h1>System alerts</h1>
             <p class="subtitle">
-                Review the approved RouteX notifications and stay informed about important travel-related updates.
+                Review approved Safe Flow notifications and stay informed about relevant events on public transport.
             </p>
         </div>
 
         <div class="nav-actions">
-            <a href="travelerHome">Home</a>
             <% if (isTravelerView) { %>
-            <a href="travelerReport">Send report</a>
+            <a href="travelerReport" class="primary-action">Send Report</a>
             <% } %>
+            <a href="travelerHome">Home</a>
             <a href="logout">Logout</a>
         </div>
     </div>
 
-    <form action="updateNotifications" method="post">
-        <div class="city-switcher" role="tablist" aria-label="Notification cities">
+    <div class="alerts-summary" aria-label="Notification summary">
+        <div class="summary-item">
+            <span class="summary-label">Published alerts</span>
+            <span class="summary-value"><%= totalNotifications %></span>
+        </div>
+        <div class="summary-item">
+            <span class="summary-label">Cities monitored</span>
+            <span class="summary-value"><%= supportedNotificationCities.size() %></span>
+        </div>
+        <div class="summary-item">
+            <span class="summary-label">View</span>
+            <span class="summary-value"><%= isTravelerView ? "Traveler" : "Admin" %></span>
+        </div>
+    </div>
+
+    <div class="city-switcher" role="tablist" aria-label="Notification cities">
             <% for (String cityName : notificationsByCity.keySet()) { %>
             <button type="button" class="city-switch" data-city-switch="<%= cityName %>"><%= cityName %></button>
             <% } %>
-        </div>
-        <% for (Map.Entry<String, List<MessageBean>> cityEntry : notificationsByCity.entrySet()) { %>
-        <section class="city-group" data-city-group="<%= cityEntry.getKey() %>">
+    </div>
+    <% for (Map.Entry<String, List<MessageBean>> cityEntry : notificationsByCity.entrySet()) { %>
+    <section class="city-group" data-city-group="<%= cityEntry.getKey() %>">
             <h2 class="city-title">
                 <span><%= cityEntry.getKey() %></span>
                 <span class="city-title-badge">City</span>
@@ -410,9 +718,9 @@
                     <table>
                         <thead>
                         <tr>
-                            <th style="width: 56%">Message</th>
-                            <th style="width: 20%">Report type</th>
-                            <th style="width: 24%">Date</th>
+	                            <th style="width: 58%">Alert details</th>
+	                            <th style="width: 18%">Source</th>
+	                            <th style="width: 24%">Published</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -427,7 +735,7 @@
                         <tr>
                             <td class="message-cell <%= adminReport ? "admin-message" : "" %>">
                                 <div><%= m.getMessage() %></div>
-                                <% if (Boolean.TRUE.equals(m.getPickpocketAlert()) || Boolean.TRUE.equals(m.getFightAlert()) || Boolean.TRUE.equals(m.getCrowdAlert()) || Boolean.TRUE.equals(m.getGeneralAlert()) || (m.getStationName() != null && !m.getStationName().isBlank())) { %>
+	                                <% if (Boolean.TRUE.equals(m.getPickpocketAlert()) || Boolean.TRUE.equals(m.getFightAlert()) || Boolean.TRUE.equals(m.getCrowdAlert()) || Boolean.TRUE.equals(m.getGeneralAlert()) || (m.getStationName() != null && !m.getStationName().isBlank()) || (m.getSuspectClothing() != null && !m.getSuspectClothing().isBlank())) { %>
                                 <div class="message-meta stack">
                                     <% if (Boolean.TRUE.equals(m.getPickpocketAlert())) { %>
                                     <span class="report-badge pickpocket">Pickpocket alert</span>
@@ -438,10 +746,16 @@
                                     <% if (Boolean.TRUE.equals(m.getCrowdAlert())) { %>
                                     <span class="report-badge crowd">Crowd alert</span>
                                     <% } %>
-                                    <% if (Boolean.TRUE.equals(m.getGeneralAlert())) { %>
-                                    <span class="report-badge general">General alert</span>
-                                    <% } %>
-                                </div>
+	                                    <% if (Boolean.TRUE.equals(m.getGeneralAlert())) { %>
+	                                    <span class="report-badge general">General alert</span>
+	                                    <% } %>
+                                        <% if (m.getStationName() != null && !m.getStationName().isBlank()) { %>
+                                        <span class="message-detail">Station: <%= m.getStationName() %></span>
+                                        <% } %>
+                                        <% if (m.getSuspectClothing() != null && !m.getSuspectClothing().isBlank()) { %>
+                                        <span class="message-detail">Details: <%= m.getSuspectClothing() %></span>
+                                        <% } %>
+	                                </div>
                                 <% } %>
                             </td>
                             <td class="type-cell">
@@ -460,12 +774,6 @@
         </section>
         <% } %>
 
-        <% if (!isTravelerView && notifiche != null && !notifiche.isEmpty()) { %>
-        <div class="footer-actions">
-            <button type="submit" class="save-button">Save changes</button>
-        </div>
-        <% } %>
-    </form>
 </div>
 <script>
     (function () {

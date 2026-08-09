@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RouteX - Traveler Report</title>
+    <title>Safe Flow - Traveler Report</title>
     <style>
         :root {
             --bg-1: #04111f;
@@ -216,7 +216,7 @@
     <span class="eyebrow">Traveler report</span>
     <h1>Send a traveler report</h1>
     <p class="subtitle">
-        Write a message for the RouteX admin team. Traveler reports are reviewed by admins before they become visible in the notification system.
+        Write a message for the Safe Flow admin team. Traveler reports are reviewed by admins before they become visible in the notification system.
     </p>
 
     <form action="submitTravelerCommunication" method="post">

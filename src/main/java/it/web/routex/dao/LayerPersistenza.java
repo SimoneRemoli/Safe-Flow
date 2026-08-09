@@ -1,8 +1,7 @@
 package it.web.routex.dao;
 import it.web.routex.exception.*;
 import it.web.routex.model.*;
-import it.web.routex.utility.singleton.Credentials;
-import java.sql.SQLException;
+import it.web.routex.model.Credentials;
 import java.util.List;
 
 public abstract class LayerPersistenza {
@@ -21,11 +20,6 @@ public abstract class LayerPersistenza {
                                           String password,
                                           java.sql.Date dataDiNascita,
                                           boolean disabile) throws DAOExceptionRemoli;
-
-    public abstract Mastercard getPaymentMastercard(String nC, String sc, String cvv) throws DAOExceptionRemoli, PaymentValidationExceptionRemoli;
-
-    public abstract Paypal getPaymentPaypal(String email, String codice) throws DAOExceptionRemoli, PaymentValidationExceptionRemoli;
-
 
     public final List<City> listCitiesRAM() throws DAOExceptionRemoli {
 
@@ -54,29 +48,15 @@ public abstract class LayerPersistenza {
     }
     public abstract List<City> listCities() throws DAOExceptionRemoli;
 
-    public abstract List<Fermata> getFermateByIds(List<Integer> ids, String city) throws SQLException;
-
-    public abstract List<Station> restituisciIdStazioni(String startStation, String endStation, String city) throws SQLException;
-
     public abstract List<Notification> getMessages() throws DAOExceptionRemoli;
 
-    public abstract void save(Route route) throws DAOExceptionRemoli;
-
     public abstract void sendMessage(Notification notification) throws DAOExceptionRemoli;
-
-    public abstract void solvedNotification(Notification notification) throws DAOExceptionRemoli;
-
-    public abstract void approveNotification(Notification notification) throws DAOExceptionRemoli;
-
-    public abstract void deleteNotification(Notification notification) throws DAOExceptionRemoli;
 
     public abstract void markNotificationAsRead(Notification notification) throws DAOExceptionRemoli;
 
     public abstract boolean approvePendingTravelerNotification(Notification notification) throws DAOExceptionRemoli;
 
     public abstract boolean rejectPendingTravelerNotification(Notification notification) throws DAOExceptionRemoli;
-
-    public abstract List<Route> getAllPathInfo() throws DAOExceptionRemoli;
 
     public abstract List<Credentials> listAdmins() throws DAOExceptionRemoli;
 
@@ -91,17 +71,5 @@ public abstract class LayerPersistenza {
     public abstract List<Credentials> listTravelers() throws DAOExceptionRemoli;
 
     public abstract int deleteTravelers(List<String> codiceFiscali) throws DAOExceptionRemoli;
-
-    public abstract List<Route> getData(String cf) throws PathNotFoundExceptionRemoli, DAOExceptionRemoli;
-
-    public abstract int deleteRoutesBySignatures(String cf, List<String> routeSignatures) throws DAOExceptionRemoli;
-
-    public abstract int deleteAllRoutes(String cf) throws DAOExceptionRemoli;
-
-    public abstract void salvataggio(
-            Credentials cred,
-            List<String> codiciBiglietti,
-            String metodoPagamento,
-            String city) throws CredentialsExceptionRemoli;
 
 }

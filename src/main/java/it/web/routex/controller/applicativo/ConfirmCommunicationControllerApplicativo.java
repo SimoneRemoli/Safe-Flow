@@ -6,11 +6,10 @@ import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.model.Notification;
 import it.web.routex.utility.factory.FactoryLayerPersistenza;
 import it.web.routex.utility.observer.Notifier;
-import it.web.routex.utility.singleton.Credentials;
 
 public class ConfirmCommunicationControllerApplicativo {
 
-    public void communication(MessageBean bean) throws DAOExceptionRemoli {
+    public void communication(MessageBean bean, String senderCf) throws DAOExceptionRemoli {
 
         // TRASFORMAZIONE boundary → dominio
         Notification notification = new Notification(
@@ -21,7 +20,7 @@ public class ConfirmCommunicationControllerApplicativo {
                 true,
                 "APPROVED",
                 "ADMIN",
-                Credentials.getInstanceSingleton().getCodiceFiscale(),
+                senderCf,
                 null,
                 bean.getCity(),
                 Boolean.TRUE.equals(bean.getPickpocketAlert()),

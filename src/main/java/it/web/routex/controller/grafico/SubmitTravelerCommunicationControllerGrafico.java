@@ -3,6 +3,7 @@ package it.web.routex.controller.grafico;
 import it.web.routex.bean.MessageBean;
 import it.web.routex.controller.applicativo.SubmitTravelerCommunicationControllerApplicativo;
 import it.web.routex.domain.LoggedHttpServlet;
+import it.web.routex.domain.SessionAuthUtil;
 import it.web.routex.exception.BrondiInvalidCommunicationInputException;
 import it.web.routex.extractor.CommunicationInputExtractor;
 import it.web.routex.record.CommunicationInput;
@@ -18,6 +19,12 @@ public class SubmitTravelerCommunicationControllerGrafico extends LoggedHttpServ
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
+            HttpSession session = request.getSession(false);
+            if (!SessionAuthUtil.hasRole(session, "TRAVELER")) {
+                redirectToLogin(request, response);
+                return;
+            }
+
             CommunicationInput input = CommunicationInputExtractor.extract(request);
 
             MessageBean message = new MessageBean();
@@ -31,10 +38,7 @@ public class SubmitTravelerCommunicationControllerGrafico extends LoggedHttpServ
             message.setStationName(input.stationName());
             message.setSuspectClothing(input.suspectClothing());
 
-            HttpSession session = request.getSession(false);
-            if (session != null && session.getAttribute("codiceFiscale") != null) {
-                message.setSenderCf(session.getAttribute("codiceFiscale").toString());
-            }
+            message.setSenderCf(SessionAuthUtil.codiceFiscale(session).orElse(null));
 
             SubmitTravelerCommunicationControllerApplicativo controller =
                     new SubmitTravelerCommunicationControllerApplicativo();

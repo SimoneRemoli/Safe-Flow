@@ -11,7 +11,7 @@ public class CacheInvalidator implements Observer {
     @Override
     public void update(EventType eventType) {
 
-        if (eventType == EventType.COMUNICAZIONE_CORRETTAMENTE_INVIATA || eventType == EventType.COMUNICAZIONE_CORRETTAMENTE_RISOLTA)
+        if (eventType == EventType.COMUNICAZIONE_CORRETTAMENTE_INVIATA)
         {
             LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
             layer.invalidateNotificationsCache();

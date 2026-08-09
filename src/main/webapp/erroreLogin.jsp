@@ -2,7 +2,7 @@
 <%@ page isELIgnored="false" %>
 <html>
 <head>
-    <title>Login Error</title>
+    <title>Safe Flow - Login Error</title>
     <style>
         body {
             font-family: Arial, sans-serif;

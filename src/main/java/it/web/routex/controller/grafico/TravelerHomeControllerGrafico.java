@@ -1,12 +1,10 @@
 package it.web.routex.controller.grafico;
 
 import it.web.routex.domain.LoggedHttpServlet;
-import it.web.routex.domain.SessionAuthUtil;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 @WebServlet("/travelerHome")
 public class TravelerHomeControllerGrafico extends LoggedHttpServlet {
@@ -14,9 +12,8 @@ public class TravelerHomeControllerGrafico extends LoggedHttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         try {
-            HttpSession session = request.getSession(false);
-            if (!SessionAuthUtil.isLoggedIn(session)) {
-                response.sendRedirect("login.jsp");
+            if (!hasRole(request, "TRAVELER")) {
+                redirectToLogin(request, response);
                 return;
             }
 

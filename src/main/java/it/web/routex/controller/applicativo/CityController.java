@@ -1,10 +1,8 @@
 package it.web.routex.controller.applicativo;
 import it.web.routex.bean.CityBean;
-import it.web.routex.bean.PrezzoTotaleBean;
 import it.web.routex.dao.LayerPersistenza;
 import it.web.routex.model.City;
 import it.web.routex.exception.DAOExceptionRemoli;
-import it.web.routex.exception.InvalidPriceCalculationExceptionRemoli;
 import it.web.routex.exception.InvalidCityDataExceptionRemoli;
 import it.web.routex.utility.factory.FactoryLayerPersistenza;
 
@@ -13,7 +11,7 @@ import java.util.List;
 
 /**
  * Controller applicativo responsabile della logica legata alle città.
- * Si occupa sia del recupero delle informazioni dal DAO che del calcolo del prezzo totale.
+ * Si occupa del recupero delle informazioni dal DAO e le espone al layer grafico.
  * @SimoneRemoli
  */
 public class CityController {
@@ -64,30 +62,4 @@ public class CityController {
         return cityBeans;
     }
 
-
-    /**
-     * Calcola il prezzo totale per l’acquisto di uno o più biglietti
-     * in base alla città selezionata e alla quantità indicata.
-     *
-     * @param city     nome della città selezionata
-     * @param quantity quantità di biglietti richiesta
-     * @return Bean contenente il prezzo totale
-     * @throws DAOExceptionRemoli in caso di errore logico o di accesso ai dati
-     */
-    public PrezzoTotaleBean ottieniPrezzoTotale(String city, int quantity) throws DAOExceptionRemoli, InvalidPriceCalculationExceptionRemoli {
-
-        LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
-        List<City> cities = layer.listCitiesRAM(); // SOLO CACHE
-        for (City a : cities) {
-            if (a.getName().equalsIgnoreCase(city)) {
-                double totale = a.calcolaPrezzoTotale(quantity);
-                return new PrezzoTotaleBean(totale);
-            }
-        }
-        throw new InvalidPriceCalculationExceptionRemoli(
-                "La città selezionata non è disponibile nel database.",
-                "Nessuna corrispondenza per la city='" + city + "'",
-                InvalidPriceCalculationExceptionRemoli.Severity.HIGH
-        );
-    }
 }

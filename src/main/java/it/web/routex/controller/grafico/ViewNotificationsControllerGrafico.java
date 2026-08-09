@@ -2,6 +2,7 @@ package it.web.routex.controller.grafico;
 import it.web.routex.bean.MessageBean;
 import it.web.routex.controller.applicativo.ViewNotificationsControllerApplicativo;
 import it.web.routex.domain.LoggedHttpServlet;
+import it.web.routex.domain.SessionAuthUtil;
 import it.web.routex.exception.BrondiException;
 
 import javax.servlet.annotation.WebServlet;
@@ -18,17 +19,18 @@ public class ViewNotificationsControllerGrafico extends LoggedHttpServlet {
 
         try {
             HttpSession session = request.getSession(false);
-            String ruolo = session != null && session.getAttribute("ruolo") != null
-                    ? session.getAttribute("ruolo").toString()
-                    : "";
-            String codiceFiscale = session != null && session.getAttribute("codiceFiscale") != null
-                    ? session.getAttribute("codiceFiscale").toString()
-                    : null;
+            if (!SessionAuthUtil.hasRole(session, "TRAVELER")) {
+                redirectToLogin(request, response);
+                return;
+            }
+
+            String ruolo = SessionAuthUtil.ruolo(session).orElse("");
+            String codiceFiscale = SessionAuthUtil.codiceFiscale(session).orElse(null);
             ViewNotificationsControllerApplicativo notifications = new ViewNotificationsControllerApplicativo();
             List<MessageBean> notifiche = notifications.messages(ruolo, codiceFiscale);
             request.setAttribute("notifiche", notifiche);
             request.setAttribute("isTravelerView", "TRAVELER".equalsIgnoreCase(ruolo));
-            request.getRequestDispatcher("/WEB-INF/views/viewNotifications.jsp").forward(request, response);
+            forward(request, response, "/WEB-INF/views/viewNotifications.jsp");
 
         } catch (BrondiException e) {
             logger.error(
@@ -37,23 +39,11 @@ public class ViewNotificationsControllerGrafico extends LoggedHttpServlet {
                     e.getDetails(),
                     e
             );
-            forwardError(request, response, e.getMessage());
+            forwardError(request, response, e.getMessage(), "/error.jsp");
 
         } catch (Exception e) {
             logger.error("Errore imprevisto nella visualizzazione delle notifiche", e);
-            forwardError(request, response, "Errore imprevisto");
-        }
-    }
-
-    private void forwardError(HttpServletRequest request,
-                              HttpServletResponse response,
-                              String message) {
-        try {
-            request.setAttribute("errore", message);
-            request.getRequestDispatcher("/error.jsp")
-                    .forward(request, response);
-        } catch (Exception e) {
-            logger.error("Errore durante il forward alla pagina di errore", e);
+            forwardError(request, response, "Errore imprevisto", "/error.jsp");
         }
     }
 }

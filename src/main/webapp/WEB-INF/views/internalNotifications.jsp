@@ -11,7 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RouteX - Internal Notifications</title>
+    <title>Safe Flow - Internal Notifications</title>
     <style>
         :root {
             --bg-1: #04111f;
@@ -128,12 +128,10 @@
         <div>
             <span class="eyebrow">Private updates</span>
             <h1>Internal notifications</h1>
-            <p class="subtitle">This area contains private RouteX updates related to your own reports and account activity. These notifications do not appear in the public system alert feed.</p>
+            <p class="subtitle">This area contains private Safe Flow updates related to your own reports and account activity. These notifications do not appear in the public system alert feed.</p>
         </div>
         <div class="nav-actions">
             <a href="travelerHome">Home</a>
-            <a href="viewNotifications">System alerts</a>
-            <a href="travelerReport">Send report</a>
             <a href="logout">Logout</a>
         </div>
     </div>
@@ -144,7 +142,7 @@
     <div class="list">
         <% for (MessageBean m : notifiche) { %>
         <div class="item <%= Boolean.TRUE.equals(m.getLetto()) ? "read" : "unread" %>">
-            <div class="meta">RouteX Admin Team · <%= sdf.format(m.getDate()) %></div>
+            <div class="meta">Safe Flow Admin Team · <%= sdf.format(m.getDate()) %></div>
             <div class="message"><%= m.getMessage() %></div>
         </div>
         <% } %>

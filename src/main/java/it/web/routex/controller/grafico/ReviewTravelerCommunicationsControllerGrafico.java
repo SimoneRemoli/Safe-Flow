@@ -17,8 +17,8 @@ public class ReviewTravelerCommunicationsControllerGrafico extends LoggedHttpSer
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        if (!isAdmin(request.getSession(false))) {
-            redirectToLogin(response);
+        if (!hasRole(request, "ADMIN")) {
+            redirectToLogin(request, response);
             return;
         }
         loadPage(request, response);
@@ -26,8 +26,9 @@ public class ReviewTravelerCommunicationsControllerGrafico extends LoggedHttpSer
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        if (!isAdmin(request.getSession(false))) {
-            redirectToLogin(response);
+        HttpSession session = request.getSession(false);
+        if (!SessionAuthUtil.hasRole(session, "ADMIN")) {
+            redirectToLogin(request, response);
             return;
         }
 
@@ -35,10 +36,7 @@ public class ReviewTravelerCommunicationsControllerGrafico extends LoggedHttpSer
                 new ReviewTravelerCommunicationsControllerApplicativo();
         String[] selectedMessages = request.getParameterValues("selectedMessages");
         String reviewAction = request.getParameter("reviewAction");
-        HttpSession session = request.getSession(false);
-        String adminCf = session != null && session.getAttribute("codiceFiscale") != null
-                ? session.getAttribute("codiceFiscale").toString()
-                : null;
+        String adminCf = SessionAuthUtil.codiceFiscale(session).orElse(null);
 
         try {
             if (selectedMessages == null || selectedMessages.length == 0) {
@@ -110,20 +108,6 @@ public class ReviewTravelerCommunicationsControllerGrafico extends LoggedHttpSer
             } catch (Exception ex) {
                 logger.error("Traveler review load forward error", ex);
             }
-        }
-    }
-
-    private boolean isAdmin(HttpSession session) {
-        return SessionAuthUtil.isLoggedIn(session)
-                && session.getAttribute("ruolo") != null
-                && "ADMIN".equalsIgnoreCase(session.getAttribute("ruolo").toString());
-    }
-
-    private void redirectToLogin(HttpServletResponse response) {
-        try {
-            response.sendRedirect("login.jsp");
-        } catch (Exception e) {
-            logger.error("Traveler review redirect to login error", e);
         }
     }
 }
