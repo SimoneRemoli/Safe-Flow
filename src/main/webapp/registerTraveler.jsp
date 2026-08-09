@@ -144,6 +144,7 @@
     <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 <body>
+<%@ include file="/header.jspf" %>
 <div class="panel">
     <span class="eyebrow">Traveler Registration</span>
     <h1>Create your Safe Flow account</h1>

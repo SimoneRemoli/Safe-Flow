@@ -381,7 +381,6 @@
                 <span class="notification-badge"><%= pendingTravelerReports %></span>
                 <% } %>
             </a>
-            <a href="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </nav>
     </header>
 

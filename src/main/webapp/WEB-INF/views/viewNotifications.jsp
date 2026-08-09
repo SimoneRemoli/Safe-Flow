@@ -668,6 +668,7 @@
     </style>
 </head>
 <body class="safe-flow-notifications">
+<%@ include file="/header.jspf" %>
 <div class="shell">
     <div class="topbar">
         <div>
@@ -683,7 +684,6 @@
             <a href="travelerReport" class="primary-action">Send Report</a>
             <% } %>
             <a href="travelerHome">Home</a>
-            <a href="logout">Logout</a>
         </div>
     </div>
 

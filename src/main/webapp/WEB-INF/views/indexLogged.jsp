@@ -319,7 +319,6 @@
                 <span class="notification-badge"><%= internalNotificationsCount %></span>
                 <% } %>
             </a>
-            <a href="logout">Logout</a>
         </div>
     </div>
 

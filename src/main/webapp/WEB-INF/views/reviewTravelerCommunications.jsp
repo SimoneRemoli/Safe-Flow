@@ -198,7 +198,6 @@
 
     <div class="nav-actions">
         <a href="adminHub">Home</a>
-        <a href="logout">Logout</a>
     </div>
 
     <% if (successMessage != null) { %><div class="flash"><%= successMessage %></div><% } %>

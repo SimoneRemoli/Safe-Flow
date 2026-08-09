@@ -231,6 +231,7 @@
     <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 <body>
+<%@ include file="/header.jspf" %>
 <div class="panel">
     <span class="eyebrow">Broadcast center</span>
     <h1>Send communication</h1>

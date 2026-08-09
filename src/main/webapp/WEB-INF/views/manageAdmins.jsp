@@ -268,7 +268,6 @@
 
         <div class="nav-actions">
             <a href="adminHub">Home</a>
-            <a href="logout">Logout</a>
         </div>
     </div>
 

@@ -185,6 +185,7 @@
     <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 <body>
+    <%@ include file="/header.jspf" %>
     <a href="index.jsp" class="home-link">Home</a>
 
     <div class="login-panel">

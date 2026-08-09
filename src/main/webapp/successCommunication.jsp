@@ -82,6 +82,7 @@
     <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 <body>
+<%@ include file="/header.jspf" %>
 <%
     String successTitle = (String) request.getAttribute("successTitle");
     String successMessage = (String) request.getAttribute("successMessage");

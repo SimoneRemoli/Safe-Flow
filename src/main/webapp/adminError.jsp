@@ -92,6 +92,7 @@
     <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
 <body>
+<%@ include file="/header.jspf" %>
 <%
     String errore = (String) request.getAttribute("errore");
 %>

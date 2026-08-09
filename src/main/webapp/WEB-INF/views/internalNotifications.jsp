@@ -132,7 +132,6 @@
         </div>
         <div class="nav-actions">
             <a href="travelerHome">Home</a>
-            <a href="logout">Logout</a>
         </div>
     </div>
 
