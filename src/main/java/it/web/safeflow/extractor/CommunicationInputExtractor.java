@@ -8,8 +8,10 @@ import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public final class CommunicationInputExtractor {
 
@@ -58,11 +60,11 @@ public final class CommunicationInputExtractor {
             );
         }
 
-        String normalized = cleanText.toLowerCase().replaceAll("[^a-zàèéìòù]", " ");
+        String normalized = normalizeForModeration(cleanText);
 
         // Controllo parole proibite
         for (String forbidden : FORBIDDEN_WORDS) {
-            if (normalized.contains(forbidden)) {
+            if (containsForbiddenTerm(normalized, forbidden)) {
                 throw new BrondiInvalidCommunicationInputException(
                         "The message contains disallowed language."
                 );
@@ -109,11 +111,31 @@ public final class CommunicationInputExtractor {
             }
 
             return new HashSet<>(
-                    Arrays.asList(raw.toLowerCase().split(","))
+                    Arrays.stream(raw.split(","))
+                            .map(CommunicationInputExtractor::normalizeForModeration)
+                            .filter(word -> !word.isBlank())
+                            .collect(Collectors.toSet())
             );
 
         } catch (Exception e) {
             return Set.of();
         }
+    }
+
+    private static String normalizeForModeration(String value) {
+        if (value == null) {
+            return "";
+        }
+        return value.toLowerCase(Locale.ROOT)
+                .replaceAll("[^a-zàèéìòù]", " ")
+                .replaceAll("\\s+", " ")
+                .trim();
+    }
+
+    private static boolean containsForbiddenTerm(String normalizedText, String forbidden) {
+        if (normalizedText.isBlank() || forbidden.isBlank()) {
+            return false;
+        }
+        return (" " + normalizedText + " ").contains(" " + forbidden + " ");
     }
 }
