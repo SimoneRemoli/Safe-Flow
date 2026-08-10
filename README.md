@@ -42,11 +42,47 @@ Safe Flow is designed around fast situational awareness:
 
 ## Reporter Recognition
 
-Safe Flow turns useful participation into visible trust signals. Travelers are ranked through a community score based on approved reports, helpful likes, covered cities, and reporting activity. The top contributors are highlighted across the public report feed with compact badges such as:
+Safe Flow turns useful participation into visible trust signals. Travelers are ranked through a **community score** that rewards reliable, useful, and geographically aware reporting.
+
+<p align="center">
+  <img alt="Approved reports" src="https://img.shields.io/badge/Approved%20reports-%C3%9710-0E7C66?style=for-the-badge">
+  <img alt="Helpful likes" src="https://img.shields.io/badge/Helpful%20likes-%C3%973-B42318?style=for-the-badge">
+  <img alt="Covered cities" src="https://img.shields.io/badge/Covered%20cities-%C3%972-1D4ED8?style=for-the-badge">
+  <img alt="Activity" src="https://img.shields.io/badge/Report%20activity-max%2010-F59E0B?style=for-the-badge">
+</p>
 
 ```text
-#1 - Active Reporter
+Community Score =
+  (Approved Reports x 10)
++ (Helpful Likes x 3)
++ (Covered Cities x 2)
++ min(Total Reports, 10)
 ```
+
+| Signal | Meaning | Weight |
+| --- | --- | --- |
+| **Approved Reports** | Reports accepted by the Safe Flow admin team | `10 points each` |
+| **Helpful Likes** | Likes received from travelers on approved public reports | `3 points each` |
+| **Covered Cities** | Distinct cities where the traveler reported events | `2 points each` |
+| **Report Activity** | Total submitted reports, capped to avoid spam-driven ranking | `up to 10 points` |
+
+Example:
+
+| Reporter activity | Score impact |
+| --- | ---: |
+| 5 approved reports | `5 x 10 = 50` |
+| 8 helpful likes | `8 x 3 = 24` |
+| 2 covered cities | `2 x 2 = 4` |
+| 7 total reports | `min(7, 10) = 7` |
+| **Community Score** | **85** |
+
+Ranking tie-breakers are applied in this order: highest community score, highest number of approvals, highest number of helpful likes, then user identifier for deterministic ordering.
+
+Top contributors are highlighted across the public report feed with compact badges such as:
+
+<p align="center">
+  <img alt="#1 Active Reporter" src="https://img.shields.io/badge/%231%20--%20Active%20Reporter-Top%20Contributor-1EE7A5?style=for-the-badge">
+</p>
 
 This makes reliable travelers immediately recognizable while keeping every report tied to a clear public identity.
 
