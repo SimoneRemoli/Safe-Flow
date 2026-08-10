@@ -756,6 +756,25 @@
             line-height: 1.2 !important;
         }
 
+        .safe-flow-notifications .top-reporter-badge {
+            display: inline-flex !important;
+            align-items: center !important;
+            width: fit-content !important;
+            max-width: 180px !important;
+            padding: 4px 7px !important;
+            border-radius: 6px !important;
+            color: #03120d !important;
+            background: #1ee7a5 !important;
+            border: 1px solid #0fb87f !important;
+            font-size: 0.66rem !important;
+            font-weight: 900 !important;
+            line-height: 1.15 !important;
+            text-transform: uppercase !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+        }
+
         .safe-flow-notifications .like-cell {
             white-space: nowrap !important;
             text-align: center !important;
@@ -1529,6 +1548,9 @@
 		                            String authorName = StringEscapeUtils.escapeHtml4(m.getSenderDisplayName() == null ? "Safe Flow Team" : m.getSenderDisplayName());
 		                            String authorInitials = StringEscapeUtils.escapeHtml4(m.getSenderInitials() == null ? "SF" : m.getSenderInitials());
 		                            String authorRole = StringEscapeUtils.escapeHtml4(adminReport ? "Admin" : "Traveler");
+		                            int reporterRank = m.getSenderCommunityRank() == null ? 0 : m.getSenderCommunityRank();
+		                            boolean topReporter = !adminReport && reporterRank >= 1 && reporterRank <= 3;
+		                            String reporterTrustLevel = StringEscapeUtils.escapeHtml4(m.getSenderTrustLevel() == null ? "Active Reporter" : m.getSenderTrustLevel());
 		                            String notificationKey = StringEscapeUtils.escapeHtml4(m.getNotificationKey() == null ? "" : m.getNotificationKey());
 		                            String encodedNotificationKey = m.getNotificationKey() == null ? "" : URLEncoder.encode(m.getNotificationKey(), StandardCharsets.UTF_8);
 		                            int likeCount = m.getLikeCount() == null ? 0 : m.getLikeCount();
@@ -1592,6 +1614,9 @@
 	                                    <span class="author-copy">
 	                                        <strong class="author-name"><%= authorName %></strong>
 	                                        <small class="author-role"><%= authorRole %></small>
+	                                        <% if (topReporter) { %>
+	                                        <span class="top-reporter-badge">#<%= reporterRank %> - <%= reporterTrustLevel %></span>
+	                                        <% } %>
 	                                    </span>
 	                                </a>
 	                                <% } else { %>
@@ -1600,6 +1625,9 @@
 	                                    <span class="author-copy">
 	                                        <strong class="author-name"><%= authorName %></strong>
 	                                        <small class="author-role"><%= authorRole %></small>
+	                                        <% if (topReporter) { %>
+	                                        <span class="top-reporter-badge">#<%= reporterRank %> - <%= reporterTrustLevel %></span>
+	                                        <% } %>
 	                                    </span>
 	                                </div>
 	                                <% } %>

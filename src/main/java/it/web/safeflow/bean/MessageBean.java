@@ -31,6 +31,8 @@ public class MessageBean
     private Boolean senderAvatarPresent;
     private Boolean senderProfileAvailable;
     private Boolean currentUserSender;
+    private Integer senderCommunityRank;
+    private String senderTrustLevel;
     private String notificationKey;
     private Integer likeCount;
     private Boolean likedByCurrentUser;
@@ -226,6 +228,22 @@ public class MessageBean
 
     public void setCurrentUserSender(Boolean currentUserSender) {
         this.currentUserSender = currentUserSender;
+    }
+
+    public Integer getSenderCommunityRank() {
+        return senderCommunityRank;
+    }
+
+    public void setSenderCommunityRank(Integer senderCommunityRank) {
+        this.senderCommunityRank = senderCommunityRank;
+    }
+
+    public String getSenderTrustLevel() {
+        return senderTrustLevel;
+    }
+
+    public void setSenderTrustLevel(String senderTrustLevel) {
+        this.senderTrustLevel = senderTrustLevel;
     }
 
     public String getNotificationKey() {

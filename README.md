@@ -40,6 +40,16 @@ Safe Flow is designed around fast situational awareness:
 | **Moderation Queue** | Admin review before public visibility |
 | **Profiles** | Avatar, bio, author identity, and `me` label for personal reports |
 
+## Reporter Recognition
+
+Safe Flow turns useful participation into visible trust signals. Travelers are ranked through a community score based on approved reports, helpful likes, covered cities, and reporting activity. The top contributors are highlighted across the public report feed with compact badges such as:
+
+```text
+#1 - Active Reporter
+```
+
+This makes reliable travelers immediately recognizable while keeping every report tied to a clear public identity.
+
 ## Stack
 
 Java 17, Maven, JSP, Servlets, Tomcat-compatible WAR packaging, MariaDB/MySQL, SLF4J, Logback.

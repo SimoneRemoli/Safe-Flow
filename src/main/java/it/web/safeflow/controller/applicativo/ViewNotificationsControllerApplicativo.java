@@ -116,12 +116,16 @@ public class ViewNotificationsControllerApplicativo {
                 message.setSenderInitials(profile.getInitials());
                 message.setSenderAvatarPresent(profile.isAvatarPresent());
                 message.setSenderProfileAvailable(true);
+                message.setSenderCommunityRank(profile.getStats().getCommunityRank());
+                message.setSenderTrustLevel(profile.getStats().getTrustLevel());
             } else {
                 boolean missingSender = senderCf == null || senderCf.isBlank();
                 message.setSenderDisplayName(currentUserSender ? "me" : missingSender ? "Safe Flow Team" : "Unknown user");
                 message.setSenderInitials(currentUserSender ? "ME" : missingSender ? "SF" : "U");
                 message.setSenderAvatarPresent(false);
                 message.setSenderProfileAvailable(false);
+                message.setSenderCommunityRank(0);
+                message.setSenderTrustLevel(null);
             }
         }
     }
