@@ -118,40 +118,97 @@ Safe Flow follows a layered MVC structure:
 
 ## Clone And Run
 
-After cloning the repository, a new developer needs Java, Maven, MySQL/MariaDB, and Tomcat.
+Safe Flow is designed to be opened, studied, modified, and rebuilt from a standard IntelliJ IDEA workflow. The repository contains the project sources, the Maven descriptor, the database scripts, the JSP views, the static assets, and the MVC layers required to continue development.
+
+Before starting, install:
+
+| Tool | Purpose |
+| --- | --- |
+| **IntelliJ IDEA** | Main development environment |
+| **Java 17** | Project runtime and compilation target |
+| **Maven** | Dependency resolution and WAR build lifecycle |
+| **MySQL or MariaDB** | Application persistence |
+| **Apache Tomcat** | Local servlet container |
+
+Clone the repository and open it from IntelliJ:
 
 ```bash
 git clone <repository-url>
 cd RouteX_MVC_Project
-mvn package
 ```
 
-Then initialize the database from MySQL:
+In IntelliJ, use:
+
+```text
+File -> Open -> RouteX_MVC_Project
+```
+
+IntelliJ reads `pom.xml` and imports the project as a Maven WAR web application. Maven automatically downloads the declared Java dependencies and recreates the generated build structure under `target/` whenever the project is packaged.
+
+Set the project SDK to Java 17:
+
+```text
+File -> Project Structure -> Project SDK -> Java 17
+```
+
+Reload Maven from the Maven tool window:
+
+```text
+Maven -> Reload All Maven Projects
+```
+
+Initialize the database from MySQL:
 
 ```sql
 SOURCE Database/SafeFlow_Update.sql;
 SOURCE Database/SafeFlow_users_grants.sql;
 ```
 
-Check the database connection in:
+Check the database connection settings in:
 
 ```text
 src/main/resources/db.properties
 ```
 
-Finally, deploy the generated WAR on Tomcat:
+Build the application:
+
+```bash
+mvn package
+```
+
+This command compiles the Java code, copies resources and web assets, and generates:
 
 ```text
 target/SafeFlow_MVC_Project.war
 ```
 
-The application is usually available at:
+Maven recreates only the generated build output, especially `target/`. It does not recreate source files, JSP pages, SQL scripts, images, or database data; those must remain versioned in Git.
+
+To run the application from IntelliJ, create a local Tomcat configuration:
+
+```text
+Run -> Edit Configurations -> + -> Tomcat Server -> Local
+```
+
+Then add the web artifact:
+
+```text
+Deployment -> + -> Artifact -> SafeFlow_MVC_Project:war exploded
+```
+
+Use this application context:
+
+```text
+/RouteX_MVC_Project
+```
+
+The local application will then be available at:
 
 ```text
 http://localhost:8080/RouteX_MVC_Project/
 ```
 
-Do not run `mvn deploy` unless a remote Maven repository is configured. For this project, `mvn package` is the correct build command.
+For daily development, edit the Java controllers, models, DAO classes, JSP views, CSS, and assets directly inside IntelliJ, then rebuild or restart Tomcat when needed. Do not run `mvn deploy` unless a remote Maven repository is configured. For this project, `mvn package` is the correct build command.
 
 ## Run
 
