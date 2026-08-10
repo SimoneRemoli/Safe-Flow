@@ -109,6 +109,43 @@
             outline: none;
         }
 
+        .image-upload-panel {
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: 18px;
+            border: 1px dashed rgba(137, 255, 209, 0.34);
+            background: rgba(137, 255, 209, 0.06);
+        }
+
+        .image-upload-label {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            color: #04111f;
+            background: #89ffd1;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .image-upload-input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+        }
+
+        .image-upload-help,
+        .selected-images {
+            margin-top: 10px;
+            color: var(--muted);
+            font-size: 0.9rem;
+            line-height: 1.45;
+        }
+
         .toggle-row {
             margin-bottom: 16px;
             display: flex;
@@ -219,7 +256,7 @@
         Write a message for the Safe Flow admin team. Traveler reports are reviewed by admins before they become visible in the notification system.
     </p>
 
-    <form action="submitTravelerCommunication" method="post" accept-charset="UTF-8">
+	    <form action="submitTravelerCommunication" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
         <div class="field">
             <label for="city">City</label>
             <select id="city" name="city" required>
@@ -247,7 +284,20 @@
                 <datalist id="stationSuggestions"></datalist>
             </div>
         </div>
-        <textarea id="message" name="message" maxlength="250" placeholder="Describe the issue or information you want to report..."></textarea>
+	        <textarea id="message" name="message" maxlength="250" placeholder="Describe the issue or information you want to report..."></textarea>
+
+	        <div class="image-upload-panel">
+	            <label class="image-upload-label" for="reportImages">Attach images</label>
+	            <input
+	                    class="image-upload-input"
+	                    id="reportImages"
+	                    name="reportImages"
+	                    type="file"
+	                    accept="image/png,image/jpeg,image/webp,image/gif"
+	                    multiple>
+	            <div class="image-upload-help">You can attach up to 5 images. JPG, PNG, WEBP, or GIF only. Max 5 MB each.</div>
+	            <div class="selected-images" id="selectedImages" aria-live="polite"></div>
+	        </div>
 
         <div class="actions">
             <button type="submit" class="btn">Submit report</button>
@@ -271,8 +321,10 @@
         const crowdToggle = document.getElementById("crowdAlert");
         const generalToggle = document.getElementById("generalAlert");
         const pickpocketPanel = document.getElementById("pickpocketPanel");
-        const stationInput = document.getElementById("stationName");
-        const stationSuggestions = document.getElementById("stationSuggestions");
+	        const stationInput = document.getElementById("stationName");
+	        const stationSuggestions = document.getElementById("stationSuggestions");
+	        const reportImages = document.getElementById("reportImages");
+	        const selectedImages = document.getElementById("selectedImages");
 
         function renderStations() {
             const stations = cityStations[citySelect.value] || [];
@@ -312,8 +364,16 @@
             syncPickpocketState();
         });
 
-        citySelect.addEventListener("change", renderStations);
-        renderStations();
+	        citySelect.addEventListener("change", renderStations);
+	        if (reportImages && selectedImages) {
+	            reportImages.addEventListener("change", () => {
+	                const files = Array.from(reportImages.files || []);
+	                selectedImages.textContent = files.length
+	                    ? files.map((file) => file.name).join(", ")
+	                    : "";
+	            });
+	        }
+	        renderStations();
         syncPickpocketState();
     }());
 </script>

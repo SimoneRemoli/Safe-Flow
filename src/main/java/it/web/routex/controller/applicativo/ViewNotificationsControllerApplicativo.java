@@ -4,6 +4,8 @@ import it.web.routex.dao.LayerPersistenza;
 import it.web.routex.exception.BrondiException;
 import it.web.routex.exception.DAOExceptionRemoli;
 import it.web.routex.model.Notification;
+import it.web.routex.model.NotificationComment;
+import it.web.routex.model.NotificationLikeState;
 import it.web.routex.model.UserProfileSummary;
 import it.web.routex.utility.factory.FactoryLayerPersistenza;
 import java.util.ArrayList;
@@ -61,6 +63,8 @@ public class ViewNotificationsControllerApplicativo {
 
             enrichSenderProfiles(result, codiceFiscale, senderCodiciFiscali);
             enrichLikes(result, codiceFiscale, notificationLikeKeys);
+            enrichImageCounts(result);
+            enrichComments(result, codiceFiscale, notificationLikeKeys);
             return result;
 
         } catch (DAOExceptionRemoli e) {
@@ -121,6 +125,46 @@ public class ViewNotificationsControllerApplicativo {
             it.web.routex.model.NotificationLikeState state = notificationKey == null ? null : states.get(notificationKey);
             message.setLikeCount(state == null ? 0 : state.getLikeCount());
             message.setLikedByCurrentUser(state != null && state.isLikedByCurrentUser());
+        }
+    }
+
+    private void enrichImageCounts(List<MessageBean> messages) {
+        ReportImageControllerApplicativo reportImages = new ReportImageControllerApplicativo();
+        for (MessageBean message : messages) {
+            String notificationKey = message.getNotificationKey();
+            message.setImageCount(notificationKey == null ? 0 : reportImages.imageCount(notificationKey));
+        }
+    }
+
+    private void enrichComments(List<MessageBean> messages,
+                                String currentUserCf,
+                                Set<String> notificationKeys) throws BrondiException {
+        Map<String, List<it.web.routex.model.NotificationComment>> commentsByKey =
+                new NotificationCommentControllerApplicativo().commentsFor(notificationKeys, currentUserCf);
+        Set<String> commentIds = new HashSet<>();
+
+        for (MessageBean message : messages) {
+            String notificationKey = message.getNotificationKey();
+            List<NotificationComment> comments = notificationKey == null
+                    ? Collections.emptyList()
+                    : commentsByKey.getOrDefault(notificationKey, Collections.emptyList());
+            message.setComments(comments);
+            message.setCommentCount(comments.size());
+            for (NotificationComment comment : comments) {
+                if (comment.getId() != null && !comment.getId().isBlank()) {
+                    commentIds.add(comment.getId());
+                }
+            }
+        }
+
+        Map<String, NotificationLikeState> commentLikeStates =
+                new NotificationCommentLikeControllerApplicativo().statesFor(commentIds, currentUserCf);
+        for (MessageBean message : messages) {
+            for (NotificationComment comment : message.getComments()) {
+                NotificationLikeState state = commentLikeStates.get(comment.getId());
+                comment.setLikeCount(state == null ? 0 : state.getLikeCount());
+                comment.setLikedByCurrentUser(state != null && state.isLikedByCurrentUser());
+            }
         }
     }
 }

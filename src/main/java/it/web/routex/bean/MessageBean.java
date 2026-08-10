@@ -1,6 +1,10 @@
 package it.web.routex.bean;
 
+import it.web.routex.model.NotificationComment;
+
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MessageBean
 {
@@ -30,6 +34,10 @@ public class MessageBean
     private String notificationKey;
     private Integer likeCount;
     private Boolean likedByCurrentUser;
+    private Integer imageCount;
+    private Integer commentCount;
+    private List<NotificationComment> comments = new ArrayList<>();
+    private String actionUrl;
 
     public MessageBean(){}
 
@@ -242,6 +250,38 @@ public class MessageBean
 
     public void setLikedByCurrentUser(Boolean likedByCurrentUser) {
         this.likedByCurrentUser = likedByCurrentUser;
+    }
+
+    public Integer getImageCount() {
+        return imageCount;
+    }
+
+    public void setImageCount(Integer imageCount) {
+        this.imageCount = imageCount;
+    }
+
+    public Integer getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(Integer commentCount) {
+        this.commentCount = commentCount;
+    }
+
+    public List<NotificationComment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<NotificationComment> comments) {
+        this.comments = comments == null ? new ArrayList<>() : comments;
+    }
+
+    public String getActionUrl() {
+        return actionUrl;
+    }
+
+    public void setActionUrl(String actionUrl) {
+        this.actionUrl = actionUrl;
     }
 
 }

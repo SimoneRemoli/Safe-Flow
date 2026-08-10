@@ -15,6 +15,7 @@ public class ReviewTravelerCommunicationsControllerApplicativo {
     public List<MessageBean> pendingMessages() throws DAOExceptionRemoli {
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         List<MessageBean> result = new ArrayList<>();
+        ReportImageControllerApplicativo reportImages = new ReportImageControllerApplicativo();
 
         for (Notification notification : layer.getMessagesRAM()) {
             if (!"PENDING".equalsIgnoreCase(notification.getStatus())) {
@@ -36,6 +37,9 @@ public class ReviewTravelerCommunicationsControllerApplicativo {
             bean.setGeneralAlert(notification.isGeneralAlert());
             bean.setStationName(notification.getStationName());
             bean.setSuspectClothing(notification.getSuspectClothing());
+            String notificationKey = NotificationLikeControllerApplicativo.keyFor(notification);
+            bean.setNotificationKey(notificationKey);
+            bean.setImageCount(reportImages.imageCount(notificationKey));
             result.add(bean);
         }
 

@@ -2,6 +2,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="it.web.routex.bean.MessageBean" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="org.apache.commons.lang3.StringEscapeUtils" %>
 <%
     List<MessageBean> notifiche = (List<MessageBean>) request.getAttribute("notifiche");
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -89,10 +90,21 @@
             gap: 14px;
         }
         .item {
+            display: block;
             padding: 18px 20px;
             border-radius: 22px;
             background: rgba(246, 250, 253, 0.96);
             border: 1px solid rgba(210, 222, 232, 0.7);
+            text-decoration: none;
+            transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+        }
+        .item.clickable {
+            cursor: pointer;
+        }
+        .item.clickable:hover {
+            transform: translateY(-1px);
+            border-color: rgba(14, 124, 102, 0.35);
+            box-shadow: 0 16px 34px rgba(0, 0, 0, 0.16);
         }
         .meta {
             color: #586673;
@@ -139,11 +151,27 @@
     <div class="empty-state">No internal notifications available.</div>
     <% } else { %>
     <div class="list">
-        <% for (MessageBean m : notifiche) { %>
-        <div class="item <%= Boolean.TRUE.equals(m.getLetto()) ? "read" : "unread" %>">
-            <div class="meta">Safe Flow Admin Team · <%= sdf.format(m.getDate()) %></div>
-            <div class="message"><%= m.getMessage() %></div>
+        <% for (MessageBean m : notifiche) {
+            String actionUrl = m.getActionUrl();
+            boolean clickable = actionUrl != null && !actionUrl.isBlank();
+            String itemClass = "item " + (Boolean.TRUE.equals(m.getLetto()) ? "read" : "unread") + (clickable ? " clickable" : "");
+        %>
+        <% if (clickable) { %>
+        <a class="<%= itemClass %>" href="<%= StringEscapeUtils.escapeHtml4(actionUrl) %>">
+        <% } else { %>
+        <div class="<%= itemClass %>">
+        <% } %>
+            <div class="meta">
+                <%= StringEscapeUtils.escapeHtml4(m.getSenderDisplayName() == null ? "Safe Flow" : m.getSenderDisplayName()) %>
+                ·
+                <%= sdf.format(m.getDate()) %>
+            </div>
+            <div class="message"><%= StringEscapeUtils.escapeHtml4(m.getMessage()) %></div>
+        <% if (clickable) { %>
+        </a>
+        <% } else { %>
         </div>
+        <% } %>
         <% } %>
     </div>
     <% } %>

@@ -2,6 +2,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="it.web.routex.bean.MessageBean" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.nio.charset.StandardCharsets" %>
 <%@ page import="org.apache.commons.lang3.StringEscapeUtils" %>
 <%
     List<MessageBean> pendingMessages = (List<MessageBean>) request.getAttribute("pendingMessages");
@@ -283,6 +285,27 @@
             letter-spacing: 0.05em;
             text-transform: uppercase;
         }
+        .view-images-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 32px;
+            padding: 7px 10px;
+            border-radius: 7px;
+            color: #075f4e;
+            background: #e5f3ee;
+            border: 1px solid #c8e2d8;
+            text-decoration: none;
+            font-size: 0.72rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .no-images {
+            color: #8a9a91;
+            font-size: 0.82rem;
+            font-weight: 800;
+        }
         .alert-badge-stack {
             display: flex;
             flex-direction: column;
@@ -447,7 +470,7 @@
                 <table>
                     <thead>
                     <tr>
-                        <th style="width: 25%">Message</th>
+                        <th style="width: 23%">Message</th>
                         <th style="width: 9%">City</th>
                         <th style="width: 13%">Alert type</th>
                         <th style="width: 12%">Station</th>
@@ -455,14 +478,18 @@
                         <th style="width: 11%">Sender</th>
                         <th style="width: 8%">Status</th>
                         <th style="width: 9%">Date</th>
+                        <th style="width: 8%">Images</th>
                         <th style="width: 16%">Reject reason</th>
                         <th style="width: 6%; text-align: center;">Select</th>
                     </tr>
                     </thead>
                     <tbody>
                     <% if (pendingMessages == null || pendingMessages.isEmpty()) { %>
-                    <tr><td colspan="10" class="empty-state">No pending traveler reports.</td></tr>
-                    <% } else { for (MessageBean m : pendingMessages) { %>
+                    <tr><td colspan="11" class="empty-state">No pending traveler reports.</td></tr>
+                    <% } else { for (MessageBean m : pendingMessages) {
+                        int imageCount = m.getImageCount() == null ? 0 : m.getImageCount();
+                        String encodedNotificationKey = m.getNotificationKey() == null ? "" : URLEncoder.encode(m.getNotificationKey(), StandardCharsets.UTF_8);
+                    %>
                     <tr>
                         <td class="message-text"><%= StringEscapeUtils.escapeHtml4(m.getMessage()) %></td>
                         <td><span class="data-pill"><%= StringEscapeUtils.escapeHtml4(m.getCity() != null && !m.getCity().isBlank() ? m.getCity() : "Unknown") %></span></td>
@@ -490,6 +517,13 @@
                         <td class="sender-code"><%= StringEscapeUtils.escapeHtml4(m.getSenderCf() != null ? m.getSenderCf() : "Unknown traveler") %></td>
                         <td><span class="status-pill"><%= StringEscapeUtils.escapeHtml4(m.getStatus() != null ? m.getStatus() : "PENDING") %></span></td>
                         <td class="date-cell"><%= sdf.format(m.getDate()) %></td>
+                        <td>
+                            <% if (imageCount > 0) { %>
+                            <a class="view-images-button" href="reportImages?notificationKey=<%= encodedNotificationKey %>">View images</a>
+                            <% } else { %>
+                            <span class="no-images">None</span>
+                            <% } %>
+                        </td>
                         <td>
                             <textarea
                                     class="reason-field"

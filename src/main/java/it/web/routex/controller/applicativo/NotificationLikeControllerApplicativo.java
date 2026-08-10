@@ -28,11 +28,12 @@ public class NotificationLikeControllerApplicativo {
     private static final Path LIKE_DIR = Path.of(System.getProperty("user.home"), ".safe-flow");
     private static final Path LIKE_STORE = LIKE_DIR.resolve("notification-likes.properties");
     private static final String LIKE_PREFIX = "like.";
+    private static final String NOTIFIED_PREFIX = "notified.";
 
     public NotificationLikeState toggleTravelerLike(String notificationKey, String codiceFiscale) throws BrondiException {
         String key = normalizeNotificationKey(notificationKey);
         String cf = normalizeCf(codiceFiscale);
-        ensureTravelerNotificationExists(key);
+        Notification likedNotification = findLikableTravelerNotification(key);
 
         synchronized (LOCK) {
             Properties properties = loadProperties();
@@ -41,6 +42,7 @@ public class NotificationLikeControllerApplicativo {
 
             if (liked) {
                 properties.setProperty(propertyKey, "true");
+                notifyReportOwnerIfNeeded(properties, key, cf, likedNotification);
             } else {
                 properties.remove(propertyKey);
             }
@@ -85,7 +87,8 @@ public class NotificationLikeControllerApplicativo {
     }
 
     public static String keyFor(Timestamp date, String senderCf, String message) {
-        String rawKey = (date == null ? 0L : date.getTime())
+        long timestampMillis = date == null ? 0L : (date.getTime() / 1000L) * 1000L;
+        String rawKey = timestampMillis
                 + "|"
                 + (senderCf == null ? "" : senderCf.trim().toUpperCase(Locale.ROOT))
                 + "|"
@@ -93,7 +96,7 @@ public class NotificationLikeControllerApplicativo {
         return Base64.getUrlEncoder().withoutPadding().encodeToString(rawKey.getBytes(StandardCharsets.UTF_8));
     }
 
-    private void ensureTravelerNotificationExists(String notificationKey) throws BrondiException {
+    private Notification findLikableTravelerNotification(String notificationKey) throws BrondiException {
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         try {
             List<Notification> notifications = layer.getMessagesRAM();
@@ -101,7 +104,7 @@ public class NotificationLikeControllerApplicativo {
                 boolean travelerReport = "TRAVELER".equalsIgnoreCase(notification.getSenderRole());
                 boolean approved = "APPROVED".equalsIgnoreCase(notification.getStatus());
                 if (travelerReport && approved && notificationKey.equals(keyFor(notification))) {
-                    return;
+                    return notification;
                 }
             }
         } catch (DAOExceptionRemoli e) {
@@ -109,6 +112,59 @@ public class NotificationLikeControllerApplicativo {
         }
 
         throw new BrondiException("This report cannot be liked.", "LIKE_NOTIFICATION_INVALID", notificationKey);
+    }
+
+    private void notifyReportOwnerIfNeeded(Properties properties,
+                                           String notificationKey,
+                                           String likerCf,
+                                           Notification likedNotification) throws BrondiException {
+        String ownerCf = likedNotification.getSenderCf();
+        if (ownerCf == null || ownerCf.isBlank() || ownerCf.equalsIgnoreCase(likerCf)) {
+            return;
+        }
+
+        String notifiedKey = NOTIFIED_PREFIX + notificationKey + "." + likerCf;
+        if (properties.containsKey(notifiedKey)) {
+            return;
+        }
+
+        Notification ownerNotification = new Notification(
+                "Someone liked your traveler report: " + summarize(likedNotification.getMessage()),
+                new Timestamp(System.currentTimeMillis()),
+                false,
+                true,
+                false,
+                "APPROVED",
+                "TRAVELER",
+                likerCf,
+                ownerCf,
+                likedNotification.getCity(),
+                likedNotification.isPickpocketAlert(),
+                likedNotification.isFightAlert(),
+                likedNotification.isCrowdAlert(),
+                likedNotification.isGeneralAlert(),
+                likedNotification.getStationName(),
+                likedNotification.getSuspectClothing()
+        );
+
+        try {
+            FactoryLayerPersistenza.createLayerPersistenza().sendMessage(ownerNotification);
+            properties.setProperty(notifiedKey, "true");
+        } catch (DAOExceptionRemoli e) {
+            throw new BrondiException("Unable to notify the report owner.", "LIKE_OWNER_NOTIFICATION", "Owner notification failed", e);
+        }
+    }
+
+    private String summarize(String message) {
+        if (message == null || message.isBlank()) {
+            return "your report";
+        }
+
+        String normalized = message.trim().replaceAll("\\s+", " ");
+        if (normalized.length() <= 90) {
+            return "\"" + normalized + "\"";
+        }
+        return "\"" + normalized.substring(0, 87) + "...\"";
     }
 
     private int countLikes(Properties properties, String notificationKey) {
