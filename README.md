@@ -134,13 +134,13 @@ Clone the repository and open it from IntelliJ:
 
 ```bash
 git clone <repository-url>
-cd RouteX_MVC_Project
+cd SafeFlow_MVC_Project
 ```
 
 In IntelliJ, use:
 
 ```text
-File -> Open -> RouteX_MVC_Project
+File -> Open -> SafeFlow_MVC_Project
 ```
 
 IntelliJ reads `pom.xml` and imports the project as a Maven WAR web application. Maven automatically downloads the declared Java dependencies and recreates the generated build structure under `target/` whenever the project is packaged.
@@ -199,13 +199,13 @@ Deployment -> + -> Artifact -> SafeFlow_MVC_Project:war exploded
 Use this application context:
 
 ```text
-/RouteX_MVC_Project
+/SafeFlow_MVC_Project
 ```
 
 The local application will then be available at:
 
 ```text
-http://localhost:8080/RouteX_MVC_Project/
+http://localhost:8080/SafeFlow_MVC_Project/
 ```
 
 For daily development, edit the Java controllers, models, DAO classes, JSP views, CSS, and assets directly inside IntelliJ, then rebuild or restart Tomcat when needed. Do not run `mvn deploy` unless a remote Maven repository is configured. For this project, `mvn package` is the correct build command.
