@@ -1,6 +1,7 @@
 package it.web.safeflow.controller.applicativo;
 import it.web.safeflow.bean.MessageBean;
 import it.web.safeflow.dao.LayerPersistenza;
+import it.web.safeflow.dao.SocialDataRepository;
 import it.web.safeflow.exception.BrondiException;
 import it.web.safeflow.exception.DAOExceptionRemoli;
 import it.web.safeflow.model.Notification;
@@ -37,9 +38,6 @@ public class ViewNotificationsControllerApplicativo {
             List<Notification> notifications = layer.getMessagesRAM();
             Set<String> senderCodiciFiscali = new HashSet<>();
             Set<String> notificationLikeKeys = new HashSet<>();
-            Set<String> dismissedKeys = "TRAVELER".equalsIgnoreCase(ruolo)
-                    ? dismissedKeysFor(codiceFiscale)
-                    : Collections.emptySet();
             for (Notification n : notifications) {
                 boolean include = false;
 
@@ -49,10 +47,6 @@ public class ViewNotificationsControllerApplicativo {
 
                 if (include) {
                     String notificationKey = NotificationLikeControllerApplicativo.keyFor(n);
-                    if (dismissedKeys.contains(notificationKey)) {
-                        continue;
-                    }
-
                     MessageBean bean = new MessageBean(n.getMessage(), n.getDate());
                     bean.setNotificationKey(notificationKey);
                     bean.setRisolto(n.isRisolto());
@@ -195,6 +189,13 @@ public class ViewNotificationsControllerApplicativo {
         String key = normalizeNotificationKey(notificationKey);
         ensurePublicNotificationExists(key);
 
+        try {
+            new SocialDataRepository().dismissNotification("PUBLIC", cf, key);
+            return;
+        } catch (DAOExceptionRemoli ignored) {
+            // Keep the legacy file store as a compatibility fallback until every environment has the DB tables.
+        }
+
         synchronized (DISMISS_LOCK) {
             Properties properties = loadDismissProperties();
             properties.setProperty(dismissPropertyKey(cf, key), "true");
@@ -221,8 +222,15 @@ public class ViewNotificationsControllerApplicativo {
 
     private Set<String> dismissedKeysFor(String codiceFiscale) throws BrondiException {
         String cf = normalizeCf(codiceFiscale);
-        String prefix = DISMISSED_PREFIX + cf + ".";
         Set<String> keys = new HashSet<>();
+
+        try {
+            keys.addAll(new SocialDataRepository().dismissedNotificationKeys("PUBLIC", cf));
+        } catch (DAOExceptionRemoli ignored) {
+            // Fall back to the legacy file store when the social tables are not installed yet.
+        }
+
+        String prefix = DISMISSED_PREFIX + cf + ".";
 
         synchronized (DISMISS_LOCK) {
             Properties properties = loadDismissProperties();

@@ -1,14 +1,13 @@
 package it.web.safeflow.controller.grafico;
 
 import it.web.safeflow.controller.applicativo.UserProfileControllerApplicativo;
+import it.web.safeflow.dao.SocialDataRepository;
 import it.web.safeflow.domain.LoggedHttpServlet;
 import it.web.safeflow.domain.SessionAuthUtil;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 @WebServlet("/publicProfileAvatar")
 public class PublicProfileAvatarControllerGrafico extends LoggedHttpServlet {
@@ -28,11 +27,10 @@ public class PublicProfileAvatarControllerGrafico extends LoggedHttpServlet {
 
         try {
             UserProfileControllerApplicativo controller = new UserProfileControllerApplicativo();
-            Path avatarPath = controller.getAvatarPath(codiceFiscale);
-            String contentType = Files.probeContentType(avatarPath);
-            response.setContentType(contentType != null ? contentType : "application/octet-stream");
+            SocialDataRepository.StoredFile avatar = controller.getAvatarFile(codiceFiscale);
+            response.setContentType(avatar.contentType() != null ? avatar.contentType() : "application/octet-stream");
             response.setHeader("Cache-Control", "private, max-age=60");
-            Files.copy(avatarPath, response.getOutputStream());
+            response.getOutputStream().write(avatar.data());
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }

@@ -1,9 +1,7 @@
 package it.web.safeflow.controller.grafico;
 
-import it.web.safeflow.controller.applicativo.ViewNotificationsControllerApplicativo;
 import it.web.safeflow.domain.LoggedHttpServlet;
 import it.web.safeflow.domain.SessionAuthUtil;
-import it.web.safeflow.exception.BrondiException;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,21 +22,7 @@ public class RemovePublicNotificationControllerGrafico extends LoggedHttpServlet
             return;
         }
 
-        String ruolo = SessionAuthUtil.ruolo(session).orElse(null);
-        String codiceFiscale = SessionAuthUtil.codiceFiscale(session).orElse(null);
-        String notificationKey = request.getParameter("notificationKey");
-
-        try {
-            new ViewNotificationsControllerApplicativo()
-                    .dismissNotification(ruolo, codiceFiscale, notificationKey);
-            writeJson(response, HttpServletResponse.SC_OK, "{\"removed\":true}");
-        } catch (BrondiException e) {
-            logger.warn("Invalid public notification remove request: {}", e.getDetails());
-            writeJson(response, HttpServletResponse.SC_BAD_REQUEST, "{\"error\":\"" + jsonEscape(e.getMessage()) + "\"}");
-        } catch (Exception e) {
-            logger.error("Unexpected error while removing public notification", e);
-            writeJson(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "{\"error\":\"Unable to remove notification\"}");
-        }
+        writeJson(response, HttpServletResponse.SC_FORBIDDEN, "{\"error\":\"Public reports cannot be removed\"}");
     }
 
     private void writeJson(HttpServletResponse response, int status, String json) {
@@ -50,9 +34,4 @@ public class RemovePublicNotificationControllerGrafico extends LoggedHttpServlet
         }
     }
 
-    private String jsonEscape(String value) {
-        return value == null
-                ? ""
-                : value.replace("\\", "\\\\").replace("\"", "\\\"");
-    }
 }

@@ -381,19 +381,40 @@
         .modal-panel {
             width: min(460px, 100%);
             padding: 24px;
-            border-radius: 24px;
-            border: 1px solid rgba(111, 247, 255, 0.18);
-            background: linear-gradient(180deg, rgba(7, 20, 36, 0.94), rgba(4, 12, 23, 0.98));
-            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.38);
+            border-radius: 16px;
+            border: 1px solid #f3c2c0;
+            background: #ffffff;
+            color: #111827;
+            box-shadow: 0 28px 70px rgba(15, 23, 42, 0.24);
+        }
+        .modal-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .modal-error-icon {
+            width: 38px;
+            height: 38px;
+            flex: 0 0 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: #b42318;
+            background: #fff0ee;
+            border: 1px solid #f3aaa4;
+            font-size: 1.35rem;
+            font-weight: 900;
         }
         .modal-panel h3 {
-            margin: 0 0 10px;
+            margin: 0;
             font-size: 1.35rem;
-            color: #ecf7ff;
+            color: #111827;
         }
         .modal-panel p {
             margin: 0;
-            color: var(--muted);
+            color: #374151;
             line-height: 1.7;
         }
         .modal-actions {
@@ -405,10 +426,10 @@
             border: none;
             cursor: pointer;
             padding: 12px 18px;
-            border-radius: 999px;
-            font-weight: 700;
-            color: #04111f;
-            background: linear-gradient(90deg, #6ff7ff, #89ffd1 52%, #8dd8ff);
+            border-radius: 8px;
+            font-weight: 800;
+            color: #ffffff;
+            background: #b42318;
         }
         @media (max-width: 900px) {
             .shell {
@@ -547,7 +568,10 @@
 </div>
 <div class="modal-backdrop" id="validationModal" aria-hidden="true">
     <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="validationModalTitle">
-        <h3 id="validationModalTitle">Review action required</h3>
+        <div class="modal-heading">
+            <span class="modal-error-icon" aria-hidden="true">!</span>
+            <h3 id="validationModalTitle">Review action required</h3>
+        </div>
         <p id="validationModalMessage">Select at least one traveler report before continuing.</p>
         <div class="modal-actions">
             <button type="button" id="validationModalClose">Close</button>

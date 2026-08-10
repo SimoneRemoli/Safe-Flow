@@ -1,6 +1,7 @@
 package it.web.safeflow.controller.applicativo;
 
 import it.web.safeflow.dao.LayerPersistenza;
+import it.web.safeflow.dao.SocialDataRepository;
 import it.web.safeflow.exception.BrondiException;
 import it.web.safeflow.exception.DAOExceptionRemoli;
 import it.web.safeflow.model.Notification;
@@ -41,6 +42,17 @@ public class NotificationCommentLikeControllerApplicativo {
         Notification report = comments.findCommentableTravelerNotificationByKey(key);
         NotificationComment likedComment = findComment(comments, key, id, cf);
 
+        try {
+            SocialDataRepository repository = new SocialDataRepository();
+            NotificationLikeState state = repository.toggleCommentLike(id, cf);
+            if (state.isLikedByCurrentUser()) {
+                notifyCommentOwnerIfNeeded(repository, key, id, cf, report, likedComment);
+            }
+            return state;
+        } catch (DAOExceptionRemoli ignored) {
+            // Legacy fallback for local databases that have not imported the social tables yet.
+        }
+
         synchronized (LOCK) {
             Properties properties = loadProperties();
             String propertyKey = propertyKey(id, cf);
@@ -70,6 +82,11 @@ public class NotificationCommentLikeControllerApplicativo {
                 : codiceFiscale.trim().toUpperCase(Locale.ROOT);
 
         synchronized (LOCK) {
+            try {
+                return new SocialDataRepository().commentLikeStates(commentIds, cf);
+            } catch (DAOExceptionRemoli ignored) {
+                // Legacy fallback for local databases that have not imported the social tables yet.
+            }
             Properties properties = loadProperties();
             for (String rawId : commentIds) {
                 if (rawId == null || rawId.isBlank()) {
@@ -144,6 +161,55 @@ public class NotificationCommentLikeControllerApplicativo {
             new NotificationCommentControllerApplicativo()
                     .storeTargetForInternalNotification(ownerNotification, notificationKey, commentId);
             properties.setProperty(notifiedKey, "true");
+        } catch (DAOExceptionRemoli e) {
+            throw new BrondiException("Unable to notify the comment owner.", "COMMENT_LIKE_OWNER_NOTIFICATION", "Owner notification failed", e);
+        }
+    }
+
+    private void notifyCommentOwnerIfNeeded(SocialDataRepository repository,
+                                            String notificationKey,
+                                            String commentId,
+                                            String likerCf,
+                                            Notification report,
+                                            NotificationComment likedComment) throws BrondiException {
+        String ownerCf = likedComment.getAuthorCf();
+        if (ownerCf == null || ownerCf.isBlank() || ownerCf.equalsIgnoreCase(likerCf)) {
+            return;
+        }
+
+        try {
+            if (repository.isCommentLikeNotificationSent(commentId, likerCf)) {
+                return;
+            }
+        } catch (DAOExceptionRemoli e) {
+            throw new BrondiException("Unable to notify the comment owner.", "COMMENT_LIKE_OWNER_NOTIFICATION", "Comment like marker failed", e);
+        }
+
+        Notification ownerNotification = new Notification(
+                "Someone liked your comment: " + summarize(likedComment.getText()),
+                new Timestamp(System.currentTimeMillis()),
+                false,
+                true,
+                false,
+                "APPROVED",
+                "TRAVELER",
+                likerCf,
+                ownerCf,
+                report.getCity(),
+                report.isPickpocketAlert(),
+                report.isFightAlert(),
+                report.isCrowdAlert(),
+                report.isGeneralAlert(),
+                report.getStationName(),
+                report.getSuspectClothing()
+        );
+
+        try {
+            LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
+            layer.sendMessage(ownerNotification);
+            new NotificationCommentControllerApplicativo()
+                    .storeTargetForInternalNotification(ownerNotification, notificationKey, commentId);
+            repository.markCommentLikeNotificationSent(commentId, likerCf);
         } catch (DAOExceptionRemoli e) {
             throw new BrondiException("Unable to notify the comment owner.", "COMMENT_LIKE_OWNER_NOTIFICATION", "Owner notification failed", e);
         }

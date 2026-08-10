@@ -3,6 +3,7 @@ package it.web.safeflow.controller.applicativo;
 import it.web.safeflow.exception.BrondiException;
 import it.web.safeflow.exception.DAOExceptionRemoli;
 import it.web.safeflow.dao.LayerPersistenza;
+import it.web.safeflow.dao.SocialDataRepository;
 import it.web.safeflow.model.Notification;
 import it.web.safeflow.model.NotificationLikeState;
 import it.web.safeflow.utility.factory.FactoryLayerPersistenza;
@@ -35,6 +36,17 @@ public class NotificationLikeControllerApplicativo {
         String cf = normalizeCf(codiceFiscale);
         Notification likedNotification = findLikableTravelerNotification(key);
 
+        try {
+            SocialDataRepository repository = new SocialDataRepository();
+            NotificationLikeState state = repository.toggleReportLike(key, cf);
+            if (state.isLikedByCurrentUser()) {
+                notifyReportOwnerIfNeeded(repository, key, cf, likedNotification);
+            }
+            return state;
+        } catch (DAOExceptionRemoli ignored) {
+            // Legacy fallback for local databases that have not imported the social tables yet.
+        }
+
         synchronized (LOCK) {
             Properties properties = loadProperties();
             String propertyKey = propertyKey(key, cf);
@@ -63,6 +75,11 @@ public class NotificationLikeControllerApplicativo {
                 : codiceFiscale.trim().toUpperCase(Locale.ROOT);
 
         synchronized (LOCK) {
+            try {
+                return new SocialDataRepository().reportLikeStates(notificationKeys, cf);
+            } catch (DAOExceptionRemoli ignored) {
+                // Legacy fallback for local databases that have not imported the social tables yet.
+            }
             Properties properties = loadProperties();
             for (String rawKey : notificationKeys) {
                 if (rawKey == null || rawKey.isBlank()) {
@@ -150,6 +167,50 @@ public class NotificationLikeControllerApplicativo {
         try {
             FactoryLayerPersistenza.createLayerPersistenza().sendMessage(ownerNotification);
             properties.setProperty(notifiedKey, "true");
+        } catch (DAOExceptionRemoli e) {
+            throw new BrondiException("Unable to notify the report owner.", "LIKE_OWNER_NOTIFICATION", "Owner notification failed", e);
+        }
+    }
+
+    private void notifyReportOwnerIfNeeded(SocialDataRepository repository,
+                                           String notificationKey,
+                                           String likerCf,
+                                           Notification likedNotification) throws BrondiException {
+        String ownerCf = likedNotification.getSenderCf();
+        if (ownerCf == null || ownerCf.isBlank() || ownerCf.equalsIgnoreCase(likerCf)) {
+            return;
+        }
+
+        try {
+            if (repository.isReportLikeNotificationSent(notificationKey, likerCf)) {
+                return;
+            }
+        } catch (DAOExceptionRemoli e) {
+            throw new BrondiException("Unable to notify the report owner.", "LIKE_OWNER_NOTIFICATION", "Owner notification marker failed", e);
+        }
+
+        Notification ownerNotification = new Notification(
+                "Someone liked your traveler report: " + summarize(likedNotification.getMessage()),
+                new Timestamp(System.currentTimeMillis()),
+                false,
+                true,
+                false,
+                "APPROVED",
+                "TRAVELER",
+                likerCf,
+                ownerCf,
+                likedNotification.getCity(),
+                likedNotification.isPickpocketAlert(),
+                likedNotification.isFightAlert(),
+                likedNotification.isCrowdAlert(),
+                likedNotification.isGeneralAlert(),
+                likedNotification.getStationName(),
+                likedNotification.getSuspectClothing()
+        );
+
+        try {
+            FactoryLayerPersistenza.createLayerPersistenza().sendMessage(ownerNotification);
+            repository.markReportLikeNotificationSent(notificationKey, likerCf);
         } catch (DAOExceptionRemoli e) {
             throw new BrondiException("Unable to notify the report owner.", "LIKE_OWNER_NOTIFICATION", "Owner notification failed", e);
         }

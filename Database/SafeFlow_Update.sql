@@ -181,6 +181,90 @@ INSERT INTO `User` VALUES ('BCCSLL98','Giulio','Andreotti','1918-10-10','andreot
 UNLOCK TABLES;
 
 --
+-- Table structure for Safe Flow social data
+--
+
+DROP TABLE IF EXISTS `sf_user_profiles`;
+CREATE TABLE `sf_user_profiles` (
+  `codice_fiscale` varchar(16) NOT NULL,
+  `bio` varchar(500) NOT NULL DEFAULT '',
+  `avatar_content_type` varchar(80) DEFAULT NULL,
+  `avatar_data` longblob,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`codice_fiscale`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `sf_report_images`;
+CREATE TABLE `sf_report_images` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `notification_key` varchar(512) NOT NULL,
+  `file_name` varchar(32) NOT NULL,
+  `content_type` varchar(80) NOT NULL,
+  `image_data` longblob NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_report_image` (`notification_key`,`file_name`),
+  KEY `idx_report_images_notification` (`notification_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `sf_notification_likes`;
+CREATE TABLE `sf_notification_likes` (
+  `notification_key` varchar(512) NOT NULL,
+  `traveler_cf` varchar(16) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`notification_key`,`traveler_cf`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `sf_notification_comments`;
+CREATE TABLE `sf_notification_comments` (
+  `id` varchar(64) NOT NULL,
+  `notification_key` varchar(512) NOT NULL,
+  `author_cf` varchar(16) NOT NULL,
+  `parent_comment_id` varchar(64) DEFAULT NULL,
+  `reply_to_cf` varchar(16) DEFAULT NULL,
+  `text` varchar(600) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_comments_notification` (`notification_key`,`created_at`),
+  KEY `idx_comments_parent` (`parent_comment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `sf_comment_likes`;
+CREATE TABLE `sf_comment_likes` (
+  `comment_id` varchar(64) NOT NULL,
+  `traveler_cf` varchar(16) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`comment_id`,`traveler_cf`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `sf_like_notification_markers`;
+CREATE TABLE `sf_like_notification_markers` (
+  `marker_type` varchar(32) NOT NULL,
+  `item_key` varchar(512) NOT NULL,
+  `actor_cf` varchar(16) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`marker_type`,`item_key`,`actor_cf`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `sf_internal_notification_targets`;
+CREATE TABLE `sf_internal_notification_targets` (
+  `internal_notification_key` varchar(512) NOT NULL,
+  `report_notification_key` varchar(512) NOT NULL,
+  `comment_id` varchar(64) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`internal_notification_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS `sf_notification_dismissals`;
+CREATE TABLE `sf_notification_dismissals` (
+  `notification_type` varchar(24) NOT NULL,
+  `traveler_cf` varchar(16) NOT NULL,
+  `notification_key` varchar(512) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`notification_type`,`traveler_cf`,`notification_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
 -- Dumping events for database 'SafeFlow_Update'
 --
 

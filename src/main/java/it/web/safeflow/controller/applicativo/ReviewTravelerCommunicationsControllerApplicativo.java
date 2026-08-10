@@ -2,6 +2,7 @@ package it.web.safeflow.controller.applicativo;
 
 import it.web.safeflow.bean.MessageBean;
 import it.web.safeflow.dao.LayerPersistenza;
+import it.web.safeflow.exception.BrondiException;
 import it.web.safeflow.exception.DAOExceptionRemoli;
 import it.web.safeflow.model.Notification;
 import it.web.safeflow.utility.factory.FactoryLayerPersistenza;
@@ -64,6 +65,7 @@ public class ReviewTravelerCommunicationsControllerApplicativo {
                 throw new DAOExceptionRemoli("This traveler report has already been handled by another admin.");
             }
 
+            String approvedReportKey = NotificationLikeControllerApplicativo.keyFor(notification);
             Notification adminNotification = new Notification(
                     "Your traveler report has been approved by the Safe Flow admin team.",
                     new Timestamp(System.currentTimeMillis()),
@@ -83,6 +85,7 @@ public class ReviewTravelerCommunicationsControllerApplicativo {
                     notification.getSuspectClothing()
             );
             layer.sendMessage(adminNotification);
+            storeApprovedReportTarget(adminNotification, approvedReportKey);
             return;
         }
 
@@ -137,5 +140,15 @@ public class ReviewTravelerCommunicationsControllerApplicativo {
             return notification.getSenderCf() == null || notification.getSenderCf().isBlank();
         }
         return message.getSenderCf().equals(notification.getSenderCf());
+    }
+
+    private void storeApprovedReportTarget(Notification internalNotification, String approvedReportKey)
+            throws DAOExceptionRemoli {
+        try {
+            new NotificationCommentControllerApplicativo()
+                    .storeTargetForInternalNotification(internalNotification, approvedReportKey, null);
+        } catch (BrondiException e) {
+            throw new DAOExceptionRemoli("Unable to link the approval notification to the approved report.", e);
+        }
     }
 }

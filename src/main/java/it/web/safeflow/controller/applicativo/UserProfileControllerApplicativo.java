@@ -3,6 +3,7 @@ package it.web.safeflow.controller.applicativo;
 import it.web.safeflow.exception.BrondiException;
 import it.web.safeflow.exception.DAOExceptionRemoli;
 import it.web.safeflow.dao.LayerPersistenza;
+import it.web.safeflow.dao.SocialDataRepository;
 import it.web.safeflow.model.Credentials;
 import it.web.safeflow.model.Notification;
 import it.web.safeflow.model.UserProfile;
@@ -38,12 +39,11 @@ public class UserProfileControllerApplicativo {
 
     public UserProfile getProfile(String codiceFiscale) throws BrondiException {
         String cf = normalizeCf(codiceFiscale);
-        Properties properties = loadProperties();
-        String bio = properties.getProperty(key(cf, "bio"), "");
+        ProfileStorage profileStorage = profileStorage(cf);
         return new UserProfile(
                 cf,
-                bio,
-                avatarPath(cf, properties).map(Files::exists).orElse(false),
+                profileStorage.bio(),
+                profileStorage.avatarPresent(),
                 profileStats(Set.of(cf)).getOrDefault(cf, new UserProfileStats(0, 0, 0))
         );
     }
@@ -85,17 +85,22 @@ public class UserProfileControllerApplicativo {
             throw new BrondiException("Bio can contain up to 500 characters.", "PROFILE_VALIDATION", "Bio too long");
         }
 
+        SocialDataRepository.StoredFile avatar = avatarFromPart(cf, avatarPart);
+        try {
+            new SocialDataRepository().saveProfile(cf, normalizedBio, avatar);
+            return;
+        } catch (DAOExceptionRemoli ignored) {
+            // Keep the legacy profile store as a compatibility fallback until every environment has the DB tables.
+        }
+
         Properties properties = loadProperties();
         properties.setProperty(key(cf, "bio"), normalizedBio);
 
-        if (avatarPart != null && avatarPart.getSize() > 0) {
-            String extension = resolveExtension(avatarPart);
-            Path avatarPath = PROFILE_DIR.resolve(cf + extension);
+        if (avatar != null) {
+            Path avatarPath = PROFILE_DIR.resolve(avatar.fileName());
             try {
                 Files.createDirectories(PROFILE_DIR);
-                try (InputStream input = avatarPart.getInputStream()) {
-                    Files.copy(input, avatarPath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
-                }
+                Files.write(avatarPath, avatar.data());
                 properties.setProperty(key(cf, "avatar"), avatarPath.getFileName().toString());
             } catch (IOException e) {
                 throw new BrondiException("Unable to save the profile image.", "PROFILE_IO", "Avatar write error", e);
@@ -107,6 +112,18 @@ public class UserProfileControllerApplicativo {
 
     public void removeAvatar(String codiceFiscale) throws BrondiException {
         String cf = normalizeCf(codiceFiscale);
+
+        try {
+            new SocialDataRepository().removeAvatar(cf);
+            return;
+        } catch (DAOExceptionRemoli ignored) {
+            // Keep the legacy profile store as a compatibility fallback until every environment has the DB tables.
+        }
+
+        removeLegacyAvatar(cf);
+    }
+
+    private void removeLegacyAvatar(String cf) throws BrondiException {
         Properties properties = loadProperties();
         String avatar = properties.getProperty(key(cf, "avatar"));
 
@@ -127,6 +144,39 @@ public class UserProfileControllerApplicativo {
         return avatarPath(cf)
                 .filter(Files::exists)
                 .orElseThrow(() -> new BrondiException("Profile image is not available.", "PROFILE_AVATAR_NOT_FOUND", cf));
+    }
+
+    public SocialDataRepository.StoredFile getAvatarFile(String codiceFiscale) throws BrondiException {
+        String cf = normalizeCf(codiceFiscale);
+
+        try {
+            java.util.Optional<SocialDataRepository.StoredProfile> dbProfile = new SocialDataRepository().profile(cf);
+            if (dbProfile.isPresent()) {
+                SocialDataRepository.StoredProfile profile = dbProfile.get();
+                if (profile.hasAvatar()) {
+                    return new SocialDataRepository.StoredFile(
+                            "avatar",
+                            profile.avatarContentType(),
+                            profile.avatarData()
+                    );
+                }
+                throw new BrondiException("Profile image is not available.", "PROFILE_AVATAR_NOT_FOUND", cf);
+            }
+        } catch (DAOExceptionRemoli ignored) {
+            // Fall back to the legacy file store when the social tables are not installed yet.
+        }
+
+        Path avatarPath = getAvatarPath(cf);
+        try {
+            String contentType = Files.probeContentType(avatarPath);
+            return new SocialDataRepository.StoredFile(
+                    avatarPath.getFileName().toString(),
+                    contentType == null ? "application/octet-stream" : contentType,
+                    Files.readAllBytes(avatarPath)
+            );
+        } catch (IOException e) {
+            throw new BrondiException("Profile image is not available.", "PROFILE_AVATAR_NOT_FOUND", cf, e);
+        }
     }
 
     private java.util.Optional<Path> avatarPath(String cf) throws BrondiException {
@@ -161,6 +211,59 @@ public class UserProfileControllerApplicativo {
             case "image/gif" -> ".gif";
             default -> throw new BrondiException("Upload a JPG, PNG, WEBP, or GIF image.", "PROFILE_VALIDATION", "Invalid avatar type: " + contentType);
         };
+    }
+
+    private SocialDataRepository.StoredFile avatarFromPart(String cf, Part avatarPart) throws BrondiException {
+        if (avatarPart == null || avatarPart.getSize() <= 0) {
+            return null;
+        }
+
+        String extension = resolveExtension(avatarPart);
+        String contentType = avatarPart.getContentType() == null
+                ? "application/octet-stream"
+                : avatarPart.getContentType().toLowerCase(Locale.ROOT);
+        try (InputStream input = avatarPart.getInputStream()) {
+            return new SocialDataRepository.StoredFile(cf + extension, contentType, input.readAllBytes());
+        } catch (IOException e) {
+            throw new BrondiException("Unable to save the profile image.", "PROFILE_IO", "Avatar read error", e);
+        }
+    }
+
+    private ProfileStorage profileStorage(String cf) throws BrondiException {
+        try {
+            java.util.Optional<SocialDataRepository.StoredProfile> dbProfile = new SocialDataRepository().profile(cf);
+            if (dbProfile.isPresent()) {
+                return profileStorageFrom(dbProfile.get());
+            }
+        } catch (DAOExceptionRemoli ignored) {
+            // Fall back to the legacy profile properties when the social tables are not installed yet.
+        }
+
+        return legacyProfileStorage(cf, loadProperties());
+    }
+
+    private ProfileStorage profileStorage(String cf, Properties properties) {
+        try {
+            java.util.Optional<SocialDataRepository.StoredProfile> dbProfile = new SocialDataRepository().profile(cf);
+            if (dbProfile.isPresent()) {
+                return profileStorageFrom(dbProfile.get());
+            }
+        } catch (DAOExceptionRemoli ignored) {
+            // Fall back to the legacy profile properties when the social tables are not installed yet.
+        }
+
+        return legacyProfileStorage(cf, properties);
+    }
+
+    private ProfileStorage profileStorageFrom(SocialDataRepository.StoredProfile profile) {
+        return new ProfileStorage(profile.bio() == null ? "" : profile.bio(), profile.hasAvatar());
+    }
+
+    private ProfileStorage legacyProfileStorage(String cf, Properties properties) {
+        return new ProfileStorage(
+                properties.getProperty(key(cf, "bio"), ""),
+                avatarPath(cf, properties).map(Files::exists).orElse(false)
+        );
     }
 
     private Properties loadProperties() throws BrondiException {
@@ -222,17 +325,20 @@ public class UserProfileControllerApplicativo {
             }
 
             String role = user.getRuolo() == null ? "" : user.getRuolo().name();
-            boolean avatarPresent = avatarPath(cf, properties).map(Files::exists).orElse(false);
+            ProfileStorage profileStorage = profileStorage(cf, properties);
             profiles.put(cf, new UserProfileSummary(
                     cf,
                     user.getNome(),
                     user.getCognome(),
                     role,
-                    properties.getProperty(key(cf, "bio"), ""),
-                    avatarPresent,
+                    profileStorage.bio(),
+                    profileStorage.avatarPresent(),
                     stats.getOrDefault(cf, new UserProfileStats(0, 0, 0))
             ));
         }
+    }
+
+    private record ProfileStorage(String bio, boolean avatarPresent) {
     }
 
     private Map<String, UserProfileStats> profileStats(Set<String> requested) throws BrondiException {

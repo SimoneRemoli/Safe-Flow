@@ -1598,15 +1598,6 @@
 	                                <% } else { %>
 	                                <span class="admin-like-placeholder">-</span>
 	                                <% } %>
-	                                <% if (isTravelerView && !notificationKey.isBlank()) { %>
-	                                <button
-	                                        type="button"
-	                                        class="remove-notification-button"
-	                                        data-remove-public-notification
-	                                        data-notification-key="<%= notificationKey %>">
-	                                    Remove
-	                                </button>
-	                                <% } %>
 	                                </div>
 		                            </td>
 		                        </tr>

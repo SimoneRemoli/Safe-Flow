@@ -2,6 +2,7 @@ package it.web.safeflow.controller.applicativo;
 
 import it.web.safeflow.bean.MessageBean;
 import it.web.safeflow.dao.LayerPersistenza;
+import it.web.safeflow.dao.SocialDataRepository;
 import it.web.safeflow.exception.BrondiException;
 import it.web.safeflow.exception.DAOExceptionRemoli;
 import it.web.safeflow.model.Notification;
@@ -134,6 +135,13 @@ public class ViewInternalNotificationsControllerApplicativo {
         String key = normalizeNotificationKey(notificationKey);
         ensureNotificationBelongsToTraveler(cf, key);
 
+        try {
+            new SocialDataRepository().dismissNotification("INTERNAL", cf, key);
+            return;
+        } catch (DAOExceptionRemoli ignored) {
+            // Keep the legacy file store as a compatibility fallback until every environment has the DB tables.
+        }
+
         synchronized (DISMISS_LOCK) {
             Properties properties = loadDismissProperties();
             properties.setProperty(dismissPropertyKey(cf, key), "true");
@@ -166,8 +174,15 @@ public class ViewInternalNotificationsControllerApplicativo {
 
     private Set<String> dismissedKeysFor(String codiceFiscale) throws BrondiException {
         String cf = normalizeCf(codiceFiscale);
-        String prefix = DISMISSED_PREFIX + cf + ".";
         Set<String> keys = new HashSet<>();
+
+        try {
+            keys.addAll(new SocialDataRepository().dismissedNotificationKeys("INTERNAL", cf));
+        } catch (DAOExceptionRemoli ignored) {
+            // Fall back to the legacy file store when the social tables are not installed yet.
+        }
+
+        String prefix = DISMISSED_PREFIX + cf + ".";
 
         synchronized (DISMISS_LOCK) {
             Properties properties = loadDismissProperties();

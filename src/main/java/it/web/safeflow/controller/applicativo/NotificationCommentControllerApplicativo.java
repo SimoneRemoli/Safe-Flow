@@ -1,6 +1,7 @@
 package it.web.safeflow.controller.applicativo;
 
 import it.web.safeflow.dao.LayerPersistenza;
+import it.web.safeflow.dao.SocialDataRepository;
 import it.web.safeflow.exception.BrondiException;
 import it.web.safeflow.exception.DAOExceptionRemoli;
 import it.web.safeflow.model.Notification;
@@ -22,6 +23,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -53,7 +55,7 @@ public class NotificationCommentControllerApplicativo {
         NotificationComment parentComment = null;
 
         synchronized (LOCK) {
-            List<NotificationComment> existingComments = readComments(key);
+            List<NotificationComment> existingComments = storedComments(key);
             parentComment = findParentComment(existingComments, normalizeOptionalId(parentCommentId));
             comment = new NotificationComment(
                     UUID.randomUUID().toString(),
@@ -66,16 +68,20 @@ public class NotificationCommentControllerApplicativo {
             );
 
             try {
-                Files.createDirectories(COMMENT_DIR);
-                Files.writeString(
-                        commentFile(key),
-                        serialize(comment) + System.lineSeparator(),
-                        StandardCharsets.UTF_8,
-                        StandardOpenOption.CREATE,
-                        StandardOpenOption.APPEND
-                );
-            } catch (IOException e) {
-                throw new BrondiException("Unable to save the comment.", "COMMENT_IO", "Comment store write error", e);
+                new SocialDataRepository().saveComment(comment);
+            } catch (DAOExceptionRemoli dbError) {
+                try {
+                    Files.createDirectories(COMMENT_DIR);
+                    Files.writeString(
+                            commentFile(key),
+                            serialize(comment) + System.lineSeparator(),
+                            StandardCharsets.UTF_8,
+                            StandardOpenOption.CREATE,
+                            StandardOpenOption.APPEND
+                    );
+                } catch (IOException e) {
+                    throw new BrondiException("Unable to save the comment.", "COMMENT_IO", "Comment store write error", e);
+                }
             }
         }
 
@@ -97,7 +103,7 @@ public class NotificationCommentControllerApplicativo {
                     continue;
                 }
                 String key = normalizeNotificationKey(rawKey);
-                commentsByKey.put(key, readComments(key));
+                commentsByKey.put(key, storedComments(key));
             }
         }
 
@@ -150,6 +156,33 @@ public class NotificationCommentControllerApplicativo {
         } catch (IOException e) {
             throw new BrondiException("Unable to read report comments.", "COMMENT_IO", "Comment store read error", e);
         }
+    }
+
+    private List<NotificationComment> storedComments(String notificationKey) throws BrondiException {
+        Map<String, NotificationComment> commentsById = new LinkedHashMap<>();
+        boolean databaseRead = false;
+        try {
+            for (NotificationComment comment : new SocialDataRepository().commentsFor(notificationKey)) {
+                commentsById.put(comment.getId(), comment);
+            }
+            databaseRead = true;
+        } catch (DAOExceptionRemoli ignored) {
+            // Fall back to the legacy file store when the social tables are not installed yet.
+        }
+
+        try {
+            for (NotificationComment comment : readComments(notificationKey)) {
+                commentsById.putIfAbsent(comment.getId(), comment);
+            }
+        } catch (BrondiException legacyError) {
+            if (!databaseRead) {
+                throw legacyError;
+            }
+        }
+
+        List<NotificationComment> comments = new ArrayList<>(commentsById.values());
+        comments.sort(Comparator.comparing(NotificationComment::getCreatedAt));
+        return comments;
     }
 
     private java.util.Optional<NotificationComment> parseLine(String notificationKey, String line) {
@@ -325,7 +358,18 @@ public class NotificationCommentControllerApplicativo {
         }
 
         try {
-            String value = loadTargetProperties().getProperty(NotificationLikeControllerApplicativo.keyFor(notification));
+            String internalNotificationKey = NotificationLikeControllerApplicativo.keyFor(notification);
+            String value;
+            try {
+                value = new SocialDataRepository()
+                        .internalNotificationTarget(internalNotificationKey)
+                        .orElse(null);
+            } catch (DAOExceptionRemoli ignored) {
+                value = null;
+            }
+            if (value == null || value.isBlank()) {
+                value = loadTargetProperties().getProperty(internalNotificationKey);
+            }
             if (value == null || value.isBlank()) {
                 return null;
             }
@@ -361,12 +405,17 @@ public class NotificationCommentControllerApplicativo {
         String key = normalizeNotificationKey(reportNotificationKey);
         String id = normalizeOptionalId(commentId);
         synchronized (LOCK) {
-            Properties properties = loadTargetProperties();
-            properties.setProperty(
-                    NotificationLikeControllerApplicativo.keyFor(internalNotification),
-                    key + "|" + blankIfNull(id)
-            );
-            storeTargetProperties(properties);
+            String internalNotificationKey = NotificationLikeControllerApplicativo.keyFor(internalNotification);
+            try {
+                new SocialDataRepository().saveInternalNotificationTarget(internalNotificationKey, key, id);
+            } catch (DAOExceptionRemoli ignored) {
+                Properties properties = loadTargetProperties();
+                properties.setProperty(
+                        internalNotificationKey,
+                        key + "|" + blankIfNull(id)
+                );
+                storeTargetProperties(properties);
+            }
         }
     }
 

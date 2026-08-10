@@ -2,6 +2,7 @@ package it.web.safeflow.controller.applicativo;
 
 import it.web.safeflow.bean.MessageBean;
 import it.web.safeflow.dao.LayerPersistenza;
+import it.web.safeflow.dao.SocialDataRepository;
 import it.web.safeflow.exception.BrondiException;
 import it.web.safeflow.exception.DAOExceptionRemoli;
 import it.web.safeflow.model.Notification;
@@ -14,14 +15,15 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.charset.StandardCharsets;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
 
 public class ReportImageControllerApplicativo {
 
@@ -45,20 +47,36 @@ public class ReportImageControllerApplicativo {
                 message.getSenderCf(),
                 message.getMessage()
         );
+        List<SocialDataRepository.StoredFile> storedImages = storedImages(images);
+
+        boolean savedInDatabase = false;
+        try {
+            new SocialDataRepository().saveReportImages(notificationKey, storedImages);
+            savedInDatabase = true;
+        } catch (DAOExceptionRemoli ignored) {
+            // Keep the legacy file store as a compatibility fallback until every environment has the DB tables.
+        }
+
         Path reportDir = REPORT_IMAGES_DIR.resolve(notificationKey);
 
         try {
             Files.createDirectories(reportDir);
-            int index = 1;
-            for (Part image : images) {
-                String extension = extensionFor(image);
-                Path imagePath = reportDir.resolve(String.format("%03d%s", index++, extension));
-                try (InputStream input = image.getInputStream()) {
-                    Files.copy(input, imagePath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
-                }
+            try (var existingFiles = Files.list(reportDir)) {
+                existingFiles.filter(Files::isRegularFile).forEach(path -> {
+                    try {
+                        Files.deleteIfExists(path);
+                    } catch (IOException ignored) {
+                    }
+                });
+            }
+            for (SocialDataRepository.StoredFile image : storedImages) {
+                Files.write(reportDir.resolve(image.fileName()), image.data());
             }
             storeImageIndex(notificationKey, message.getSenderCf(), message.getMessage());
         } catch (IOException e) {
+            if (savedInDatabase) {
+                return;
+            }
             throw new BrondiException("Unable to save report images.", "REPORT_IMAGE_IO", "Report image write error", e);
         }
     }
@@ -71,6 +89,40 @@ public class ReportImageControllerApplicativo {
             throws BrondiException {
         ensureCanView(notificationKey, viewerCf, viewerRole);
         return listImageAttachments(notificationKey);
+    }
+
+    public SocialDataRepository.StoredFile viewableImage(String notificationKey, String fileName, String viewerCf, String viewerRole)
+            throws BrondiException {
+        ensureCanView(notificationKey, viewerCf, viewerRole);
+        String cleanFileName = sanitizeStoredFileName(fileName);
+
+        try {
+            Optional<SocialDataRepository.StoredFile> dbImage =
+                    new SocialDataRepository().reportImage(notificationKey, cleanFileName);
+            if (dbImage.isPresent()) {
+                return dbImage.get();
+            }
+            Optional<String> compatibleKey = compatibleDatabaseImageKey(notificationKey);
+            if (compatibleKey.isPresent() && !compatibleKey.get().equals(notificationKey)) {
+                dbImage = new SocialDataRepository().reportImage(compatibleKey.get(), cleanFileName);
+                if (dbImage.isPresent()) {
+                    return dbImage.get();
+                }
+            }
+        } catch (DAOExceptionRemoli ignored) {
+            // Fall back to the legacy file store when the social tables are not installed yet.
+        }
+
+        Path imagePath = viewableImagePath(notificationKey, cleanFileName, viewerCf, viewerRole);
+        try {
+            return new SocialDataRepository.StoredFile(
+                    cleanFileName,
+                    contentTypeFor(cleanFileName),
+                    Files.readAllBytes(imagePath)
+            );
+        } catch (IOException e) {
+            throw new BrondiException("Report image not found.", "REPORT_IMAGE_NOT_FOUND", cleanFileName, e);
+        }
     }
 
     public Path viewableImagePath(String notificationKey, String fileName, String viewerCf, String viewerRole)
@@ -114,6 +166,27 @@ public class ReportImageControllerApplicativo {
         return images;
     }
 
+    private List<SocialDataRepository.StoredFile> storedImages(List<Part> images) throws BrondiException {
+        List<SocialDataRepository.StoredFile> storedImages = new ArrayList<>();
+        int index = 1;
+        for (Part image : images) {
+            String extension = extensionFor(image);
+            String contentType = image.getContentType() == null
+                    ? contentTypeFor(extension)
+                    : image.getContentType().toLowerCase(Locale.ROOT);
+            try (InputStream input = image.getInputStream()) {
+                storedImages.add(new SocialDataRepository.StoredFile(
+                        String.format("%03d%s", index++, extension),
+                        contentType,
+                        input.readAllBytes()
+                ));
+            } catch (IOException e) {
+                throw new BrondiException("Unable to save report images.", "REPORT_IMAGE_IO", "Report image read error", e);
+            }
+        }
+        return storedImages;
+    }
+
     private String extensionFor(Part part) throws BrondiException {
         String contentType = part.getContentType() == null ? "" : part.getContentType().toLowerCase(Locale.ROOT);
         return switch (contentType) {
@@ -128,6 +201,22 @@ public class ReportImageControllerApplicativo {
     private List<ReportImageAttachment> listImageAttachments(String notificationKey) {
         if (notificationKey == null || notificationKey.isBlank()) {
             return List.of();
+        }
+
+        try {
+            List<ReportImageAttachment> dbImages = new SocialDataRepository().reportImages(notificationKey);
+            if (!dbImages.isEmpty()) {
+                return dbImages;
+            }
+            Optional<String> compatibleKey = compatibleDatabaseImageKey(notificationKey);
+            if (compatibleKey.isPresent() && !compatibleKey.get().equals(notificationKey)) {
+                dbImages = new SocialDataRepository().reportImages(compatibleKey.get());
+                if (!dbImages.isEmpty()) {
+                    return dbImages;
+                }
+            }
+        } catch (DAOExceptionRemoli ignored) {
+            // Fall back to the legacy file store when the social tables are not installed yet.
         }
 
         Path reportDir = resolveReportDir(notificationKey);
@@ -201,6 +290,30 @@ public class ReportImageControllerApplicativo {
         } catch (IOException e) {
             return Optional.empty();
         }
+    }
+
+    private Optional<String> compatibleDatabaseImageKey(String notificationKey) throws DAOExceptionRemoli {
+        ReportKey requested = decodeReportKey(notificationKey).orElse(null);
+        if (requested == null) {
+            return Optional.empty();
+        }
+
+        Set<String> candidates = new LinkedHashSet<>(new SocialDataRepository().reportImageNotificationKeys());
+        for (String candidate : candidates) {
+            if (notificationKey.equals(candidate)) {
+                continue;
+            }
+            Optional<ReportKey> candidateKey = decodeReportKey(candidate);
+            if (candidateKey
+                    .map(requested::sameReportIgnoringMilliseconds)
+                    .orElse(false)
+                    || candidateKey
+                    .map(requested::sameReportIdentity)
+                    .orElse(false)) {
+                return Optional.of(candidate);
+            }
+        }
+        return Optional.empty();
     }
 
     private void storeImageIndex(String folderKey, String senderCf, String message) {
