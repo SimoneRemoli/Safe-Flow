@@ -90,9 +90,9 @@
 
         .topbar {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
-            gap: 16px;
+            gap: 28px;
             position: relative;
             z-index: 1;
         }
@@ -310,7 +310,6 @@
         </div>
 
         <div class="nav-actions">
-            <a href="travelerHome">Home</a>
             <a href="areaRiservata">Reserved Area</a>
             <a href="internalNotifications" class="notification-link <%= internalNotificationsCount > 0 ? "has-alert" : "" %>">
                 Notifications
@@ -331,7 +330,6 @@
 
             <div class="cta-row">
                 <a class="primary-cta" href="travelerReport">Send Report</a>
-                <a class="secondary-cta" href="viewNotifications">Notifications</a>
             </div>
 
             <div class="info-grid">

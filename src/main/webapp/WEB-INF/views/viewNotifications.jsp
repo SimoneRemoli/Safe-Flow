@@ -113,6 +113,7 @@
         }
 
         .nav-actions a,
+        .nav-actions button,
         .save-button {
             text-decoration: none;
             border: none;
@@ -141,6 +142,7 @@
         }
 
         .nav-actions a:hover,
+        .nav-actions button:hover,
         .save-button:hover {
             transform: translateY(-2px);
             border-color: rgba(111, 247, 255, 0.4);
@@ -437,7 +439,8 @@
             justify-content: flex-end !important;
         }
 
-        .safe-flow-notifications .nav-actions a {
+        .safe-flow-notifications .nav-actions a,
+        .safe-flow-notifications .nav-actions button {
             min-height: 38px !important;
             padding: 9px 13px !important;
             border-radius: 8px !important;
@@ -448,11 +451,23 @@
             font-weight: 750 !important;
         }
 
+        .safe-flow-notifications .nav-actions button {
+            font: inherit !important;
+            cursor: pointer !important;
+        }
+
         .safe-flow-notifications .nav-actions a.primary-action {
             color: #ffffff !important;
             background: #0e7c66 !important;
             border-color: #0e7c66 !important;
             box-shadow: 0 10px 18px rgba(14, 124, 102, 0.16) !important;
+        }
+
+        .safe-flow-notifications .nav-actions .analytics-trigger {
+            color: #04111f !important;
+            background: linear-gradient(90deg, #89ffd1, #6ff7ff 55%, #b6f2ff) !important;
+            border-color: rgba(14, 124, 102, 0.2) !important;
+            box-shadow: 0 10px 18px rgba(111, 247, 255, 0.16) !important;
         }
 
         .safe-flow-notifications .alerts-summary {
@@ -769,6 +784,39 @@
             font-weight: 800 !important;
         }
 
+        .safe-flow-notifications .row-actions {
+            display: inline-flex !important;
+            flex-direction: column !important;
+            gap: 7px !important;
+            align-items: center !important;
+        }
+
+        .safe-flow-notifications .remove-notification-button {
+            min-height: 32px !important;
+            padding: 7px 10px !important;
+            border-radius: 999px !important;
+            border: 1px solid rgba(190, 18, 60, 0.22) !important;
+            color: #be123c !important;
+            background: #fff1f2 !important;
+            cursor: pointer !important;
+            font: inherit !important;
+            font-size: 0.76rem !important;
+            font-weight: 900 !important;
+            transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease !important;
+        }
+
+        .safe-flow-notifications .remove-notification-button:hover {
+            transform: translateY(-1px) !important;
+            border-color: rgba(190, 18, 60, 0.42) !important;
+            background: #ffe4e6 !important;
+        }
+
+        .safe-flow-notifications .remove-notification-button:disabled {
+            cursor: wait !important;
+            opacity: 0.58 !important;
+            transform: none !important;
+        }
+
         .safe-flow-notifications .comments-row td {
             padding-top: 0 !important;
             background: #ffffff !important;
@@ -1016,6 +1064,334 @@
             font-weight: 800 !important;
         }
 
+        .safe-flow-notifications .analytics-modal {
+            position: fixed !important;
+            inset: 0 !important;
+            z-index: 1200 !important;
+            display: grid !important;
+            place-items: center !important;
+            padding: 22px !important;
+            background: rgba(4, 17, 31, 0.58) !important;
+            backdrop-filter: blur(10px) !important;
+        }
+
+        .safe-flow-notifications .analytics-modal.hidden {
+            display: none !important;
+        }
+
+        .safe-flow-notifications .analytics-dialog {
+            width: min(980px, 100%) !important;
+            max-height: min(840px, calc(100vh - 44px)) !important;
+            overflow: auto !important;
+            border-radius: 18px !important;
+            color: #14241d !important;
+            background: #ffffff !important;
+            border: 1px solid #d8e4de !important;
+            box-shadow: 0 32px 90px rgba(4, 17, 31, 0.34) !important;
+        }
+
+        .safe-flow-notifications .analytics-header {
+            display: flex !important;
+            justify-content: space-between !important;
+            gap: 16px !important;
+            align-items: flex-start !important;
+            padding: 22px 24px !important;
+            border-bottom: 1px solid #d8e4de !important;
+            background: linear-gradient(135deg, #ffffff, #f5fffb 52%, #effbff) !important;
+        }
+
+        .safe-flow-notifications .analytics-kicker {
+            display: inline-flex !important;
+            padding: 5px 9px !important;
+            border-radius: 6px !important;
+            color: #075f4e !important;
+            background: #e5f3ee !important;
+            border: 1px solid #c8e2d8 !important;
+            font-size: 0.7rem !important;
+            font-weight: 900 !important;
+            text-transform: uppercase !important;
+        }
+
+        .safe-flow-notifications .analytics-header h2 {
+            margin: 10px 0 6px !important;
+            color: #14241d !important;
+            font-size: clamp(1.45rem, 3vw, 2.1rem) !important;
+            line-height: 1.08 !important;
+        }
+
+        .safe-flow-notifications .analytics-header p {
+            margin: 0 !important;
+            max-width: 640px !important;
+            color: #607267 !important;
+            line-height: 1.55 !important;
+        }
+
+        .safe-flow-notifications .analytics-close {
+            width: 38px !important;
+            height: 38px !important;
+            border-radius: 50% !important;
+            border: 1px solid #d8e4de !important;
+            color: #31443a !important;
+            background: #ffffff !important;
+            cursor: pointer !important;
+            font: inherit !important;
+            font-size: 1.3rem !important;
+            line-height: 1 !important;
+        }
+
+        .safe-flow-notifications .analytics-body {
+            padding: 22px 24px 24px !important;
+        }
+
+        .safe-flow-notifications .analytics-controls {
+            display: grid !important;
+            grid-template-columns: minmax(210px, 0.8fr) minmax(0, 1.6fr) !important;
+            gap: 16px !important;
+            align-items: start !important;
+            margin-bottom: 18px !important;
+        }
+
+        .safe-flow-notifications .analytics-control {
+            padding: 14px !important;
+            border-radius: 14px !important;
+            background: #f7faf8 !important;
+            border: 1px solid #d8e4de !important;
+        }
+
+        .safe-flow-notifications .analytics-label {
+            display: block !important;
+            margin-bottom: 8px !important;
+            color: #405147 !important;
+            font-size: 0.76rem !important;
+            font-weight: 900 !important;
+            text-transform: uppercase !important;
+        }
+
+        .safe-flow-notifications .analytics-select {
+            width: 100% !important;
+            min-height: 42px !important;
+            border-radius: 10px !important;
+            border: 1px solid #c8e2d8 !important;
+            color: #14241d !important;
+            background: #ffffff !important;
+            padding: 8px 10px !important;
+            font: inherit !important;
+            font-weight: 800 !important;
+        }
+
+        .safe-flow-notifications .station-picker {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 8px !important;
+        }
+
+        .safe-flow-notifications .station-chip {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 7px !important;
+            min-height: 34px !important;
+            padding: 7px 10px !important;
+            border-radius: 999px !important;
+            color: #405147 !important;
+            background: #ffffff !important;
+            border: 1px solid #d8e4de !important;
+            cursor: pointer !important;
+            font-size: 0.82rem !important;
+            font-weight: 850 !important;
+        }
+
+        .safe-flow-notifications .station-chip:has(input:checked) {
+            color: #04111f !important;
+            border-color: rgba(14, 124, 102, 0.32) !important;
+            background: linear-gradient(90deg, #dffff4, #e8fbff) !important;
+            box-shadow: 0 8px 18px rgba(14, 124, 102, 0.1) !important;
+        }
+
+        .safe-flow-notifications .station-chip input {
+            width: 16px !important;
+            height: 16px !important;
+        }
+
+        .safe-flow-notifications .analytics-hint {
+            display: block !important;
+            margin-top: 10px !important;
+            min-height: 18px !important;
+            color: #607267 !important;
+            font-size: 0.78rem !important;
+            font-weight: 800 !important;
+        }
+
+        .safe-flow-notifications .analytics-chart-card {
+            position: relative !important;
+            overflow: hidden !important;
+            padding: 18px !important;
+            border-radius: 16px !important;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 250, 248, 0.98)),
+                radial-gradient(circle at 15% 10%, rgba(111, 247, 255, 0.28), transparent 24%) !important;
+            border: 1px solid #d8e4de !important;
+        }
+
+        .safe-flow-notifications .analytics-chart-card::before {
+            content: "" !important;
+            position: absolute !important;
+            inset: 0 !important;
+            pointer-events: none !important;
+            background:
+                linear-gradient(rgba(14, 124, 102, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(14, 124, 102, 0.05) 1px, transparent 1px) !important;
+            background-size: 42px 42px !important;
+            mask-image: linear-gradient(180deg, rgba(0,0,0,0.9), transparent 92%) !important;
+        }
+
+        .safe-flow-notifications .analytics-chart-top {
+            position: relative !important;
+            z-index: 1 !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            gap: 14px !important;
+            align-items: flex-start !important;
+            margin-bottom: 16px !important;
+        }
+
+        .safe-flow-notifications .analytics-total {
+            display: block !important;
+            color: #14241d !important;
+            font-size: 1.65rem !important;
+            font-weight: 950 !important;
+            line-height: 1 !important;
+        }
+
+        .safe-flow-notifications .analytics-total-label,
+        .safe-flow-notifications .analytics-percent {
+            display: block !important;
+            margin-top: 5px !important;
+            color: #607267 !important;
+            font-size: 0.78rem !important;
+            font-weight: 850 !important;
+        }
+
+        .safe-flow-notifications .analytics-chart {
+            position: relative !important;
+            z-index: 1 !important;
+            display: grid !important;
+            grid-template-columns: 44px minmax(0, 1fr) !important;
+            gap: 12px !important;
+            min-height: 300px !important;
+        }
+
+        .safe-flow-notifications .chart-axis {
+            display: grid !important;
+            grid-template-rows: repeat(5, 1fr) !important;
+            color: #7b8f84 !important;
+            font-size: 0.72rem !important;
+            font-weight: 850 !important;
+            text-align: right !important;
+        }
+
+        .safe-flow-notifications .chart-plot {
+            position: relative !important;
+            display: grid !important;
+            grid-template-columns: repeat(3, minmax(90px, 1fr)) !important;
+            gap: 16px !important;
+            align-items: end !important;
+            min-height: 300px !important;
+            padding: 12px 4px 0 !important;
+            border-left: 1px solid #c8e2d8 !important;
+            border-bottom: 1px solid #c8e2d8 !important;
+        }
+
+        .safe-flow-notifications .chart-plot::before {
+            content: "" !important;
+            position: absolute !important;
+            inset: 0 0 0 0 !important;
+            background: repeating-linear-gradient(
+                to top,
+                rgba(14, 124, 102, 0.08) 0,
+                rgba(14, 124, 102, 0.08) 1px,
+                transparent 1px,
+                transparent 25%
+            ) !important;
+            pointer-events: none !important;
+        }
+
+        .safe-flow-notifications .chart-bar-wrap {
+            position: relative !important;
+            z-index: 1 !important;
+            display: grid !important;
+            grid-template-rows: minmax(0, 1fr) auto !important;
+            align-items: end !important;
+            min-width: 0 !important;
+            min-height: 288px !important;
+        }
+
+        .safe-flow-notifications .chart-bar {
+            position: relative !important;
+            display: grid !important;
+            align-items: start !important;
+            justify-items: center !important;
+            min-height: 8px !important;
+            border-radius: 13px 13px 4px 4px !important;
+            background: linear-gradient(180deg, var(--bar-a), var(--bar-b)) !important;
+            box-shadow: 0 16px 30px var(--bar-shadow) !important;
+            transform-origin: bottom !important;
+            animation: chart-rise 0.7s cubic-bezier(.2,.8,.2,1) both !important;
+        }
+
+        .safe-flow-notifications .chart-bar::after {
+            content: "" !important;
+            position: absolute !important;
+            inset: 0 !important;
+            border-radius: inherit !important;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.42), transparent) !important;
+            transform: translateX(-120%) !important;
+            animation: chart-sheen 1.4s ease 0.25s both !important;
+        }
+
+        .safe-flow-notifications .chart-value {
+            margin-top: 8px !important;
+            padding: 5px 7px !important;
+            border-radius: 999px !important;
+            color: #04111f !important;
+            background: rgba(255, 255, 255, 0.88) !important;
+            border: 1px solid rgba(255, 255, 255, 0.7) !important;
+            font-size: 0.74rem !important;
+            font-weight: 950 !important;
+            box-shadow: 0 8px 18px rgba(4, 17, 31, 0.12) !important;
+        }
+
+        .safe-flow-notifications .chart-label {
+            margin-top: 10px !important;
+            color: #31443a !important;
+            font-size: 0.82rem !important;
+            font-weight: 900 !important;
+            text-align: center !important;
+            overflow-wrap: anywhere !important;
+        }
+
+        .safe-flow-notifications .analytics-empty {
+            position: relative !important;
+            z-index: 1 !important;
+            padding: 40px 16px !important;
+            text-align: center !important;
+            color: #607267 !important;
+            font-weight: 850 !important;
+        }
+
+        .safe-flow-notifications .analytics-empty.hidden,
+        .safe-flow-notifications .analytics-chart.hidden {
+            display: none !important;
+        }
+
+        @keyframes chart-rise {
+            from { transform: scaleY(0.1); opacity: 0.35; }
+            to { transform: scaleY(1); opacity: 1; }
+        }
+
+        @keyframes chart-sheen {
+            to { transform: translateX(120%); }
+        }
+
         .safe-flow-notifications .empty-state {
             padding: 34px 18px !important;
             color: #607267 !important;
@@ -1038,6 +1414,20 @@
                 justify-content: flex-start !important;
             }
 
+            .safe-flow-notifications .analytics-controls {
+                grid-template-columns: 1fr !important;
+            }
+
+            .safe-flow-notifications .analytics-chart {
+                grid-template-columns: 34px minmax(0, 1fr) !important;
+            }
+
+            .safe-flow-notifications .chart-plot {
+                grid-template-columns: repeat(3, minmax(74px, 1fr)) !important;
+                gap: 10px !important;
+                overflow-x: auto !important;
+            }
+
             .safe-flow-notifications table {
                 min-width: 760px !important;
             }
@@ -1057,6 +1447,7 @@
         </div>
 
         <div class="nav-actions">
+            <button type="button" class="analytics-trigger" data-analytics-open>Station analytics</button>
             <% if (isTravelerView) { %>
             <a href="travelerReport" class="primary-action">Send Report</a>
             <% } %>
@@ -1098,7 +1489,7 @@
 			                            <th style="width: 50%">Alert details</th>
 			                            <th style="width: 24%">Source</th>
 			                            <th style="width: 16%">Published</th>
-			                            <th style="width: 10%">Likes</th>
+			                            <th style="width: 10%">Actions</th>
 	                        </tr>
                         </thead>
                         <tbody>
@@ -1126,8 +1517,15 @@
 		                            int imageCount = m.getImageCount() == null ? 0 : m.getImageCount();
 		                            List<NotificationComment> comments = m.getComments() == null ? List.of() : m.getComments();
 		                            int commentCount = m.getCommentCount() == null ? comments.size() : m.getCommentCount();
+		                            String stationName = m.getStationName() == null ? "" : m.getStationName().trim();
+		                            String escapedStationName = StringEscapeUtils.escapeHtml4(stationName);
+		                            String escapedCityName = StringEscapeUtils.escapeHtml4(cityEntry.getKey());
+		                            String reportRowAttributes = "data-public-notification-row data-notification-key=\"" + notificationKey + "\"";
+		                            if (!adminReport && !stationName.isBlank()) {
+		                                reportRowAttributes += " data-report-row data-report-city=\"" + escapedCityName + "\" data-report-station=\"" + escapedStationName + "\"";
+		                            }
 			                        %>
-	                        <tr>
+	                        <tr <%= reportRowAttributes %>>
 	                            <td class="message-cell <%= adminReport ? "admin-message" : "" %>">
 	                                <div><%= StringEscapeUtils.escapeHtml4(m.getMessage()) %></div>
 			                                <% if (Boolean.TRUE.equals(m.getPickpocketAlert()) || Boolean.TRUE.equals(m.getFightAlert()) || Boolean.TRUE.equals(m.getCrowdAlert()) || Boolean.TRUE.equals(m.getGeneralAlert()) || (m.getStationName() != null && !m.getStationName().isBlank()) || (m.getSuspectClothing() != null && !m.getSuspectClothing().isBlank()) || imageCount > 0) { %>
@@ -1186,6 +1584,7 @@
 	                            </td>
 	                            <td class="date-cell"><%= sdf.format(m.getDate()) %></td>
 	                            <td class="like-cell">
+	                                <div class="row-actions">
 	                                <% if (!adminReport && isTravelerView && !notificationKey.isBlank()) { %>
 	                                <button
 	                                        type="button"
@@ -1199,10 +1598,20 @@
 	                                <% } else { %>
 	                                <span class="admin-like-placeholder">-</span>
 	                                <% } %>
+	                                <% if (isTravelerView && !notificationKey.isBlank()) { %>
+	                                <button
+	                                        type="button"
+	                                        class="remove-notification-button"
+	                                        data-remove-public-notification
+	                                        data-notification-key="<%= notificationKey %>">
+	                                    Remove
+	                                </button>
+	                                <% } %>
+	                                </div>
 		                            </td>
 		                        </tr>
 		                        <% if (!adminReport && isTravelerView && !notificationKey.isBlank()) { %>
-		                        <tr class="comments-row">
+		                        <tr class="comments-row" data-public-comments-row data-notification-key="<%= notificationKey %>">
 		                            <td colspan="4">
 		                                <section class="comments-panel" data-comments-panel data-notification-key="<%= notificationKey %>">
 		                                    <button
@@ -1286,6 +1695,45 @@
         <% } %>
 
 </div>
+<div class="analytics-modal hidden" data-analytics-modal aria-hidden="true">
+    <div class="analytics-dialog" role="dialog" aria-modal="true" aria-labelledby="stationAnalyticsTitle">
+        <div class="analytics-header">
+            <div>
+                <span class="analytics-kicker">Station risk map</span>
+                <h2 id="stationAnalyticsTitle">Station report analytics</h2>
+                <p>Select a city and compare up to three stations. The chart shows how many reports each selected station has and its share of the city total.</p>
+            </div>
+            <button type="button" class="analytics-close" data-analytics-close aria-label="Close analytics">&times;</button>
+        </div>
+        <div class="analytics-body">
+            <div class="analytics-controls">
+                <div class="analytics-control">
+                    <label class="analytics-label" for="analyticsCitySelect">City</label>
+                    <select class="analytics-select" id="analyticsCitySelect" data-analytics-city></select>
+                </div>
+                <div class="analytics-control">
+                    <span class="analytics-label">Stations</span>
+                    <div class="station-picker" data-station-picker></div>
+                    <span class="analytics-hint" data-analytics-hint>Choose up to 3 stations.</span>
+                </div>
+            </div>
+            <div class="analytics-chart-card">
+                <div class="analytics-chart-top">
+                    <div>
+                        <span class="analytics-total" data-analytics-total>0</span>
+                        <span class="analytics-total-label">city station reports</span>
+                    </div>
+                    <span class="analytics-percent" data-analytics-percent>0% selected</span>
+                </div>
+                <div class="analytics-chart" data-analytics-chart>
+                    <div class="chart-axis" data-chart-axis></div>
+                    <div class="chart-plot" data-chart-plot></div>
+                </div>
+                <div class="analytics-empty hidden" data-analytics-empty>No station reports available for this city.</div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     (function () {
         const switches = Array.from(document.querySelectorAll('[data-city-switch]'));
@@ -1310,6 +1758,225 @@
 	        });
 
 	        selectCity(switches[0].dataset.citySwitch);
+	    }());
+
+	    (function () {
+	        const openButton = document.querySelector('[data-analytics-open]');
+	        const modal = document.querySelector('[data-analytics-modal]');
+	        const closeButton = document.querySelector('[data-analytics-close]');
+	        const citySelect = document.querySelector('[data-analytics-city]');
+	        const stationPicker = document.querySelector('[data-station-picker]');
+	        const hint = document.querySelector('[data-analytics-hint]');
+	        const totalEl = document.querySelector('[data-analytics-total]');
+	        const percentEl = document.querySelector('[data-analytics-percent]');
+	        const chart = document.querySelector('[data-analytics-chart]');
+	        const axis = document.querySelector('[data-chart-axis]');
+	        const plot = document.querySelector('[data-chart-plot]');
+	        const emptyState = document.querySelector('[data-analytics-empty]');
+	        const colors = [
+	            ['#89ffd1', '#0e7c66', 'rgba(14, 124, 102, 0.22)'],
+	            ['#6ff7ff', '#1d4ed8', 'rgba(29, 78, 216, 0.2)'],
+	            ['#f9a8d4', '#be123c', 'rgba(190, 18, 60, 0.18)']
+	        ];
+
+	        if (!openButton || !modal || !closeButton || !citySelect || !stationPicker || !plot || !axis || !emptyState) {
+	            return;
+	        }
+
+	        const cityNames = Array.from(document.querySelectorAll('[data-city-switch]'))
+	            .map((button) => button.dataset.citySwitch)
+	            .filter(Boolean);
+	        const cityStats = new Map(cityNames.map((city) => [city, new Map()]));
+
+	        Array.from(document.querySelectorAll('[data-report-row]')).forEach((row) => {
+	            const city = row.dataset.reportCity || 'Rome';
+	            const station = (row.dataset.reportStation || '').trim();
+	            if (!station) {
+	                return;
+	            }
+	            if (!cityStats.has(city)) {
+	                cityStats.set(city, new Map());
+	            }
+	            const stations = cityStats.get(city);
+	            stations.set(station, (stations.get(station) || 0) + 1);
+	        });
+
+	        let selectedStations = [];
+
+	        function stationsForCity(city) {
+	            return Array.from((cityStats.get(city) || new Map()).entries())
+	                .map(([name, count]) => ({name, count}))
+	                .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+	        }
+
+	        function cityTotal(city) {
+	            return stationsForCity(city).reduce((sum, station) => sum + station.count, 0);
+	        }
+
+	        function setModalOpen(open) {
+	            modal.classList.toggle('hidden', !open);
+	            modal.setAttribute('aria-hidden', String(!open));
+	            document.body.style.overflow = open ? 'hidden' : '';
+	            if (open) {
+	                renderCity();
+	                citySelect.focus();
+	            }
+	        }
+
+	        function renderCityOptions() {
+	            citySelect.innerHTML = '';
+	            cityNames.forEach((city) => {
+	                const option = document.createElement('option');
+	                option.value = city;
+	                option.textContent = city;
+	                citySelect.appendChild(option);
+	            });
+	        }
+
+	        function renderCity() {
+	            const stations = stationsForCity(citySelect.value);
+	            selectedStations = stations.slice(0, 3).map((station) => station.name);
+	            renderStationPicker();
+	            renderChart();
+	        }
+
+	        function renderStationPicker() {
+	            const stations = stationsForCity(citySelect.value);
+	            stationPicker.innerHTML = '';
+
+	            if (!stations.length) {
+	                hint.textContent = 'No station reports available for this city.';
+	                return;
+	            }
+
+	            stations.forEach((station) => {
+	                const label = document.createElement('label');
+	                label.className = 'station-chip';
+
+	                const checkbox = document.createElement('input');
+	                checkbox.type = 'checkbox';
+	                checkbox.value = station.name;
+	                checkbox.checked = selectedStations.includes(station.name);
+	                checkbox.disabled = !checkbox.checked && selectedStations.length >= 3;
+
+	                const text = document.createElement('span');
+	                text.textContent = station.name + ' (' + station.count + ')';
+
+	                checkbox.addEventListener('change', () => {
+	                    if (checkbox.checked && selectedStations.length >= 3) {
+	                        checkbox.checked = false;
+	                        hint.textContent = 'You can compare up to 3 stations.';
+	                        return;
+	                    }
+
+	                    selectedStations = checkbox.checked
+	                            ? selectedStations.concat(station.name)
+	                            : selectedStations.filter((name) => name !== station.name);
+	                    renderStationPicker();
+	                    renderChart();
+	                });
+
+	                label.appendChild(checkbox);
+	                label.appendChild(text);
+	                stationPicker.appendChild(label);
+	            });
+
+	            hint.textContent = selectedStations.length
+	                    ? selectedStations.length + '/3 stations selected.'
+	                    : 'Choose at least one station.';
+	        }
+
+	        function renderAxis(maxValue) {
+	            axis.innerHTML = '';
+	            for (let step = 4; step >= 0; step -= 1) {
+	                const label = document.createElement('span');
+	                label.textContent = String(Math.ceil((maxValue * step) / 4));
+	                axis.appendChild(label);
+	            }
+	        }
+
+	        function renderChart() {
+	            const city = citySelect.value;
+	            const allStations = stationsForCity(city);
+	            const total = cityTotal(city);
+	            const selected = selectedStations
+	                .map((name) => allStations.find((station) => station.name === name))
+	                .filter(Boolean);
+	            const selectedCount = selected.reduce((sum, station) => sum + station.count, 0);
+	            const maxValue = Math.max(1, ...selected.map((station) => station.count));
+
+	            if (totalEl) {
+	                totalEl.textContent = String(total);
+	            }
+	            if (percentEl) {
+	                const selectedShare = total ? Math.round((selectedCount / total) * 100) : 0;
+	                percentEl.textContent = selectedShare + '% covered by selected stations';
+	            }
+
+	            const empty = !allStations.length || !selected.length;
+	            chart.classList.toggle('hidden', empty);
+	            emptyState.classList.toggle('hidden', !empty);
+	            if (empty) {
+	                emptyState.textContent = allStations.length
+	                        ? 'Select at least one station to render the chart.'
+	                        : 'No station reports available for this city.';
+	                plot.innerHTML = '';
+	                axis.innerHTML = '';
+	                return;
+	            }
+
+	            renderAxis(maxValue);
+	            plot.innerHTML = '';
+	            plot.style.gridTemplateColumns = 'repeat(' + Math.max(1, selected.length) + ', minmax(90px, 1fr))';
+
+	            selected.forEach((station, index) => {
+	                const palette = colors[index % colors.length];
+	                const percent = total ? Math.round((station.count / total) * 100) : 0;
+	                const height = Math.max(8, Math.round((station.count / maxValue) * 100));
+	                const wrap = document.createElement('div');
+	                wrap.className = 'chart-bar-wrap';
+
+	                const bar = document.createElement('div');
+	                bar.className = 'chart-bar';
+	                bar.style.height = height + '%';
+	                bar.style.setProperty('--bar-a', palette[0]);
+	                bar.style.setProperty('--bar-b', palette[1]);
+	                bar.style.setProperty('--bar-shadow', palette[2]);
+	                bar.style.animationDelay = (index * 90) + 'ms';
+
+	                const value = document.createElement('span');
+	                value.className = 'chart-value';
+	                value.textContent = station.count + ' reports · ' + percent + '%';
+	                bar.appendChild(value);
+
+	                const label = document.createElement('span');
+	                label.className = 'chart-label';
+	                label.textContent = station.name;
+
+	                wrap.appendChild(bar);
+	                wrap.appendChild(label);
+	                plot.appendChild(wrap);
+	            });
+	        }
+
+	        renderCityOptions();
+	        if (cityNames.length) {
+	            citySelect.value = cityNames[0];
+	        }
+
+	        openButton.addEventListener('click', () => setModalOpen(true));
+	        closeButton.addEventListener('click', () => setModalOpen(false));
+	        modal.addEventListener('click', (event) => {
+	            if (event.target === modal) {
+	                setModalOpen(false);
+	            }
+	        });
+	        citySelect.addEventListener('change', renderCity);
+	        document.addEventListener('keydown', (event) => {
+	            if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+	                setModalOpen(false);
+	            }
+	        });
 	    }());
 
 	    (function () {
@@ -1365,6 +2032,62 @@
 	                }
 	            });
 	        });
+		    }());
+
+		    (function () {
+		        const removeButtons = Array.from(document.querySelectorAll('[data-remove-public-notification]'));
+		        if (!removeButtons.length) {
+		            return;
+		        }
+
+		        removeButtons.forEach((button) => {
+		            button.addEventListener('click', async () => {
+		                if (button.disabled) {
+		                    return;
+		                }
+
+		                const notificationKey = button.dataset.notificationKey;
+		                const row = button.closest('[data-public-notification-row]');
+		                const commentsRow = Array.from(document.querySelectorAll('[data-public-comments-row]'))
+		                    .find((candidate) => candidate.dataset.notificationKey === notificationKey);
+		                button.disabled = true;
+
+		                try {
+		                    const response = await fetch('removeNotification', {
+		                        method: 'POST',
+		                        headers: {
+		                            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+		                        },
+		                        body: new URLSearchParams({
+		                            notificationKey: notificationKey
+		                        })
+		                    });
+
+		                    const payload = await response.json();
+		                    if (!response.ok || !payload.removed) {
+		                        throw new Error(payload.error || 'Unable to remove notification.');
+		                    }
+
+		                    if (commentsRow) {
+		                        commentsRow.remove();
+		                    }
+		                    if (row) {
+		                        row.remove();
+		                    }
+
+		                    document.querySelectorAll('[data-city-group]').forEach((cityGroup) => {
+		                        if (!cityGroup.querySelector('[data-public-notification-row]')) {
+		                            const tbody = cityGroup.querySelector('tbody');
+		                            if (tbody) {
+		                                tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No notifications available for this city.</td></tr>';
+		                            }
+		                        }
+		                    });
+		                } catch (error) {
+		                    button.disabled = false;
+		                }
+		            });
+		        });
 		    }());
 
 		    (function () {

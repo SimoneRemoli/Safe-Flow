@@ -90,21 +90,51 @@
             gap: 14px;
         }
         .item {
-            display: block;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 14px;
+            align-items: start;
             padding: 18px 20px;
             border-radius: 22px;
             background: rgba(246, 250, 253, 0.96);
             border: 1px solid rgba(210, 222, 232, 0.7);
-            text-decoration: none;
             transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
         }
-        .item.clickable {
+        .notification-content {
+            display: block;
+            min-width: 0;
+            text-decoration: none;
+        }
+        a.notification-content.clickable {
             cursor: pointer;
         }
-        .item.clickable:hover {
+        .item:has(.notification-content.clickable:hover) {
             transform: translateY(-1px);
             border-color: rgba(14, 124, 102, 0.35);
             box-shadow: 0 16px 34px rgba(0, 0, 0, 0.16);
+        }
+        .remove-notification-button {
+            min-height: 34px;
+            padding: 8px 11px;
+            border-radius: 999px;
+            border: 1px solid rgba(190, 18, 60, 0.22);
+            color: #be123c;
+            background: #fff1f2;
+            cursor: pointer;
+            font: inherit;
+            font-size: 0.78rem;
+            font-weight: 800;
+            transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+        }
+        .remove-notification-button:hover {
+            transform: translateY(-1px);
+            border-color: rgba(190, 18, 60, 0.42);
+            background: #ffe4e6;
+        }
+        .remove-notification-button:disabled {
+            cursor: wait;
+            opacity: 0.58;
+            transform: none;
         }
         .meta {
             color: #586673;
@@ -154,12 +184,14 @@
         <% for (MessageBean m : notifiche) {
             String actionUrl = m.getActionUrl();
             boolean clickable = actionUrl != null && !actionUrl.isBlank();
-            String itemClass = "item " + (Boolean.TRUE.equals(m.getLetto()) ? "read" : "unread") + (clickable ? " clickable" : "");
+            String itemClass = "item " + (Boolean.TRUE.equals(m.getLetto()) ? "read" : "unread");
+            String notificationKey = m.getNotificationKey() == null ? "" : m.getNotificationKey();
         %>
+        <div class="<%= itemClass %>" data-notification-card>
         <% if (clickable) { %>
-        <a class="<%= itemClass %>" href="<%= StringEscapeUtils.escapeHtml4(actionUrl) %>">
+            <a class="notification-content clickable" href="<%= StringEscapeUtils.escapeHtml4(actionUrl) %>">
         <% } else { %>
-        <div class="<%= itemClass %>">
+            <div class="notification-content">
         <% } %>
             <div class="meta">
                 <%= StringEscapeUtils.escapeHtml4(m.getSenderDisplayName() == null ? "Safe Flow" : m.getSenderDisplayName()) %>
@@ -168,13 +200,70 @@
             </div>
             <div class="message"><%= StringEscapeUtils.escapeHtml4(m.getMessage()) %></div>
         <% if (clickable) { %>
-        </a>
+            </a>
         <% } else { %>
-        </div>
+            </div>
         <% } %>
+            <button
+                    type="button"
+                    class="remove-notification-button"
+                    data-remove-notification
+                    data-notification-key="<%= StringEscapeUtils.escapeHtml4(notificationKey) %>">
+                Remove
+            </button>
+        </div>
         <% } %>
     </div>
     <% } %>
 </div>
+<script>
+    (function () {
+        const buttons = Array.from(document.querySelectorAll('[data-remove-notification]'));
+        if (!buttons.length) {
+            return;
+        }
+
+        buttons.forEach((button) => {
+            button.addEventListener('click', async () => {
+                if (button.disabled) {
+                    return;
+                }
+
+                const card = button.closest('[data-notification-card]');
+                button.disabled = true;
+
+                try {
+                    const response = await fetch('removeInternalNotification', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                        },
+                        body: new URLSearchParams({
+                            notificationKey: button.dataset.notificationKey
+                        })
+                    });
+
+                    const payload = await response.json();
+                    if (!response.ok || !payload.removed) {
+                        throw new Error(payload.error || 'Unable to remove notification.');
+                    }
+
+                    if (card) {
+                        card.remove();
+                    }
+
+                    if (!document.querySelector('[data-notification-card]')) {
+                        const empty = document.createElement('div');
+                        empty.className = 'empty-state';
+                        empty.textContent = 'No internal notifications available.';
+                        document.querySelector('.list')?.replaceWith(empty);
+                    }
+                } catch (error) {
+                    button.disabled = false;
+                }
+            });
+        });
+    }());
+</script>
 </body>
 </html>

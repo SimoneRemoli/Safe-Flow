@@ -8,14 +8,25 @@ import it.web.routex.model.NotificationComment;
 import it.web.routex.model.NotificationLikeState;
 import it.web.routex.model.UserProfileSummary;
 import it.web.routex.utility.factory.FactoryLayerPersistenza;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.Collections;
 
 public class ViewNotificationsControllerApplicativo {
+
+    private static final Object DISMISS_LOCK = new Object();
+    private static final Path DISMISS_STORE = Path.of(System.getProperty("user.home"), ".safe-flow", "public-notification-dismissals.properties");
+    private static final String DISMISSED_PREFIX = "dismissed.";
 
     public List<MessageBean> messages(String ruolo, String codiceFiscale) throws BrondiException {
 
@@ -26,6 +37,9 @@ public class ViewNotificationsControllerApplicativo {
             List<Notification> notifications = layer.getMessagesRAM();
             Set<String> senderCodiciFiscali = new HashSet<>();
             Set<String> notificationLikeKeys = new HashSet<>();
+            Set<String> dismissedKeys = "TRAVELER".equalsIgnoreCase(ruolo)
+                    ? dismissedKeysFor(codiceFiscale)
+                    : Collections.emptySet();
             for (Notification n : notifications) {
                 boolean include = false;
 
@@ -34,7 +48,13 @@ public class ViewNotificationsControllerApplicativo {
                 }
 
                 if (include) {
+                    String notificationKey = NotificationLikeControllerApplicativo.keyFor(n);
+                    if (dismissedKeys.contains(notificationKey)) {
+                        continue;
+                    }
+
                     MessageBean bean = new MessageBean(n.getMessage(), n.getDate());
+                    bean.setNotificationKey(notificationKey);
                     bean.setRisolto(n.isRisolto());
                     bean.setApprovato(n.isApprovato());
                     bean.setLetto(n.isLetto());
@@ -50,8 +70,6 @@ public class ViewNotificationsControllerApplicativo {
 	                    bean.setStationName(n.getStationName());
 	                    bean.setSuspectClothing(n.getSuspectClothing());
 	                    if ("TRAVELER".equalsIgnoreCase(n.getSenderRole())) {
-	                        String notificationKey = NotificationLikeControllerApplicativo.keyFor(n);
-	                        bean.setNotificationKey(notificationKey);
 	                        notificationLikeKeys.add(notificationKey);
 	                    }
 	                    if (n.getSenderCf() != null && !n.getSenderCf().isBlank()) {
@@ -165,6 +183,104 @@ public class ViewNotificationsControllerApplicativo {
                 comment.setLikeCount(state == null ? 0 : state.getLikeCount());
                 comment.setLikedByCurrentUser(state != null && state.isLikedByCurrentUser());
             }
+        }
+    }
+
+    public void dismissNotification(String ruolo, String codiceFiscale, String notificationKey) throws BrondiException {
+        if (!"TRAVELER".equalsIgnoreCase(ruolo)) {
+            throw new BrondiException("Unauthorized request.", "PUBLIC_NOTIFICATION_ROLE", "Only travelers can remove public notifications");
+        }
+
+        String cf = normalizeCf(codiceFiscale);
+        String key = normalizeNotificationKey(notificationKey);
+        ensurePublicNotificationExists(key);
+
+        synchronized (DISMISS_LOCK) {
+            Properties properties = loadDismissProperties();
+            properties.setProperty(dismissPropertyKey(cf, key), "true");
+            storeDismissProperties(properties);
+        }
+    }
+
+    private void ensurePublicNotificationExists(String notificationKey) throws BrondiException {
+        try {
+            LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
+            for (Notification notification : layer.getMessagesRAM()) {
+                if ("APPROVED".equalsIgnoreCase(notification.getStatus())
+                        && (notification.getRecipientCf() == null || notification.getRecipientCf().isBlank())
+                        && notificationKey.equals(NotificationLikeControllerApplicativo.keyFor(notification))) {
+                    return;
+                }
+            }
+        } catch (DAOExceptionRemoli e) {
+            throw new BrondiException("Unable to remove notification.", "PUBLIC_NOTIFICATION_LOOKUP", "Notification lookup failed", e);
+        }
+
+        throw new BrondiException("This notification cannot be removed.", "PUBLIC_NOTIFICATION_NOT_FOUND", notificationKey);
+    }
+
+    private Set<String> dismissedKeysFor(String codiceFiscale) throws BrondiException {
+        String cf = normalizeCf(codiceFiscale);
+        String prefix = DISMISSED_PREFIX + cf + ".";
+        Set<String> keys = new HashSet<>();
+
+        synchronized (DISMISS_LOCK) {
+            Properties properties = loadDismissProperties();
+            for (Object rawKey : properties.keySet()) {
+                if (rawKey instanceof String propertyKey && propertyKey.startsWith(prefix)) {
+                    keys.add(propertyKey.substring(prefix.length()));
+                }
+            }
+        }
+
+        return keys;
+    }
+
+    private String dismissPropertyKey(String codiceFiscale, String notificationKey) {
+        return DISMISSED_PREFIX + codiceFiscale + "." + notificationKey;
+    }
+
+    private String normalizeCf(String codiceFiscale) throws BrondiException {
+        if (codiceFiscale == null || codiceFiscale.trim().isEmpty()) {
+            throw new BrondiException("Invalid user session.", "PUBLIC_NOTIFICATION_SESSION", "Missing codice fiscale");
+        }
+        return codiceFiscale.trim().toUpperCase(Locale.ROOT);
+    }
+
+    private String normalizeNotificationKey(String notificationKey) throws BrondiException {
+        if (notificationKey == null || notificationKey.trim().isEmpty()) {
+            throw new BrondiException("Invalid notification.", "PUBLIC_NOTIFICATION_KEY", "Missing notification key");
+        }
+
+        String key = notificationKey.trim();
+        if (!key.matches("[A-Za-z0-9_-]+")) {
+            throw new BrondiException("Invalid notification.", "PUBLIC_NOTIFICATION_KEY", "Invalid notification key");
+        }
+        return key;
+    }
+
+    private Properties loadDismissProperties() throws BrondiException {
+        Properties properties = new Properties();
+        if (!Files.exists(DISMISS_STORE)) {
+            return properties;
+        }
+
+        try (InputStream input = Files.newInputStream(DISMISS_STORE)) {
+            properties.load(input);
+            return properties;
+        } catch (IOException e) {
+            throw new BrondiException("Unable to read removed notifications.", "PUBLIC_NOTIFICATION_DISMISS_IO", "Dismiss store read error", e);
+        }
+    }
+
+    private void storeDismissProperties(Properties properties) throws BrondiException {
+        try {
+            Files.createDirectories(DISMISS_STORE.getParent());
+            try (OutputStream output = Files.newOutputStream(DISMISS_STORE)) {
+                properties.store(output, "Safe Flow public notification dismissals");
+            }
+        } catch (IOException e) {
+            throw new BrondiException("Unable to remove notification.", "PUBLIC_NOTIFICATION_DISMISS_IO", "Dismiss store write error", e);
         }
     }
 }
