@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="it.web.routex.model.UserProfile" %>
-<%@ page import="it.web.routex.model.UserProfileStats" %>
+<%@ page import="it.web.safeflow.model.UserProfile" %>
+<%@ page import="it.web.safeflow.model.UserProfileStats" %>
 <%@ page import="org.apache.commons.lang3.StringEscapeUtils" %>
 <%
     UserProfile profile = (UserProfile) request.getAttribute("profile");

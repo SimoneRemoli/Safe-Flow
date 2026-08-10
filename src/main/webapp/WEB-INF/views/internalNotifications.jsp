@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.List" %>
-<%@ page import="it.web.routex.bean.MessageBean" %>
+<%@ page import="it.web.safeflow.bean.MessageBean" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="org.apache.commons.lang3.StringEscapeUtils" %>
 <%

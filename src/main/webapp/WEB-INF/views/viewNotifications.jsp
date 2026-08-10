@@ -3,12 +3,12 @@
 <%@ page import="java.util.LinkedHashMap" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Map" %>
-<%@ page import="it.web.routex.bean.MessageBean" %>
+<%@ page import="it.web.safeflow.bean.MessageBean" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.nio.charset.StandardCharsets" %>
 <%@ page import="org.apache.commons.lang3.StringEscapeUtils" %>
-<%@ page import="it.web.routex.model.NotificationComment" %>
+<%@ page import="it.web.safeflow.model.NotificationComment" %>
 <%
     List<MessageBean> notifiche = (List<MessageBean>) request.getAttribute("notifiche");
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");

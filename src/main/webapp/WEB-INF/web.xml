@@ -6,7 +6,7 @@
 
   <filter>
     <filter-name>Utf8EncodingFilter</filter-name>
-    <filter-class>it.web.routex.domain.Utf8EncodingFilter</filter-class>
+    <filter-class>it.web.safeflow.domain.Utf8EncodingFilter</filter-class>
   </filter>
 
   <filter-mapping>

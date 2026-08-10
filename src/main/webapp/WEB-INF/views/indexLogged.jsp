@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="it.web.routex.controller.applicativo.ViewInternalNotificationsControllerApplicativo" %>
-<%@ page import="it.web.routex.exception.BrondiException" %>
+<%@ page import="it.web.safeflow.controller.applicativo.ViewInternalNotificationsControllerApplicativo" %>
+<%@ page import="it.web.safeflow.exception.BrondiException" %>
 <%@ page import="javax.servlet.http.HttpSession" %>
 <%
     int internalNotificationsCount = 0;

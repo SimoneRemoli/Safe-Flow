@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.example</groupId>
-  <artifactId>RouteX_MVC_Project</artifactId>
+  <artifactId>SafeFlow_MVC_Project</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
@@ -70,7 +70,7 @@
   </dependencies>
 
   <build>
-    <finalName>RouteX_MVC_Project</finalName>
+    <finalName>SafeFlow_MVC_Project</finalName>
 
     <plugins>
 

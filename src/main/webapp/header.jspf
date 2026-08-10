@@ -1,46 +1,46 @@
 
-<%@ page import="it.web.routex.domain.SessionAuthUtil" %>
-<%@ page import="it.web.routex.controller.applicativo.UserProfileControllerApplicativo" %>
-<%@ page import="it.web.routex.model.UserProfile" %>
+<%@ page import="it.web.safeflow.domain.SessionAuthUtil" %>
+<%@ page import="it.web.safeflow.controller.applicativo.UserProfileControllerApplicativo" %>
+<%@ page import="it.web.safeflow.model.UserProfile" %>
 <%
-    HttpSession routexHeaderSession = request.getSession(false);
+    HttpSession safeflowHeaderSession = request.getSession(false);
 
-    String routexHeaderNome = null;
-    String routexHeaderCognome = null;
-    String routexHeaderRuolo = null;
-    String routexHeaderCodiceFiscale = null;
-    boolean routexHeaderHasAvatar = false;
+    String safeflowHeaderNome = null;
+    String safeflowHeaderCognome = null;
+    String safeflowHeaderRuolo = null;
+    String safeflowHeaderCodiceFiscale = null;
+    boolean safeflowHeaderHasAvatar = false;
 
-    if (SessionAuthUtil.isLoggedIn(routexHeaderSession)) {
-        routexHeaderNome = (String) routexHeaderSession.getAttribute("nome");
-        routexHeaderCognome = (String) routexHeaderSession.getAttribute("cognome");
-        routexHeaderCodiceFiscale = (String) routexHeaderSession.getAttribute("codiceFiscale");
-        Object ruoloObj = routexHeaderSession.getAttribute("ruolo");
+    if (SessionAuthUtil.isLoggedIn(safeflowHeaderSession)) {
+        safeflowHeaderNome = (String) safeflowHeaderSession.getAttribute("nome");
+        safeflowHeaderCognome = (String) safeflowHeaderSession.getAttribute("cognome");
+        safeflowHeaderCodiceFiscale = (String) safeflowHeaderSession.getAttribute("codiceFiscale");
+        Object ruoloObj = safeflowHeaderSession.getAttribute("ruolo");
         if (ruoloObj != null) {
-            routexHeaderRuolo = ruoloObj.toString();
+            safeflowHeaderRuolo = ruoloObj.toString();
         }
 
         try {
-            UserProfile routexHeaderProfile = new UserProfileControllerApplicativo().getProfile(routexHeaderCodiceFiscale);
-            routexHeaderHasAvatar = routexHeaderProfile.isAvatarPresent();
+            UserProfile safeflowHeaderProfile = new UserProfileControllerApplicativo().getProfile(safeflowHeaderCodiceFiscale);
+            safeflowHeaderHasAvatar = safeflowHeaderProfile.isAvatarPresent();
         } catch (Exception ignored) {
-            routexHeaderHasAvatar = false;
+            safeflowHeaderHasAvatar = false;
         }
     }
 
-    String routexHeaderInitials = "";
-    if (routexHeaderNome != null && !routexHeaderNome.isBlank()) {
-        routexHeaderInitials += routexHeaderNome.trim().substring(0, 1).toUpperCase();
+    String safeflowHeaderInitials = "";
+    if (safeflowHeaderNome != null && !safeflowHeaderNome.isBlank()) {
+        safeflowHeaderInitials += safeflowHeaderNome.trim().substring(0, 1).toUpperCase();
     }
-    if (routexHeaderCognome != null && !routexHeaderCognome.isBlank()) {
-        routexHeaderInitials += routexHeaderCognome.trim().substring(0, 1).toUpperCase();
+    if (safeflowHeaderCognome != null && !safeflowHeaderCognome.isBlank()) {
+        safeflowHeaderInitials += safeflowHeaderCognome.trim().substring(0, 1).toUpperCase();
     }
-    if (routexHeaderInitials.isBlank()) {
-        routexHeaderInitials = "SF";
+    if (safeflowHeaderInitials.isBlank()) {
+        safeflowHeaderInitials = "SF";
     }
 %>
 
-<% if (routexHeaderNome != null && routexHeaderCognome != null && routexHeaderRuolo != null) { %>
+<% if (safeflowHeaderNome != null && safeflowHeaderCognome != null && safeflowHeaderRuolo != null) { %>
     <style>
         body .topbar,
         body header.topbar {
@@ -68,13 +68,13 @@
                 type="button"
                 aria-haspopup="true"
                 aria-expanded="false"
-                aria-label="Open user menu: <%= routexHeaderNome %> <%= routexHeaderCognome %>, <%= routexHeaderRuolo %>"
-                title="<%= routexHeaderNome %> <%= routexHeaderCognome %> - <%= routexHeaderRuolo %>"
+                aria-label="Open user menu: <%= safeflowHeaderNome %> <%= safeflowHeaderCognome %>, <%= safeflowHeaderRuolo %>"
+                title="<%= safeflowHeaderNome %> <%= safeflowHeaderCognome %> - <%= safeflowHeaderRuolo %>"
                 style="width:38px!important;height:38px!important;min-width:38px!important;max-width:38px!important;min-height:38px!important;max-height:38px!important;padding:0!important;margin:0!important;border-radius:50%!important;overflow:hidden!important;display:grid!important;place-items:center!important;background:#0e7c66!important;color:#fff!important;border:2px solid #fff!important;box-shadow:0 8px 22px rgba(19,35,28,.18)!important;cursor:pointer!important;font:800 12px Arial,sans-serif!important;line-height:1!important;">
-            <% if (routexHeaderHasAvatar) { %>
+            <% if (safeflowHeaderHasAvatar) { %>
             <img src="profileAvatar?t=<%= System.currentTimeMillis() %>" alt="" style="width:38px!important;height:38px!important;min-width:38px!important;max-width:38px!important;min-height:38px!important;max-height:38px!important;display:block!important;object-fit:cover!important;border-radius:50%!important;">
             <% } else { %>
-            <span><%= routexHeaderInitials %></span>
+            <span><%= safeflowHeaderInitials %></span>
             <% } %>
         </button>
 
@@ -82,8 +82,8 @@
              hidden
              style="position:absolute!important;top:46px!important;right:0!important;width:240px!important;padding:6px 0!important;border-radius:8px!important;background:#fff!important;border:1px solid #d0d7de!important;box-shadow:0 12px 28px rgba(31,35,40,.16)!important;color:#24292f!important;overflow:hidden!important;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif!important;">
             <div class="app-user-dropdown__account" style="padding:9px 12px 10px!important;border-bottom:1px solid #d8dee4!important;background:#fff!important;">
-                <strong style="display:block!important;max-width:210px!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:#24292f!important;font-size:14px!important;line-height:18px!important;font-weight:600!important;"><%= routexHeaderNome %> <%= routexHeaderCognome %></strong>
-                <small style="display:block!important;margin-top:2px!important;color:#57606a!important;font-size:12px!important;line-height:16px!important;font-weight:400!important;text-transform:uppercase!important;"><%= routexHeaderRuolo %></small>
+                <strong style="display:block!important;max-width:210px!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:#24292f!important;font-size:14px!important;line-height:18px!important;font-weight:600!important;"><%= safeflowHeaderNome %> <%= safeflowHeaderCognome %></strong>
+                <small style="display:block!important;margin-top:2px!important;color:#57606a!important;font-size:12px!important;line-height:16px!important;font-weight:400!important;text-transform:uppercase!important;"><%= safeflowHeaderRuolo %></small>
             </div>
             <a class="app-user-dropdown__item" href="profile" style="display:flex!important;align-items:center!important;gap:10px!important;padding:8px 12px!important;color:#24292f!important;background:#fff!important;text-decoration:none!important;font-size:14px!important;line-height:20px!important;font-weight:400!important;">
                 <span class="app-user-dropdown__icon" aria-hidden="true">

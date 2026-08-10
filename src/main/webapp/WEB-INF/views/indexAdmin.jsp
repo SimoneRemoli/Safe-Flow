@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="it.web.routex.domain.SessionAuthUtil" %>
-<%@ page import="it.web.routex.controller.applicativo.ReviewTravelerCommunicationsControllerApplicativo" %>
-<%@ page import="it.web.routex.exception.DAOExceptionRemoli" %>
+<%@ page import="it.web.safeflow.domain.SessionAuthUtil" %>
+<%@ page import="it.web.safeflow.controller.applicativo.ReviewTravelerCommunicationsControllerApplicativo" %>
+<%@ page import="it.web.safeflow.exception.DAOExceptionRemoli" %>
 <%
     HttpSession currentSession = request.getSession(false);
     String nomeAdmin = null;

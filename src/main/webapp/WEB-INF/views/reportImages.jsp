@@ -2,7 +2,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.nio.charset.StandardCharsets" %>
-<%@ page import="it.web.routex.model.ReportImageAttachment" %>
+<%@ page import="it.web.safeflow.model.ReportImageAttachment" %>
 <%@ page import="org.apache.commons.lang3.StringEscapeUtils" %>
 <%
     List<ReportImageAttachment> images = (List<ReportImageAttachment>) request.getAttribute("images");
