@@ -84,7 +84,23 @@ Top contributors are highlighted across the public report feed with compact badg
   <img alt="#1 Active Reporter" src="https://img.shields.io/badge/%231%20--%20Active%20Reporter-Top%20Contributor-1EE7A5?style=for-the-badge">
 </p>
 
-This makes reliable travelers immediately recognizable while keeping every report tied to a clear public identity.
+The badge combines two different signals:
+
+| Badge part | What it means |
+| --- | --- |
+| **`#1`** | The traveler is first in the community ranking because they currently have the highest community score. |
+| **`Active Reporter`** | The traveler trust level, based on their reporting history. |
+
+Trust levels are assigned with these thresholds:
+
+| Trust level | Requirement |
+| --- | --- |
+| **Trusted Reporter** | At least `20` approved reports and at least `50` helpful likes |
+| **Safety Contributor** | At least `10` approved reports or at least `25` helpful likes |
+| **Active Reporter** | At least `3` total reports |
+| **New Reporter** | Default level for new or low-activity travelers |
+
+This means a badge like **`#1 - Active Reporter`** identifies a traveler who is currently first by community score, while their activity level is still classified as Active Reporter. This makes reliable travelers immediately recognizable while keeping every report tied to a clear public identity.
 
 ## Stack
 
