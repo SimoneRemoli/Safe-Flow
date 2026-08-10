@@ -48,5 +48,6 @@ build/
 # Logs
 *.log
 /FileLog/
-/src/main/webapp/css/
+/src/main/webapp/css/*
+!/src/main/webapp/css/minimal-ui.css
 /src/main/webapp/lib/

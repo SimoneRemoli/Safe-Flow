@@ -116,6 +116,43 @@ Safe Flow follows a layered MVC structure:
 - `model`, `bean`, and `record` carry domain and view data.
 - `WEB-INF/views` contains protected JSP screens.
 
+## Clone And Run
+
+After cloning the repository, a new developer needs Java, Maven, MySQL/MariaDB, and Tomcat.
+
+```bash
+git clone <repository-url>
+cd RouteX_MVC_Project
+mvn package
+```
+
+Then initialize the database from MySQL:
+
+```sql
+SOURCE Database/SafeFlow_Update.sql;
+SOURCE Database/SafeFlow_users_grants.sql;
+```
+
+Check the database connection in:
+
+```text
+src/main/resources/db.properties
+```
+
+Finally, deploy the generated WAR on Tomcat:
+
+```text
+target/SafeFlow_MVC_Project.war
+```
+
+The application is usually available at:
+
+```text
+http://localhost:8080/RouteX_MVC_Project/
+```
+
+Do not run `mvn deploy` unless a remote Maven repository is configured. For this project, `mvn package` is the correct build command.
+
 ## Run
 
 ```bash
