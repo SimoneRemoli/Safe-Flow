@@ -9,6 +9,7 @@
 <%@ page import="java.nio.charset.StandardCharsets" %>
 <%@ page import="org.apache.commons.lang3.StringEscapeUtils" %>
 <%@ page import="it.web.safeflow.model.NotificationComment" %>
+<%@ page import="it.web.safeflow.utility.RomeMetroLineResolver" %>
 <%
     List<MessageBean> notifiche = (List<MessageBean>) request.getAttribute("notifiche");
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -604,7 +605,8 @@
 
         .safe-flow-notifications .report-badge,
         .safe-flow-notifications .message-detail,
-        .safe-flow-notifications .view-images-button {
+        .safe-flow-notifications .view-images-button,
+        .safe-flow-notifications .metro-line-badge {
             border-radius: 6px !important;
             padding: 5px 8px !important;
             font-size: 0.68rem !important;
@@ -647,6 +649,23 @@
             color: #405147 !important;
             background: #f4f7f5 !important;
             border: 1px solid #d8e4de !important;
+        }
+
+        .safe-flow-notifications .metro-line-badge {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            color: #14241d !important;
+            background: #ffffff !important;
+            border: 1px solid #d8e4de !important;
+            letter-spacing: 0.04em !important;
+        }
+
+        .safe-flow-notifications .metro-line-badge img {
+            display: block !important;
+            width: 38px !important;
+            height: 18px !important;
+            object-fit: contain !important;
         }
 
         .safe-flow-notifications .view-images-button {
@@ -1515,6 +1534,7 @@
 		                            int likeCount = m.getLikeCount() == null ? 0 : m.getLikeCount();
 		                            boolean likedByCurrentUser = Boolean.TRUE.equals(m.getLikedByCurrentUser());
 		                            int imageCount = m.getImageCount() == null ? 0 : m.getImageCount();
+		                            List<RomeMetroLineResolver.MetroLine> metroLines = RomeMetroLineResolver.linesFor(m.getCity(), m.getStationName());
 		                            List<NotificationComment> comments = m.getComments() == null ? List.of() : m.getComments();
 		                            int commentCount = m.getCommentCount() == null ? comments.size() : m.getCommentCount();
 		                            String stationName = m.getStationName() == null ? "" : m.getStationName().trim();
@@ -1528,7 +1548,7 @@
 	                        <tr <%= reportRowAttributes %>>
 	                            <td class="message-cell <%= adminReport ? "admin-message" : "" %>">
 	                                <div><%= StringEscapeUtils.escapeHtml4(m.getMessage()) %></div>
-			                                <% if (Boolean.TRUE.equals(m.getPickpocketAlert()) || Boolean.TRUE.equals(m.getFightAlert()) || Boolean.TRUE.equals(m.getCrowdAlert()) || Boolean.TRUE.equals(m.getGeneralAlert()) || (m.getStationName() != null && !m.getStationName().isBlank()) || (m.getSuspectClothing() != null && !m.getSuspectClothing().isBlank()) || imageCount > 0) { %>
+			                                <% if (Boolean.TRUE.equals(m.getPickpocketAlert()) || Boolean.TRUE.equals(m.getFightAlert()) || Boolean.TRUE.equals(m.getCrowdAlert()) || Boolean.TRUE.equals(m.getGeneralAlert()) || !metroLines.isEmpty() || (m.getStationName() != null && !m.getStationName().isBlank()) || (m.getSuspectClothing() != null && !m.getSuspectClothing().isBlank()) || imageCount > 0) { %>
 	                                <div class="message-meta stack">
                                     <% if (Boolean.TRUE.equals(m.getPickpocketAlert())) { %>
                                     <span class="report-badge pickpocket">Pickpocket alert</span>
@@ -1542,6 +1562,11 @@
 	                                    <% if (Boolean.TRUE.equals(m.getGeneralAlert())) { %>
 	                                    <span class="report-badge general">General alert</span>
 	                                    <% } %>
+	                                        <% for (RomeMetroLineResolver.MetroLine metroLine : metroLines) { %>
+	                                        <span class="metro-line-badge <%= metroLine.cssClass() %>">
+	                                            <img src="<%= metroLine.assetPath() %>" alt="<%= metroLine.label() %>">
+	                                        </span>
+	                                        <% } %>
 	                                        <% if (m.getStationName() != null && !m.getStationName().isBlank()) { %>
 	                                        <span class="message-detail">Station: <%= StringEscapeUtils.escapeHtml4(m.getStationName()) %></span>
 	                                        <% } %>

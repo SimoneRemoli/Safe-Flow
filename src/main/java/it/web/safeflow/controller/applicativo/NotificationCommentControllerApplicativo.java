@@ -371,7 +371,7 @@ public class NotificationCommentControllerApplicativo {
                 value = loadTargetProperties().getProperty(internalNotificationKey);
             }
             if (value == null || value.isBlank()) {
-                return null;
+                return inferredApprovalTargetUrl(notification);
             }
 
             String[] parts = value.split("\\|", 2);
@@ -387,6 +387,78 @@ public class NotificationCommentControllerApplicativo {
         } catch (BrondiException e) {
             return null;
         }
+    }
+
+    private String inferredApprovalTargetUrl(Notification internalNotification) throws BrondiException {
+        if (!isApprovalNotification(internalNotification)) {
+            return null;
+        }
+
+        Notification bestMatch = null;
+        int bestScore = Integer.MIN_VALUE;
+        LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
+        try {
+            for (Notification candidate : layer.getMessagesRAM()) {
+                if (!isApprovedPublicTravelerReportFor(candidate, internalNotification.getRecipientCf())) {
+                    continue;
+                }
+
+                int score = approvalMatchScore(internalNotification, candidate);
+                if (bestMatch == null
+                        || score > bestScore
+                        || score == bestScore && candidate.getDate().after(bestMatch.getDate())) {
+                    bestMatch = candidate;
+                    bestScore = score;
+                }
+            }
+        } catch (DAOExceptionRemoli e) {
+            throw new BrondiException("Unable to infer approval target.", "COMMENT_TARGET_INFER", "Approval target lookup failed", e);
+        }
+
+        return bestMatch == null
+                ? null
+                : "viewNotifications?notificationKey=" + NotificationLikeControllerApplicativo.keyFor(bestMatch);
+    }
+
+    private boolean isApprovalNotification(Notification notification) {
+        return notification != null
+                && "ADMIN".equalsIgnoreCase(notification.getSenderRole())
+                && notification.getRecipientCf() != null
+                && !notification.getRecipientCf().isBlank()
+                && notification.getMessage() != null
+                && notification.getMessage().startsWith("Your traveler report has been approved");
+    }
+
+    private boolean isApprovedPublicTravelerReportFor(Notification candidate, String travelerCf) {
+        return candidate != null
+                && "TRAVELER".equalsIgnoreCase(candidate.getSenderRole())
+                && "APPROVED".equalsIgnoreCase(candidate.getStatus())
+                && candidate.getRecipientCf() == null
+                && candidate.getSenderCf() != null
+                && travelerCf != null
+                && candidate.getSenderCf().equalsIgnoreCase(travelerCf);
+    }
+
+    private int approvalMatchScore(Notification internalNotification, Notification candidate) {
+        int score = 0;
+        score += sameText(internalNotification.getCity(), candidate.getCity()) ? 20 : 0;
+        score += sameText(internalNotification.getStationName(), candidate.getStationName()) ? 35 : 0;
+        score += sameText(internalNotification.getSuspectClothing(), candidate.getSuspectClothing()) ? 10 : 0;
+        score += internalNotification.isPickpocketAlert() == candidate.isPickpocketAlert() ? 8 : 0;
+        score += internalNotification.isFightAlert() == candidate.isFightAlert() ? 8 : 0;
+        score += internalNotification.isCrowdAlert() == candidate.isCrowdAlert() ? 8 : 0;
+        score += internalNotification.isGeneralAlert() == candidate.isGeneralAlert() ? 8 : 0;
+        if (internalNotification.getDate() != null && candidate.getDate() != null
+                && !candidate.getDate().after(internalNotification.getDate())) {
+            score += 5;
+        }
+        return score;
+    }
+
+    private boolean sameText(String left, String right) {
+        String normalizedLeft = left == null ? "" : left.trim();
+        String normalizedRight = right == null ? "" : right.trim();
+        return normalizedLeft.equalsIgnoreCase(normalizedRight);
     }
 
     private void storeNotificationTarget(Notification internalNotification,
@@ -409,13 +481,14 @@ public class NotificationCommentControllerApplicativo {
             try {
                 new SocialDataRepository().saveInternalNotificationTarget(internalNotificationKey, key, id);
             } catch (DAOExceptionRemoli ignored) {
-                Properties properties = loadTargetProperties();
-                properties.setProperty(
-                        internalNotificationKey,
-                        key + "|" + blankIfNull(id)
-                );
-                storeTargetProperties(properties);
+                // The legacy file store below remains a second copy when the DB table is not available.
             }
+            Properties properties = loadTargetProperties();
+            properties.setProperty(
+                    internalNotificationKey,
+                    key + "|" + blankIfNull(id)
+            );
+            storeTargetProperties(properties);
         }
     }
 

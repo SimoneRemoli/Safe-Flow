@@ -109,6 +109,79 @@
             outline: none;
         }
 
+        .station-field {
+            position: relative;
+        }
+
+        .station-suggestions {
+            position: absolute;
+            z-index: 30;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            max-height: 290px;
+            overflow-y: auto;
+            display: none;
+            padding: 8px;
+            border-radius: 16px;
+            border: 1px solid rgba(111, 247, 255, 0.22);
+            background: #071427;
+            box-shadow: 0 22px 50px rgba(0, 0, 0, 0.42);
+        }
+
+        .station-suggestions.open {
+            display: block;
+        }
+
+        .station-suggestion {
+            width: 100%;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 9px 10px;
+            border: 0;
+            border-radius: 10px;
+            color: var(--text);
+            background: transparent;
+            font: inherit;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .station-suggestion:hover,
+        .station-suggestion.active {
+            background: rgba(111, 247, 255, 0.1);
+        }
+
+        .station-suggestion-name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-weight: 750;
+        }
+
+        .station-line-icons {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            flex: 0 0 auto;
+        }
+
+        .station-line-icons img {
+            display: block;
+            width: 40px;
+            height: 19px;
+            object-fit: contain;
+        }
+
+        .station-empty {
+            padding: 12px 10px;
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
         .image-upload-panel {
             margin-top: 16px;
             padding: 16px;
@@ -278,10 +351,18 @@
             <label class="toggle-button general-button" for="generalAlert">General alert</label>
         </div>
         <div class="pickpocket-panel" id="pickpocketPanel">
-            <div class="field">
+            <div class="field station-field">
                 <label for="stationName">Station</label>
-                <input type="text" id="stationName" name="stationName" list="stationSuggestions" placeholder="Confirm the station involved in the alert.">
-                <datalist id="stationSuggestions"></datalist>
+                <input
+                        type="text"
+                        id="stationName"
+                        name="stationName"
+                        placeholder="Confirm the station involved in the alert."
+                        autocomplete="off"
+                        aria-autocomplete="list"
+                        aria-expanded="false"
+                        aria-controls="stationSuggestions">
+                <div class="station-suggestions" id="stationSuggestions" role="listbox"></div>
             </div>
         </div>
 	        <textarea id="message" name="message" maxlength="250" placeholder="Describe the issue or information you want to report..."></textarea>
@@ -315,6 +396,88 @@
             "Budapest": ["Ors vezer tere", "Pillango utca", "Puskas Ferenc Stadion", "Keleti Palyaudvar", "Blaha Lujza Ter", "Il. Janos Pal Papa Ter", "Rakoczi Ter", "Kalvin Ter", "Fovam Ter", "Szent Gellert Ter - Muegyetem", "Moricz Zsigmond Korter", "Ujbuda-kozport", "Bikas Park", "Kelenfood Vasutallomas", "Kobanya-Kispes", "Hatar Ut", "Pottyos Utca", "Ecseri Ut", "Nepliget", "Nagyvarad Ter", "Semmelweis Klinikak", "Corvin-negyed", "Ferenciek Tere", "Deak Ferenc Ter", "Vorosmarty Ter", "Bajcsy-Zsilinszky ut", "Opera", "Oktogon", "Vorosmarty Utca", "Kodaly Korond", "Bajza Utca", "Hosok Tere", "Szechenyi-furdo", "Mexikoi Ut", "Ujpest-Kozpont", "Ujpest-Varoskapu", "Gyongyosi Utca", "Forgach Utca", "Goncz Arpad Vkp", "Dozsa Gyorgy Ut", "Lehel Ter", "Nyugati Palyaudva", "Arany Janos Utca", "Kossuth Lajos Ter", "Battyhany Ter", "Szell Kalman Ter", "Deli Palyaudvar", "Astoria"]
         };
 
+        const romeStationLines = {
+            "Anagnina": "MA",
+            "Cinecitta": "MA",
+            "Subaugusta": "MA",
+            "Giulio Agricola": "MA",
+            "Lucio Sestio": "MA",
+            "Numidio Quadrato": "MA",
+            "Porta Furba": "MA",
+            "Arco di Travertino": "MA",
+            "Colli Albani": "MA",
+            "Furio Camillo": "MA",
+            "Ponte Lungo": "MA",
+            "Re di Roma": "MA",
+            "San Giovanni": "MA MC",
+            "Manzoni": "MA",
+            "Vittorio Emanuele": "MA",
+            "Termini": "MA MB",
+            "Repubblica": "MA",
+            "Barberini": "MA",
+            "Spagna": "MA",
+            "Flaminio": "MA",
+            "Lepanto": "MA",
+            "Ottaviano": "MA",
+            "Cipro": "MA",
+            "Valle Aurelia": "MA",
+            "Baldo degli Ubaldi": "MA",
+            "Cornelia": "MA",
+            "Battistini": "MA",
+            "Laurentina": "MB",
+            "EUR Fermi": "MB",
+            "EUR Palasport": "MB",
+            "EUR Magliana": "MB",
+            "Marconi": "MB",
+            "Basilica S. Paolo": "MB",
+            "Garbatella": "MB",
+            "Piramide": "MB",
+            "Circo Massimo": "MB",
+            "Colosseo": "MB MC",
+            "Cavour": "MB",
+            "Castro Pretorio": "MB",
+            "Policlinico": "MB",
+            "Bologna": "MB",
+            "Tiburtina FS": "MB",
+            "Quintiliani": "MB",
+            "Monti Tiburtini": "MB",
+            "Pietralata": "MB",
+            "Santa Maria del Soccorso": "MB",
+            "Ponte Mammolo": "MB",
+            "Rebibbia": "MB",
+            "Annibaliano": "MB",
+            "Libia": "MB",
+            "Conca D oro": "MB",
+            "Jonio": "MB",
+            "Pantano": "MC",
+            "Graniti": "MC",
+            "Finocchio": "MC",
+            "Bolognetta": "MC",
+            "Borghesiana": "MC",
+            "Due Leoni - Fontana Candida": "MC",
+            "Grotte Celoni": "MC",
+            "Torre Gaia": "MC",
+            "Torre Angela": "MC",
+            "Torrenova": "MC",
+            "Giardinetti": "MC",
+            "Torre Maura": "MC",
+            "Torre Spaccata": "MC",
+            "Alessandrino": "MC",
+            "Parco di Centocelle": "MC",
+            "Mirti": "MC",
+            "Gardenie": "MC",
+            "Teano": "MC",
+            "Malatesta": "MC",
+            "Pigneto": "MC",
+            "Lodi": "MC"
+        };
+
+        const stationLineAssets = {
+            "MA": "images/metro/ma.svg",
+            "MB": "images/metro/mb.svg",
+            "MC": "images/metro/mc.svg"
+        };
+
         const citySelect = document.getElementById("city");
         const pickpocketToggle = document.getElementById("pickpocketAlert");
         const fightToggle = document.getElementById("fightAlert");
@@ -325,15 +488,87 @@
 	        const stationSuggestions = document.getElementById("stationSuggestions");
 	        const reportImages = document.getElementById("reportImages");
 	        const selectedImages = document.getElementById("selectedImages");
+	        let activeStationIndex = -1;
+
+        function stationLines(station) {
+            if (citySelect.value !== "Rome") {
+                return [];
+            }
+            return (romeStationLines[station] || "").split(" ").filter(Boolean);
+        }
+
+        function visibleStations() {
+            const stations = cityStations[citySelect.value] || [];
+            const query = stationInput.value.trim().toLowerCase();
+            if (!query) {
+                return stations;
+            }
+            return stations.filter((station) => {
+                const lineText = stationLines(station).join(" ").toLowerCase();
+                return station.toLowerCase().includes(query) || lineText.includes(query);
+            });
+        }
+
+        function closeStationSuggestions() {
+            stationSuggestions.classList.remove("open");
+            stationInput.setAttribute("aria-expanded", "false");
+            activeStationIndex = -1;
+        }
+
+        function selectStation(station) {
+            stationInput.value = station;
+            closeStationSuggestions();
+        }
 
         function renderStations() {
-            const stations = cityStations[citySelect.value] || [];
+            const stations = visibleStations();
             stationSuggestions.innerHTML = "";
-            stations.forEach((station) => {
-                const option = document.createElement("option");
-                option.value = station;
-                stationSuggestions.appendChild(option);
+
+            if (!stations.length) {
+                const empty = document.createElement("div");
+                empty.className = "station-empty";
+                empty.textContent = "No station found.";
+                stationSuggestions.appendChild(empty);
+            }
+
+            stations.slice(0, 90).forEach((station, index) => {
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "station-suggestion";
+                button.setAttribute("role", "option");
+                button.dataset.station = station;
+                button.addEventListener("mousedown", (event) => {
+                    event.preventDefault();
+                    selectStation(station);
+                });
+
+                const name = document.createElement("span");
+                name.className = "station-suggestion-name";
+                name.textContent = station;
+                button.appendChild(name);
+
+                const lines = stationLines(station);
+                if (lines.length) {
+                    const icons = document.createElement("span");
+                    icons.className = "station-line-icons";
+                    lines.forEach((line) => {
+                        const image = document.createElement("img");
+                        image.src = stationLineAssets[line];
+                        image.alt = line;
+                        image.title = line;
+                        icons.appendChild(image);
+                    });
+                    button.appendChild(icons);
+                }
+
+                if (index === activeStationIndex) {
+                    button.classList.add("active");
+                }
+                stationSuggestions.appendChild(button);
             });
+
+            stationSuggestions.classList.add("open");
+            stationInput.setAttribute("aria-expanded", "true");
         }
 
         function syncPickpocketState() {
@@ -342,6 +577,7 @@
             stationInput.required = active;
             if (!active) {
                 stationInput.value = "";
+                closeStationSuggestions();
             }
         }
 
@@ -364,7 +600,43 @@
             syncPickpocketState();
         });
 
-	        citySelect.addEventListener("change", renderStations);
+	        citySelect.addEventListener("change", () => {
+	            stationInput.value = "";
+	            closeStationSuggestions();
+	            if (document.activeElement === stationInput) {
+	                renderStations();
+	            }
+	        });
+	        stationInput.addEventListener("focus", renderStations);
+	        stationInput.addEventListener("input", () => {
+	            activeStationIndex = -1;
+	            renderStations();
+	        });
+	        stationInput.addEventListener("keydown", (event) => {
+	            const options = Array.from(stationSuggestions.querySelectorAll(".station-suggestion"));
+	            if (!options.length || !stationSuggestions.classList.contains("open")) {
+	                return;
+	            }
+	            if (event.key === "ArrowDown") {
+	                event.preventDefault();
+	                activeStationIndex = Math.min(activeStationIndex + 1, options.length - 1);
+	                renderStations();
+	            } else if (event.key === "ArrowUp") {
+	                event.preventDefault();
+	                activeStationIndex = Math.max(activeStationIndex - 1, 0);
+	                renderStations();
+	            } else if (event.key === "Enter" && activeStationIndex >= 0) {
+	                event.preventDefault();
+	                selectStation(options[activeStationIndex].dataset.station);
+	            } else if (event.key === "Escape") {
+	                closeStationSuggestions();
+	            }
+	        });
+	        document.addEventListener("mousedown", (event) => {
+	            if (!stationInput.contains(event.target) && !stationSuggestions.contains(event.target)) {
+	                closeStationSuggestions();
+	            }
+	        });
 	        if (reportImages && selectedImages) {
 	            reportImages.addEventListener("change", () => {
 	                const files = Array.from(reportImages.files || []);
@@ -373,7 +645,6 @@
 	                    : "";
 	            });
 	        }
-	        renderStations();
         syncPickpocketState();
     }());
 </script>

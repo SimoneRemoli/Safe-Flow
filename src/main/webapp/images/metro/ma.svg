@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="84" height="40" viewBox="0 0 84 40" role="img" aria-label="Metro Roma MA">
+  <rect width="42" height="40" fill="#ee2428"/>
+  <rect x="42" width="42" height="40" fill="#f36c21"/>
+  <path d="M7 31V9h6.7l7.4 12.7L28.5 9H35v22h-6V19.2l-5.7 9.5h-4.5L13 19.2V31H7z" fill="#fff"/>
+  <path d="M51.2 31 60 9h6l8.8 22h-6.2l-1.4-3.9h-8.6L57.2 31h-6zm9-8.6h5.4L62.9 15l-2.7 7.4z" fill="#fff"/>
+</svg>

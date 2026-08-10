@@ -5,6 +5,7 @@
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.nio.charset.StandardCharsets" %>
 <%@ page import="org.apache.commons.lang3.StringEscapeUtils" %>
+<%@ page import="it.web.safeflow.utility.RomeMetroLineResolver" %>
 <%
     List<MessageBean> pendingMessages = (List<MessageBean>) request.getAttribute("pendingMessages");
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -125,16 +126,19 @@
             grid-template-columns: repeat(2, minmax(150px, 1fr));
             gap: 10px;
             min-width: 330px;
+            margin-left: auto;
+            margin-right: clamp(220px, 18vw, 360px);
         }
         .metric-card {
             padding: 14px;
             border-radius: 12px;
-            border: 1px solid rgba(139, 231, 196, 0.2);
-            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(30, 231, 165, 0.58);
+            background: #020403;
+            box-shadow: 0 16px 34px rgba(0, 0, 0, 0.34);
         }
         .metric-label {
             display: block;
-            color: var(--muted);
+            color: #bff5de;
             font-size: 0.72rem;
             font-weight: 900;
             text-transform: uppercase;
@@ -143,7 +147,7 @@
             display: block;
             margin-top: 6px;
             color: #ffffff;
-            font-size: 1.35rem;
+            font-size: 1.55rem;
             font-weight: 900;
         }
         .table-panel {
@@ -284,6 +288,27 @@
             font-weight: 900;
             letter-spacing: 0.05em;
             text-transform: uppercase;
+        }
+        .metro-line-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 6px 9px;
+            border-radius: 7px;
+            color: #14241d;
+            background: #ffffff;
+            border: 1px solid #d8e4de;
+            font-size: 0.68rem;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .metro-line-badge img {
+            display: block;
+            width: 42px;
+            height: 20px;
+            object-fit: contain;
         }
         .view-images-button {
             display: inline-flex;
@@ -431,6 +456,11 @@
             color: #ffffff;
             background: #b42318;
         }
+        @media (max-width: 1180px) {
+            .review-metrics {
+                margin-right: 140px;
+            }
+        }
         @media (max-width: 900px) {
             .shell {
                 width: min(100% - 16px, 1480px);
@@ -441,6 +471,8 @@
             .review-metrics {
                 width: 100%;
                 min-width: 0;
+                margin-left: 0;
+                margin-right: 0;
             }
 
             .table-scroll {
@@ -509,6 +541,7 @@
                     <tr><td colspan="11" class="empty-state">No pending traveler reports.</td></tr>
                     <% } else { for (MessageBean m : pendingMessages) {
                         int imageCount = m.getImageCount() == null ? 0 : m.getImageCount();
+                        List<RomeMetroLineResolver.MetroLine> metroLines = RomeMetroLineResolver.linesFor(m.getCity(), m.getStationName());
                         String encodedNotificationKey = m.getNotificationKey() == null ? "" : URLEncoder.encode(m.getNotificationKey(), StandardCharsets.UTF_8);
                     %>
                     <tr>
@@ -530,6 +563,11 @@
                                 <% } %>
                                 <% if (!Boolean.TRUE.equals(m.getPickpocketAlert()) && !Boolean.TRUE.equals(m.getFightAlert()) && !Boolean.TRUE.equals(m.getCrowdAlert()) && !Boolean.TRUE.equals(m.getGeneralAlert())) { %>
                                 <span class="alert-badge standard">Standard</span>
+                                <% } %>
+                                <% for (RomeMetroLineResolver.MetroLine metroLine : metroLines) { %>
+                                <span class="metro-line-badge <%= metroLine.cssClass() %>">
+                                    <img src="<%= metroLine.assetPath() %>" alt="<%= metroLine.label() %>">
+                                </span>
                                 <% } %>
                             </div>
                         </td>
