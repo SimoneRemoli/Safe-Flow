@@ -2,7 +2,32 @@
 <%@ page import="it.web.safeflow.model.UserProfileSummary" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.nio.charset.StandardCharsets" %>
+<%@ page import="java.util.Map" %>
 <%@ page import="org.apache.commons.lang3.StringEscapeUtils" %>
+<%!
+    private int maxValue(Map<String, Integer> values) {
+        int max = 0;
+        if (values != null) {
+            for (Integer value : values.values()) {
+                if (value != null && value > max) {
+                    max = value;
+                }
+            }
+        }
+        return max;
+    }
+
+    private boolean hasValues(Map<String, Integer> values) {
+        return maxValue(values) > 0;
+    }
+
+    private int barPercent(int value, int max) {
+        if (max <= 0) {
+            return 0;
+        }
+        return Math.max(8, Math.round((value * 100.0f) / max));
+    }
+%>
 <%
     UserProfileSummary profile = (UserProfileSummary) request.getAttribute("publicProfile");
     String encodedCf = profile == null ? "" : URLEncoder.encode(profile.getCodiceFiscale(), StandardCharsets.UTF_8);
@@ -13,6 +38,15 @@
     int reportCount = profile == null ? 0 : profile.getStats().getReportCount();
     int cityCount = profile == null ? 0 : profile.getStats().getCityCount();
     int approvalCount = profile == null ? 0 : profile.getStats().getApprovalCount();
+    int helpfulScore = profile == null ? 0 : profile.getStats().getHelpfulScore();
+    int approvalRate = profile == null ? 0 : profile.getStats().getApprovalRatePercent();
+    String rankLabel = profile != null && profile.getStats().getCommunityRank() > 0 ? "#" + profile.getStats().getCommunityRank() : "Unranked";
+    String trustLevel = profile == null ? "New Reporter" : StringEscapeUtils.escapeHtml4(profile.getStats().getTrustLevel());
+    Map<String, Integer> categoryCounts = profile == null ? Map.of() : profile.getStats().getCategoryCounts();
+    Map<String, Integer> monthlyCounts = profile == null ? Map.of() : profile.getStats().getMonthlyReportCounts();
+    Map<String, Integer> stationCounts = profile == null ? Map.of() : profile.getStats().getStationCounts();
+    int categoryMax = maxValue(categoryCounts);
+    int monthlyMax = maxValue(monthlyCounts);
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -152,6 +186,136 @@
             font-weight: 800;
         }
 
+        .rank-strip {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            padding: 0 26px 20px;
+            background: #f7faf8;
+            border-bottom: 1px solid #d8e4de;
+        }
+
+        .rank-metric {
+            padding: 14px;
+            border-radius: 12px;
+            background: #ffffff;
+            border: 1px solid #d8e4de;
+        }
+
+        .rank-metric strong {
+            display: block;
+            color: #14241d;
+            font-size: 1.25rem;
+            line-height: 1.1;
+        }
+
+        .rank-metric span {
+            display: block;
+            margin-top: 5px;
+            color: #607267;
+            font-size: 0.74rem;
+            font-weight: 850;
+            text-transform: uppercase;
+        }
+
+        .public-insights {
+            padding: 26px;
+            border-top: 1px solid #d8e4de;
+        }
+
+        .public-insights h2 {
+            margin: 0 0 16px;
+            font-size: 1rem;
+            color: #405147;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .insight-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .insight-panel {
+            border: 1px solid #d8e4de;
+            border-radius: 14px;
+            padding: 16px;
+            background: #fbfdfc;
+        }
+
+        .insight-panel h3 {
+            margin: 0 0 14px;
+            color: #405147;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .bar-row {
+            display: grid;
+            grid-template-columns: minmax(88px, 0.9fr) minmax(0, 1.4fr) 32px;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            color: #405147;
+            font-size: 0.84rem;
+            font-weight: 750;
+        }
+
+        .bar-track {
+            height: 10px;
+            overflow: hidden;
+            border-radius: 999px;
+            background: #e8efeb;
+        }
+
+        .bar-fill {
+            height: 100%;
+            width: var(--bar-width);
+            border-radius: inherit;
+            background: linear-gradient(90deg, #0e7c66, #6ee7a8);
+        }
+
+        .month-chart {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(46px, 1fr));
+            gap: 10px;
+            align-items: end;
+            min-height: 180px;
+        }
+
+        .month-bar {
+            display: grid;
+            grid-template-rows: 1fr auto auto;
+            gap: 8px;
+            height: 166px;
+            text-align: center;
+            color: #607267;
+            font-size: 0.7rem;
+            font-weight: 800;
+        }
+
+        .month-bar-fill {
+            align-self: end;
+            justify-self: center;
+            width: 22px;
+            height: var(--bar-height);
+            min-height: 8px;
+            border-radius: 999px 999px 6px 6px;
+            background: linear-gradient(180deg, #6ee7a8, #0e7c66);
+            box-shadow: 0 10px 20px rgba(14, 124, 102, 0.16);
+        }
+
+        .empty-insight {
+            color: #607267;
+            background: #ffffff;
+            border: 1px dashed #cddbd4;
+            border-radius: 12px;
+            padding: 14px;
+            line-height: 1.5;
+        }
+
         @media (max-width: 640px) {
             .public-profile-header {
                 align-items: flex-start;
@@ -159,6 +323,11 @@
             }
 
             .profile-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .rank-strip,
+            .insight-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -180,10 +349,10 @@
             <span class="role-pill"><%= role %></span>
         </div>
 	    </section>
-	    <section class="profile-stats" aria-label="Profile statistics">
-	        <div class="profile-stat">
-	            <span class="profile-stat-label">Reports made</span>
-	            <span class="profile-stat-value"><%= reportCount %></span>
+		    <section class="profile-stats" aria-label="Profile statistics">
+		        <div class="profile-stat">
+		            <span class="profile-stat-label">Reports made</span>
+		            <span class="profile-stat-value"><%= reportCount %></span>
 	        </div>
 	        <div class="profile-stat">
 	            <span class="profile-stat-label">Cities reported</span>
@@ -192,15 +361,112 @@
 	        <div class="profile-stat">
 	            <span class="profile-stat-label">Approvals received</span>
 	            <span class="profile-stat-value"><%= approvalCount %></span>
-	        </div>
+		        </div>
+		    </section>
+            <section class="rank-strip" aria-label="Community rank">
+                <div class="rank-metric">
+                    <strong><%= rankLabel %></strong>
+                    <span>Community rank</span>
+                </div>
+                <div class="rank-metric">
+                    <strong><%= helpfulScore %></strong>
+                    <span>Helpful score</span>
+                </div>
+                <div class="rank-metric">
+                    <strong><%= approvalRate %>%</strong>
+                    <span>Approval rate</span>
+                </div>
+            </section>
+		    <section class="public-profile-body">
+		        <h2>Bio</h2>
+		        <p><%= bio.isBlank() ? "No bio available." : bio %></p>
 	    </section>
-	    <section class="public-profile-body">
-	        <h2>Bio</h2>
-	        <p><%= bio.isBlank() ? "No bio available." : bio %></p>
-    </section>
-    <div class="public-profile-actions">
-        <a href="viewNotifications">Back to notifications</a>
-    </div>
+        <section class="public-insights" aria-label="Public profile charts">
+            <h2><%= trustLevel %></h2>
+            <div class="insight-grid">
+                <div class="insight-panel">
+                    <h3>Report categories</h3>
+                    <% if (hasValues(categoryCounts)) { %>
+                    <% for (Map.Entry<String, Integer> entry : categoryCounts.entrySet()) {
+                        int value = entry.getValue() == null ? 0 : entry.getValue();
+                        if (value <= 0) {
+                            continue;
+                        }
+                    %>
+                    <div class="bar-row">
+                        <span><%= StringEscapeUtils.escapeHtml4(entry.getKey()) %></span>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="--bar-width: <%= barPercent(value, categoryMax) %>%;"></div>
+                        </div>
+                        <strong><%= value %></strong>
+                    </div>
+                    <% } %>
+                    <% } else { %>
+                    <div class="empty-insight">No categorized reports yet.</div>
+                    <% } %>
+                </div>
+
+                <div class="insight-panel">
+                    <h3>Top stations</h3>
+                    <% if (hasValues(stationCounts)) { %>
+                    <% for (Map.Entry<String, Integer> entry : stationCounts.entrySet()) {
+                        int value = entry.getValue() == null ? 0 : entry.getValue();
+                    %>
+                    <div class="bar-row">
+                        <span><%= StringEscapeUtils.escapeHtml4(entry.getKey()) %></span>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="--bar-width: <%= barPercent(value, maxValue(stationCounts)) %>%;"></div>
+                        </div>
+                        <strong><%= value %></strong>
+                    </div>
+                    <% } %>
+                    <% } else { %>
+                    <div class="empty-insight">No station data available yet.</div>
+                    <% } %>
+                </div>
+
+                <div class="insight-panel">
+                    <h3>Reports over time</h3>
+                    <% if (hasValues(monthlyCounts)) { %>
+                    <div class="month-chart">
+                        <% for (Map.Entry<String, Integer> entry : monthlyCounts.entrySet()) {
+                            int value = entry.getValue() == null ? 0 : entry.getValue();
+                        %>
+                        <div class="month-bar">
+                            <div class="month-bar-fill" style="--bar-height: <%= barPercent(value, monthlyMax) %>%;"></div>
+                            <strong><%= value %></strong>
+                            <span><%= StringEscapeUtils.escapeHtml4(entry.getKey()) %></span>
+                        </div>
+                        <% } %>
+                    </div>
+                    <% } else { %>
+                    <div class="empty-insight">No reporting timeline yet.</div>
+                    <% } %>
+                </div>
+
+                <div class="insight-panel">
+                    <h3>Cities covered</h3>
+                    <% if (profile != null && hasValues(profile.getStats().getCityCounts())) { %>
+                    <% for (Map.Entry<String, Integer> entry : profile.getStats().getCityCounts().entrySet()) {
+                        int value = entry.getValue() == null ? 0 : entry.getValue();
+                    %>
+                    <div class="bar-row">
+                        <span><%= StringEscapeUtils.escapeHtml4(entry.getKey()) %></span>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="--bar-width: <%= barPercent(value, maxValue(profile.getStats().getCityCounts())) %>%;"></div>
+                        </div>
+                        <strong><%= value %></strong>
+                    </div>
+                    <% } %>
+                    <% } else { %>
+                    <div class="empty-insight">No city data available yet.</div>
+                    <% } %>
+                </div>
+            </div>
+        </section>
+	    <div class="public-profile-actions">
+	        <a href="viewNotifications">Back to notifications</a>
+	    </div>
 </main>
 </body>
 </html>

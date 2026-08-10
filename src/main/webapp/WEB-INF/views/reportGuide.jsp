@@ -145,9 +145,15 @@
         }
 
         .primary {
-            color: #ffffff;
-            background: linear-gradient(90deg, #2563eb, #1d4ed8);
-            box-shadow: 0 14px 28px rgba(37, 99, 235, 0.16);
+            color: #052e1a;
+            background: linear-gradient(90deg, #7df5a5, #34d399);
+            border: 1px solid rgba(16, 185, 129, 0.58);
+            box-shadow: 0 14px 28px rgba(16, 185, 129, 0.16);
+        }
+
+        .primary:hover {
+            background: linear-gradient(90deg, #8ff7b3, #4ade80);
+            box-shadow: 0 16px 32px rgba(16, 185, 129, 0.22);
         }
 
         .secondary {

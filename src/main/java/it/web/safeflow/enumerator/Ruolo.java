@@ -1,0 +1,29 @@
+package it.web.safeflow.enumerator;
+
+public enum Ruolo
+{
+    ADMIN(2),
+    TRAVELER(3),
+    LOGIN(4);
+
+    private final int id;
+
+    Ruolo(int id)
+    {
+        this.id = id;
+    }
+    public static Ruolo fromint(int id)
+    {
+        for(Ruolo a:values())
+        {
+            if(a.getId()==id)
+            {
+                return a;
+            }
+        }
+        return null;
+    }
+    public int getId() {
+        return id;
+    }
+}
