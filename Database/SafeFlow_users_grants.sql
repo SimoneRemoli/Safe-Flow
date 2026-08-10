@@ -36,6 +36,8 @@ GRANT EXECUTE ON PROCEDURE `SafeFlow_Update`.`getAllCity` TO `traveler`@`%`;
 GRANT EXECUTE ON PROCEDURE `SafeFlow_Update`.`getMessages` TO `traveler`@`%`;
 GRANT EXECUTE ON PROCEDURE `SafeFlow_Update`.`spCommunication` TO `traveler`@`%`;
 GRANT EXECUTE ON PROCEDURE `SafeFlow_Update`.`MarkCommunicationAsRead` TO `traveler`@`%`;
+GRANT EXECUTE ON PROCEDURE `SafeFlow_Update`.`ListAdmins` TO `traveler`@`%`;
+GRANT EXECUTE ON PROCEDURE `SafeFlow_Update`.`ListTravelers` TO `traveler`@`%`;
 
 -- ===============================
 -- ADMIN
