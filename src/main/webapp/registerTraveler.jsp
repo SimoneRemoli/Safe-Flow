@@ -5,65 +5,114 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Safe Flow - Traveler Registration</title>
+    <link rel="stylesheet" href="css/minimal-ui.css">
     <style>
         :root {
-            --bg-1: #04111f;
-            --bg-2: #0a1f37;
-            --line: rgba(111, 247, 255, 0.2);
-            --text: #ecf7ff;
-            --muted: #8ba5be;
-            --accent: #6ff7ff;
-            --accent-2: #89ffd1;
+            --auth-bg: #ffffff;
+            --auth-surface: #ffffff;
+            --auth-soft: #f7faf8;
+            --auth-border: #d8e4de;
+            --auth-text: #14241d;
+            --auth-muted: #607267;
+            --auth-muted-strong: #405147;
+            --auth-primary: #0e7c66;
+            --auth-primary-strong: #075f4e;
+            --auth-primary-soft: #e8f7ef;
+            --auth-shadow: 0 18px 46px rgba(19, 35, 28, 0.10);
         }
 
         * { box-sizing: border-box; }
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            color: var(--text);
-            font-family: "Trebuchet MS", "Gill Sans", sans-serif;
-            background:
-                radial-gradient(circle at 20% 20%, rgba(111, 247, 255, 0.16), transparent 24%),
-                radial-gradient(circle at 82% 18%, rgba(83, 169, 255, 0.18), transparent 22%),
-                linear-gradient(135deg, var(--bg-1), var(--bg-2) 58%, #040913);
+        body.auth-page {
+            margin: 0 !important;
+            min-height: 100vh !important;
+            color: var(--auth-text) !important;
+            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+            background: var(--auth-bg) !important;
+            padding: 28px 18px !important;
+        }
+
+        .auth-shell {
+            width: min(1040px, 100%);
+            min-height: calc(100vh - 56px);
+            margin: 0 auto;
+            display: grid;
+            place-items: center;
+        }
+
+        .auth-panel {
+            width: min(660px, 100%);
+            padding: 30px;
+            border: 1px solid var(--auth-border);
+            border-radius: 18px;
+            background: var(--auth-surface);
+            box-shadow: var(--auth-shadow);
+        }
+
+        .auth-topline {
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 20px;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 24px;
         }
 
-        .panel {
-            width: min(560px, 100%);
-            padding: 30px;
-            border-radius: 28px;
-            border: 1px solid var(--line);
-            background: linear-gradient(180deg, rgba(7, 20, 36, 0.88), rgba(4, 12, 23, 0.94));
-            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.42);
-        }
-
-        .eyebrow {
+        .auth-brand {
             display: inline-flex;
-            padding: 8px 14px;
-            border-radius: 999px;
-            color: var(--accent);
-            border: 1px solid rgba(111,247,255,0.2);
-            background: rgba(111,247,255,0.08);
+            align-items: center;
+            gap: 10px;
+            color: var(--auth-text);
+            font-weight: 850;
+            text-decoration: none;
+        }
+
+        .auth-brand-mark {
+            width: 34px;
+            height: 34px;
+            display: grid;
+            place-items: center;
+            border-radius: 10px;
+            color: var(--auth-primary-strong);
+            background: var(--auth-primary-soft);
+            border: 1px solid #bfe8cf;
+            font-size: 0.85rem;
+            font-weight: 900;
+        }
+
+        .auth-home-link {
+            color: var(--auth-muted-strong) !important;
+            font-size: 0.92rem;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .auth-home-link:hover {
+            color: var(--auth-primary-strong) !important;
+        }
+
+        .auth-eyebrow {
+            display: inline-flex;
+            margin-bottom: 14px;
+            color: var(--auth-primary) !important;
             text-transform: uppercase;
-            letter-spacing: 0.18em;
-            font-size: 11px;
+            letter-spacing: 0.08em;
+            font-size: 0.74rem;
+            font-weight: 850;
         }
 
-        h1 {
-            margin: 18px 0 10px;
-            font-size: 2.35rem;
-            line-height: 1;
+        .auth-panel h1 {
+            margin: 0 0 10px;
+            color: var(--auth-text) !important;
+            font-size: clamp(1.85rem, 4vw, 2.35rem) !important;
+            line-height: 1.05 !important;
+            letter-spacing: 0 !important;
         }
 
-        p {
-            margin: 0 0 22px;
-            color: var(--muted);
+        .auth-intro {
+            margin: 0 0 24px;
+            color: var(--auth-muted) !important;
             line-height: 1.7;
+            font-size: 0.98rem;
         }
 
         .grid {
@@ -83,116 +132,188 @@
         .field-group label {
             display: block;
             margin-bottom: 8px;
-            color: #dff8ff;
+            color: var(--auth-muted-strong) !important;
             font-size: 0.92rem;
-            letter-spacing: 0.04em;
+            font-weight: 800;
         }
 
         .field-group input {
-            width: 100%;
-            padding: 15px 16px;
-            border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.12);
-            background: rgba(255,255,255,0.05);
-            color: var(--text);
+            width: 100% !important;
+            height: 46px !important;
+            padding: 11px 13px !important;
+            border-radius: 10px !important;
+            border: 1px solid var(--auth-border) !important;
+            background: #ffffff !important;
+            color: var(--auth-text) !important;
             font-size: 1rem;
-            outline: none;
+            outline: none !important;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .field-group input::placeholder {
+            color: #8ba197;
+        }
+
+        .field-group input:focus {
+            border-color: rgba(14, 124, 102, 0.58) !important;
+            box-shadow: 0 0 0 4px rgba(14, 124, 102, 0.10) !important;
         }
 
         .checkbox-row {
             display: flex;
             align-items: center;
             gap: 10px;
-            margin: 6px 0 18px;
-            color: var(--muted);
+            margin: 4px 0 20px;
+            color: var(--auth-muted) !important;
+            line-height: 1.45;
+            font-size: 0.95rem;
         }
 
-        .actions {
+        .checkbox-row input {
+            width: 18px !important;
+            height: 18px !important;
+            accent-color: var(--auth-primary);
+        }
+
+        .auth-actions {
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
             margin-top: 8px;
         }
 
-        .btn,
-        .btn-link {
+        .auth-submit,
+        .auth-secondary-button {
+            min-height: 46px !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 18px !important;
+            border-radius: 999px !important;
+            font-weight: 850 !important;
+            font-size: 0.98rem !important;
+            line-height: 1.2;
             text-decoration: none;
-            border: none;
             cursor: pointer;
-            padding: 14px 20px;
-            border-radius: 999px;
-            font-weight: 700;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease;
         }
 
-        .btn {
-            color: #04111f;
-            background: linear-gradient(90deg, var(--accent), var(--accent-2), #8dd8ff);
+        .auth-submit {
+            border: 1px solid var(--auth-primary) !important;
+            background: linear-gradient(135deg, var(--auth-primary), #13a085) !important;
+            color: #ffffff !important;
+            box-shadow: 0 12px 26px rgba(14, 124, 102, 0.18) !important;
         }
 
-        .btn-link {
-            color: var(--text);
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.12);
+        .auth-submit:hover {
+            transform: translateY(-1px);
+            background: linear-gradient(135deg, var(--auth-primary-strong), var(--auth-primary)) !important;
+        }
+
+        .auth-secondary-button {
+            border: 1px solid var(--auth-border) !important;
+            background: var(--auth-soft) !important;
+            color: var(--auth-muted-strong) !important;
+        }
+
+        .auth-secondary-button:hover {
+            transform: translateY(-1px);
+            border-color: #c8e2d8 !important;
+            background: #ffffff !important;
+            color: var(--auth-text) !important;
         }
 
         @media (max-width: 640px) {
+            body.auth-page {
+                padding: 16px !important;
+            }
+
+            .auth-shell {
+                min-height: calc(100vh - 32px);
+            }
+
+            .auth-panel {
+                padding: 24px;
+                border-radius: 16px;
+            }
+
+            .auth-topline,
+            .auth-actions {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
             .grid {
                 grid-template-columns: 1fr;
             }
+
+            .auth-submit,
+            .auth-secondary-button {
+                width: 100%;
+            }
         }
     </style>
-    <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
-<body>
+<body class="auth-page">
 <%@ include file="/header.jspf" %>
-<div class="panel">
-    <span class="eyebrow">Traveler Registration</span>
-    <h1>Create your Safe Flow account</h1>
-    <p>Register as a traveler to access your reserved area, reports, and platform notifications.</p>
-
-    <form action="registerTraveler" method="post" accept-charset="UTF-8">
-        <div class="grid">
-            <div class="field-group">
-                <label for="firstName">First name</label>
-                <input id="firstName" type="text" name="firstName" placeholder="First name">
-            </div>
-
-            <div class="field-group">
-                <label for="lastName">Last name</label>
-                <input id="lastName" type="text" name="lastName" placeholder="Last name">
-            </div>
-
-            <div class="field-group full">
-                <label for="taxCode">Tax code</label>
-                <input id="taxCode" type="text" name="taxCode" maxlength="16" placeholder="16-character tax code">
-            </div>
-
-            <div class="field-group full">
-                <label for="email">Email</label>
-                <input id="email" type="email" name="email" placeholder="Email address">
-            </div>
-
-            <div class="field-group">
-                <label for="password">Password</label>
-                <input id="password" type="password" name="password" placeholder="Password">
-            </div>
-
-            <div class="field-group">
-                <label for="birthDate">Birth date</label>
-                <input id="birthDate" type="date" name="birthDate">
-            </div>
+<main class="auth-shell">
+    <section class="auth-panel" aria-labelledby="registerTitle">
+        <div class="auth-topline">
+            <a href="index.jsp" class="auth-brand">
+                <span class="auth-brand-mark">SF</span>
+                <span>Safe Flow</span>
+            </a>
+            <a href="index.jsp" class="auth-home-link">Home</a>
         </div>
 
-        <label class="checkbox-row" for="disabled">
-            <input id="disabled" type="checkbox" name="disabled">
-            Accessibility support required
-        </label>
+        <span class="auth-eyebrow">Traveler access</span>
+        <h1 id="registerTitle">Create your Safe Flow account.</h1>
+        <p class="auth-intro">Open a traveler profile for reports, notifications, and reserved area access.</p>
 
-        <div class="actions">
-            <button type="submit" class="btn">Create account</button>
-            <a href="login.jsp" class="btn-link">Back to login</a>
-        </div>
-    </form>
-</div>
+        <form action="registerTraveler" method="post" accept-charset="UTF-8">
+            <div class="grid">
+                <div class="field-group">
+                    <label for="firstName">First name</label>
+                    <input id="firstName" type="text" name="firstName" placeholder="First name" autocomplete="given-name">
+                </div>
+
+                <div class="field-group">
+                    <label for="lastName">Last name</label>
+                    <input id="lastName" type="text" name="lastName" placeholder="Last name" autocomplete="family-name">
+                </div>
+
+                <div class="field-group full">
+                    <label for="taxCode">Tax code</label>
+                    <input id="taxCode" type="text" name="taxCode" maxlength="16" placeholder="16-character tax code" autocomplete="off">
+                </div>
+
+                <div class="field-group full">
+                    <label for="email">Email</label>
+                    <input id="email" type="email" name="email" placeholder="Email address" autocomplete="email">
+                </div>
+
+                <div class="field-group">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" name="password" placeholder="Password" autocomplete="new-password">
+                </div>
+
+                <div class="field-group">
+                    <label for="birthDate">Birth date</label>
+                    <input id="birthDate" type="date" name="birthDate" autocomplete="bday">
+                </div>
+            </div>
+
+            <label class="checkbox-row" for="disabled">
+                <input id="disabled" type="checkbox" name="disabled">
+                Accessibility support required
+            </label>
+
+            <div class="auth-actions">
+                <button type="submit" class="auth-submit">Create account</button>
+                <a href="login.jsp" class="auth-secondary-button">Back to login</a>
+            </div>
+        </form>
+    </section>
+</main>
 </body>
 </html>

@@ -444,8 +444,66 @@
         }
     </style>
     <link rel="stylesheet" href="css/minimal-ui.css">
+    <style>
+        body.profile-page {
+            background: #ffffff !important;
+            color: #14241d !important;
+        }
+
+        .profile-page .profile-shell {
+            width: min(1120px, calc(100% - 32px));
+            margin: 88px auto 32px;
+            gap: 20px;
+        }
+
+        .profile-page .profile-card,
+        .profile-page .profile-form {
+            background: #ffffff !important;
+            border: 1px solid #d8e4de;
+            border-radius: 12px;
+            box-shadow: none !important;
+        }
+
+        .profile-page .profile-card {
+            border-top: 4px solid #1f6b4d;
+        }
+
+        .profile-page .profile-form {
+            border-top: 4px solid #2563eb;
+        }
+
+        .profile-page .profile-bio-preview,
+        .profile-page .profile-stat,
+        .profile-page .insight-panel,
+        .profile-page .mini-metric,
+        .profile-page .empty-insight {
+            box-shadow: none !important;
+        }
+
+        .profile-page .month-bar-fill {
+            box-shadow: none !important;
+        }
+
+        .profile-page .profile-actions button,
+        .profile-page .image-action-button.primary {
+            background: #1f6b4d;
+            border-color: #1f6b4d;
+        }
+
+        .profile-page .profile-actions a {
+            background: #ffffff;
+            border-color: #d8e4de;
+        }
+
+        @media (max-width: 760px) {
+            .profile-page .profile-shell {
+                grid-template-columns: 1fr;
+                margin-top: 88px;
+            }
+        }
+    </style>
 </head>
-<body>
+<body class="profile-page">
 <%@ include file="/header.jspf" %>
 <main class="profile-shell">
     <aside class="profile-card">

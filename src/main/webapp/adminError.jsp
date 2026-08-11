@@ -6,14 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Safe Flow - Admin Error</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/minimal-ui.css">
     <style>
         :root {
-            --bg-1: #04111f;
-            --bg-2: #0a1f37;
-            --line: rgba(255, 128, 128, 0.22);
-            --text: #ecf7ff;
-            --muted: #c3ced8;
-            --danger: #ff7f9f;
+            --line: #dbe7e1;
+            --text: #17231d;
+            --muted: #607267;
+            --danger: #b4233f;
+            --danger-soft: #fff2f4;
+            --accent: #1f6b4d;
         }
 
         * { box-sizing: border-box; }
@@ -22,36 +23,40 @@
             margin: 0;
             min-height: 100vh;
             color: var(--text);
-            font-family: "Trebuchet MS", "Gill Sans", sans-serif;
-            background:
-                radial-gradient(circle at 18% 22%, rgba(255, 127, 159, 0.18), transparent 24%),
-                radial-gradient(circle at 82% 18%, rgba(255, 166, 117, 0.16), transparent 22%),
-                linear-gradient(135deg, #140912, #24111e 58%, #040913);
-            display: grid;
-            place-items: center;
-            padding: 18px;
+            font-family: "Inter", "Segoe UI", Arial, sans-serif;
+            background: #ffffff !important;
+            padding: 94px 18px 32px !important;
         }
 
         .error-container {
-            width: min(700px, 100%);
-            background: linear-gradient(180deg, rgba(29, 10, 19, 0.86), rgba(14, 8, 15, 0.94));
+            width: min(760px, 100%);
+            margin: 0 auto;
+            background: #ffffff !important;
             border: 1px solid var(--line);
-            border-radius: 30px;
-            padding: 34px;
-            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.38);
-            text-align: center;
+            border-radius: 14px;
+            padding: 30px;
+            box-shadow: none !important;
+            text-align: left;
         }
 
         .error-icon {
-            font-size: 56px;
+            display: inline-grid;
+            place-items: center;
+            width: 58px;
+            height: 58px;
+            border-radius: 14px;
+            background: var(--danger-soft);
+            border: 1px solid #ffd5dc;
+            font-size: 26px;
             color: var(--danger);
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
         h1 {
             margin: 0 0 14px;
-            font-size: 2rem;
-            color: #ffd6df;
+            font-size: clamp(1.85rem, 3vw, 2.35rem);
+            line-height: 1.05;
+            color: var(--text);
         }
 
         p {
@@ -60,9 +65,9 @@
         }
 
         .details {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
+            background: #fbfdfc;
+            border: 1px solid var(--line);
+            border-radius: 10px;
             padding: 18px;
             color: var(--muted);
             text-align: left;
@@ -76,22 +81,23 @@
             align-items: center;
             gap: 10px;
             text-decoration: none;
-            padding: 14px 20px;
-            border-radius: 999px;
+            padding: 12px 16px;
+            border-radius: 8px;
             font-weight: 700;
-            color: #140912;
-            background: linear-gradient(90deg, #ff7f9f, #ffc08d);
-            box-shadow: 0 18px 32px rgba(255, 127, 159, 0.2);
-            transition: transform 0.25s ease;
+            color: #ffffff;
+            background: var(--accent);
+            border: 1px solid var(--accent);
+            box-shadow: none;
+            transition: transform 0.2s ease, background 0.2s ease;
         }
 
         .btn-home:hover {
             transform: translateY(-2px);
+            background: #18583f;
         }
     </style>
-    <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
-<body>
+<body class="admin-error-page">
 <%@ include file="/header.jspf" %>
 <%
     String errore = (String) request.getAttribute("errore");

@@ -5,209 +5,247 @@
     response.setDateHeader("Expires", 0);
 %>
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Safe Flow - Login</title>
+    <link rel="stylesheet" href="css/minimal-ui.css">
     <style>
         :root {
-            --bg-1: #04111f;
-            --bg-2: #0a1f37;
-            --panel: rgba(7, 20, 36, 0.82);
-            --line: rgba(111, 247, 255, 0.2);
-            --text: #ecf7ff;
-            --muted: #8ba5be;
-            --accent: #6ff7ff;
-            --accent-2: #89ffd1;
+            --auth-bg: #ffffff;
+            --auth-surface: #ffffff;
+            --auth-soft: #f7faf8;
+            --auth-border: #d8e4de;
+            --auth-text: #14241d;
+            --auth-muted: #607267;
+            --auth-muted-strong: #405147;
+            --auth-primary: #0e7c66;
+            --auth-primary-strong: #075f4e;
+            --auth-primary-soft: #e8f7ef;
+            --auth-blue: #2563eb;
+            --auth-shadow: 0 18px 46px rgba(19, 35, 28, 0.10);
         }
 
         * { box-sizing: border-box; }
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            color: var(--text);
-            font-family: "Trebuchet MS", "Gill Sans", sans-serif;
-            background:
-                radial-gradient(circle at 20% 20%, rgba(111, 247, 255, 0.16), transparent 24%),
-                radial-gradient(circle at 82% 18%, rgba(83, 169, 255, 0.18), transparent 22%),
-                linear-gradient(135deg, var(--bg-1), var(--bg-2) 58%, #040913);
+        body.auth-page {
+            margin: 0 !important;
+            min-height: 100vh !important;
+            color: var(--auth-text) !important;
+            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+            background: var(--auth-bg) !important;
+            padding: 28px 18px !important;
+        }
+
+        .auth-shell {
+            width: min(1040px, 100%);
+            min-height: calc(100vh - 56px);
+            margin: 0 auto;
+            display: grid;
+            place-items: center;
+        }
+
+        .auth-panel {
+            width: min(460px, 100%);
+            padding: 30px;
+            border: 1px solid var(--auth-border);
+            border-radius: 18px;
+            background: var(--auth-surface);
+            box-shadow: var(--auth-shadow);
+        }
+
+        .auth-topline {
             display: flex;
             align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 24px;
         }
 
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            background-image:
-                radial-gradient(circle, rgba(255,255,255,0.72) 1px, transparent 1px),
-                radial-gradient(circle, rgba(111,247,255,0.42) 1px, transparent 1px);
-            background-size: 150px 150px, 230px 230px;
-            background-position: 0 0, 60px 90px;
-            opacity: 0.18;
-            pointer-events: none;
-            animation: drift 18s linear infinite;
-        }
-
-        .home-link {
-            position: absolute;
-            top: 24px;
-            right: 24px;
-            text-decoration: none;
-            color: var(--text);
-            padding: 10px 16px;
-            border-radius: 999px;
-            border: 1px solid rgba(255,255,255,0.12);
-            background: rgba(255,255,255,0.06);
-            transition: transform 0.25s ease, border-color 0.25s ease;
-        }
-
-        .home-link:hover {
-            transform: translateY(-2px);
-            border-color: rgba(111,247,255,0.4);
-        }
-
-        .login-panel {
-            width: min(430px, calc(100% - 24px));
-            padding: 28px;
-            border-radius: 28px;
-            border: 1px solid var(--line);
-            background: linear-gradient(180deg, rgba(7, 20, 36, 0.88), rgba(4, 12, 23, 0.94));
-            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.42);
-            backdrop-filter: blur(16px);
-            position: relative;
-            z-index: 1;
-        }
-
-        .eyebrow {
+        .auth-brand {
             display: inline-flex;
-            padding: 8px 14px;
-            border-radius: 999px;
-            color: var(--accent);
-            border: 1px solid rgba(111,247,255,0.2);
-            background: rgba(111,247,255,0.08);
+            align-items: center;
+            gap: 10px;
+            color: var(--auth-text);
+            font-weight: 850;
+            text-decoration: none;
+        }
+
+        .auth-brand-mark {
+            width: 34px;
+            height: 34px;
+            display: grid;
+            place-items: center;
+            border-radius: 10px;
+            color: var(--auth-primary-strong);
+            background: var(--auth-primary-soft);
+            border: 1px solid #bfe8cf;
+            font-size: 0.85rem;
+            font-weight: 900;
+        }
+
+        .auth-home-link {
+            color: var(--auth-muted-strong) !important;
+            font-size: 0.92rem;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .auth-home-link:hover {
+            color: var(--auth-primary-strong) !important;
+        }
+
+        .auth-eyebrow {
+            display: inline-flex;
+            margin-bottom: 14px;
+            color: var(--auth-primary) !important;
             text-transform: uppercase;
-            letter-spacing: 0.18em;
-            font-size: 11px;
+            letter-spacing: 0.08em;
+            font-size: 0.74rem;
+            font-weight: 850;
         }
 
-        h1 {
-            margin: 18px 0 10px;
-            font-size: 2.5rem;
-            line-height: 0.95;
+        .auth-panel h1 {
+            margin: 0 0 10px;
+            color: var(--auth-text) !important;
+            font-size: clamp(1.85rem, 4vw, 2.35rem) !important;
+            line-height: 1.05 !important;
+            letter-spacing: 0 !important;
         }
 
-        p {
-            margin: 0 0 22px;
-            color: var(--muted);
+        .auth-intro {
+            margin: 0 0 24px;
+            color: var(--auth-muted) !important;
             line-height: 1.7;
+            font-size: 0.98rem;
         }
 
         .field-group {
-            margin-bottom: 14px;
+            margin-bottom: 15px;
         }
 
         .field-group label {
             display: block;
             margin-bottom: 8px;
-            color: #dff8ff;
+            color: var(--auth-muted-strong) !important;
             font-size: 0.92rem;
-            letter-spacing: 0.04em;
+            font-weight: 800;
         }
 
         .field-group input {
-            width: 100%;
-            padding: 15px 16px;
-            border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.12);
-            background: rgba(255,255,255,0.05);
-            color: var(--text);
+            width: 100% !important;
+            height: 46px !important;
+            padding: 11px 13px !important;
+            border-radius: 10px !important;
+            border: 1px solid var(--auth-border) !important;
+            background: #ffffff !important;
+            color: var(--auth-text) !important;
             font-size: 1rem;
-            outline: none;
+            outline: none !important;
             transition: border-color 0.25s ease, box-shadow 0.25s ease;
         }
 
         .field-group input::placeholder {
-            color: #6f87a1;
+            color: #8ba197;
         }
 
         .field-group input:focus {
-            border-color: rgba(111,247,255,0.55);
-            box-shadow: 0 0 0 4px rgba(111,247,255,0.08);
+            border-color: rgba(14, 124, 102, 0.58) !important;
+            box-shadow: 0 0 0 4px rgba(14, 124, 102, 0.10) !important;
         }
 
-        .submit-btn {
-            width: 100%;
-            margin-top: 8px;
-            padding: 16px 20px;
-            border: none;
-            border-radius: 999px;
-            color: #04111f;
-            font-weight: 700;
-            font-size: 1rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            background: linear-gradient(90deg, var(--accent), var(--accent-2), #8dd8ff);
+        .auth-submit {
+            width: 100% !important;
+            min-height: 46px !important;
+            margin-top: 6px;
+            padding: 12px 18px !important;
+            border: 1px solid var(--auth-primary) !important;
+            border-radius: 999px !important;
+            color: #ffffff !important;
+            font-weight: 850 !important;
+            font-size: 0.98rem !important;
+            letter-spacing: 0 !important;
+            background: linear-gradient(135deg, var(--auth-primary), #13a085) !important;
             cursor: pointer;
-            box-shadow: 0 20px 34px rgba(111,247,255,0.22);
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            box-shadow: 0 12px 26px rgba(14, 124, 102, 0.18) !important;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
         }
 
-        .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 24px 42px rgba(111,247,255,0.28);
+        .auth-submit:hover {
+            transform: translateY(-1px);
+            background: linear-gradient(135deg, var(--auth-primary-strong), var(--auth-primary)) !important;
         }
 
-        .secondary-link {
-            display: inline-flex;
+        .auth-secondary-link {
+            display: flex;
             justify-content: center;
             width: 100%;
-            margin-top: 12px;
+            margin-top: 16px;
+            color: var(--auth-muted) !important;
             text-decoration: none;
-            color: var(--muted);
             font-size: 0.95rem;
+            line-height: 1.4;
         }
 
-        .secondary-link strong {
-            color: #dff8ff;
+        .auth-secondary-link strong {
+            color: var(--auth-primary-strong) !important;
             margin-left: 6px;
         }
 
-        @keyframes drift {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-14px); }
-            100% { transform: translateY(0); }
+        @media (max-width: 620px) {
+            body.auth-page {
+                padding: 16px !important;
+            }
+
+            .auth-shell {
+                min-height: calc(100vh - 32px);
+            }
+
+            .auth-panel {
+                padding: 24px;
+                border-radius: 16px;
+            }
+
+            .auth-topline {
+                align-items: flex-start;
+                flex-direction: column;
+            }
         }
     </style>
-    <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
-<body>
+<body class="auth-page">
     <%@ include file="/header.jspf" %>
-    <a href="index.jsp" class="home-link">Home</a>
-
-    <div class="login-panel">
-        <div class="eyebrow">Safe Flow Access</div>
-        <h1>Access the safety desk.</h1>
-        <p>Enter the reserved area to manage traveler reports, public alerts, and administrative review flows.</p>
-
-        <form action="login" method="post" accept-charset="UTF-8">
-            <div class="field-group">
-                <label for="email">Email</label>
-                <input id="email" type="text" name="Email" placeholder="Email Address">
+    <main class="auth-shell">
+        <section class="auth-panel" aria-labelledby="loginTitle">
+            <div class="auth-topline">
+                <a href="index.jsp" class="auth-brand">
+                    <span class="auth-brand-mark">SF</span>
+                    <span>Safe Flow</span>
+                </a>
+                <a href="index.jsp" class="auth-home-link">Home</a>
             </div>
 
-            <div class="field-group">
-                <label for="password">Password</label>
-                <input id="password" type="password" name="Password" placeholder="Password">
-            </div>
+            <span class="auth-eyebrow">Reserved area</span>
+            <h1 id="loginTitle">Access the safety desk.</h1>
+            <p class="auth-intro">Manage traveler reports, public alerts, and administrative review flows.</p>
 
-            <button type="submit" class="submit-btn">Login</button>
-        </form>
+            <form action="login" method="post" accept-charset="UTF-8">
+                <div class="field-group">
+                    <label for="email">Email</label>
+                    <input id="email" type="email" name="Email" placeholder="Email address" autocomplete="email">
+                </div>
 
-        <a href="registerTraveler" class="secondary-link">Need an account?<strong>Register as traveler</strong></a>
-    </div>
+                <div class="field-group">
+                    <label for="password">Password</label>
+                    <input id="password" type="password" name="Password" placeholder="Password" autocomplete="current-password">
+                </div>
+
+                <button type="submit" class="auth-submit">Login</button>
+            </form>
+
+            <a href="registerTraveler" class="auth-secondary-link">Need an account?<strong>Register as traveler</strong></a>
+        </section>
+    </main>
 </body>
 </html>

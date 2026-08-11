@@ -80,8 +80,66 @@
         }
     </style>
     <link rel="stylesheet" href="css/minimal-ui.css">
+    <style>
+        body.success-page {
+            background: #ffffff !important;
+            color: #17231d !important;
+            font-family: "Inter", "Segoe UI", Arial, sans-serif !important;
+            display: block !important;
+            padding: 96px 18px 32px !important;
+        }
+
+        .success-page .success-container {
+            width: min(720px, 100%);
+            margin: 0 auto;
+            background: #ffffff !important;
+            border: 1px solid #dbe7e1;
+            border-radius: 14px;
+            padding: 30px;
+            box-shadow: none !important;
+            text-align: left;
+        }
+
+        .success-page .success-icon {
+            display: inline-grid;
+            place-items: center;
+            width: 58px;
+            height: 58px;
+            margin: 0 0 20px;
+            border-radius: 14px;
+            color: #147a4b;
+            background: #e8f7ef;
+            border: 1px solid #bfe8cf;
+            font-size: 26px;
+        }
+
+        .success-page h1 {
+            margin-bottom: 12px;
+            color: #17231d !important;
+            font-size: clamp(1.85rem, 3vw, 2.35rem) !important;
+            line-height: 1.05 !important;
+        }
+
+        .success-page p {
+            margin: 0 0 24px;
+            max-width: 560px;
+            color: #607267 !important;
+        }
+
+        .success-page .btn-home {
+            border-radius: 8px;
+            background: #1f6b4d;
+            border: 1px solid #1f6b4d;
+            box-shadow: none !important;
+        }
+
+        .success-page .btn-home:hover {
+            background: #18583f;
+            box-shadow: none !important;
+        }
+    </style>
 </head>
-<body>
+<body class="success-page">
 <%@ include file="/header.jspf" %>
 <%
     String successTitle = (String) request.getAttribute("successTitle");

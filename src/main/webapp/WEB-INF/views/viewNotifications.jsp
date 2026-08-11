@@ -389,27 +389,28 @@
     <link rel="stylesheet" href="css/minimal-ui.css">
     <style>
         body.safe-flow-notifications {
-            background: #f3f6f4 !important;
+            background: #ffffff !important;
             color: #14241d !important;
             font-family: "Inter", "Segoe UI", Arial, sans-serif !important;
+            padding: 28px 18px !important;
         }
 
         .safe-flow-notifications .shell {
-            width: min(1240px, calc(100% - 40px)) !important;
-            margin: 22px auto !important;
+            width: min(1120px, 100%) !important;
+            margin: 0 auto !important;
             padding: 0 !important;
-            border-radius: 16px !important;
-            border: 1px solid #d8e4de !important;
+            border-radius: 0 !important;
+            border: 0 !important;
             background: #ffffff !important;
-            box-shadow: 0 18px 42px rgba(20, 36, 29, 0.08) !important;
-            overflow: hidden !important;
+            box-shadow: none !important;
+            overflow: visible !important;
         }
 
         .safe-flow-notifications .topbar {
-            padding: 24px 28px !important;
+            padding: 18px 0 24px !important;
             align-items: flex-start !important;
             border-bottom: 1px solid #d8e4de !important;
-            background: linear-gradient(180deg, #ffffff, #fbfdfc) !important;
+            background: #ffffff !important;
         }
 
         .safe-flow-notifications .eyebrow {
@@ -475,16 +476,21 @@
             display: grid !important;
             grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
             gap: 12px !important;
-            padding: 18px 28px !important;
-            background: #f7faf8 !important;
+            padding: 18px 0 !important;
+            background: #ffffff !important;
             border-bottom: 1px solid #d8e4de !important;
         }
 
         .safe-flow-notifications .summary-item {
-            padding: 14px 16px !important;
-            border-radius: 12px !important;
+            padding: 0 16px 0 0 !important;
+            border-radius: 0 !important;
             background: #ffffff !important;
-            border: 1px solid #d8e4de !important;
+            border: 0 !important;
+            border-right: 1px solid #d8e4de !important;
+        }
+
+        .safe-flow-notifications .summary-item:last-child {
+            border-right: 0 !important;
         }
 
         .safe-flow-notifications .summary-label {
@@ -505,7 +511,7 @@
 
         .safe-flow-notifications .city-switcher {
             margin: 0 !important;
-            padding: 18px 28px 0 !important;
+            padding: 18px 0 0 !important;
             gap: 8px !important;
             background: #ffffff !important;
         }
@@ -528,7 +534,7 @@
 
         .safe-flow-notifications .city-group {
             margin: 0 !important;
-            padding: 22px 28px 28px !important;
+            padding: 22px 0 28px !important;
         }
 
         .safe-flow-notifications .city-title {

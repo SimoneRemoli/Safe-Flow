@@ -229,8 +229,145 @@
         }
     </style>
     <link rel="stylesheet" href="css/minimal-ui.css">
+    <style>
+        body.admin-compose-page {
+            margin: 0 !important;
+            min-height: 100vh !important;
+            padding: 28px 18px !important;
+            background: #ffffff !important;
+            color: #14241d !important;
+            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+            display: block !important;
+        }
+
+        body.admin-compose-page .panel {
+            width: min(980px, 100%) !important;
+            margin: 0 auto !important;
+            padding: 8px 0 42px !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: #ffffff !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+        }
+
+        body.admin-compose-page .eyebrow {
+            padding: 0 !important;
+            border: 0 !important;
+            background: transparent !important;
+            color: #0e7c66 !important;
+            letter-spacing: 0.08em !important;
+            font-weight: 850 !important;
+        }
+
+        body.admin-compose-page h1 {
+            margin-top: 14px !important;
+            color: #14241d !important;
+            font-size: clamp(2rem, 3.5vw, 3rem) !important;
+            line-height: 1.04 !important;
+        }
+
+        body.admin-compose-page .subtitle {
+            color: #607267 !important;
+            border-bottom: 1px solid #d8e4de !important;
+            padding-bottom: 24px !important;
+        }
+
+        body.admin-compose-page .field label {
+            color: #405147 !important;
+            font-weight: 800 !important;
+        }
+
+        body.admin-compose-page select,
+        body.admin-compose-page input[type="text"],
+        body.admin-compose-page textarea {
+            border: 1px solid #d8e4de !important;
+            border-radius: 12px !important;
+            background: #ffffff !important;
+            color: #14241d !important;
+            box-shadow: none !important;
+        }
+
+        body.admin-compose-page textarea {
+            min-height: 190px !important;
+        }
+
+        body.admin-compose-page .toggle-button {
+            border: 1px solid #d8e4de !important;
+            background: #f7faf8 !important;
+            color: #405147 !important;
+            font-weight: 800 !important;
+            box-shadow: none !important;
+        }
+
+        body.admin-compose-page .toggle-button:hover {
+            transform: translateY(-1px);
+            border-color: #c8e2d8 !important;
+            background: #ffffff !important;
+        }
+
+        body.admin-compose-page .toggle-input:checked + .toggle-button {
+            color: #8f1f17 !important;
+            background: #fff0ee !important;
+            border-color: #fac7c2 !important;
+        }
+
+        body.admin-compose-page .toggle-input.fight-toggle:checked + .toggle-button {
+            color: #8a4b08 !important;
+            background: #fff5df !important;
+            border-color: #f4d58a !important;
+        }
+
+        body.admin-compose-page .toggle-input.crowd-toggle:checked + .toggle-button {
+            color: #075f4e !important;
+            background: #e8f7ef !important;
+            border-color: #bfe8cf !important;
+        }
+
+        body.admin-compose-page .toggle-input.general-toggle:checked + .toggle-button {
+            color: #1d4ed8 !important;
+            background: #e8efff !important;
+            border-color: #bfd0ff !important;
+            transform: none !important;
+        }
+
+        body.admin-compose-page .toggle-button.general-button {
+            margin-left: 0 !important;
+        }
+
+        body.admin-compose-page .pickpocket-panel {
+            border: 1px solid #d8e4de !important;
+            border-radius: 12px !important;
+            background: #f7faf8 !important;
+        }
+
+        body.admin-compose-page .actions {
+            margin-top: 24px !important;
+        }
+
+        body.admin-compose-page .btn,
+        body.admin-compose-page .btn-link {
+            min-height: 46px !important;
+            padding: 12px 18px !important;
+            border-radius: 999px !important;
+            font-weight: 850 !important;
+            box-shadow: none !important;
+        }
+
+        body.admin-compose-page .btn {
+            color: #ffffff !important;
+            background: linear-gradient(135deg, #0e7c66, #13a085) !important;
+            border: 1px solid #0e7c66 !important;
+        }
+
+        body.admin-compose-page .btn-link {
+            color: #405147 !important;
+            background: #f7faf8 !important;
+            border: 1px solid #d8e4de !important;
+        }
+    </style>
 </head>
-<body>
+<body class="admin-compose-page">
 <%@ include file="/header.jspf" %>
 <div class="panel">
     <span class="eyebrow">Broadcast center</span>

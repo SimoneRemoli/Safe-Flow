@@ -23,23 +23,21 @@
             --accent: #6ff7ff;
         }
         * { box-sizing: border-box; }
-        body {
-            margin: 0;
-            min-height: 100vh;
-            color: var(--text);
-            font-family: "Trebuchet MS", "Gill Sans", sans-serif;
-            background:
-                radial-gradient(circle at 15% 22%, rgba(111, 247, 255, 0.16), transparent 24%),
-                radial-gradient(circle at 85% 18%, rgba(83, 169, 255, 0.18), transparent 22%),
-                linear-gradient(135deg, var(--bg-1), var(--bg-2) 58%, #040913);
+        body.internal-notifications-page {
+            margin: 0 !important;
+            min-height: 100vh !important;
+            color: #14241d !important;
+            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+            background: #ffffff !important;
+            padding: 28px 18px !important;
         }
-        .shell {
+        .internal-shell {
             width: min(1080px, calc(100% - 32px));
-            margin: 24px auto;
-            padding: 28px;
-            border-radius: 30px;
-            border: 1px solid var(--line);
-            background: linear-gradient(180deg, rgba(7, 20, 36, 0.84), rgba(4, 12, 23, 0.9));
+            margin: 0 auto;
+            padding: 8px 0 34px;
+            border-radius: 0;
+            border: 0;
+            background: #ffffff;
         }
         .topbar {
             display: flex;
@@ -52,20 +50,21 @@
             display: inline-flex;
             padding: 8px 14px;
             border-radius: 999px;
-            color: var(--accent);
-            border: 1px solid rgba(111, 247, 255, 0.2);
-            background: rgba(111, 247, 255, 0.08);
+            color: #0e7c66;
+            border: 1px solid #c8e2d8;
+            background: #e8f7ef;
             text-transform: uppercase;
             letter-spacing: 0.18em;
             font-size: 11px;
         }
         h1 {
             margin: 14px 0 8px;
-            font-size: clamp(2.2rem, 4vw, 3.6rem);
+            color: #14241d !important;
+            font-size: clamp(2rem, 3.5vw, 3rem);
         }
         .subtitle {
             margin: 0;
-            color: var(--muted);
+            color: #607267 !important;
             line-height: 1.7;
             max-width: 720px;
         }
@@ -76,13 +75,13 @@
         }
         .nav-actions a {
             text-decoration: none;
-            color: var(--text);
+            color: #405147 !important;
             padding: 12px 18px;
             border-radius: 999px;
             font-weight: 700;
             letter-spacing: 0.04em;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: #f7faf8 !important;
+            border: 1px solid #d8e4de !important;
         }
         .list {
             margin-top: 26px;
@@ -95,7 +94,7 @@
             gap: 14px;
             align-items: start;
             padding: 18px 20px;
-            border-radius: 22px;
+            border-radius: 12px;
             background: rgba(246, 250, 253, 0.96);
             border: 1px solid rgba(210, 222, 232, 0.7);
             transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
@@ -111,7 +110,7 @@
         .item:has(.notification-content.clickable:hover) {
             transform: translateY(-1px);
             border-color: rgba(14, 124, 102, 0.35);
-            box-shadow: 0 16px 34px rgba(0, 0, 0, 0.16);
+            box-shadow: none;
         }
         .remove-notification-button {
             min-height: 34px;
@@ -155,17 +154,17 @@
             margin-top: 26px;
             padding: 40px 24px;
             text-align: center;
-            color: var(--muted);
-            border-radius: 22px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #607267 !important;
+            border-radius: 0;
+            background: #ffffff;
+            border: 1px dashed #d8e4de;
         }
     </style>
     <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
-<body>
+<body class="internal-notifications-page">
 <%@ include file="/header.jspf" %>
-<div class="shell">
+<main class="internal-shell">
     <div class="topbar">
         <div>
             <span class="eyebrow">Private updates</span>
@@ -215,7 +214,7 @@
         <% } %>
     </div>
     <% } %>
-</div>
+</main>
 <script>
     (function () {
         const buttons = Array.from(document.querySelectorAll('[data-remove-notification]'));

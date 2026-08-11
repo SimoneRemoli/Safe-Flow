@@ -14,6 +14,9 @@
             --muted: #607267;
             --accent: #0e7c66;
             --accent-dark: #075f4e;
+            --accent-soft: #e8f7ef;
+            --blue: #2563eb;
+            --blue-soft: #e8efff;
             --danger: #b42318;
             --warning: #8a4b08;
         }
@@ -22,52 +25,76 @@
             box-sizing: border-box;
         }
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            background: var(--bg);
-            color: var(--text);
-            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        body.home-page {
+            margin: 0 !important;
+            min-height: 100vh !important;
+            background: #ffffff !important;
+            color: var(--text) !important;
+            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+            overflow-x: hidden;
         }
 
-        .page {
-            width: min(1120px, calc(100% - 32px));
-            margin: 0 auto;
-            min-height: 100vh;
-            background: var(--surface);
-            padding: 28px;
+        body.home-page .page {
+            width: min(1160px, calc(100% - 32px)) !important;
+            margin: 0 auto !important;
+            min-height: 100vh !important;
+            background: #ffffff !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            padding: 34px 0 30px !important;
         }
 
         .hero {
-            min-height: calc(100vh - 112px);
+            min-height: min(760px, calc(100vh - 92px));
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 34px 0 26px;
+            padding: 36px 0 30px;
+            position: relative;
+            isolation: isolate;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 6%;
+            left: 50%;
+            width: min(760px, 82vw);
+            height: min(760px, 82vw);
+            transform: translateX(-50%);
+            border: 1px solid rgba(14, 124, 102, 0.08);
+            border-radius: 999px;
+            opacity: 0.7;
+            z-index: -1;
         }
 
         .hero-logo {
-            width: min(680px, 100%);
+            width: min(640px, 100%);
             height: auto;
             display: block;
-            margin: 0 auto 24px;
+            margin: 0 auto 22px;
+            animation: logoReveal 0.7s ease-out both;
         }
 
-        h1 {
+        .hero h1 {
             margin: 0 0 14px;
-            font-size: clamp(2rem, 4vw, 3.25rem);
-            line-height: 1.06;
-            letter-spacing: 0;
+            max-width: 760px;
+            font-size: clamp(2.05rem, 4vw, 3.35rem) !important;
+            line-height: 1.04 !important;
+            letter-spacing: 0 !important;
+            animation: contentRise 0.65s ease-out 0.08s both;
         }
 
         .hero p {
             margin: 0;
-            max-width: 620px;
-            color: var(--muted);
-            font-size: 1.05rem;
-            line-height: 1.7;
+            max-width: 650px;
+            color: var(--muted) !important;
+            font-size: 1.06rem;
+            line-height: 1.72;
+            animation: contentRise 0.65s ease-out 0.16s both;
         }
 
         .alert-badges {
@@ -76,6 +103,7 @@
             gap: 8px;
             flex-wrap: wrap;
             margin-top: 22px;
+            animation: contentRise 0.65s ease-out 0.24s both;
         }
 
         .alert-badge {
@@ -113,12 +141,13 @@
             border: 1px solid #d8e4de;
         }
 
-        .actions {
-            display: grid;
+        body.home-page .actions {
+            display: grid !important;
             grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 12px;
-            width: min(680px, 100%);
-            margin-top: 30px;
+            gap: 12px !important;
+            width: min(680px, 100%) !important;
+            margin-top: 28px !important;
+            animation: contentRise 0.65s ease-out 0.32s both;
         }
 
         .actions form {
@@ -176,22 +205,143 @@
             background: #ffffff;
         }
 
+        .transit-signal {
+            width: min(700px, 100%);
+            margin-top: 30px;
+            animation: contentRise 0.65s ease-out 0.4s both;
+        }
+
+        .transit-signal__track {
+            position: relative;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(14, 124, 102, 0.26), rgba(37, 99, 235, 0.24), transparent);
+            overflow: hidden;
+        }
+
+        .transit-signal__track::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: -48px;
+            width: 48px;
+            height: 2px;
+            transform: translateY(-50%);
+            background: linear-gradient(90deg, transparent, var(--accent), var(--blue));
+            animation: signalSweep 3.8s ease-in-out infinite;
+        }
+
+        .transit-signal__nodes {
+            display: flex;
+            justify-content: space-between;
+            margin-top: -6px;
+        }
+
+        .transit-signal__nodes span {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: #ffffff;
+            border: 2px solid rgba(14, 124, 102, 0.36);
+        }
+
+        .crm-overview {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 34px;
+            align-items: start;
+            padding: 22px 0 34px;
+            border-top: 1px solid rgba(216, 228, 222, 0.7);
+            border-bottom: 1px solid rgba(216, 228, 222, 0.7);
+        }
+
+        .section-kicker {
+            margin: 0 0 10px;
+            color: var(--accent) !important;
+            font-size: 0.76rem;
+            font-weight: 850;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .crm-overview h2 {
+            margin: 0;
+            max-width: 640px;
+            color: var(--text) !important;
+            font-size: clamp(1.55rem, 2.3vw, 2.05rem) !important;
+            line-height: 1.14 !important;
+            letter-spacing: 0 !important;
+        }
+
+        .crm-overview__copy {
+            margin: 14px 0 0;
+            max-width: 650px;
+            color: var(--muted) !important;
+            line-height: 1.72;
+            font-size: 1rem;
+        }
+
+        .workflow-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .workflow-item {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 13px;
+            align-items: start;
+            padding: 13px 0;
+            border-bottom: 1px solid rgba(216, 228, 222, 0.72);
+        }
+
+        .workflow-item:last-child {
+            border-bottom: 0;
+        }
+
+        .workflow-step {
+            width: 32px;
+            height: 32px;
+            display: grid;
+            place-items: center;
+            border-radius: 9px;
+            color: var(--accent-dark);
+            background: var(--accent-soft);
+            border: 1px solid #bfe8cf;
+            font-size: 0.82rem;
+            font-weight: 900;
+        }
+
+        .workflow-item strong {
+            display: block;
+            color: var(--text) !important;
+            font-size: 0.98rem;
+            line-height: 1.28;
+        }
+
+        .workflow-item span {
+            display: block;
+            margin-top: 4px;
+            color: var(--muted) !important;
+            font-size: 0.92rem;
+            line-height: 1.55;
+        }
+
         .travel-note {
             margin: 0;
-            color: var(--muted);
+            color: var(--muted) !important;
             font-size: 0.93rem;
             line-height: 1.6;
             width: 100%;
         }
 
         .travel-note strong {
-            color: var(--text);
+            color: var(--text) !important;
         }
 
         .travel-note-section {
             margin-top: 0;
             padding-top: 24px;
-            border-top: 1px solid rgba(216, 228, 222, 0.8);
+            border-top: 0;
         }
 
         .about-modal {
@@ -267,31 +417,94 @@
 
         .about-modal__content p {
             margin: 0;
-            color: var(--muted);
+            color: var(--muted) !important;
             line-height: 1.8;
             font-size: 0.98rem;
         }
 
+        @keyframes logoReveal {
+            from {
+                opacity: 0;
+                transform: translateY(10px) scale(0.985);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes contentRise {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes signalSweep {
+            0% {
+                left: -48px;
+                opacity: 0;
+            }
+            18% {
+                opacity: 1;
+            }
+            82% {
+                opacity: 1;
+            }
+            100% {
+                left: 100%;
+                opacity: 0;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .hero-logo,
+            .hero h1,
+            .hero p,
+            .alert-badges,
+            .actions,
+            .transit-signal,
+            .transit-signal__track::before {
+                animation: none;
+            }
+        }
+
         @media (max-width: 720px) {
-            .page {
+            body.home-page .page {
                 width: min(100% - 16px, 1120px);
                 min-height: 100vh;
-                padding: 18px;
+                padding: 18px 0 24px !important;
             }
 
             .hero {
                 min-height: auto;
-                padding-top: 28px;
+                padding: 28px 0 32px;
             }
 
-            .actions {
+            .hero::before {
+                width: 92vw;
+                height: 92vw;
+                top: 34px;
+            }
+
+            body.home-page .actions {
                 grid-template-columns: 1fr;
+            }
+
+            .crm-overview {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 24px 0 28px;
             }
         }
     </style>
     <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
-<body>
+<body class="home-page">
 <%@ include file="/header.jspf" %>
 <main class="page">
     <section class="hero">
@@ -311,6 +524,51 @@
             <a class="primary-action" href="login.jsp">Open Reserved Area</a>
             <a class="secondary-action" href="registerTraveler">Create Traveler Account</a>
             <button type="button" class="info-button" data-open-about>What is Safe Flow?</button>
+        </div>
+
+        <div class="transit-signal" aria-hidden="true">
+            <div class="transit-signal__track"></div>
+            <div class="transit-signal__nodes">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="crm-overview" aria-label="Safe Flow operational model">
+        <div>
+            <p class="section-kicker">Operational CRM</p>
+            <h2>Structured reporting, fast review, and clear public transport alerts.</h2>
+            <p class="crm-overview__copy">
+                Safe Flow keeps traveler reports organized from intake to moderation, helping administrators
+                evaluate events and publish city-focused notifications with a calm, reliable workflow.
+            </p>
+        </div>
+
+        <div class="workflow-list">
+            <div class="workflow-item">
+                <div class="workflow-step">01</div>
+                <div>
+                    <strong>Traveler intake</strong>
+                    <span>Reports arrive with category, city context, and safety details.</span>
+                </div>
+            </div>
+            <div class="workflow-item">
+                <div class="workflow-step">02</div>
+                <div>
+                    <strong>Administrative review</strong>
+                    <span>Moderators evaluate communications before they become visible alerts.</span>
+                </div>
+            </div>
+            <div class="workflow-item">
+                <div class="workflow-step">03</div>
+                <div>
+                    <strong>Public notification</strong>
+                    <span>Approved information reaches commuters through a focused alert feed.</span>
+                </div>
+            </div>
         </div>
     </section>
 

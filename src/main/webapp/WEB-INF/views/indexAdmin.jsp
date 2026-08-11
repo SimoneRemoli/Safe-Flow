@@ -360,8 +360,177 @@
         }
     </style>
     <link rel="stylesheet" href="css/minimal-ui.css">
+    <style>
+        body.admin-hub-page {
+            margin: 0 !important;
+            min-height: 100vh !important;
+            padding: 28px 18px !important;
+            background: #ffffff !important;
+            color: #14241d !important;
+            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+        }
+
+        body.admin-hub-page::before,
+        body.admin-hub-page .shell::after,
+        body.admin-hub-page .action-card::after {
+            content: none !important;
+            display: none !important;
+        }
+
+        body.admin-hub-page .shell {
+            width: min(1120px, 100%) !important;
+            min-height: auto !important;
+            margin: 0 auto !important;
+            padding: 8px 0 42px !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: #ffffff !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            overflow: visible !important;
+        }
+
+        body.admin-hub-page .topbar {
+            padding: 18px 0 24px !important;
+            border-bottom: 1px solid #d8e4de !important;
+        }
+
+        body.admin-hub-page .brand strong,
+        body.admin-hub-page h1,
+        body.admin-hub-page h3,
+        body.admin-hub-page .status-card strong {
+            color: #14241d !important;
+        }
+
+        body.admin-hub-page .brand span,
+        body.admin-hub-page .hero-copy p,
+        body.admin-hub-page .action-card p,
+        body.admin-hub-page .status-card span {
+            color: #607267 !important;
+        }
+
+        body.admin-hub-page .nav-actions a {
+            min-height: 42px !important;
+            display: inline-flex !important;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px !important;
+            border: 1px solid #d8e4de !important;
+            border-radius: 999px !important;
+            background: #f7faf8 !important;
+            color: #405147 !important;
+            font-weight: 850 !important;
+            box-shadow: none !important;
+        }
+
+        body.admin-hub-page .nav-actions a:hover {
+            transform: translateY(-1px) !important;
+            background: #ffffff !important;
+            border-color: #c8e2d8 !important;
+            color: #14241d !important;
+        }
+
+        body.admin-hub-page .notification-link.has-alert {
+            border-color: #bfe8cf !important;
+            background: #e8f7ef !important;
+            color: #075f4e !important;
+        }
+
+        body.admin-hub-page .notification-badge {
+            background: #0e7c66 !important;
+            color: #ffffff !important;
+        }
+
+        body.admin-hub-page .hero {
+            margin-top: 0 !important;
+            padding: 34px 0 28px !important;
+            border-bottom: 1px solid #d8e4de !important;
+        }
+
+        body.admin-hub-page .hero-copy,
+        body.admin-hub-page .action-card,
+        body.admin-hub-page .status-card,
+        body.admin-hub-page .alert-panel {
+            padding: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: #ffffff !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+        }
+
+        body.admin-hub-page .eyebrow {
+            padding: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            color: #0e7c66 !important;
+            letter-spacing: 0.08em !important;
+            font-weight: 850 !important;
+        }
+
+        body.admin-hub-page .hero-copy h1 {
+            max-width: 820px;
+            font-size: clamp(2.2rem, 4vw, 3.65rem) !important;
+            line-height: 1.03 !important;
+        }
+
+        body.admin-hub-page .quick-actions,
+        body.admin-hub-page .status-grid {
+            gap: 22px !important;
+            margin-top: 30px !important;
+        }
+
+        body.admin-hub-page .action-card {
+            padding-top: 18px !important;
+            border-top: 3px solid #e8f7ef !important;
+        }
+
+        body.admin-hub-page .action-card:nth-child(2) {
+            border-top-color: #e8efff !important;
+        }
+
+        body.admin-hub-page .action-card:nth-child(3) {
+            border-top-color: #fff5df !important;
+        }
+
+        body.admin-hub-page .action-icon {
+            display: none !important;
+        }
+
+        body.admin-hub-page .action-card h3 {
+            margin-top: 0 !important;
+            font-size: 1.05rem !important;
+        }
+
+        body.admin-hub-page .action-card a {
+            margin-top: 6px;
+            color: #ffffff !important;
+            background: linear-gradient(135deg, #0e7c66, #13a085) !important;
+            border: 1px solid #0e7c66 !important;
+            box-shadow: none !important;
+        }
+
+        body.admin-hub-page .action-card a:hover {
+            transform: translateY(-1px) !important;
+            box-shadow: none !important;
+            background: linear-gradient(135deg, #075f4e, #0e7c66) !important;
+        }
+
+        body.admin-hub-page .status-card {
+            padding-top: 18px !important;
+            border-top: 1px solid #d8e4de !important;
+        }
+
+        body.admin-hub-page .alert-panel {
+            margin-top: 26px !important;
+            padding: 16px 0 0 !important;
+            border-top: 1px dashed #d8e4de !important;
+            color: #607267 !important;
+        }
+    </style>
 </head>
-<body>
+<body class="admin-hub-page">
 <%@ include file="/header.jspf" %>
 <div class="shell">
     <header class="topbar">

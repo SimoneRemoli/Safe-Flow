@@ -243,8 +243,123 @@
         }
     </style>
     <link rel="stylesheet" href="css/minimal-ui.css">
+    <style>
+        body.admin-manage-page {
+            margin: 0 !important;
+            min-height: 100vh !important;
+            padding: 28px 18px !important;
+            background: #ffffff !important;
+            color: #14241d !important;
+            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+        }
+
+        body.admin-manage-page .shell {
+            width: min(1120px, 100%) !important;
+            margin: 0 auto !important;
+            padding: 8px 0 42px !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: #ffffff !important;
+            box-shadow: none !important;
+        }
+
+        body.admin-manage-page .topbar {
+            padding-bottom: 24px !important;
+            border-bottom: 1px solid #d8e4de !important;
+        }
+
+        body.admin-manage-page .eyebrow {
+            padding: 0 !important;
+            border: 0 !important;
+            background: transparent !important;
+            color: #0e7c66 !important;
+            letter-spacing: 0.08em !important;
+            font-weight: 850 !important;
+        }
+
+        body.admin-manage-page h1,
+        body.admin-manage-page h2,
+        body.admin-manage-page .admin-meta strong {
+            color: #14241d !important;
+        }
+
+        body.admin-manage-page .subtitle,
+        body.admin-manage-page .panel p,
+        body.admin-manage-page .admin-meta span,
+        body.admin-manage-page .selector,
+        body.admin-manage-page .empty-state {
+            color: #607267 !important;
+        }
+
+        body.admin-manage-page .nav-actions a {
+            color: #405147 !important;
+            background: #f7faf8 !important;
+            border: 1px solid #d8e4de !important;
+            box-shadow: none !important;
+        }
+
+        body.admin-manage-page .grid {
+            gap: 34px !important;
+            margin-top: 30px !important;
+        }
+
+        body.admin-manage-page .panel {
+            padding: 0 0 26px !important;
+            border: 0 !important;
+            border-bottom: 1px solid #d8e4de !important;
+            border-radius: 0 !important;
+            background: #ffffff !important;
+            box-shadow: none !important;
+        }
+
+        body.admin-manage-page .field-group label {
+            color: #405147 !important;
+            font-weight: 800 !important;
+        }
+
+        body.admin-manage-page .field-group input {
+            border: 1px solid #d8e4de !important;
+            border-radius: 12px !important;
+            background: #ffffff !important;
+            color: #14241d !important;
+            box-shadow: none !important;
+        }
+
+        body.admin-manage-page .admin-row {
+            border-radius: 0 !important;
+            border: 0 !important;
+            border-bottom: 1px solid #d8e4de !important;
+            background: #ffffff !important;
+            padding: 14px 0 !important;
+        }
+
+        body.admin-manage-page .admin-row:last-child {
+            border-bottom: 0 !important;
+        }
+
+        body.admin-manage-page .flash {
+            border-radius: 12px !important;
+            color: #405147 !important;
+            background: #f7faf8 !important;
+            border: 1px solid #d8e4de !important;
+        }
+
+        body.admin-manage-page .btn {
+            color: #ffffff !important;
+            background: linear-gradient(135deg, #0e7c66, #13a085) !important;
+            border: 1px solid #0e7c66 !important;
+            box-shadow: none !important;
+        }
+
+        body.admin-manage-page .btn.danger {
+            color: #b42318 !important;
+            background: #fff0ee !important;
+            border: 1px solid #fac7c2 !important;
+            box-shadow: none !important;
+        }
+    </style>
 </head>
-<body>
+<body class="admin-manage-page">
 <%@ include file="/header.jspf" %>
 <%
     List<AdminUserBean> admins = (List<AdminUserBean>) request.getAttribute("admins");

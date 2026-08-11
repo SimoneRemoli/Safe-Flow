@@ -17,23 +17,23 @@
 
         * { box-sizing: border-box; }
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            padding: 24px;
-            background: linear-gradient(180deg, #f8fbff 0%, #f2f6fb 100%);
-            color: var(--text);
-            font-family: "Segoe UI", sans-serif;
+        body.report-guide-page {
+            margin: 0 !important;
+            min-height: 100vh !important;
+            padding: 28px 18px !important;
+            background: #ffffff !important;
+            color: var(--text) !important;
+            font-family: "Segoe UI", sans-serif !important;
         }
 
-        .shell {
+        .guide-shell {
             width: min(980px, 100%);
             margin: 0 auto;
-            background: var(--surface);
-            border: 1px solid var(--line);
-            border-radius: 28px;
-            padding: 34px;
-            box-shadow: 0 24px 56px rgba(15, 23, 42, 0.08);
+            background: #ffffff;
+            border: 0;
+            border-radius: 0;
+            padding: 8px 0 34px;
+            box-shadow: none;
         }
 
         .eyebrow {
@@ -145,15 +145,15 @@
         }
 
         .primary {
-            color: #052e1a;
-            background: linear-gradient(90deg, #7df5a5, #34d399);
-            border: 1px solid rgba(16, 185, 129, 0.58);
-            box-shadow: 0 14px 28px rgba(16, 185, 129, 0.16);
+            color: #ffffff !important;
+            background: linear-gradient(135deg, #0e7c66, #13a085) !important;
+            border: 1px solid #0e7c66;
+            box-shadow: none;
         }
 
         .primary:hover {
-            background: linear-gradient(90deg, #8ff7b3, #4ade80);
-            box-shadow: 0 16px 32px rgba(16, 185, 129, 0.22);
+            background: linear-gradient(135deg, #075f4e, #0e7c66) !important;
+            box-shadow: none;
         }
 
         .secondary {
@@ -164,9 +164,9 @@
     </style>
     <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
-<body>
+<body class="report-guide-page">
 <%@ include file="/header.jspf" %>
-<div class="shell">
+<main class="guide-shell">
     <span class="eyebrow">Reporting Guide</span>
     <h1>How to send a traveler report</h1>
     <p class="intro">
@@ -219,6 +219,6 @@
         <a href="travelerReport" class="primary">Open the Report Form</a>
         <a href="travelerHome" class="secondary">Back to Home</a>
     </div>
-</div>
+</main>
 </body>
 </html>

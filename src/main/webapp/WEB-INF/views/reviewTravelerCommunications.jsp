@@ -481,8 +481,123 @@
         }
     </style>
     <link rel="stylesheet" href="css/minimal-ui.css">
+    <style>
+        body.admin-review-page {
+            margin: 0 !important;
+            min-height: 100vh !important;
+            padding: 28px 18px !important;
+            background: #ffffff !important;
+            color: #14241d !important;
+            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+        }
+
+        body.admin-review-page .shell {
+            width: min(1280px, 100%) !important;
+            margin: 0 auto !important;
+            padding: 8px 0 42px !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: #ffffff !important;
+            box-shadow: none !important;
+        }
+
+        body.admin-review-page .review-header {
+            padding-bottom: 24px !important;
+            border-bottom: 1px solid #d8e4de !important;
+        }
+
+        body.admin-review-page .eyebrow {
+            border: 0 !important;
+            background: transparent !important;
+            color: #0e7c66 !important;
+            padding: 0 !important;
+        }
+
+        body.admin-review-page h1,
+        body.admin-review-page h2,
+        body.admin-review-page .metric-value {
+            color: #14241d !important;
+        }
+
+        body.admin-review-page .subtitle,
+        body.admin-review-page .flash,
+        body.admin-review-page .selection-status {
+            color: #607267 !important;
+        }
+
+        body.admin-review-page .review-metrics {
+            margin-right: 0 !important;
+        }
+
+        body.admin-review-page .metric-card {
+            padding: 0 0 0 16px !important;
+            border: 0 !important;
+            border-left: 3px solid #0e7c66 !important;
+            border-radius: 0 !important;
+            background: #ffffff !important;
+            box-shadow: none !important;
+        }
+
+        body.admin-review-page .metric-label {
+            color: #607267 !important;
+        }
+
+        body.admin-review-page .nav-actions {
+            margin-top: 18px !important;
+        }
+
+        body.admin-review-page .nav-actions a,
+        body.admin-review-page .save-button,
+        body.admin-review-page .reject-button {
+            color: #405147 !important;
+            background: #f7faf8 !important;
+            border: 1px solid #d8e4de !important;
+            box-shadow: none !important;
+        }
+
+        body.admin-review-page .save-button {
+            color: #ffffff !important;
+            background: linear-gradient(135deg, #0e7c66, #13a085) !important;
+            border-color: #0e7c66 !important;
+        }
+
+        body.admin-review-page .reject-button {
+            color: #b42318 !important;
+            background: #fff0ee !important;
+            border-color: #fac7c2 !important;
+        }
+
+        body.admin-review-page .table-panel {
+            margin-top: 24px !important;
+            border: 1px solid #d8e4de !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+
+        body.admin-review-page .table-tools,
+        body.admin-review-page .footer-actions {
+            background: #ffffff !important;
+            border-color: #d8e4de !important;
+            backdrop-filter: none !important;
+        }
+
+        body.admin-review-page .select-all-label {
+            color: #405147 !important;
+        }
+
+        body.admin-review-page th {
+            color: #607267 !important;
+            background: #f7faf8 !important;
+        }
+
+        body.admin-review-page .flash {
+            border: 1px solid #d8e4de !important;
+            background: #f7faf8 !important;
+            border-radius: 12px !important;
+        }
+    </style>
 </head>
-<body>
+<body class="admin-review-page">
 <%@ include file="/header.jspf" %>
 <div class="shell">
     <div class="review-header">

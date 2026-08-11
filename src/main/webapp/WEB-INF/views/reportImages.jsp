@@ -24,22 +24,22 @@
         body {
             margin: 0;
             min-height: 100vh;
-            background: #f3f6f4;
+            background: #ffffff !important;
             color: #14241d;
             font-family: "Inter", "Segoe UI", Arial, sans-serif;
         }
 
         .gallery-shell {
-            width: min(1180px, calc(100% - 32px));
-            margin: 76px auto 28px;
+            width: min(1120px, calc(100% - 32px));
+            margin: 86px auto 32px;
         }
 
         .gallery-header {
-            padding: 24px;
-            border-radius: 16px;
+            padding: 0 0 22px;
             background: #ffffff;
-            border: 1px solid #d8e4de;
-            box-shadow: 0 18px 42px rgba(20, 36, 29, 0.08);
+            border: 0;
+            border-bottom: 1px solid #d8e4de;
+            box-shadow: none;
         }
 
         .gallery-header h1 {
@@ -61,16 +61,22 @@
         .gallery-actions a {
             display: inline-flex;
             text-decoration: none;
-            color: #31443a;
-            background: #f7faf8;
-            border: 1px solid #d8e4de;
+            color: #ffffff;
+            background: #1f6b4d;
+            border: 1px solid #1f6b4d;
             border-radius: 8px;
             padding: 11px 15px;
             font-weight: 800;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .gallery-actions a:hover {
+            transform: translateY(-2px);
+            background: #18583f;
         }
 
         .image-grid {
-            margin-top: 18px;
+            margin-top: 24px;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 260px));
             gap: 16px;
@@ -81,10 +87,16 @@
             overflow: hidden;
             width: 100%;
             max-width: 260px;
-            border-radius: 14px;
+            border-radius: 10px;
             background: #ffffff;
             border: 1px solid #d8e4de;
-            box-shadow: 0 14px 32px rgba(20, 36, 29, 0.08);
+            box-shadow: none;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .image-frame:hover {
+            transform: translateY(-2px);
+            border-color: #9fbbb0;
         }
 
         .image-frame img {
@@ -103,7 +115,7 @@
         .admin-gallery .image-frame {
             max-width: 200px;
             border-radius: 10px;
-            box-shadow: 0 10px 24px rgba(20, 36, 29, 0.06);
+            box-shadow: none;
         }
 
         .admin-gallery .image-frame img {
@@ -115,13 +127,14 @@
             padding: 34px;
             text-align: center;
             color: #607267;
-            border-radius: 14px;
+            border-radius: 10px;
             background: #ffffff;
             border: 1px solid #d8e4de;
+            box-shadow: none !important;
         }
     </style>
 </head>
-<body>
+<body class="report-gallery-page">
 <%@ include file="/header.jspf" %>
 <main class="gallery-shell<%= galleryModeClass %>">
     <section class="gallery-header">

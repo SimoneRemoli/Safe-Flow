@@ -17,139 +17,102 @@
     }
 %>
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Safe Flow - Traveler Console</title>
+    <link rel="stylesheet" href="css/minimal-ui.css">
     <style>
         :root {
-            --bg-1: #04111f;
-            --bg-2: #0a1f37;
-            --panel: rgba(7, 20, 36, 0.8);
-            --line: rgba(111, 247, 255, 0.22);
-            --text: #ecf7ff;
-            --muted: #8ba7c0;
-            --accent: #6ff7ff;
+            --traveler-bg: #ffffff;
+            --traveler-soft: #f7faf8;
+            --traveler-border: #d8e4de;
+            --traveler-text: #14241d;
+            --traveler-muted: #607267;
+            --traveler-muted-strong: #405147;
+            --traveler-primary: #0e7c66;
+            --traveler-primary-strong: #075f4e;
+            --traveler-primary-soft: #e8f7ef;
+            --traveler-blue-soft: #e8efff;
         }
 
-        * { box-sizing: border-box; }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
-            color: var(--text);
-            font-family: "Trebuchet MS", "Gill Sans", sans-serif;
-            background:
-                radial-gradient(circle at 15% 22%, rgba(111, 247, 255, 0.16), transparent 24%),
-                radial-gradient(circle at 85% 18%, rgba(83, 169, 255, 0.18), transparent 22%),
-                radial-gradient(circle at bottom center, rgba(67, 112, 255, 0.16), transparent 32%),
-                linear-gradient(135deg, var(--bg-1), var(--bg-2) 58%, #040913);
-            overflow-x: hidden;
-            position: relative;
+        * {
+            box-sizing: border-box;
         }
 
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            background-image:
-                radial-gradient(circle, rgba(255, 255, 255, 0.72) 1px, transparent 1px),
-                radial-gradient(circle, rgba(111, 247, 255, 0.45) 1px, transparent 1px);
-            background-size: 150px 150px, 230px 230px;
-            background-position: 0 0, 60px 90px;
-            opacity: 0.18;
-            pointer-events: none;
-            animation: drift 18s linear infinite;
+        body.traveler-home-page {
+            margin: 0 !important;
+            min-height: 100vh !important;
+            color: var(--traveler-text) !important;
+            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+            background: var(--traveler-bg) !important;
+            padding: 28px 18px !important;
         }
 
-        .shell {
-            width: min(1280px, calc(100% - 32px));
-            margin: 24px auto;
-            min-height: calc(100vh - 48px);
-            padding: 28px;
-            border-radius: 32px;
-            border: 1px solid var(--line);
-            background: linear-gradient(180deg, rgba(7, 20, 36, 0.84), rgba(4, 12, 23, 0.9));
-            box-shadow: 0 32px 84px rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(16px);
-            position: relative;
-            overflow: hidden;
+        .traveler-shell {
+            width: min(1120px, 100%);
+            margin: 0 auto;
+            padding: 8px 0 42px;
         }
 
-        .shell::after {
-            content: "";
-            position: absolute;
-            width: 420px;
-            height: 420px;
-            right: -120px;
-            top: -160px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(111, 247, 255, 0.14), transparent 66%);
-            filter: blur(12px);
-        }
-
-        .topbar {
-            display: flex;
-            justify-content: flex-start;
+        .traveler-topbar {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 24px;
             align-items: center;
-            gap: 28px;
-            position: relative;
-            z-index: 1;
+            padding: 18px 0 24px;
+            border-bottom: 1px solid var(--traveler-border);
         }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .brand img {
-            width: 72px;
-        }
-
-        .brand strong {
+        .traveler-brand strong {
             display: block;
-            font-size: 1.35rem;
+            color: var(--traveler-text) !important;
+            font-size: 1.22rem;
+            line-height: 1.2;
         }
 
-        .brand span {
-            color: var(--muted);
+        .traveler-brand span {
+            display: block;
+            margin-top: 4px;
+            color: var(--traveler-muted) !important;
             font-size: 0.94rem;
         }
 
-        .nav-actions {
+        .traveler-nav {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
+            justify-content: flex-end;
         }
 
-        .nav-actions a {
-            text-decoration: none;
-            color: var(--text);
-            padding: 10px 16px;
-            border-radius: 999px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            background: rgba(255, 255, 255, 0.06);
-            transition: transform 0.25s ease, border-color 0.25s ease;
-        }
-
-        .nav-actions a:hover {
-            transform: translateY(-2px);
-            border-color: rgba(111, 247, 255, 0.4);
-        }
-
-        .notification-link {
-            position: relative;
+        .traveler-nav a {
+            min-height: 42px;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
+            padding: 10px 15px !important;
+            border: 1px solid var(--traveler-border) !important;
+            border-radius: 999px !important;
+            background: var(--traveler-soft) !important;
+            color: var(--traveler-muted-strong) !important;
+            font-weight: 850;
+            text-decoration: none;
+            transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
         }
 
-        .notification-link.has-alert {
-            color: #04111f;
-            background: linear-gradient(90deg, #6ff7ff, #89ffd1 52%, #8dd8ff);
-            border-color: transparent;
-            box-shadow: 0 16px 28px rgba(111, 247, 255, 0.22);
+        .traveler-nav a:hover {
+            transform: translateY(-1px);
+            border-color: #c8e2d8 !important;
+            background: #ffffff !important;
+            color: var(--traveler-text) !important;
+        }
+
+        .traveler-nav .notification-link.has-alert {
+            border-color: #bfe8cf !important;
+            background: var(--traveler-primary-soft) !important;
+            color: var(--traveler-primary-strong) !important;
         }
 
         .notification-badge {
@@ -160,156 +123,233 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: rgba(4, 17, 31, 0.92);
-            color: #f8fcff;
+            background: var(--traveler-primary);
+            color: #ffffff;
             font-size: 0.78rem;
-            font-weight: 700;
+            font-weight: 850;
             line-height: 1;
         }
 
-        .hero {
-            margin-top: 28px;
-            display: block;
+        .traveler-hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 300px;
+            gap: 38px;
+            align-items: start;
+            padding: 34px 0 30px;
+            border-bottom: 1px solid var(--traveler-border);
         }
 
-        .hero-copy {
-            padding: 20px 8px 20px 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .eyebrow {
+        .traveler-kicker {
             display: inline-flex;
-            width: fit-content;
-            padding: 8px 14px;
-            border-radius: 999px;
-            color: var(--accent);
-            border: 1px solid rgba(111, 247, 255, 0.2);
-            background: rgba(111, 247, 255, 0.08);
+            margin-bottom: 12px;
+            color: var(--traveler-primary) !important;
             text-transform: uppercase;
-            letter-spacing: 0.18em;
-            font-size: 11px;
+            letter-spacing: 0.08em;
+            font-size: 0.74rem;
+            font-weight: 850;
         }
 
-        .hero-copy h1 {
-            margin: 18px 0 16px;
-            font-size: clamp(3rem, 5vw, 5.5rem);
-            line-height: 0.92;
-        }
-
-        .hero-copy p {
+        .traveler-hero h1 {
             margin: 0;
-            color: var(--muted);
-            font-size: 1.05rem;
-            line-height: 1.8;
-            max-width: 700px;
+            max-width: 780px;
+            color: var(--traveler-text) !important;
+            font-size: clamp(2.2rem, 4vw, 3.65rem) !important;
+            line-height: 1.03 !important;
+            letter-spacing: 0 !important;
         }
 
-        .cta-row {
+        .traveler-hero p {
+            margin: 14px 0 0;
+            max-width: 690px;
+            color: var(--traveler-muted) !important;
+            font-size: 1.02rem;
+            line-height: 1.75;
+        }
+
+        .traveler-actions {
             display: flex;
-            gap: 14px;
-            margin-top: 26px;
+            gap: 12px;
             flex-wrap: wrap;
+            margin-top: 26px;
         }
 
-        .cta-row button,
-        .cta-row a {
-            border: none;
+        .traveler-primary-action,
+        .traveler-secondary-action {
+            min-height: 46px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 18px !important;
+            border-radius: 999px !important;
+            font-size: 0.98rem;
+            font-weight: 850;
             text-decoration: none;
-            cursor: pointer;
-            padding: 16px 24px;
-            border-radius: 999px;
-            font-weight: 700;
-            letter-spacing: 0.06em;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
         }
 
-        .primary-cta {
-            color: #04111f;
-            background: linear-gradient(90deg, #6ff7ff, #89ffd1 52%, #8dd8ff);
-            box-shadow: 0 20px 36px rgba(111, 247, 255, 0.24);
+        .traveler-primary-action {
+            border: 1px solid var(--traveler-primary) !important;
+            color: #ffffff !important;
+            background: linear-gradient(135deg, var(--traveler-primary), #13a085) !important;
         }
 
-        .secondary-cta {
-            color: var(--text);
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+        .traveler-primary-action:hover {
+            transform: translateY(-1px);
+            background: linear-gradient(135deg, var(--traveler-primary-strong), var(--traveler-primary)) !important;
+            color: #ffffff !important;
         }
 
-        .cta-row button:hover,
-        .cta-row a:hover {
-            transform: translateY(-3px);
+        .traveler-secondary-action {
+            border: 1px solid var(--traveler-border) !important;
+            color: var(--traveler-muted-strong) !important;
+            background: var(--traveler-soft) !important;
         }
 
-        .info-grid {
-            margin-top: 28px;
+        .traveler-secondary-action:hover {
+            transform: translateY(-1px);
+            border-color: #c8e2d8 !important;
+            background: #ffffff !important;
+            color: var(--traveler-text) !important;
+        }
+
+        .traveler-status {
+            padding: 0 0 0 22px;
+            border-left: 1px solid var(--traveler-border);
+        }
+
+        .traveler-status h2 {
+            margin: 0 0 14px;
+            color: var(--traveler-text) !important;
+            font-size: 1rem !important;
+            line-height: 1.2 !important;
+            letter-spacing: 0 !important;
+        }
+
+        .status-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .status-item {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 11px;
+            align-items: start;
+        }
+
+        .status-index {
+            width: 28px;
+            height: 28px;
+            display: grid;
+            place-items: center;
+            border-radius: 8px;
+            border: 1px solid #bfe8cf;
+            background: var(--traveler-primary-soft);
+            color: var(--traveler-primary-strong);
+            font-size: 0.75rem;
+            font-weight: 900;
+        }
+
+        .status-item strong {
+            display: block;
+            color: var(--traveler-text) !important;
+            font-size: 0.92rem;
+            line-height: 1.25;
+        }
+
+        .status-item span {
+            display: block;
+            margin-top: 3px;
+            color: var(--traveler-muted) !important;
+            font-size: 0.86rem;
+            line-height: 1.48;
+        }
+
+        .traveler-workspace {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 16px;
+            gap: 22px;
+            padding: 30px 0 0;
         }
 
-        .info-card {
-            padding: 18px;
-            border-radius: 24px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        .workspace-item {
+            padding-top: 18px;
+            border-top: 3px solid var(--traveler-primary-soft);
         }
 
-        .info-card strong {
+        .workspace-item:nth-child(2) {
+            border-top-color: var(--traveler-blue-soft);
+        }
+
+        .workspace-item:nth-child(3) {
+            border-top-color: #fff5df;
+        }
+
+        .workspace-item strong {
             display: block;
-            font-size: 1.4rem;
-            margin-bottom: 6px;
+            color: var(--traveler-text) !important;
+            font-size: 1rem;
+            line-height: 1.25;
         }
 
-        .info-card span {
-            color: var(--muted);
-            line-height: 1.6;
+        .workspace-item span {
+            display: block;
+            margin-top: 8px;
+            color: var(--traveler-muted) !important;
+            line-height: 1.62;
+            font-size: 0.94rem;
         }
 
-        @keyframes drift {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-14px); }
-            100% { transform: translateY(0); }
-        }
-
-        @media (max-width: 1024px) {
-            .info-grid {
+        @media (max-width: 900px) {
+            .traveler-topbar,
+            .traveler-hero,
+            .traveler-workspace {
                 grid-template-columns: 1fr;
             }
-        }
 
-        @media (max-width: 720px) {
-            .shell {
-                width: min(100% - 16px, 1280px);
-                margin: 8px auto;
-                min-height: calc(100vh - 16px);
-                padding: 18px;
-                border-radius: 24px;
+            .traveler-nav {
+                justify-content: flex-start;
             }
 
-            .topbar {
+            .traveler-status {
+                padding: 24px 0 0;
+                border-left: 0;
+                border-top: 1px solid var(--traveler-border);
+            }
+        }
+
+        @media (max-width: 620px) {
+            body.traveler-home-page {
+                padding: 16px !important;
+            }
+
+            .traveler-shell {
+                padding-bottom: 28px;
+            }
+
+            .traveler-actions,
+            .traveler-nav {
                 flex-direction: column;
-                align-items: flex-start;
+            }
+
+            .traveler-primary-action,
+            .traveler-secondary-action,
+            .traveler-nav a {
+                width: 100%;
             }
         }
     </style>
-    <link rel="stylesheet" href="css/minimal-ui.css">
 </head>
-<body>
+<body class="traveler-home-page">
 <%@ include file="/header.jspf" %>
-<div class="shell">
-    <div class="topbar">
-        <div class="brand">
-            <div>
-                <strong>Safe Flow</strong>
-                <span>Traveler safety console</span>
-            </div>
+<main class="traveler-shell">
+    <header class="traveler-topbar">
+        <div class="traveler-brand">
+            <strong>Safe Flow</strong>
+            <span>Traveler safety console</span>
         </div>
 
-        <div class="nav-actions">
+        <nav class="traveler-nav" aria-label="Traveler navigation">
             <a href="areaRiservata">Reserved Area</a>
             <a href="internalNotifications" class="notification-link <%= internalNotificationsCount > 0 ? "has-alert" : "" %>">
                 Notifications
@@ -317,37 +357,65 @@
                 <span class="notification-badge"><%= internalNotificationsCount %></span>
                 <% } %>
             </a>
-        </div>
-    </div>
+        </nav>
+    </header>
 
-    <section class="hero">
-        <div class="hero-copy">
-            <div class="eyebrow">Traveler Console</div>
-            <h1>Report incidents and track alerts.</h1>
+    <section class="traveler-hero" aria-labelledby="travelerHomeTitle">
+        <div>
+            <span class="traveler-kicker">Traveler console</span>
+            <h1 id="travelerHomeTitle">Report incidents and track alerts.</h1>
             <p>
-                Use Safe Flow to send verified safety reports and review notifications about events on public transport.
+                Use Safe Flow to send structured safety reports and review notifications about events on public transport.
             </p>
 
-            <div class="cta-row">
-                <a class="primary-cta" href="travelerReport">Send Report</a>
-            </div>
-
-            <div class="info-grid">
-                <div class="info-card">
-                    <strong>Traveler reports</strong>
-                    <span>Submit safety communications about public transport incidents.</span>
-                </div>
-                <div class="info-card">
-                    <strong>Reserved area</strong>
-                    <span>Open your personal area to review notifications and safety reports.</span>
-                </div>
-                <div class="info-card">
-                    <strong>Notifications</strong>
-                    <span>Open your private notification center and track the outcome of your traveler reports.</span>
-                </div>
+            <div class="traveler-actions">
+                <a class="traveler-primary-action" href="travelerReport">Send Report</a>
+                <a class="traveler-secondary-action" href="viewNotifications">View Public Alerts</a>
             </div>
         </div>
+
+        <aside class="traveler-status" aria-labelledby="travelerFlowTitle">
+            <h2 id="travelerFlowTitle">Traveler workflow</h2>
+            <div class="status-list">
+                <div class="status-item">
+                    <div class="status-index">01</div>
+                    <div>
+                        <strong>Report</strong>
+                        <span>Send city-based safety information to the review queue.</span>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <div class="status-index">02</div>
+                    <div>
+                        <strong>Review</strong>
+                        <span>Administrators validate content before public visibility.</span>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <div class="status-index">03</div>
+                    <div>
+                        <strong>Notify</strong>
+                        <span>Approved alerts help other commuters understand local risks.</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
     </section>
-</div>
+
+    <section class="traveler-workspace" aria-label="Traveler workspace">
+        <div class="workspace-item">
+            <strong>Traveler reports</strong>
+            <span>Submit safety communications about public transport incidents with city and category context.</span>
+        </div>
+        <div class="workspace-item">
+            <strong>Reserved area</strong>
+            <span>Open your personal area to review account information and private platform activity.</span>
+        </div>
+        <div class="workspace-item">
+            <strong>Notifications</strong>
+            <span>Track the outcome of your traveler reports and review updates from Safe Flow.</span>
+        </div>
+    </section>
+</main>
 </body>
 </html>
