@@ -166,6 +166,11 @@ public class NotificationLikeControllerApplicativo {
 
         try {
             FactoryLayerPersistenza.createLayerPersistenza().sendMessage(ownerNotification);
+            new NotificationCommentControllerApplicativo().storeTargetForInternalNotification(
+                    ownerNotification,
+                    notificationKey,
+                    null
+            );
             properties.setProperty(notifiedKey, "true");
         } catch (DAOExceptionRemoli e) {
             throw new BrondiException("Unable to notify the report owner.", "LIKE_OWNER_NOTIFICATION", "Owner notification failed", e);
@@ -210,6 +215,11 @@ public class NotificationLikeControllerApplicativo {
 
         try {
             FactoryLayerPersistenza.createLayerPersistenza().sendMessage(ownerNotification);
+            new NotificationCommentControllerApplicativo().storeTargetForInternalNotification(
+                    ownerNotification,
+                    notificationKey,
+                    null
+            );
             repository.markReportLikeNotificationSent(notificationKey, likerCf);
         } catch (DAOExceptionRemoli e) {
             throw new BrondiException("Unable to notify the report owner.", "LIKE_OWNER_NOTIFICATION", "Owner notification failed", e);

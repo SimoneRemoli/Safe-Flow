@@ -20,7 +20,9 @@
 --
 
 -- ===============================
--- Safe Flow - FULL DATABASE DUMP
+-- Safe Flow - CLEAN DATABASE SCHEMA
+-- Operational data is intentionally not populated.
+-- Load SafeFlow_bootstrap_accounts.sql only when an initial admin login is needed.
 -- ===============================
 
 -- DROP + CREATE DATABASE
@@ -85,12 +87,11 @@ CREATE TABLE `comunicazioni` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `comunicazioni`
+-- Clean table for `comunicazioni`
 --
 
 LOCK TABLES `comunicazioni` WRITE;
 /*!40000 ALTER TABLE `comunicazioni` DISABLE KEYS */;
-INSERT INTO `comunicazioni` (`testo`, `data`, `risolto`, `approvato`, `letto`, `status`, `sender_role`, `sender_cf`, `recipient_cf`) VALUES ('A Valle Aurelia chiudere la Tratta per lavori domani .. ','2025-12-20 18:21:00',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Alla Stazione Termini hanno borseggiato un ragazzo, mandare pattuglia.','2025-12-20 18:27:39',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Attenzione, borseggio a Furio Camillo.','2026-01-05 09:54:42',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Borseggio Avvenuto presso piazza di Spagna.. contattare 3881253487','2025-12-12 11:08:47',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Chiamare Ing.Claudio Rossi per riqualificazione sui pozzi di ventilazione in corrispondenza di Pza. Celimontana','2025-12-11 20:43:08',1,1,1,'APPROVED','ADMIN',NULL,NULL),('ciao a tutti dovete fa','2026-01-05 15:16:57',0,1,1,'APPROVED','ADMIN',NULL,NULL),('communication','2026-01-02 11:54:49',1,1,1,'APPROVED','ADMIN',NULL,NULL),('communication','2026-01-03 09:57:46',1,1,1,'APPROVED','ADMIN',NULL,NULL),('communication1','2026-01-02 12:26:47',1,1,1,'APPROVED','ADMIN',NULL,NULL),('comunicazione esempio','2025-12-28 15:22:20',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Comunicazione Ufficiale 1','2025-12-11 16:39:07',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Comunicazione Ufficiale 2','2025-12-11 20:42:50',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Controllo pagamenti','2026-01-05 14:48:15',0,1,1,'APPROVED','ADMIN',NULL,NULL),('dddddddddddd','2026-01-05 14:09:10',0,1,1,'APPROVED','ADMIN',NULL,NULL),('dsfdfs','2025-12-12 11:12:26',1,1,1,'APPROVED','ADMIN',NULL,NULL),('emergenza abitativa','2025-12-29 13:48:45',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Fare attenzione al Georgiano','2026-01-05 13:55:13',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Guasto dell\'ascensore','2026-01-03 15:23:17',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Guasto dell\'ascensore','2026-01-03 15:24:38',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Guasto dell\'ascensore risolto','2026-01-03 15:23:17',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Guasto dell\'ascensore risolto','2026-01-03 15:24:38',1,1,1,'APPROVED','ADMIN',NULL,NULL),('La manifestazione chiude alle 18 a Repubblica.','2025-12-29 13:31:30',1,1,1,'APPROVED','ADMIN',NULL,NULL),('papapapapapa','2026-01-05 14:07:39',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Prova di Notifica','2025-12-20 18:33:25',1,1,1,'APPROVED','ADMIN',NULL,NULL),('prova di segnalazione','2026-01-05 14:22:08',0,1,1,'APPROVED','ADMIN',NULL,NULL),('Prove tecniche','2026-01-05 13:41:48',1,1,1,'APPROVED','ADMIN',NULL,NULL),('Rotta la scala mobile alla stazione Colosseo MB','2025-12-28 15:23:59',1,1,1,'APPROVED','ADMIN',NULL,NULL),('segnalazione 2026','2026-01-05 15:41:55',1,1,1,'APPROVED','ADMIN',NULL,NULL);
 /*!40000 ALTER TABLE `comunicazioni` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,12 +142,11 @@ CREATE TABLE `Permessi` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Permessi`
+-- Clean table for `Permessi`
 --
 
 LOCK TABLES `Permessi` WRITE;
 /*!40000 ALTER TABLE `Permessi` DISABLE KEYS */;
-INSERT INTO `Permessi` VALUES (1,'Marco','Pezzenti','marco@yahoo.it','pippo','1','MRPZZ'),(2,'Lucia','Mercolano','lucia@gmail.com','mammi','2','LUCMRCLN'),(3,'Alessio','Marini','alessio@yahoo.net','jpeg','1','ALSSMRN');
 /*!40000 ALTER TABLE `Permessi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -171,12 +171,11 @@ CREATE TABLE `User` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `User`
+-- Clean table for `User`
 --
 
 LOCK TABLES `User` WRITE;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
-INSERT INTO `User` VALUES ('BCCSLL98','Giulio','Andreotti','1918-10-10','andreotti@gmail.com','mammina',1,'3'),('RMLSMN00RO2H501D','Simone','Remoli','2000-10-02','simoneremoli00@gmail.com','ste952r456!',0,'3');
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
 

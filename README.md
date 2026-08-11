@@ -164,6 +164,19 @@ SOURCE Database/SafeFlow_Update.sql;
 SOURCE Database/SafeFlow_users_grants.sql;
 ```
 
+For a clean database that is immediately usable in the admin area, also load the optional bootstrap account:
+
+```sql
+SOURCE Database/SafeFlow_bootstrap_accounts.sql;
+```
+
+Bootstrap admin credentials:
+
+```text
+Email: admin@safeflow.local
+Password: admin123!
+```
+
 Check the database connection settings in:
 
 ```text

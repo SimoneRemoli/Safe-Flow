@@ -371,7 +371,7 @@ public class NotificationCommentControllerApplicativo {
                 value = loadTargetProperties().getProperty(internalNotificationKey);
             }
             if (value == null || value.isBlank()) {
-                return inferredApprovalTargetUrl(notification);
+                return inferredInternalTargetUrl(notification);
             }
 
             String[] parts = value.split("\\|", 2);
@@ -389,8 +389,8 @@ public class NotificationCommentControllerApplicativo {
         }
     }
 
-    private String inferredApprovalTargetUrl(Notification internalNotification) throws BrondiException {
-        if (!isApprovalNotification(internalNotification)) {
+    private String inferredInternalTargetUrl(Notification internalNotification) throws BrondiException {
+        if (!isApprovalNotification(internalNotification) && !isTravelerReportActivityNotification(internalNotification)) {
             return null;
         }
 
@@ -418,6 +418,21 @@ public class NotificationCommentControllerApplicativo {
         return bestMatch == null
                 ? null
                 : "viewNotifications?notificationKey=" + NotificationLikeControllerApplicativo.keyFor(bestMatch);
+    }
+
+    private boolean isTravelerReportActivityNotification(Notification notification) {
+        if (notification == null
+                || notification.getRecipientCf() == null
+                || notification.getRecipientCf().isBlank()
+                || notification.getMessage() == null) {
+            return false;
+        }
+
+        String message = notification.getMessage();
+        return "TRAVELER".equalsIgnoreCase(notification.getSenderRole())
+                && (message.startsWith("Someone liked your traveler report:")
+                || message.startsWith("Someone commented on your traveler report:")
+                || message.startsWith("Someone replied to your comment:"));
     }
 
     private boolean isApprovalNotification(Notification notification) {
