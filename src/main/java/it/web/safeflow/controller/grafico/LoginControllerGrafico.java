@@ -25,8 +25,11 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
      */
 
     private static final String ATTR_MESSAGGIO_ERRORE = "messaggioErrore";
+    private static final String ATTR_TITOLO_ERRORE = "titoloErrore";
     private static final String PAGE_ERRORE_LOGIN = "/erroreLogin.jsp";
     private static final String FORWARDING = "Errore nel forwarding";
+    private static final String INVALID_CREDENTIALS_MESSAGE =
+            "The email or password you entered is not valid. Check your credentials and try again.";
 
 
 
@@ -48,10 +51,18 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
     /**
      * Gestisce il reindirizzamento in base al ruolo dell’utente autenticato.
      */
-    private void gestisciReindirizzamento(UtenteBeanGenerico utente, HttpServletResponse response)
+    private void gestisciReindirizzamento(UtenteBeanGenerico utente,
+                                           HttpServletRequest request,
+                                           HttpServletResponse response)
     {
         if (utente.getRuolo() == null) {
-            safeRedirect(response, "erroreLogin.jsp");
+            forwardLoginError(
+                    request,
+                    response,
+                    HttpServletResponse.SC_FORBIDDEN,
+                    "Access cannot be completed",
+                    "Your account role could not be verified. Please contact Safe Flow support."
+            );
             return;
         }
 
@@ -61,7 +72,13 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
 
             case "ADMIN" -> safeRedirect(response, "adminHub");
 
-            default -> safeRedirect(response, "erroreLogin.jsp");
+            default -> forwardLoginError(
+                    request,
+                    response,
+                    HttpServletResponse.SC_FORBIDDEN,
+                    "Access cannot be completed",
+                    "This account type is not allowed to access the reserved area."
+            );
         }
     }
     private void safeRedirect(HttpServletResponse response, String pagina) {
@@ -76,14 +93,18 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
     /**
      * Gestisce eventuali errori di login (DAO o credenziali errate).
      */
-    private void gestisciErroreLogin(HttpServletRequest request, HttpServletResponse response, DAOExceptionRemoli ex)
-    {
+    private void forwardLoginError(HttpServletRequest request,
+                                   HttpServletResponse response,
+                                   int statusCode,
+                                   String title,
+                                   String message) {
         try {
-            request.setAttribute(ATTR_MESSAGGIO_ERRORE, "Database connection error [500 internal error]");
+            response.setStatus(statusCode);
+            request.setAttribute(ATTR_TITOLO_ERRORE, title);
+            request.setAttribute(ATTR_MESSAGGIO_ERRORE, message);
             request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
-            logger.error("Errore DAO durante il login: message={}", ex.getMessage());
-        }catch(Exception e) {
-            logger.error("Errore generico non catturato: message={}", e.getMessage());
+        } catch (Exception e) {
+            logger.error(FORWARDING, e);
         }
     }
 
@@ -95,10 +116,6 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 
         try {
-            //  Crea una nuova sessione e imposta il timeout
-            HttpSession session = request.getSession(true);
-            session.setMaxInactiveInterval(180); // 3 minuti di inattività
-
             //  Costruisce il bean con i dati del form
             AutenticazioneBean credenziali = creaBeanAutenticazione(request);
 
@@ -107,9 +124,19 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
             UtenteBeanGenerico utente = loginController.autenticaUtente();
 
             if (utente.getRuolo() == null) {
-                safeRedirect(response, "erroreLogin.jsp");
+                forwardLoginError(
+                        request,
+                        response,
+                        HttpServletResponse.SC_FORBIDDEN,
+                        "Access cannot be completed",
+                        "Your account role could not be verified. Please contact Safe Flow support."
+                );
                 return;
             }
+
+            //  Crea una nuova sessione solo dopo autenticazione riuscita
+            HttpSession session = request.getSession(true);
+            session.setMaxInactiveInterval(180); // 3 minuti di inattività
 
             session.setAttribute("nome", utente.getNome());
             session.setAttribute("cognome", utente.getCognome());
@@ -119,26 +146,35 @@ public class LoginControllerGrafico extends LoggedHttpServlet {
             logger.info("Utente perfettamente autenticato: nome={}, cognome={}, ruolo={}", utente.getNome(), utente.getCognome(), utente.getRuolo());
 
             //  Reindirizzamento in base al ruolo
-            gestisciReindirizzamento(utente, response);
+            gestisciReindirizzamento(utente, request, response);
 
         } catch (DAOExceptionRemoli ex) {
-            gestisciErroreLogin(request, response, ex);
+            forwardLoginError(
+                    request,
+                    response,
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "Login service unavailable",
+                    "Safe Flow could not verify your credentials because the authentication service is temporarily unavailable. Please try again later."
+            );
+            logger.error("Errore DAO durante il login: message={}", ex.getMessage());
 
         } catch (LoginNotFoundRemoli ex) {
-            request.setAttribute(ATTR_MESSAGGIO_ERRORE, ex.getMessage());
-            try {
-                request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
-            }catch(Exception e){
-                logger.error(FORWARDING,e);
-            }
+            forwardLoginError(
+                    request,
+                    response,
+                    HttpServletResponse.SC_UNAUTHORIZED,
+                    "Login failed",
+                    INVALID_CREDENTIALS_MESSAGE
+            );
             logger.error("Tentativo di login fallito: email={}, Maskedpassw={}, message={}", ex.getEmail(), ex.getMaskedPassword(), ex.getMessage());
         } catch (InvalidLoginInputExceptionRemoli ex) {
-            request.setAttribute(ATTR_MESSAGGIO_ERRORE, ex.getUserMessage());
-            try {
-                request.getRequestDispatcher(PAGE_ERRORE_LOGIN).forward(request, response);
-            } catch (Exception e) {
-                logger.error(FORWARDING, e);
-            }
+            forwardLoginError(
+                    request,
+                    response,
+                    HttpServletResponse.SC_BAD_REQUEST,
+                    "Missing or invalid login details",
+                    ex.getUserMessage()
+            );
             logger.error("Errore di validazione input login: {}", ex.toString());
         }
 

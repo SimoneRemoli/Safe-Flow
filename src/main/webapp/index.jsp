@@ -140,15 +140,18 @@
             transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
         }
 
-        .actions .primary-action {
-            border: 1px solid var(--border);
-            background: var(--surface-soft);
-            color: var(--text);
+        .home-actions .primary-action {
+            border: 1px solid var(--border) !important;
+            background: var(--surface-soft) !important;
+            color: var(--text) !important;
+            box-shadow: none !important;
         }
 
-        .actions .primary-action:hover {
-            background: #ffffff;
-            border-color: #c8e2d8;
+        .home-actions .primary-action:hover {
+            background: var(--surface-soft) !important;
+            border-color: #c8e2d8 !important;
+            color: var(--text) !important;
+            box-shadow: none !important;
         }
 
         .actions .secondary-action,
@@ -304,7 +307,7 @@
             <span class="alert-badge general">General alert</span>
         </div>
 
-        <div class="actions">
+        <div class="actions home-actions">
             <a class="primary-action" href="login.jsp">Open Reserved Area</a>
             <a class="secondary-action" href="registerTraveler">Create Traveler Account</a>
             <button type="button" class="info-button" data-open-about>What is Safe Flow?</button>

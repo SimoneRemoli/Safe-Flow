@@ -19,17 +19,24 @@ public final class LoginExtractor {
         String rawEmail = request.getParameter("Email");
         String rawPassword = request.getParameter("Password");
 
+        if (rawEmail == null && rawPassword == null)
+            throw new InvalidLoginInputExceptionRemoli(
+                    "Email and password are required to access the reserved area.",
+                    "Parameters 'Email' and 'Password' are null in the login form.",
+                    InvalidLoginInputExceptionRemoli.Severity.LOW
+            );
+
         if (rawEmail == null)
             throw new InvalidLoginInputExceptionRemoli(
-                    "Il campo email non è stato inviato dal form.",
-                    "Parametro 'Email' null dal form.",
+                    "Email is required to access the reserved area.",
+                    "Parameter 'Email' is null in the login form.",
                     InvalidLoginInputExceptionRemoli.Severity.LOW
             );
 
         if (rawPassword == null)
             throw new InvalidLoginInputExceptionRemoli(
-                    "Il campo password non è stato inviato dal form.",
-                    "Parametro 'Password' null dal form.",
+                    "Password is required to access the reserved area.",
+                    "Parameter 'Password' is null in the login form.",
                     InvalidLoginInputExceptionRemoli.Severity.LOW
             );
 
@@ -38,37 +45,37 @@ public final class LoginExtractor {
 
         if (email.isBlank() && password.isBlank())
             throw new InvalidLoginInputExceptionRemoli(
-                    "Email e password mancanti.",
-                    "Email = null, password = null.",
+                    "Email and password are required to access the reserved area.",
+                    "Email and password are blank after sanitization.",
                     InvalidLoginInputExceptionRemoli.Severity.MEDIUM
             );
 
         if(password.isBlank() && !email.matches("^[\\w.%+-]+@[\\w.-]+\\.[A-Za-z]{2,}$") )
             throw new InvalidLoginInputExceptionRemoli(
-                    "Campo 'password' vuoto e email non conforme allo standard.",
-                    "Email = non conforme, password = null.",
+                    "Enter a valid email address and provide your password.",
+                    "Email format is invalid and password is blank.",
                     InvalidLoginInputExceptionRemoli.Severity.MEDIUM
             );
 
 
         if (email.isBlank())
             throw new InvalidLoginInputExceptionRemoli(
-                    "Inserisci l'email per accedere.",
-                    "Email è blank dopo sanitizzazione.",
+                    "Email is required to access the reserved area.",
+                    "Email is blank after sanitization.",
                     InvalidLoginInputExceptionRemoli.Severity.MEDIUM
             );
 
         if (!email.matches("^[\\w.%+-]+@[\\w.-]+\\.[A-Za-z]{2,}$")) {
             throw new InvalidLoginInputExceptionRemoli(
-                    "Inserisci una email valida.",
-                    "Regex email non rispettata: " + email,
+                    "Enter a valid email address.",
+                    "Email regex was not matched: " + email,
                     InvalidLoginInputExceptionRemoli.Severity.MEDIUM
             );
         }
         if (password.isBlank())
             throw new InvalidLoginInputExceptionRemoli(
-                    "Inserisci la password per accedere.",
-                    "Password blank dopo sanitizzazione.",
+                    "Password is required to access the reserved area.",
+                    "Password is blank after sanitization.",
                     InvalidLoginInputExceptionRemoli.Severity.MEDIUM
             );
         return new LoginRecord(email, password);
