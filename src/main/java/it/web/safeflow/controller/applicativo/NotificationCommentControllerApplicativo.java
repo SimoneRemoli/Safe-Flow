@@ -390,7 +390,9 @@ public class NotificationCommentControllerApplicativo {
     }
 
     private String inferredInternalTargetUrl(Notification internalNotification) throws BrondiException {
-        if (!isApprovalNotification(internalNotification) && !isTravelerReportActivityNotification(internalNotification)) {
+        if (!isApprovalNotification(internalNotification)
+                && !isTravelerReportActivityNotification(internalNotification)
+                && !isAdminAlertNotification(internalNotification)) {
             return null;
         }
 
@@ -399,7 +401,7 @@ public class NotificationCommentControllerApplicativo {
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         try {
             for (Notification candidate : layer.getMessagesRAM()) {
-                if (!isApprovedPublicTravelerReportFor(candidate, internalNotification.getRecipientCf())) {
+                if (!isApprovedPublicTargetFor(candidate, internalNotification)) {
                     continue;
                 }
 
@@ -420,6 +422,15 @@ public class NotificationCommentControllerApplicativo {
                 : "viewNotifications?notificationKey=" + NotificationLikeControllerApplicativo.keyFor(bestMatch);
     }
 
+    private boolean isAdminAlertNotification(Notification notification) {
+        return notification != null
+                && "ADMIN".equalsIgnoreCase(notification.getSenderRole())
+                && notification.getRecipientCf() != null
+                && !notification.getRecipientCf().isBlank()
+                && notification.getMessage() != null
+                && notification.getMessage().startsWith("New Safe Flow admin alert:");
+    }
+
     private boolean isTravelerReportActivityNotification(Notification notification) {
         if (notification == null
                 || notification.getRecipientCf() == null
@@ -432,7 +443,8 @@ public class NotificationCommentControllerApplicativo {
         return "TRAVELER".equalsIgnoreCase(notification.getSenderRole())
                 && (message.startsWith("Someone liked your traveler report:")
                 || message.startsWith("Someone commented on your traveler report:")
-                || message.startsWith("Someone replied to your comment:"));
+                || message.startsWith("Someone replied to your comment:")
+                || message.startsWith("Someone liked your comment:"));
     }
 
     private boolean isApprovalNotification(Notification notification) {
@@ -444,18 +456,26 @@ public class NotificationCommentControllerApplicativo {
                 && notification.getMessage().startsWith("Your traveler report has been approved");
     }
 
-    private boolean isApprovedPublicTravelerReportFor(Notification candidate, String travelerCf) {
-        return candidate != null
-                && "TRAVELER".equalsIgnoreCase(candidate.getSenderRole())
+    private boolean isApprovedPublicTargetFor(Notification candidate, Notification internalNotification) {
+        if (candidate == null
+                || !"APPROVED".equalsIgnoreCase(candidate.getStatus())
+                || candidate.getRecipientCf() != null) {
+            return false;
+        }
+
+        if (isAdminAlertNotification(internalNotification)) {
+            return "ADMIN".equalsIgnoreCase(candidate.getSenderRole());
+        }
+
+        return "TRAVELER".equalsIgnoreCase(candidate.getSenderRole())
                 && "APPROVED".equalsIgnoreCase(candidate.getStatus())
-                && candidate.getRecipientCf() == null
                 && candidate.getSenderCf() != null
-                && travelerCf != null
-                && candidate.getSenderCf().equalsIgnoreCase(travelerCf);
+                && !candidate.getSenderCf().isBlank();
     }
 
     private int approvalMatchScore(Notification internalNotification, Notification candidate) {
         int score = 0;
+        score += adminAlertMatchesMessage(internalNotification, candidate) ? 100 : 0;
         score += sameText(internalNotification.getCity(), candidate.getCity()) ? 20 : 0;
         score += sameText(internalNotification.getStationName(), candidate.getStationName()) ? 35 : 0;
         score += sameText(internalNotification.getSuspectClothing(), candidate.getSuspectClothing()) ? 10 : 0;
@@ -463,11 +483,29 @@ public class NotificationCommentControllerApplicativo {
         score += internalNotification.isFightAlert() == candidate.isFightAlert() ? 8 : 0;
         score += internalNotification.isCrowdAlert() == candidate.isCrowdAlert() ? 8 : 0;
         score += internalNotification.isGeneralAlert() == candidate.isGeneralAlert() ? 8 : 0;
+        score += sameText(internalNotification.getRecipientCf(), candidate.getSenderCf()) ? 25 : 0;
         if (internalNotification.getDate() != null && candidate.getDate() != null
                 && !candidate.getDate().after(internalNotification.getDate())) {
             score += 5;
         }
         return score;
+    }
+
+    private boolean adminAlertMatchesMessage(Notification internalNotification, Notification candidate) {
+        if (!isAdminAlertNotification(internalNotification)
+                || internalNotification.getMessage() == null
+                || candidate == null
+                || candidate.getMessage() == null) {
+            return false;
+        }
+
+        String alertMessage = internalNotification.getMessage().trim();
+        String prefix = "New Safe Flow admin alert:";
+        String extracted = alertMessage.substring(prefix.length()).trim();
+        if (extracted.startsWith("\"") && extracted.endsWith("\"") && extracted.length() >= 2) {
+            extracted = extracted.substring(1, extracted.length() - 1);
+        }
+        return sameText(extracted, candidate.getMessage());
     }
 
     private boolean sameText(String left, String right) {

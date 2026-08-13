@@ -107,6 +107,10 @@
         a.notification-content.clickable {
             cursor: pointer;
         }
+        .item.linkable {
+            cursor: pointer;
+        }
+        .item.linkable:hover,
         .item:has(.notification-content.clickable:hover) {
             transform: translateY(-1px);
             border-color: rgba(14, 124, 102, 0.35);
@@ -183,12 +187,13 @@
         <% for (MessageBean m : notifiche) {
             String actionUrl = m.getActionUrl();
             boolean clickable = actionUrl != null && !actionUrl.isBlank();
-            String itemClass = "item " + (Boolean.TRUE.equals(m.getLetto()) ? "read" : "unread");
+            String escapedActionUrl = clickable ? StringEscapeUtils.escapeHtml4(actionUrl) : "";
+            String itemClass = "item " + (Boolean.TRUE.equals(m.getLetto()) ? "read" : "unread") + (clickable ? " linkable" : "");
             String notificationKey = m.getNotificationKey() == null ? "" : m.getNotificationKey();
         %>
-        <div class="<%= itemClass %>" data-notification-card>
+        <div class="<%= itemClass %>" data-notification-card <% if (clickable) { %>data-action-url="<%= escapedActionUrl %>" tabindex="0" role="link"<% } %>>
         <% if (clickable) { %>
-            <a class="notification-content clickable" href="<%= StringEscapeUtils.escapeHtml4(actionUrl) %>">
+            <a class="notification-content clickable" href="<%= escapedActionUrl %>">
         <% } else { %>
             <div class="notification-content">
         <% } %>
@@ -216,6 +221,34 @@
     <% } %>
 </main>
 <script>
+    (function () {
+        const cards = Array.from(document.querySelectorAll('[data-notification-card][data-action-url]'));
+
+        cards.forEach((card) => {
+            function openCard() {
+                const target = card.dataset.actionUrl;
+                if (target) {
+                    window.location.href = target;
+                }
+            }
+
+            card.addEventListener('click', (event) => {
+                if (event.target.closest('a, button')) {
+                    return;
+                }
+                openCard();
+            });
+
+            card.addEventListener('keydown', (event) => {
+                if (event.key !== 'Enter' && event.key !== ' ') {
+                    return;
+                }
+                event.preventDefault();
+                openCard();
+            });
+        });
+    }());
+
     (function () {
         const buttons = Array.from(document.querySelectorAll('[data-remove-notification]'));
         if (!buttons.length) {

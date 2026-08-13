@@ -599,7 +599,68 @@
         }
 
         .safe-flow-notifications .message-cell.admin-message {
+            font-weight: 500 !important;
+        }
+
+        .safe-flow-notifications .admin-communication-card,
+        .safe-flow-notifications .traveler-communication-card {
+            display: grid !important;
+            gap: 10px !important;
+            padding: 12px 13px !important;
+            border-radius: 8px !important;
+            background: #fbfdfc !important;
+            border: 1px solid #d8e4de !important;
+            border-left: 4px solid #1f6b4d !important;
+        }
+
+        .safe-flow-notifications .traveler-communication-card {
+            border-left-color: #2563eb !important;
+        }
+
+        .safe-flow-notifications .admin-communication-header,
+        .safe-flow-notifications .traveler-communication-header {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            flex-wrap: wrap !important;
+        }
+
+        .safe-flow-notifications .admin-official-badge,
+        .safe-flow-notifications .traveler-communication-badge {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            min-height: 24px !important;
+            padding: 4px 8px !important;
+            border-radius: 6px !important;
+            color: #063b2b !important;
+            background: #e3f4ee !important;
+            border: 1px solid #bfe8cf !important;
+            font-size: 0.68rem !important;
+            font-weight: 900 !important;
+            line-height: 1 !important;
+            text-transform: uppercase !important;
+        }
+
+        .safe-flow-notifications .traveler-communication-badge {
+            color: #1d3f8f !important;
+            background: #e8efff !important;
+            border-color: #c8d7ff !important;
+        }
+
+        .safe-flow-notifications .admin-communication-label,
+        .safe-flow-notifications .traveler-communication-label {
+            color: #607267 !important;
+            font-size: 0.74rem !important;
+            font-weight: 850 !important;
+            text-transform: uppercase !important;
+        }
+
+        .safe-flow-notifications .admin-communication-text,
+        .safe-flow-notifications .traveler-communication-text {
+            color: #14241d !important;
             font-weight: 650 !important;
+            line-height: 1.6 !important;
         }
 
         .safe-flow-notifications .message-meta {
@@ -929,6 +990,11 @@
         .safe-flow-notifications .comment-item.targeted-comment {
             border-color: #0e7c66 !important;
             box-shadow: 0 0 0 3px rgba(14, 124, 102, 0.14) !important;
+        }
+
+        .safe-flow-notifications tr.targeted-notification > td {
+            background: #f0fbf6 !important;
+            box-shadow: inset 4px 0 0 #0e7c66 !important;
         }
 
         .safe-flow-notifications .comment-avatar {
@@ -1575,7 +1641,23 @@
 			                        %>
 	                        <tr <%= reportRowAttributes %>>
 	                            <td class="message-cell <%= adminReport ? "admin-message" : "" %>">
-	                                <div><%= StringEscapeUtils.escapeHtml4(m.getMessage()) %></div>
+	                                <% if (adminReport) { %>
+	                                <div class="admin-communication-card">
+	                                    <div class="admin-communication-header">
+	                                        <span class="admin-official-badge">ADMIN COMMUNICATION</span>
+	                                        <span class="admin-communication-label">Official alert</span>
+	                                    </div>
+	                                    <div class="admin-communication-text"><%= StringEscapeUtils.escapeHtml4(m.getMessage()) %></div>
+	                                </div>
+	                                <% } else { %>
+	                                <div class="traveler-communication-card">
+	                                    <div class="traveler-communication-header">
+	                                        <span class="traveler-communication-badge">TRAVELER COMMUNICATION</span>
+	                                        <span class="traveler-communication-label">Community alert</span>
+	                                    </div>
+	                                    <div class="traveler-communication-text"><%= StringEscapeUtils.escapeHtml4(m.getMessage()) %></div>
+	                                </div>
+	                                <% } %>
 			                                <% if (Boolean.TRUE.equals(m.getPickpocketAlert()) || Boolean.TRUE.equals(m.getFightAlert()) || Boolean.TRUE.equals(m.getCrowdAlert()) || Boolean.TRUE.equals(m.getGeneralAlert()) || !metroLines.isEmpty() || (m.getStationName() != null && !m.getStationName().isBlank()) || (m.getSuspectClothing() != null && !m.getSuspectClothing().isBlank()) || imageCount > 0) { %>
 	                                <div class="message-meta stack">
                                     <% if (Boolean.TRUE.equals(m.getPickpocketAlert())) { %>
@@ -2142,9 +2224,6 @@
 
 		    (function () {
 		        const panels = Array.from(document.querySelectorAll('[data-comments-panel]'));
-		        if (!panels.length) {
-		            return;
-		        }
 
 		        function createComment(payload) {
 		            const item = document.createElement('article');
@@ -2425,6 +2504,26 @@
 
 		        const targetPanel = panels.find((panel) => panel.dataset.notificationKey === targetNotificationKey);
 		        if (!targetPanel) {
+		            const targetRow = Array.from(document.querySelectorAll('[data-public-notification-row]'))
+		                .find((row) => row.dataset.notificationKey === targetNotificationKey);
+		            if (!targetRow) {
+		                return;
+		            }
+
+		            const cityGroup = targetRow.closest('[data-city-group]');
+		            if (cityGroup) {
+		                const city = cityGroup.dataset.cityGroup;
+		                Array.from(document.querySelectorAll('[data-city-switch]')).forEach((button) => {
+		                    if (button.dataset.citySwitch === city) {
+		                        button.click();
+		                    }
+		                });
+		            }
+
+		            targetRow.classList.add('targeted-notification');
+		            window.setTimeout(() => {
+		                targetRow.scrollIntoView({behavior: 'smooth', block: 'center'});
+		            }, 120);
 		            return;
 		        }
 
