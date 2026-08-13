@@ -46,6 +46,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON `SafeFlow_Update`.`sf_comment_likes` TO 
 GRANT SELECT, INSERT, UPDATE, DELETE ON `SafeFlow_Update`.`sf_like_notification_markers` TO `traveler`@`%`;
 GRANT SELECT, INSERT, UPDATE, DELETE ON `SafeFlow_Update`.`sf_internal_notification_targets` TO `traveler`@`%`;
 GRANT SELECT, INSERT, UPDATE, DELETE ON `SafeFlow_Update`.`sf_notification_dismissals` TO `traveler`@`%`;
+GRANT SELECT, INSERT, UPDATE, DELETE ON `SafeFlow_Update`.`sf_private_chat_messages` TO `traveler`@`%`;
 
 -- ===============================
 -- ADMIN
@@ -68,5 +69,6 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON `SafeFlow_Update`.`sf_comment_likes` TO 
 GRANT SELECT, INSERT, UPDATE, DELETE ON `SafeFlow_Update`.`sf_like_notification_markers` TO `admin_amministratore_safeflow`@`%`;
 GRANT SELECT, INSERT, UPDATE, DELETE ON `SafeFlow_Update`.`sf_internal_notification_targets` TO `admin_amministratore_safeflow`@`%`;
 GRANT SELECT, INSERT, UPDATE, DELETE ON `SafeFlow_Update`.`sf_notification_dismissals` TO `admin_amministratore_safeflow`@`%`;
+GRANT SELECT, INSERT, UPDATE, DELETE ON `SafeFlow_Update`.`sf_private_chat_messages` TO `admin_amministratore_safeflow`@`%`;
 
 FLUSH PRIVILEGES;

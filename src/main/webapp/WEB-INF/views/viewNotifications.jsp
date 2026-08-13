@@ -848,7 +848,8 @@
             vertical-align: middle !important;
         }
 
-        .safe-flow-notifications .like-button {
+        .safe-flow-notifications .like-button,
+        .safe-flow-notifications .private-chat-button {
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
@@ -866,10 +867,22 @@
             transition: transform 0.18s ease, border-color 0.18s ease, color 0.18s ease, background 0.18s ease !important;
         }
 
+        .safe-flow-notifications .private-chat-button {
+            min-width: 42px !important;
+            color: #1d4ed8 !important;
+        }
+
         .safe-flow-notifications .like-button:hover {
             transform: translateY(-1px) !important;
             border-color: #f2a6b3 !important;
             color: #be123c !important;
+        }
+
+        .safe-flow-notifications .private-chat-button:hover {
+            transform: translateY(-1px) !important;
+            border-color: #c8d7ff !important;
+            color: #1d4ed8 !important;
+            background: #e8efff !important;
         }
 
         .safe-flow-notifications .like-button.is-liked {
@@ -880,6 +893,11 @@
 
         .safe-flow-notifications .like-heart {
             font-size: 1.08rem !important;
+            line-height: 1 !important;
+        }
+
+        .safe-flow-notifications .chat-icon {
+            font-size: 1rem !important;
             line-height: 1 !important;
         }
 
@@ -995,6 +1013,153 @@
         .safe-flow-notifications tr.targeted-notification > td {
             background: #f0fbf6 !important;
             box-shadow: inset 4px 0 0 #0e7c66 !important;
+        }
+
+        .private-chat-modal {
+            position: fixed !important;
+            inset: 0 !important;
+            z-index: 5000 !important;
+            display: grid !important;
+            place-items: center !important;
+            padding: 18px !important;
+            background: rgba(15, 23, 42, 0.28) !important;
+        }
+
+        .private-chat-modal.hidden {
+            display: none !important;
+        }
+
+        .private-chat-panel {
+            width: min(560px, 100%) !important;
+            max-height: min(680px, calc(100vh - 40px)) !important;
+            display: grid !important;
+            grid-template-rows: auto minmax(220px, 1fr) auto !important;
+            overflow: hidden !important;
+            border-radius: 12px !important;
+            background: #ffffff !important;
+            border: 1px solid #d8e4de !important;
+            box-shadow: 0 24px 70px rgba(15, 23, 42, 0.22) !important;
+        }
+
+        .private-chat-header {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 12px !important;
+            padding: 16px 18px !important;
+            border-bottom: 1px solid #d8e4de !important;
+        }
+
+        .private-chat-title {
+            margin: 0 !important;
+            color: #14241d !important;
+            font-size: 1rem !important;
+            font-weight: 900 !important;
+        }
+
+        .private-chat-subtitle {
+            display: block !important;
+            margin-top: 3px !important;
+            color: #607267 !important;
+            font-size: 0.82rem !important;
+            font-weight: 700 !important;
+        }
+
+        .private-chat-close {
+            width: 34px !important;
+            height: 34px !important;
+            border-radius: 8px !important;
+            border: 1px solid #d8e4de !important;
+            background: #ffffff !important;
+            color: #405147 !important;
+            cursor: pointer !important;
+            font-size: 1.2rem !important;
+            line-height: 1 !important;
+        }
+
+        .private-chat-messages {
+            display: grid !important;
+            align-content: start !important;
+            gap: 10px !important;
+            overflow-y: auto !important;
+            padding: 16px 18px !important;
+            background: #fbfdfc !important;
+        }
+
+        .private-chat-empty,
+        .private-chat-status {
+            color: #607267 !important;
+            font-size: 0.9rem !important;
+            line-height: 1.5 !important;
+        }
+
+        .private-chat-message {
+            width: fit-content !important;
+            max-width: 82% !important;
+            display: grid !important;
+            gap: 4px !important;
+            padding: 10px 11px !important;
+            border-radius: 10px !important;
+            background: #ffffff !important;
+            border: 1px solid #d8e4de !important;
+        }
+
+        .private-chat-message.mine {
+            justify-self: end !important;
+            color: #ffffff !important;
+            background: #1f6b4d !important;
+            border-color: #1f6b4d !important;
+        }
+
+        .private-chat-message strong {
+            color: inherit !important;
+            font-size: 0.76rem !important;
+            font-weight: 900 !important;
+        }
+
+        .private-chat-message p {
+            margin: 0 !important;
+            color: inherit !important;
+            line-height: 1.45 !important;
+            overflow-wrap: anywhere !important;
+        }
+
+        .private-chat-message small {
+            color: inherit !important;
+            opacity: 0.72 !important;
+            font-size: 0.72rem !important;
+        }
+
+        .private-chat-form {
+            display: grid !important;
+            gap: 10px !important;
+            padding: 14px 18px 16px !important;
+            border-top: 1px solid #d8e4de !important;
+            background: #ffffff !important;
+        }
+
+        .private-chat-form textarea {
+            width: 100% !important;
+            min-height: 78px !important;
+            resize: vertical !important;
+            border-radius: 8px !important;
+            border: 1px solid #d8e4de !important;
+            padding: 10px !important;
+            color: #14241d !important;
+            background: #ffffff !important;
+            font: inherit !important;
+        }
+
+        .private-chat-form button {
+            justify-self: end !important;
+            border-radius: 8px !important;
+            border: 1px solid #1f6b4d !important;
+            padding: 10px 14px !important;
+            color: #ffffff !important;
+            background: #1f6b4d !important;
+            cursor: pointer !important;
+            font: inherit !important;
+            font-weight: 850 !important;
         }
 
         .safe-flow-notifications .comment-avatar {
@@ -1736,6 +1901,18 @@
 	                                    <span class="like-heart" aria-hidden="true">&#9829;</span>
 	                                    <span data-like-count><%= likeCount %></span>
 	                                </button>
+	                                <% if (!currentUserSender && senderCf != null && !senderCf.isBlank()) { %>
+	                                <button
+	                                        type="button"
+	                                        class="private-chat-button"
+	                                        data-private-chat-open
+	                                        data-notification-key="<%= notificationKey %>"
+	                                        data-traveler-cf="<%= StringEscapeUtils.escapeHtml4(senderCf) %>"
+	                                        data-traveler-name="<%= authorName %>"
+	                                        aria-label="Open private chat with <%= authorName %>">
+	                                    <span class="chat-icon" aria-hidden="true">&#9993;</span>
+	                                </button>
+	                                <% } %>
 	                                <% } else { %>
 	                                <span class="admin-like-placeholder">-</span>
 	                                <% } %>
@@ -1865,6 +2042,25 @@
             </div>
         </div>
     </div>
+</div>
+<div class="private-chat-modal hidden" data-private-chat-modal aria-hidden="true">
+    <section class="private-chat-panel" role="dialog" aria-modal="true" aria-labelledby="privateChatTitle">
+        <header class="private-chat-header">
+            <div>
+                <h2 class="private-chat-title" id="privateChatTitle">Private chat</h2>
+                <span class="private-chat-subtitle" data-private-chat-subtitle>Traveler conversation</span>
+            </div>
+            <button type="button" class="private-chat-close" data-private-chat-close aria-label="Close private chat">&times;</button>
+        </header>
+        <div class="private-chat-messages" data-private-chat-messages>
+            <div class="private-chat-empty">Select a traveler report to start a private conversation.</div>
+        </div>
+        <form class="private-chat-form" data-private-chat-form accept-charset="UTF-8">
+            <textarea name="messageText" maxlength="600" placeholder="Write a private message..." required></textarea>
+            <span class="private-chat-status" data-private-chat-status></span>
+            <button type="submit">Send message</button>
+        </form>
+    </section>
 </div>
 <script>
     (function () {
@@ -2223,6 +2419,177 @@
 		    }());
 
 		    (function () {
+		        const modal = document.querySelector('[data-private-chat-modal]');
+		        const closeButton = document.querySelector('[data-private-chat-close]');
+		        const subtitle = document.querySelector('[data-private-chat-subtitle]');
+		        const messagesBox = document.querySelector('[data-private-chat-messages]');
+		        const form = document.querySelector('[data-private-chat-form]');
+		        const textarea = form ? form.querySelector('textarea[name="messageText"]') : null;
+		        const status = document.querySelector('[data-private-chat-status]');
+		        const openButtons = Array.from(document.querySelectorAll('[data-private-chat-open]'));
+		        let activeNotificationKey = '';
+		        let activeTravelerCf = '';
+
+		        if (!modal || !closeButton || !messagesBox || !form || !textarea) {
+		            return;
+		        }
+
+		        function setStatus(message) {
+		            if (status) {
+		                status.textContent = message || '';
+		            }
+		        }
+
+		        function setModalOpen(open) {
+		            modal.classList.toggle('hidden', !open);
+		            modal.setAttribute('aria-hidden', String(!open));
+		            if (!open) {
+		                activeNotificationKey = '';
+		                activeTravelerCf = '';
+		                setStatus('');
+		                textarea.value = '';
+		            }
+		        }
+
+		        function scrollMessagesToBottom() {
+		            messagesBox.scrollTop = messagesBox.scrollHeight;
+		        }
+
+		        function renderMessage(message) {
+		            const item = document.createElement('article');
+		            item.className = 'private-chat-message' + (message.currentUserSender ? ' mine' : '');
+
+		            const author = document.createElement('strong');
+		            author.textContent = message.senderDisplayName || (message.currentUserSender ? 'me' : 'Traveler');
+		            const text = document.createElement('p');
+		            text.textContent = message.text || '';
+		            const date = document.createElement('small');
+		            date.textContent = message.createdAt || '';
+
+		            item.appendChild(author);
+		            item.appendChild(text);
+		            item.appendChild(date);
+		            return item;
+		        }
+
+		        function renderMessages(messages) {
+		            messagesBox.innerHTML = '';
+		            if (!messages || !messages.length) {
+		                const empty = document.createElement('div');
+		                empty.className = 'private-chat-empty';
+		                empty.textContent = 'No private messages yet.';
+		                messagesBox.appendChild(empty);
+		                return;
+		            }
+
+		            messages.forEach((message) => messagesBox.appendChild(renderMessage(message)));
+		            scrollMessagesToBottom();
+		        }
+
+		        async function openPrivateChat(notificationKey, travelerCf, travelerName) {
+		            if (!notificationKey || !travelerCf) {
+		                return;
+		            }
+
+		            activeNotificationKey = notificationKey;
+		            activeTravelerCf = travelerCf;
+		            if (subtitle) {
+		                subtitle.textContent = 'Conversation with ' + (travelerName || 'Traveler');
+		            }
+		            messagesBox.innerHTML = '<div class="private-chat-empty">Loading private chat...</div>';
+		            setStatus('');
+		            setModalOpen(true);
+
+		            try {
+		                const query = new URLSearchParams({
+		                    notificationKey: notificationKey,
+		                    travelerCf: travelerCf
+		                });
+		                const response = await fetch('privateTravelerChat?' + query.toString());
+		                const payload = await response.json();
+		                if (!response.ok) {
+		                    throw new Error(payload.error || 'Unable to load private chat.');
+		                }
+		                renderMessages(payload.messages || []);
+		                textarea.focus();
+		            } catch (error) {
+		                messagesBox.innerHTML = '';
+		                setStatus(error.message || 'Unable to load private chat.');
+		            }
+		        }
+
+		        openButtons.forEach((button) => {
+		            button.addEventListener('click', () => {
+		                openPrivateChat(
+		                    button.dataset.notificationKey,
+		                    button.dataset.travelerCf,
+		                    button.dataset.travelerName
+		                );
+		            });
+		        });
+
+		        form.addEventListener('submit', async (event) => {
+		            event.preventDefault();
+		            const messageText = textarea.value.trim();
+		            const submitButton = form.querySelector('button[type="submit"]');
+		            if (!messageText) {
+		                setStatus('Write a message before sending.');
+		                return;
+		            }
+
+		            setStatus('');
+		            if (submitButton) {
+		                submitButton.disabled = true;
+		            }
+
+		            try {
+		                const response = await fetch('privateTravelerChat', {
+		                    method: 'POST',
+		                    headers: {
+		                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+		                    },
+		                    body: new URLSearchParams({
+		                        notificationKey: activeNotificationKey,
+		                        travelerCf: activeTravelerCf,
+		                        messageText: messageText
+		                    })
+		                });
+		                const payload = await response.json();
+		                if (!response.ok) {
+		                    throw new Error(payload.error || 'Unable to send private message.');
+		                }
+		                const empty = messagesBox.querySelector('.private-chat-empty');
+		                if (empty) {
+		                    empty.remove();
+		                }
+		                messagesBox.appendChild(renderMessage(payload.message));
+		                textarea.value = '';
+		                scrollMessagesToBottom();
+		            } catch (error) {
+		                setStatus(error.message || 'Unable to send private message.');
+		            } finally {
+		                if (submitButton) {
+		                    submitButton.disabled = false;
+		                }
+		            }
+		        });
+
+		        closeButton.addEventListener('click', () => setModalOpen(false));
+		        modal.addEventListener('click', (event) => {
+		            if (event.target === modal) {
+		                setModalOpen(false);
+		            }
+		        });
+		        document.addEventListener('keydown', (event) => {
+		            if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+		                setModalOpen(false);
+		            }
+		        });
+
+		        window.safeFlowOpenPrivateChat = openPrivateChat;
+		    }());
+
+		    (function () {
 		        const panels = Array.from(document.querySelectorAll('[data-comments-panel]'));
 
 		        function createComment(payload) {
@@ -2535,6 +2902,31 @@
 		                    button.click();
 		                }
 		            });
+		        }
+
+		        if (targetCommentId && targetCommentId.startsWith('chat-')) {
+		            const travelerCf = targetCommentId.substring('chat-'.length);
+		            const targetRow = Array.from(document.querySelectorAll('[data-public-notification-row]'))
+		                .find((row) => row.dataset.notificationKey === targetNotificationKey);
+		            const chatButton = Array.from(document.querySelectorAll('[data-private-chat-open]'))
+		                .find((button) => button.dataset.notificationKey === targetNotificationKey
+		                    && button.dataset.travelerCf === travelerCf);
+		            if (targetRow) {
+		                targetRow.classList.add('targeted-notification');
+		            }
+		            if (window.safeFlowOpenPrivateChat) {
+		                window.setTimeout(() => {
+		                    window.safeFlowOpenPrivateChat(
+		                        chatButton ? chatButton.dataset.notificationKey : targetNotificationKey,
+		                        chatButton ? chatButton.dataset.travelerCf : travelerCf,
+		                        chatButton ? chatButton.dataset.travelerName : 'Traveler'
+		                    );
+		                }, 180);
+		            }
+		            window.setTimeout(() => {
+		                (targetRow || targetPanel).scrollIntoView({behavior: 'smooth', block: 'center'});
+		            }, 120);
+		            return;
 		        }
 
 		        const targetToggle = targetPanel.querySelector('[data-comments-toggle]');

@@ -263,6 +263,19 @@ CREATE TABLE `sf_notification_dismissals` (
   PRIMARY KEY (`notification_type`,`traveler_cf`,`notification_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+DROP TABLE IF EXISTS `sf_private_chat_messages`;
+CREATE TABLE `sf_private_chat_messages` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `notification_key` varchar(512) NOT NULL,
+  `sender_cf` varchar(16) NOT NULL,
+  `recipient_cf` varchar(16) NOT NULL,
+  `text` varchar(600) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_private_chat_thread` (`notification_key`,`sender_cf`,`recipient_cf`,`created_at`),
+  KEY `idx_private_chat_recipient` (`recipient_cf`,`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 --
 -- Dumping events for database 'SafeFlow_Update'
 --

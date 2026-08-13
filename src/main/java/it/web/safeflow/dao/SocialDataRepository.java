@@ -3,6 +3,7 @@ package it.web.safeflow.dao;
 import it.web.safeflow.exception.DAOExceptionRemoli;
 import it.web.safeflow.model.NotificationComment;
 import it.web.safeflow.model.NotificationLikeState;
+import it.web.safeflow.model.PrivateChatMessage;
 import it.web.safeflow.model.ReportImageAttachment;
 import it.web.safeflow.utility.factory.ConnectionFactory;
 
@@ -20,6 +21,8 @@ import java.util.Optional;
 import java.util.Set;
 
 public class SocialDataRepository {
+
+    private static volatile boolean privateChatTableChecked;
 
     public record StoredFile(String fileName, String contentType, byte[] data) {
     }
@@ -87,6 +90,86 @@ public class SocialDataRepository {
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new DAOExceptionRemoli("Unable to save the report comment in the database.", e);
+        }
+    }
+
+    public PrivateChatMessage savePrivateChatMessage(String notificationKey,
+                                                     String senderCf,
+                                                     String recipientCf,
+                                                     String text,
+                                                     Timestamp createdAt) throws DAOExceptionRemoli {
+        ensurePrivateChatTable();
+        String sql = """
+                INSERT INTO sf_private_chat_messages
+                    (notification_key, sender_cf, recipient_cf, text, created_at)
+                VALUES (?, ?, ?, ?, ?)
+                """;
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, notificationKey);
+            ps.setString(2, normalizeCf(senderCf));
+            ps.setString(3, normalizeCf(recipientCf));
+            ps.setString(4, text);
+            ps.setTimestamp(5, createdAt);
+            ps.executeUpdate();
+            long id = 0L;
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    id = rs.getLong(1);
+                }
+            }
+            return new PrivateChatMessage(
+                    id,
+                    notificationKey,
+                    normalizeCf(senderCf),
+                    normalizeCf(recipientCf),
+                    text,
+                    createdAt,
+                    true
+            );
+        } catch (SQLException e) {
+            throw new DAOExceptionRemoli("Unable to save the private chat message in the database.", e);
+        }
+    }
+
+    public List<PrivateChatMessage> privateChatMessages(String notificationKey,
+                                                        String currentUserCf,
+                                                        String otherTravelerCf) throws DAOExceptionRemoli {
+        ensurePrivateChatTable();
+        String currentCf = normalizeCf(currentUserCf);
+        String otherCf = normalizeCf(otherTravelerCf);
+        String sql = """
+                SELECT id, notification_key, sender_cf, recipient_cf, text, created_at
+                FROM sf_private_chat_messages
+                WHERE notification_key = ?
+                  AND ((sender_cf = ? AND recipient_cf = ?) OR (sender_cf = ? AND recipient_cf = ?))
+                ORDER BY created_at ASC, id ASC
+                """;
+        List<PrivateChatMessage> messages = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, notificationKey);
+            ps.setString(2, currentCf);
+            ps.setString(3, otherCf);
+            ps.setString(4, otherCf);
+            ps.setString(5, currentCf);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String senderCf = rs.getString("sender_cf");
+                    messages.add(new PrivateChatMessage(
+                            rs.getLong("id"),
+                            rs.getString("notification_key"),
+                            senderCf,
+                            rs.getString("recipient_cf"),
+                            rs.getString("text"),
+                            rs.getTimestamp("created_at"),
+                            senderCf != null && senderCf.equalsIgnoreCase(currentCf)
+                    ));
+                }
+            }
+            return messages;
+        } catch (SQLException e) {
+            throw new DAOExceptionRemoli("Unable to load private chat messages from the database.", e);
         }
     }
 
@@ -484,6 +567,39 @@ public class SocialDataRepository {
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new DAOExceptionRemoli("Unable to save notification markers in the database.", e);
+        }
+    }
+
+    private void ensurePrivateChatTable() throws DAOExceptionRemoli {
+        if (privateChatTableChecked) {
+            return;
+        }
+
+        synchronized (SocialDataRepository.class) {
+            if (privateChatTableChecked) {
+                return;
+            }
+
+            String sql = """
+                    CREATE TABLE IF NOT EXISTS sf_private_chat_messages (
+                      id bigint NOT NULL AUTO_INCREMENT,
+                      notification_key varchar(512) NOT NULL,
+                      sender_cf varchar(16) NOT NULL,
+                      recipient_cf varchar(16) NOT NULL,
+                      text varchar(600) NOT NULL,
+                      created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                      PRIMARY KEY (id),
+                      KEY idx_private_chat_thread (notification_key, sender_cf, recipient_cf, created_at),
+                      KEY idx_private_chat_recipient (recipient_cf, created_at)
+                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+                    """;
+            try (Connection conn = ConnectionFactory.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.executeUpdate();
+                privateChatTableChecked = true;
+            } catch (SQLException e) {
+                throw new DAOExceptionRemoli("Unable to initialize the private chat table.", e);
+            }
         }
     }
 
