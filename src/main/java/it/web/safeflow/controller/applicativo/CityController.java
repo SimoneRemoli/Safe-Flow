@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Controller applicativo responsabile della logica legata alle città.
  * Si occupa del recupero delle informazioni dal DAO e le espone al layer grafico.
- * @SimoneRemoli
+ * @SimoneRemoli.
  */
 public class CityController {
 
