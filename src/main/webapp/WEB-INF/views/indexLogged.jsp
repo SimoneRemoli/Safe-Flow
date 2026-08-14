@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="it.web.safeflow.controller.applicativo.ViewInternalNotificationsControllerApplicativo" %>
+<%@ page import="it.web.safeflow.controller.applicativo.PrivateTravelerChatControllerApplicativo" %>
 <%@ page import="it.web.safeflow.exception.BrondiException" %>
 <%@ page import="javax.servlet.http.HttpSession" %>
 <%
     int internalNotificationsCount = 0;
+    int directMessagesCount = 0;
     HttpSession internalSession = request.getSession(false);
     if (internalSession != null && internalSession.getAttribute("codiceFiscale") != null) {
         try {
@@ -13,6 +15,12 @@
                     .unreadCount(internalSession.getAttribute("codiceFiscale").toString());
         } catch (BrondiException ignored) {
             internalNotificationsCount = 0;
+        }
+        try {
+            directMessagesCount = new PrivateTravelerChatControllerApplicativo()
+                    .unreadCount(internalSession.getAttribute("codiceFiscale").toString());
+        } catch (BrondiException ignored) {
+            directMessagesCount = 0;
         }
     }
 %>
@@ -355,6 +363,12 @@
                 Notifications
                 <% if (internalNotificationsCount > 0) { %>
                 <span class="notification-badge"><%= internalNotificationsCount %></span>
+                <% } %>
+            </a>
+            <a href="directMessages" class="notification-link <%= directMessagesCount > 0 ? "has-alert" : "" %>">
+                Direct messages
+                <% if (directMessagesCount > 0) { %>
+                <span class="notification-badge"><%= directMessagesCount %></span>
                 <% } %>
             </a>
         </nav>

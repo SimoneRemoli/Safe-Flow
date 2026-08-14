@@ -271,6 +271,7 @@ CREATE TABLE `sf_private_chat_messages` (
   `recipient_cf` varchar(16) NOT NULL,
   `text` varchar(600) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `read_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_private_chat_thread` (`notification_key`,`sender_cf`,`recipient_cf`,`created_at`),
   KEY `idx_private_chat_recipient` (`recipient_cf`,`created_at`)

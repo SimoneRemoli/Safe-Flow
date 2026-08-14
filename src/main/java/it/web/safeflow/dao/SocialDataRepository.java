@@ -173,6 +173,105 @@ public class SocialDataRepository {
         }
     }
 
+    public List<PrivateChatMessage> privateChatMessagesForTraveler(String currentUserCf) throws DAOExceptionRemoli {
+        ensurePrivateChatTable();
+        String currentCf = normalizeCf(currentUserCf);
+        String sql = """
+                SELECT id, notification_key, sender_cf, recipient_cf, text, created_at
+                FROM sf_private_chat_messages
+                WHERE sender_cf = ? OR recipient_cf = ?
+                ORDER BY created_at ASC, id ASC
+                """;
+        List<PrivateChatMessage> messages = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, currentCf);
+            ps.setString(2, currentCf);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String senderCf = rs.getString("sender_cf");
+                    messages.add(new PrivateChatMessage(
+                            rs.getLong("id"),
+                            rs.getString("notification_key"),
+                            senderCf,
+                            rs.getString("recipient_cf"),
+                            rs.getString("text"),
+                            rs.getTimestamp("created_at"),
+                            senderCf != null && senderCf.equalsIgnoreCase(currentCf)
+                    ));
+                }
+            }
+            return messages;
+        } catch (SQLException e) {
+            throw new DAOExceptionRemoli("Unable to load private chat inbox messages from the database.", e);
+        }
+    }
+
+    public Map<String, Integer> unreadPrivateChatCountsByThread(String currentUserCf) throws DAOExceptionRemoli {
+        ensurePrivateChatTable();
+        String currentCf = normalizeCf(currentUserCf);
+        String sql = """
+                SELECT notification_key, sender_cf, COUNT(*) AS unread_count
+                FROM sf_private_chat_messages
+                WHERE recipient_cf = ? AND read_at IS NULL
+                GROUP BY notification_key, sender_cf
+                """;
+        Map<String, Integer> counts = new HashMap<>();
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, currentCf);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    counts.put(threadKey(rs.getString("notification_key"), rs.getString("sender_cf")), rs.getInt("unread_count"));
+                }
+            }
+            return counts;
+        } catch (SQLException e) {
+            throw new DAOExceptionRemoli("Unable to load unread private chat counts from the database.", e);
+        }
+    }
+
+    public int unreadPrivateChatCount(String currentUserCf) throws DAOExceptionRemoli {
+        ensurePrivateChatTable();
+        String sql = """
+                SELECT COUNT(*)
+                FROM sf_private_chat_messages
+                WHERE recipient_cf = ? AND read_at IS NULL
+                """;
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, normalizeCf(currentUserCf));
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? rs.getInt(1) : 0;
+            }
+        } catch (SQLException e) {
+            throw new DAOExceptionRemoli("Unable to count unread private chat messages from the database.", e);
+        }
+    }
+
+    public void markPrivateChatThreadRead(String notificationKey,
+                                          String currentUserCf,
+                                          String otherTravelerCf) throws DAOExceptionRemoli {
+        ensurePrivateChatTable();
+        String sql = """
+                UPDATE sf_private_chat_messages
+                SET read_at = CURRENT_TIMESTAMP
+                WHERE notification_key = ?
+                  AND sender_cf = ?
+                  AND recipient_cf = ?
+                  AND read_at IS NULL
+                """;
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, notificationKey);
+            ps.setString(2, normalizeCf(otherTravelerCf));
+            ps.setString(3, normalizeCf(currentUserCf));
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOExceptionRemoli("Unable to mark private chat messages as read.", e);
+        }
+    }
+
     public List<NotificationComment> commentsFor(String notificationKey) throws DAOExceptionRemoli {
         String sql = """
                 SELECT id, notification_key, author_cf, parent_comment_id, reply_to_cf, text, created_at
@@ -588,6 +687,7 @@ public class SocialDataRepository {
                       recipient_cf varchar(16) NOT NULL,
                       text varchar(600) NOT NULL,
                       created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                      read_at timestamp NULL DEFAULT NULL,
                       PRIMARY KEY (id),
                       KEY idx_private_chat_thread (notification_key, sender_cf, recipient_cf, created_at),
                       KEY idx_private_chat_recipient (recipient_cf, created_at)
@@ -596,11 +696,37 @@ public class SocialDataRepository {
             try (Connection conn = ConnectionFactory.getConnection();
                  PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.executeUpdate();
+                ensurePrivateChatReadAtColumn(conn);
                 privateChatTableChecked = true;
             } catch (SQLException e) {
                 throw new DAOExceptionRemoli("Unable to initialize the private chat table.", e);
             }
         }
+    }
+
+    private void ensurePrivateChatReadAtColumn(Connection conn) throws SQLException {
+        String checkSql = """
+                SELECT COUNT(*)
+                FROM information_schema.COLUMNS
+                WHERE TABLE_SCHEMA = DATABASE()
+                  AND TABLE_NAME = 'sf_private_chat_messages'
+                  AND COLUMN_NAME = 'read_at'
+                """;
+        try (PreparedStatement check = conn.prepareStatement(checkSql);
+             ResultSet rs = check.executeQuery()) {
+            if (rs.next() && rs.getInt(1) > 0) {
+                return;
+            }
+        }
+
+        try (PreparedStatement alter = conn.prepareStatement(
+                "ALTER TABLE sf_private_chat_messages ADD COLUMN read_at timestamp NULL DEFAULT NULL AFTER created_at")) {
+            alter.executeUpdate();
+        }
+    }
+
+    private String threadKey(String notificationKey, String otherTravelerCf) {
+        return (notificationKey == null ? "" : notificationKey) + "|" + normalizeCf(otherTravelerCf);
     }
 
     private String normalizeCf(String codiceFiscale) {
