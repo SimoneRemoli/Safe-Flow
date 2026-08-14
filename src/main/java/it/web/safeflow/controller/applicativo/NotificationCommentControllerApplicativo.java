@@ -37,6 +37,7 @@ public class NotificationCommentControllerApplicativo {
     private static final Path COMMENT_DIR = Path.of(System.getProperty("user.home"), ".safe-flow", "report-comments");
     private static final Path COMMENT_NOTIFICATION_TARGET_STORE = Path.of(System.getProperty("user.home"), ".safe-flow", "comment-notification-targets.properties");
     private static final int MAX_COMMENT_LENGTH = 600;
+    private static final String TRAVELER_ROLE = "TRAVELER";
 
     public NotificationComment addTravelerComment(String notificationKey, String authorCf, String text) throws BrondiException {
         return addTravelerComment(notificationKey, authorCf, text, null);
@@ -119,7 +120,7 @@ public class NotificationCommentControllerApplicativo {
         LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
         try {
             for (Notification notification : layer.getMessagesRAM()) {
-                boolean travelerReport = "TRAVELER".equalsIgnoreCase(notification.getSenderRole());
+                boolean travelerReport = TRAVELER_ROLE.equalsIgnoreCase(notification.getSenderRole());
                 boolean approved = "APPROVED".equalsIgnoreCase(notification.getStatus());
                 boolean publicReport = notification.getRecipientCf() == null || notification.getRecipientCf().isBlank();
                 if (travelerReport
@@ -332,7 +333,7 @@ public class NotificationCommentControllerApplicativo {
                 true,
                 false,
                 "APPROVED",
-                "TRAVELER",
+                TRAVELER_ROLE,
                 comment.getAuthorCf(),
                 recipientCf,
                 report.getCity(),
@@ -454,7 +455,7 @@ public class NotificationCommentControllerApplicativo {
         }
 
         String message = notification.getMessage();
-        return "TRAVELER".equalsIgnoreCase(notification.getSenderRole())
+        return TRAVELER_ROLE.equalsIgnoreCase(notification.getSenderRole())
                 && (message.startsWith("Someone liked your traveler report:")
                 || message.startsWith("Someone commented on your traveler report:")
                 || message.startsWith("Someone replied to your comment:")
@@ -463,7 +464,7 @@ public class NotificationCommentControllerApplicativo {
 
     private boolean isPrivateChatNotification(Notification notification) {
         return notification != null
-                && "TRAVELER".equalsIgnoreCase(notification.getSenderRole())
+                && TRAVELER_ROLE.equalsIgnoreCase(notification.getSenderRole())
                 && notification.getRecipientCf() != null
                 && !notification.getRecipientCf().isBlank()
                 && notification.getSenderCf() != null
@@ -492,7 +493,7 @@ public class NotificationCommentControllerApplicativo {
             return "ADMIN".equalsIgnoreCase(candidate.getSenderRole());
         }
 
-        return "TRAVELER".equalsIgnoreCase(candidate.getSenderRole())
+        return TRAVELER_ROLE.equalsIgnoreCase(candidate.getSenderRole())
                 && "APPROVED".equalsIgnoreCase(candidate.getStatus())
                 && candidate.getSenderCf() != null
                 && !candidate.getSenderCf().isBlank();
