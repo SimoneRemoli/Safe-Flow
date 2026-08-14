@@ -11,6 +11,7 @@ public class PrivateChatThread {
     private final String lastMessage;
     private final Timestamp lastMessageAt;
     private final int unreadCount;
+    private boolean unread;
     private String otherTravelerDisplayName;
     private String otherTravelerInitials;
 
@@ -28,6 +29,7 @@ public class PrivateChatThread {
         this.lastMessage = lastMessage;
         this.lastMessageAt = lastMessageAt;
         this.unreadCount = unreadCount;
+        this.unread = unreadCount > 0;
     }
 
     public String getNotificationKey() {
@@ -56,6 +58,14 @@ public class PrivateChatThread {
 
     public int getUnreadCount() {
         return unreadCount;
+    }
+
+    public boolean isUnread() {
+        return unread;
+    }
+
+    public void setUnread(boolean unread) {
+        this.unread = unread;
     }
 
     public String getOtherTravelerDisplayName() {

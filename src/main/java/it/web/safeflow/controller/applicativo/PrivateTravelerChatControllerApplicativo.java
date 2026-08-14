@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,6 +34,7 @@ public class PrivateTravelerChatControllerApplicativo {
 
     private static final Logger logger = LoggerFactory.getLogger(PrivateTravelerChatControllerApplicativo.class);
     private static final int MAX_MESSAGE_LENGTH = 600;
+    private static final int MAX_RAW_STORAGE_KEY_LENGTH = 96;
     private static final Object FILE_LOCK = new Object();
     private static final Path CHAT_DIR = Path.of(System.getProperty("java.io.tmpdir"), "safe-flow", "private-chats");
     private static final Path LEGACY_CHAT_DIR = Path.of(System.getProperty("user.home"), ".safe-flow", "private-chats");
@@ -40,19 +43,22 @@ public class PrivateTravelerChatControllerApplicativo {
                                              String currentUserCf,
                                              String otherTravelerCf) throws BrondiException {
         String key = normalizeNotificationKey(notificationKey);
+        String storageKey = storageNotificationKey(key);
         String currentCf = normalizeCf(currentUserCf);
         String otherCf = normalizeCf(otherTravelerCf);
         ensureChatAllowed(key, currentCf, otherCf);
 
         try {
-            new SocialDataRepository().markPrivateChatThreadRead(key, currentCf, otherCf);
+            new SocialDataRepository().markPrivateChatThreadRead(storageKey, currentCf, otherCf);
             List<PrivateChatMessage> messages = new SocialDataRepository()
-                    .privateChatMessages(key, currentCf, otherCf);
+                    .privateChatMessages(storageKey, currentCf, otherCf);
             enrichSenders(messages, currentCf, otherCf);
+            markPrivateMessageNotificationsRead(key, currentCf, otherCf);
             return messages;
         } catch (DAOExceptionRemoli ignored) {
-            List<PrivateChatMessage> messages = readMessagesFromFile(key, currentCf, otherCf);
+            List<PrivateChatMessage> messages = readMessagesFromFile(storageKey, currentCf, otherCf);
             enrichSenders(messages, currentCf, otherCf);
+            markPrivateMessageNotificationsRead(key, currentCf, otherCf);
             return messages;
         }
     }
@@ -63,11 +69,13 @@ public class PrivateTravelerChatControllerApplicativo {
             List<PrivateChatMessage> messages = new SocialDataRepository().privateChatMessagesForTraveler(currentCf);
             Map<String, Integer> unreadCounts = new SocialDataRepository().unreadPrivateChatCountsByThread(currentCf);
             List<PrivateChatThread> threads = buildThreads(currentCf, messages, unreadCounts);
+            markUnreadThreadsFromNotifications(currentCf, threads);
             enrichThreadProfiles(threads);
             threads.sort(Comparator.comparing(PrivateChatThread::getLastMessageAt).reversed());
             return threads;
         } catch (DAOExceptionRemoli ignored) {
             List<PrivateChatThread> threads = buildThreads(currentCf, readAllMessagesFromFiles(currentCf), Map.of());
+            markUnreadThreadsFromNotifications(currentCf, threads);
             enrichThreadProfiles(threads);
             threads.sort(Comparator.comparing(PrivateChatThread::getLastMessageAt).reversed());
             return threads;
@@ -76,11 +84,10 @@ public class PrivateTravelerChatControllerApplicativo {
 
     public int unreadCount(String currentUserCf) throws BrondiException {
         String currentCf = normalizeCf(currentUserCf);
-        try {
-            return new SocialDataRepository().unreadPrivateChatCount(currentCf);
-        } catch (DAOExceptionRemoli ignored) {
-            return 0;
-        }
+        int unreadThreads = (int) threads(currentCf).stream()
+                .filter(PrivateChatThread::isUnread)
+                .count();
+        return Math.max(unreadThreads, unreadPrivateNotificationThreadCount(currentCf));
     }
 
     public PrivateChatMessage send(String notificationKey,
@@ -88,6 +95,7 @@ public class PrivateTravelerChatControllerApplicativo {
                                    String recipientCf,
                                    String text) throws BrondiException {
         String key = normalizeNotificationKey(notificationKey);
+        String storageKey = storageNotificationKey(key);
         String sender = normalizeCf(senderCf);
         String recipient = normalizeCf(recipientCf);
         String messageText = normalizeText(text);
@@ -95,7 +103,7 @@ public class PrivateTravelerChatControllerApplicativo {
 
         try {
             PrivateChatMessage message = new SocialDataRepository().savePrivateChatMessage(
-                    key,
+                    storageKey,
                     sender,
                     recipient,
                     messageText,
@@ -106,7 +114,7 @@ public class PrivateTravelerChatControllerApplicativo {
             notifyRecipientQuietly(report, key, sender, recipient, messageText);
             return message;
         } catch (DAOExceptionRemoli ignored) {
-            PrivateChatMessage message = saveMessageToFile(key, sender, recipient, messageText);
+            PrivateChatMessage message = saveMessageToFile(storageKey, sender, recipient, messageText);
             message.setSenderDisplayName("me");
             message.setSenderInitials("ME");
             notifyRecipientQuietly(report, key, sender, recipient, messageText);
@@ -136,7 +144,8 @@ public class PrivateTravelerChatControllerApplicativo {
         try {
             LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
             for (Notification notification : layer.getMessagesRAM()) {
-                if (!notificationKey.equals(NotificationLikeControllerApplicativo.keyFor(notification))) {
+                String publicKey = NotificationLikeControllerApplicativo.keyFor(notification);
+                if (!notificationKey.equals(publicKey) && !notificationKey.equals(storageNotificationKey(publicKey))) {
                     continue;
                 }
                 String reportOwnerCf = notification.getSenderCf();
@@ -164,8 +173,11 @@ public class PrivateTravelerChatControllerApplicativo {
                                  String senderCf,
                                  String recipientCf,
                                  String text) throws DAOExceptionRemoli {
+        boolean recipientOwnsReport = report.getSenderCf() != null
+                && report.getSenderCf().equalsIgnoreCase(recipientCf);
         Notification notification = new Notification(
-                "New private message about your report: " + summarize(text),
+                (recipientOwnsReport ? "New private message about your report: " : "New private message: ")
+                        + summarize(text),
                 new Timestamp(System.currentTimeMillis()),
                 false,
                 true,
@@ -191,6 +203,128 @@ public class PrivateTravelerChatControllerApplicativo {
         } catch (BrondiException e) {
             throw new DAOExceptionRemoli("Unable to link the private chat notification.", e);
         }
+    }
+
+    private int unreadPrivateNotificationThreadCount(String currentCf) throws BrondiException {
+        Set<String> unreadThreads = new HashSet<>();
+        NotificationCommentControllerApplicativo targets = new NotificationCommentControllerApplicativo();
+        try {
+            for (Notification notification : FactoryLayerPersistenza.createLayerPersistenza().getMessagesRAM()) {
+                if (!isUnreadPrivateMessageNotification(notification, currentCf)) {
+                    continue;
+                }
+
+                String targetUrl = targets.targetUrlForInternalNotification(notification);
+                if (targetUrl != null && targetUrl.startsWith("directMessages")) {
+                    unreadThreads.add(targetUrl);
+                } else {
+                    unreadThreads.add(notification.getSenderCf());
+                }
+            }
+        } catch (DAOExceptionRemoli e) {
+            throw new BrondiException("Unable to count unread private messages.", "PRIVATE_CHAT_UNREAD_NOTIFICATIONS", "Unread private notification lookup failed", e);
+        }
+        return unreadThreads.size();
+    }
+
+    private void markUnreadThreadsFromNotifications(String currentCf,
+                                                    List<PrivateChatThread> threads) throws BrondiException {
+        if (threads.isEmpty()) {
+            return;
+        }
+
+        Map<String, Set<String>> unreadTargetKeysBySender = new LinkedHashMap<>();
+        Set<String> unreadSendersWithoutTargetKey = new HashSet<>();
+        NotificationCommentControllerApplicativo targets = new NotificationCommentControllerApplicativo();
+        try {
+            for (Notification notification : FactoryLayerPersistenza.createLayerPersistenza().getMessagesRAM()) {
+                if (!isUnreadPrivateMessageNotification(notification, currentCf)) {
+                    continue;
+                }
+
+                String senderCf = notification.getSenderCf().toUpperCase(Locale.ROOT);
+                String targetUrl = targets.targetUrlForInternalNotification(notification);
+                String targetKey = queryParameter(targetUrl, "notificationKey");
+                if (targetKey != null && !targetKey.isBlank()) {
+                    unreadTargetKeysBySender
+                            .computeIfAbsent(senderCf, ignored -> new HashSet<>())
+                            .add(targetKey);
+                } else {
+                    unreadSendersWithoutTargetKey.add(senderCf);
+                }
+            }
+        } catch (DAOExceptionRemoli e) {
+            throw new BrondiException("Unable to mark unread private chats.", "PRIVATE_CHAT_UNREAD_THREAD_MARK", "Unread private notification lookup failed", e);
+        }
+
+        for (PrivateChatThread thread : threads) {
+            String otherCf = thread.getOtherTravelerCf().toUpperCase(Locale.ROOT);
+            Set<String> unreadTargetKeys = unreadTargetKeysBySender.getOrDefault(otherCf, Set.of());
+            if (unreadSendersWithoutTargetKey.contains(otherCf) || unreadTargetKeys.contains(thread.getNotificationKey())) {
+                thread.setUnread(true);
+            }
+        }
+    }
+
+    private void markPrivateMessageNotificationsRead(String notificationKey,
+                                                     String currentCf,
+                                                     String otherCf) {
+        NotificationCommentControllerApplicativo targets = new NotificationCommentControllerApplicativo();
+        try {
+            LayerPersistenza layer = FactoryLayerPersistenza.createLayerPersistenza();
+            for (Notification notification : layer.getMessagesRAM()) {
+                if (!isUnreadPrivateMessageNotification(notification, currentCf)
+                        || notification.getSenderCf() == null
+                        || !notification.getSenderCf().equalsIgnoreCase(otherCf)) {
+                    continue;
+                }
+
+                String targetUrl = targets.targetUrlForInternalNotification(notification);
+                if (targetUrl != null
+                        && targetUrl.contains("notificationKey=")
+                        && !targetUrl.contains("notificationKey=" + notificationKey)) {
+                    continue;
+                }
+
+                notification.setLetto(true);
+                layer.markNotificationAsRead(notification);
+            }
+        } catch (DAOExceptionRemoli e) {
+            logger.warn("Private chat opened, but internal private notifications could not be marked as read.", e);
+        }
+    }
+
+    private boolean isUnreadPrivateMessageNotification(Notification notification, String currentCf) {
+        return notification != null
+                && !notification.isLetto()
+                && "APPROVED".equalsIgnoreCase(notification.getStatus())
+                && "TRAVELER".equalsIgnoreCase(notification.getSenderRole())
+                && notification.getRecipientCf() != null
+                && notification.getRecipientCf().equalsIgnoreCase(currentCf)
+                && notification.getSenderCf() != null
+                && !notification.getSenderCf().isBlank()
+                && notification.getMessage() != null
+                && notification.getMessage().startsWith("New private message");
+    }
+
+    private String queryParameter(String url, String name) {
+        if (url == null || name == null || name.isBlank()) {
+            return null;
+        }
+
+        int queryStart = url.indexOf('?');
+        if (queryStart < 0 || queryStart == url.length() - 1) {
+            return null;
+        }
+
+        String prefix = name + "=";
+        String[] pairs = url.substring(queryStart + 1).split("&");
+        for (String pair : pairs) {
+            if (pair.startsWith(prefix)) {
+                return pair.substring(prefix.length());
+            }
+        }
+        return null;
     }
 
     private void enrichSenders(List<PrivateChatMessage> messages, String currentCf, String otherCf) {
@@ -245,10 +379,14 @@ public class PrivateTravelerChatControllerApplicativo {
         for (PrivateChatMessage latest : latestByThread.values()) {
             String otherCf = latest.isCurrentUserSender() ? latest.getRecipientCf() : latest.getSenderCf();
             Notification report = reports.get(latest.getNotificationKey());
-            String reportText = report == null ? "Private conversation" : report.getMessage();
-            String city = report == null ? "" : report.getCity();
+            if (report == null) {
+                continue;
+            }
+            String publicKey = NotificationLikeControllerApplicativo.keyFor(report);
+            String reportText = report.getMessage();
+            String city = report.getCity();
             threads.add(new PrivateChatThread(
-                    latest.getNotificationKey(),
+                    publicKey,
                     otherCf,
                     reportText,
                     city,
@@ -267,7 +405,9 @@ public class PrivateTravelerChatControllerApplicativo {
                 if ("TRAVELER".equalsIgnoreCase(notification.getSenderRole())
                         && "APPROVED".equalsIgnoreCase(notification.getStatus())
                         && (notification.getRecipientCf() == null || notification.getRecipientCf().isBlank())) {
-                    reports.put(NotificationLikeControllerApplicativo.keyFor(notification), notification);
+                    String publicKey = NotificationLikeControllerApplicativo.keyFor(notification);
+                    reports.put(publicKey, notification);
+                    reports.put(storageNotificationKey(publicKey), notification);
                 }
             }
             return reports;
@@ -311,6 +451,20 @@ public class PrivateTravelerChatControllerApplicativo {
             throw new BrondiException("Invalid private chat.", "PRIVATE_CHAT_NOTIFICATION_KEY", "Invalid notification key");
         }
         return key;
+    }
+
+    private String storageNotificationKey(String notificationKey) throws BrondiException {
+        if (notificationKey.length() <= MAX_RAW_STORAGE_KEY_LENGTH) {
+            return notificationKey;
+        }
+
+        try {
+            byte[] digest = MessageDigest.getInstance("SHA-256")
+                    .digest(notificationKey.getBytes(StandardCharsets.UTF_8));
+            return "chat_" + Base64.getUrlEncoder().withoutPadding().encodeToString(digest);
+        } catch (NoSuchAlgorithmException e) {
+            throw new BrondiException("Unable to prepare the private chat.", "PRIVATE_CHAT_STORAGE_KEY", "Missing SHA-256", e);
+        }
     }
 
     private List<PrivateChatMessage> readMessagesFromFile(String notificationKey,

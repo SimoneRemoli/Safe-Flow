@@ -138,6 +138,31 @@
             line-height: 1;
         }
 
+        .traveler-nav .direct-message-link.has-alert {
+            position: relative;
+            overflow: visible;
+            border-color: #fecdd3 !important;
+            background: #fff1f2 !important;
+            color: #be123c !important;
+        }
+
+        .direct-message-badge {
+            position: absolute !important;
+            top: -9px !important;
+            right: -8px !important;
+            min-width: 20px !important;
+            height: 20px !important;
+            margin-left: 0 !important;
+            padding: 0 6px !important;
+            border: 2px solid #ffffff !important;
+            background: #dc2626 !important;
+            color: #ffffff !important;
+            font-size: 0.72rem !important;
+            font-weight: 900 !important;
+            box-shadow: 0 3px 10px rgba(220, 38, 38, 0.28);
+            z-index: 2;
+        }
+
         .traveler-hero {
             display: grid;
             grid-template-columns: minmax(0, 1fr) 300px;
@@ -365,10 +390,10 @@
                 <span class="notification-badge"><%= internalNotificationsCount %></span>
                 <% } %>
             </a>
-            <a href="directMessages" class="notification-link <%= directMessagesCount > 0 ? "has-alert" : "" %>">
+            <a href="directMessages" class="notification-link direct-message-link <%= directMessagesCount > 0 ? "has-alert" : "" %>">
                 Direct messages
                 <% if (directMessagesCount > 0) { %>
-                <span class="notification-badge"><%= directMessagesCount %></span>
+                <span class="notification-badge direct-message-badge"><%= directMessagesCount %></span>
                 <% } %>
             </a>
         </nav>

@@ -28,7 +28,9 @@ public class DirectMessagesControllerGrafico extends LoggedHttpServlet {
         try {
             PrivateTravelerChatControllerApplicativo controller = new PrivateTravelerChatControllerApplicativo();
             List<PrivateChatThread> threads = controller.threads(codiceFiscale);
-            int unreadCount = controller.unreadCount(codiceFiscale);
+            int unreadCount = (int) threads.stream()
+                    .filter(PrivateChatThread::isUnread)
+                    .count();
             request.setAttribute("threads", threads);
             request.setAttribute("unreadDirectMessagesCount", unreadCount);
             request.getRequestDispatcher("/WEB-INF/views/directMessages.jsp").forward(request, response);

@@ -137,6 +137,22 @@
             background: #f7faf8;
         }
 
+        .dm-thread.unread {
+            background: #fff8f8;
+            border-left: 4px solid #dc2626;
+        }
+
+        .dm-thread.unread .dm-thread-copy strong,
+        .dm-thread.unread .dm-thread-copy span {
+            color: #14241d !important;
+            font-weight: 950 !important;
+        }
+
+        .dm-thread.unread .dm-thread-meta {
+            color: #991b1b;
+            font-weight: 850;
+        }
+
         .dm-avatar {
             width: 42px;
             height: 42px;
@@ -187,7 +203,7 @@
             justify-content: center;
             border-radius: 999px;
             color: #ffffff;
-            background: #2563eb;
+            background: #dc2626;
             font-size: 0.72rem;
             font-weight: 900;
         }
@@ -338,7 +354,7 @@
                 <% } %>
             </div>
             <% if (threads == null || threads.isEmpty()) { %>
-            <div class="dm-empty">No private conversations yet.</div>
+            <div class="dm-empty">No message</div>
             <% } else {
                 for (PrivateChatThread thread : threads) {
                     String threadName = StringEscapeUtils.escapeHtml4(thread.getOtherTravelerDisplayName() == null ? "Traveler" : thread.getOtherTravelerDisplayName());
@@ -348,10 +364,11 @@
                     String lastMessage = StringEscapeUtils.escapeHtml4(thread.getLastMessage() == null ? "" : thread.getLastMessage());
                     String reportText = StringEscapeUtils.escapeHtml4(thread.getReportText() == null ? "Private conversation" : thread.getReportText());
                     String city = StringEscapeUtils.escapeHtml4(thread.getCity() == null || thread.getCity().isBlank() ? "City not specified" : thread.getCity());
+                    int threadUnreadBadge = thread.getUnreadCount() > 0 ? thread.getUnreadCount() : 1;
             %>
             <button
                     type="button"
-                    class="dm-thread"
+                    class="dm-thread <%= thread.isUnread() ? "unread" : "" %>"
                     data-thread-button
                     data-notification-key="<%= threadKey %>"
                     data-traveler-cf="<%= otherCf %>"
@@ -364,8 +381,8 @@
                 </span>
                 <span class="dm-thread-meta">
                     <span><%= thread.getLastMessageAt() == null ? "" : sdf.format(thread.getLastMessageAt()) %></span>
-                    <% if (thread.getUnreadCount() > 0) { %>
-                    <span class="dm-unread" data-thread-unread><%= thread.getUnreadCount() %></span>
+                    <% if (thread.isUnread()) { %>
+                    <span class="dm-unread" data-thread-unread><%= threadUnreadBadge %></span>
                     <% } %>
                     <span><%= city %></span>
                 </span>
@@ -376,11 +393,20 @@
 
         <section class="dm-chat-panel" aria-label="Selected direct message thread">
             <header class="dm-chat-header">
+                <% if (threads == null || threads.isEmpty()) { %>
+                <strong data-chat-title>No message</strong>
+                <span data-chat-subtitle></span>
+                <% } else { %>
                 <strong data-chat-title>Select a conversation</strong>
                 <span data-chat-subtitle>Open a thread from the inbox to read or reply.</span>
+                <% } %>
             </header>
             <div class="dm-messages" data-chat-messages>
+                <% if (threads == null || threads.isEmpty()) { %>
+                <div class="dm-empty">No message</div>
+                <% } else { %>
                 <div class="dm-empty">No conversation selected.</div>
+                <% } %>
             </div>
             <form class="dm-form" data-chat-form accept-charset="UTF-8">
                 <textarea name="messageText" maxlength="600" placeholder="Write a private message..." required disabled></textarea>
@@ -401,6 +427,9 @@
         const sendButton = form ? form.querySelector('button[type="submit"]') : null;
         const status = document.querySelector('[data-chat-status]');
         const totalUnread = document.querySelector('[data-total-unread]');
+        const params = new URLSearchParams(window.location.search);
+        const requestedNotificationKey = params.get('notificationKey') || '';
+        const requestedTravelerCf = (params.get('travelerCf') || '').toUpperCase();
         let activeNotificationKey = '';
         let activeTravelerCf = '';
 
@@ -443,19 +472,20 @@
         }
 
         function clearUnread(button) {
+            const wasUnread = button.classList.contains('unread');
             const unread = button.querySelector('[data-thread-unread]');
-            if (!unread) {
+            if (unread) {
+                unread.remove();
+            }
+            button.classList.remove('unread');
+            if (!wasUnread || !totalUnread) {
                 return;
             }
-            const removed = Number(unread.textContent || '0');
-            unread.remove();
-            if (totalUnread) {
-                const next = Math.max(0, Number(totalUnread.textContent || '0') - removed);
-                if (next === 0) {
-                    totalUnread.remove();
-                } else {
-                    totalUnread.textContent = String(next);
-                }
+            const next = Math.max(0, Number(totalUnread.textContent || '0') - 1);
+            if (next === 0) {
+                totalUnread.remove();
+            } else {
+                totalUnread.textContent = String(next);
             }
         }
 
@@ -488,6 +518,9 @@
                 clearUnread(button);
                 textarea.focus();
             } catch (error) {
+                messagesBox.innerHTML = '<div class="dm-empty">No message</div>';
+                textarea.disabled = true;
+                sendButton.disabled = true;
                 setStatus(error.message || 'Unable to load conversation.');
             }
         }
@@ -537,8 +570,28 @@
             }
         });
 
-        if (threadButtons.length) {
-            openThread(threadButtons[0]);
+        if (!threadButtons.length) {
+            if (title) {
+                title.textContent = 'No message';
+            }
+            if (subtitle) {
+                subtitle.textContent = '';
+            }
+            messagesBox.innerHTML = '<div class="dm-empty">No message</div>';
+            return;
+        }
+
+        const shouldOpenRequestedThread = Boolean(requestedNotificationKey || requestedTravelerCf);
+        const requestedThread = shouldOpenRequestedThread ? threadButtons.find((button) => {
+            const sameNotification = !requestedNotificationKey
+                || button.dataset.notificationKey === requestedNotificationKey;
+            const sameTraveler = !requestedTravelerCf
+                || (button.dataset.travelerCf || '').toUpperCase() === requestedTravelerCf;
+            return sameNotification && sameTraveler;
+        }) : null;
+
+        if (requestedThread) {
+            openThread(requestedThread);
         }
     }());
 </script>

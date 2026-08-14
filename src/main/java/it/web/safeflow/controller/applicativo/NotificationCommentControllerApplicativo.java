@@ -371,12 +371,26 @@ public class NotificationCommentControllerApplicativo {
                 value = loadTargetProperties().getProperty(internalNotificationKey);
             }
             if (value == null || value.isBlank()) {
+                if (isPrivateChatNotification(notification)) {
+                    return notification.getSenderCf() == null || notification.getSenderCf().isBlank()
+                            ? "directMessages"
+                            : "directMessages?travelerCf=" + notification.getSenderCf();
+                }
                 return inferredInternalTargetUrl(notification);
             }
 
             String[] parts = value.split("\\|", 2);
             if (parts.length == 0 || parts[0].isBlank()) {
                 return null;
+            }
+
+            if (isPrivateChatNotification(notification)) {
+                String travelerCf = parts.length == 2 && parts[1].startsWith("chat-")
+                        ? parts[1].substring("chat-".length())
+                        : notification.getSenderCf();
+                return travelerCf == null || travelerCf.isBlank()
+                        ? "directMessages"
+                        : "directMessages?notificationKey=" + parts[0] + "&travelerCf=" + travelerCf;
             }
 
             StringBuilder url = new StringBuilder("viewNotifications?notificationKey=").append(parts[0]);
@@ -445,6 +459,17 @@ public class NotificationCommentControllerApplicativo {
                 || message.startsWith("Someone commented on your traveler report:")
                 || message.startsWith("Someone replied to your comment:")
                 || message.startsWith("Someone liked your comment:"));
+    }
+
+    private boolean isPrivateChatNotification(Notification notification) {
+        return notification != null
+                && "TRAVELER".equalsIgnoreCase(notification.getSenderRole())
+                && notification.getRecipientCf() != null
+                && !notification.getRecipientCf().isBlank()
+                && notification.getSenderCf() != null
+                && !notification.getSenderCf().isBlank()
+                && notification.getMessage() != null
+                && notification.getMessage().startsWith("New private message");
     }
 
     private boolean isApprovalNotification(Notification notification) {
